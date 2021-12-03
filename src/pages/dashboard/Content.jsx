@@ -27,18 +27,18 @@ const columns = [
 ]
 export function Content () {
   return (
-        <Row gutter={ { xs: 8, sm: 16, md: 24, lg: 24 }} >
-        <Col span={8}>
+        <Row gutter={ [16, 16]} >
+        <Col xs={24} sm={16} md={12} lg={8} >
           <Card title="Section 1">
             <Table pagination={false} dataSource={dataSource} columns={columns} />
           </Card>
         </Col>
-        <Col span={{ xl: 8, sm: 8, md: 8, lg: 8 }}>
+        <Col xs={24} sm={16} md={12} lg={8} >
           <Card title="Section 2">
             <Table pagination={false} dataSource={dataSource} columns={columns} />
           </Card>
         </Col>
-        <Col span={{ xl: 8, sm: 8, md: 8, lg: 8 }}>
+        <Col xs={24} sm={16} md={12} lg={8}>
           <Card title="Section 3">
             <Table pagination={false} dataSource={dataSource} columns={columns} />
           </Card>
