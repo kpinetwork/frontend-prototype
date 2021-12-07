@@ -1,9 +1,30 @@
-import React from 'react'
-import DashboardUI from './pages/dashboard/DashboardUI'
-function App () {
-  return (
-    <DashboardUI />
-  )
-}
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Header } from './components/Header';
+import { UniverseView } from './components/UniverseView';
+import './App.scss';
 
-export default App
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1,
+    },
+}));
+
+const App = () => {
+    const classes = useStyles();
+
+    return (
+        <div className={classes.root}>
+            <Header classes={classes} />
+            <UniverseView />
+        </div>
+    );
+};
+
+export default App;
