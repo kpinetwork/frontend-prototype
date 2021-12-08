@@ -1,8 +1,11 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import { Switch, Route } from 'wouter'
+import './App.scss'
 import { Header } from './components/Header'
 import { UniverseView } from './views/UniverseView/UniverseView'
-import './App.scss'
+import { CompanyView } from './views/CompanyView/CompanyView'
+import { ComparisionView } from './views/ComparisionView/ComparisionView'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +25,11 @@ const App = () => {
   return (
     <div className={classes.root}>
         <Header classes={classes} />
-        <UniverseView />
+        <Switch>
+          <Route path="/" component={UniverseView} />
+          <Route path="/company-report" component={CompanyView} />
+          <Route path="/comparision-versus" component={ComparisionView} />
+        </Switch>
     </div>
   )
 }

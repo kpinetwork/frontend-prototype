@@ -25,6 +25,6 @@ export const data = {
   ]
 }
 
-export function RuleGraph () {
+export function ReportRuleGraph () {
   return <BubbleChart data={data} />
 }

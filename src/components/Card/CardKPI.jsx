@@ -4,7 +4,6 @@ import React from 'react'
 
 const useStyles = makeStyles({
   root: {
-    height: 510,
     minWidth: 275,
     margin: 10
   },
@@ -22,21 +21,24 @@ const useStyles = makeStyles({
   }
 })
 
-export function CardKPI ({ children, title }) {
+export function CardKPI ({ children, title, actions = true, overflow = 'none' }) {
   const classes = useStyles()
   return (
-    <Card className={classes.root} variant="outlined">
+    <Card className={classes.root} style={{ overflow: overflow }}variant="outlined">
     <CardContent>
       <Typography className={classes.title} color="textSecondary" gutterBottom>
         {title}
       </Typography>
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height: '50vh', width: '100%' }}>
           {children}
       </div>
     </CardContent>
-    <CardActions>
-      <Button size="small" variant="outlined" color="inherit">Learn More</Button>
-    </CardActions>
+    {
+      actions &&
+      <CardActions>
+        <Button size="small" variant="outlined" color="inherit">Learn More</Button>
+      </CardActions>
+    }
   </Card>
   )
 }

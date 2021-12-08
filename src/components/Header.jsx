@@ -13,6 +13,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { makeStyles } from '@material-ui/core/styles'
 import Divider from '@material-ui/core/Divider'
+import { Link } from 'wouter'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,24 +41,30 @@ const Menu = () => {
                     <ListItemText primary="KPI Network" className={classes.title} />
                 </ListItem>
                 <Divider />
-                <ListItem button>
-                    <ListItemIcon>
-                        <InboxIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Universe Overview" className={classes.itemsText} />
-                </ListItem>
-                <ListItem button>
-                    <ListItemIcon>
-                        <InboxIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Company report vs peers" className={classes.itemsText}/>
-                </ListItem>
-                <ListItem button>
-                    <ListItemIcon>
-                        <InboxIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Comparison versus peers" className={classes.itemsText}/>
-                </ListItem>
+                <Link href='/'>
+                  <ListItem button>
+                      <ListItemIcon>
+                          <InboxIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Universe Overview" className={classes.itemsText} />
+                  </ListItem>
+                </Link>
+                <Link href='/company-report'>
+                  <ListItem button>
+                      <ListItemIcon>
+                          <InboxIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Company report vs peers" className={classes.itemsText}/>
+                  </ListItem>
+                </Link>
+                <Link href='/comparision-versus'>
+                  <ListItem button>
+                      <ListItemIcon>
+                          <InboxIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Comparison versus peers" className={classes.itemsText}/>
+                  </ListItem>
+                </Link>
             </List>
         </div>
   )
