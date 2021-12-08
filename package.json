@@ -7,23 +7,25 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@material-ui/core": "^4.12.3",
-    "@material-ui/data-grid": "^4.0.0-alpha.37",
-    "@material-ui/icons": "^4.11.2",
-    "moment": "^2.29.1",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0",
-    "react-vis": "^1.11.7",
-    "sass": "^1.44.0"
+    "@material-ui/core": "4.12.3",
+    "@material-ui/data-grid": "4.0.0-alpha.37",
+    "@material-ui/icons": "4.11.2",
+    "chart.js": "^3.6.2",
+    "faker": "^5.5.3",
+    "moment": "2.29.1",
+    "react": "17.0.0",
+    "react-chartjs-2": "^4.0.0",
+    "react-dom": "17.0.0",
+    "sass": "1.44.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.0",
-    "eslint": "^7.32.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.2.0",
-    "eslint-plugin-react": "^7.27.1",
-    "vite": "^2.6.4"
+    "eslint": "7.32.0",
+    "eslint-config-standard": "16.0.3",
+    "eslint-plugin-import": "2.25.3",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-promise": "5.2.0",
+    "eslint-plugin-react": "7.27.1",
+    "vite": "2.6.4"
   }
 }
