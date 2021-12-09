@@ -1,6 +1,7 @@
 import React from 'react'
 import { BubbleChart } from '../../../components/BubbleChart'
 import faker from 'faker'
+import { CardKPI } from '../../../components/Card/CardKPI'
 
 export const data = {
   datasets: [
@@ -26,5 +27,9 @@ export const data = {
 }
 
 export function RuleGraph () {
-  return <BubbleChart data={data} />
+  return <>
+  <CardKPI title={'Rule of 40: By Sector'} actions={false} overflow={'auto'} textAlign={'center'}>
+    <BubbleChart data={data} />
+  </CardKPI>
+  </>
 }

@@ -4,7 +4,7 @@ import { CardKPI } from '../../../components/Card/CardKPI'
 
 export function DesciptionCard () {
   return (
-        <CardKPI title={'Description'} actions={false}>
+        <CardKPI title={'Description'} actions={false} overflow='auto'>
             <Table>
                 <TableBody>
                     <TableRow>

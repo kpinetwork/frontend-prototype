@@ -5,14 +5,12 @@ import { DesciptionCard } from './Components/DescriptionCard'
 import { ReportRuleGraph } from './Components/ReportRuleGraph'
 export function CompanyView () {
   return (
-        <>
-            <h3>Company Report vs Peers</h3>
-            {/* xs, sm, md, lg, and xl */}
-            <Grid container>
-                <Grid item xs={12} sm={4.5} lg={3} xl={2}><DesciptionCard/></Grid>
-                <Grid item xs={12} sm={4} lg={3} xl={2}><CompanyCard/></Grid>
-                <Grid item xs={12} sm={8} lg={6} xl={8}><ReportRuleGraph/></Grid>
-            </Grid>
-        </>
+    <>
+      <Grid container>
+          <Grid item xs={12} sm={4.5} lg={3} xl={2}><DesciptionCard/></Grid>
+          <Grid item xs={12} sm={4} lg={3} xl={2}><CompanyCard/></Grid>
+          <Grid item xs={12} sm={8} lg={6} xl={8}><ReportRuleGraph/></Grid>
+      </Grid>
+    </>
   )
 }

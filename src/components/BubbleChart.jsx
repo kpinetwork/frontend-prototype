@@ -19,5 +19,5 @@ export const options = {
 }
 
 export function BubbleChart ({ data }) {
-  return <Bubble options={options} data={data} width={100} height={60}/>
+  return <Bubble options={options} data={data} width={100} height={40}/>
 }

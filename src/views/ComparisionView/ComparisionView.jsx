@@ -24,8 +24,8 @@ const rows = [
 
 export function ComparisionView () {
   return (
-      <>
-      <CardKPI title={'Comparison versus peers'} actions={false}>
+    <>
+      <CardKPI title={'Comparison versus peers'} actions={false} height={'80vh'}>
         <DataGrid
             rows={rows}
             columns={columns}
@@ -33,6 +33,6 @@ export function ComparisionView () {
             disableSelectionOnClick
         />
       </CardKPI>
-      </>
+    </>
   )
 }
