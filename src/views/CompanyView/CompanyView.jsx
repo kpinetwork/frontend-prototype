@@ -7,9 +7,9 @@ export function CompanyView () {
   return (
     <>
       <Grid container>
-          <Grid item xs={12} sm={4.5} lg={3} xl={2}><DesciptionCard/></Grid>
-          <Grid item xs={12} sm={4} lg={3} xl={2}><CompanyCard/></Grid>
-          <Grid item xs={12} sm={8} lg={6} xl={8}><ReportRuleGraph/></Grid>
+          <Grid item xs={12} sm={8} lg={12} xl={12}><ReportRuleGraph/></Grid>
+          <Grid item xs={12} sm={4} lg={6} xl={6}><DesciptionCard/></Grid>
+          <Grid item xs={12} sm={4} lg={6} xl={6}><CompanyCard/></Grid>
       </Grid>
     </>
   )
