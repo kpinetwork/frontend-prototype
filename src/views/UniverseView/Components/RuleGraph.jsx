@@ -1,7 +1,7 @@
 import React from 'react'
-import { BubbleChart } from '../../../components/BubbleChart'
+import { BubbleChart } from '@components/BubbleChart'
 import faker from 'faker'
-import { CardKPI } from '../../../components/Card/CardKPI'
+import { CardKPI } from '@components/Card/CardKPI'
 
 export const data = {
   datasets: [

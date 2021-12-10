@@ -1,6 +1,6 @@
-import { Table, TableBody, TableCell, TableRow } from '@material-ui/core'
 import React from 'react'
-import { CardKPI } from '../../../components/Card/CardKPI'
+import { Table, TableBody, TableCell, TableRow } from '@material-ui/core'
+import { CardKPI } from '@components/Card/CardKPI'
 
 export function DesciptionCard () {
   return (

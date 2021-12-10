@@ -1,6 +1,6 @@
-import { DataGrid } from '@material-ui/data-grid'
 import React from 'react'
-import { CardKPI } from '../../components/Card/CardKPI'
+import { DataGrid } from '@material-ui/data-grid'
+import { CardKPI } from '@components/Card/CardKPI'
 
 const columns = [
   { field: 'id', headerName: 'ID', hide: true },

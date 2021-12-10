@@ -1,5 +1,5 @@
 import React from 'react'
-import { BubbleChart } from '../../../components/BubbleChart'
+import { BubbleChart } from '@components/BubbleChart'
 import faker from 'faker'
 
 export const data = {
