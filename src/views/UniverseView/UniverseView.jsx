@@ -11,11 +11,11 @@ import { Filter } from './Components/Filter'
 import useUniverseOverview from '../../hooks/useUniverseOverview'
 
 export function UniverseView () {
-  const { kpiAverage, countBySize, growthAndMargin, expectedGrowthAndMargin, revenueAndEbitda } = useUniverseOverview()
+  const { kpiAverage, countBySize, growthAndMargin, expectedGrowthAndMargin, revenueAndEbitda, ruleOf40 } = useUniverseOverview()
   return (
     <>
       <Grid container>
-          <Grid item xs={12} sm={8} lg={6}><RuleGraph/></Grid>
+          <Grid item xs={12} sm={8} lg={6}><RuleGraph ruleOf40={ruleOf40}/></Grid>
           <Grid item xs={12} sm={4} lg={6}><Filter/></Grid>
       </Grid>
       <Divider />

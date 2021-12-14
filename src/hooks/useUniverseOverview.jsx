@@ -11,7 +11,7 @@ const useUniverseOverview = () => {
   const [ruleOf40, setRuleOf40] = useState(null)
 
   useEffect(() => {
-    getUniverseOverViewFromObject(2020).then(result => {
+    getUniverseOverview(2020).then(result => {
       const {
         kpiAverageArray,
         countBySizeArray,
