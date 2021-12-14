@@ -4,7 +4,7 @@ import { CardKPI } from '@components/Card/CardKPI'
 
 const columns = [
   { field: 'id', headerName: 'ID', hide: true },
-  { field: 'size_cohort', headerName: 'Count by size', width: 200 },
+  { field: 'size_cohort', headerName: 'Size', width: 200 },
   { field: 'revenue', headerName: 'Revenue', width: 150 },
   { field: 'ebitda', headerName: 'Ebitda', width: 150 }
 ]

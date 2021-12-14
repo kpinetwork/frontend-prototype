@@ -4,7 +4,7 @@ import { CardKPI } from '@components/Card/CardKPI'
 
 const columns = [
   { field: 'id', headerName: 'ID', hide: true },
-  { field: 'size_cohort', headerName: 'Count by size', width: 200 },
+  { field: 'size_cohort', headerName: 'Size', width: 200 },
   { field: 'growth', headerName: 'Growth', width: 150 },
   { field: 'margin', headerName: 'Margin', width: 150 }
 ]
@@ -36,7 +36,7 @@ export const GrowthAndMarginCard = ({ growthAndMargin }) => {
     }
   }, [growthAndMargin])
   return (
-    <CardKPI title={'Growth & margin by size cohort'}>
+    <CardKPI title={'Growth and margin by size; recent actuals'}>
       <DataGrid
         rows={data}
         columns={columns}

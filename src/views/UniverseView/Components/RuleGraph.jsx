@@ -43,7 +43,7 @@ export function RuleGraph ({ ruleOf40 }) {
 
   return (
   <>
-    <CardKPI title={'Rule of 40: By Sector'} actions={false} overflow={'auto'} textAlign={'center'}>
+    <CardKPI title={'Rule of 40'} actions={false} overflow={'auto'} textAlign={'center'}>
       <BubbleChart data={data} />
     </CardKPI>
   </>)
