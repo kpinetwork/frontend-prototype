@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 // eslint-disable-next-line no-unused-vars
-import { getUniverseOverview, getUniverseOverViewFromObject } from '../service/universeOverview'
+import { getUniverseOverViewFromObject, getUniverseOverviewFromQueryParams, getUniverseOverviewFromQueryParams2 } from '../service/universeOverview'
 
 const useUniverseOverview = () => {
   const [kpiAverage, setKpiAverage] = useState(null)
@@ -9,25 +9,52 @@ const useUniverseOverview = () => {
   const [expectedGrowthAndMargin, setExpectedGrowthAndMargin] = useState(null)
   const [revenueAndEbitda, setRevenueAndEbitda] = useState(null)
   const [ruleOf40, setRuleOf40] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [fullEndpoint, setFullEndpoint] = useState(false)
+  const [currentYear] = useState(() => {
+    const date = new Date()
+    return date.getFullYear()
+  })
+  const options = {
+    year: currentYear,
+    sector: [],
+    investor: [],
+    size: [],
+    growth: [],
+    vertical: []
+  }
 
   useEffect(() => {
-    getUniverseOverview(2020).then(result => {
-      const {
-        kpiAverageArray,
-        countBySizeArray,
-        growthAndMarginObject,
-        expectedGrowthAndMarginObject,
-        revenueAndEbitdaObject,
-        ruleOf40Array
-      } = destructuring(result)
-      setKpiAverage(kpiAverageArray)
-      setCountBySize(countBySizeArray)
-      setGrowthAndMargin(growthAndMarginObject)
-      setExpectedGrowthAndMargin(expectedGrowthAndMarginObject)
-      setRevenueAndEbitda(revenueAndEbitdaObject)
-      setRuleOf40(ruleOf40Array)
-    })
+    console.log(options)
+    getUniverseOverview({ year: '2020' })
   }, [])
+
+  const handleOptionsChange = async (name, option) => {
+    options[name] = option
+    console.log(options)
+    setFullEndpoint(false)
+    // await getUniverseOverviewFromQueryParams({ year: '2020', vertical: 'Banking' })
+  }
+
+  const getUniverseOverview = async (options) => {
+    const result = await getUniverseOverViewFromObject(options)
+    const {
+      kpiAverageArray,
+      countBySizeArray,
+      growthAndMarginObject,
+      expectedGrowthAndMarginObject,
+      revenueAndEbitdaObject,
+      ruleOf40Array
+    } = destructuring(result)
+    setKpiAverage(kpiAverageArray)
+    setCountBySize(countBySizeArray)
+    setGrowthAndMargin(growthAndMarginObject)
+    setExpectedGrowthAndMargin(expectedGrowthAndMarginObject)
+    setRevenueAndEbitda(revenueAndEbitdaObject)
+    setRuleOf40(ruleOf40Array)
+    setIsLoading(false)
+    setFullEndpoint(true)
+  }
 
   return {
     kpiAverage,
@@ -35,9 +62,14 @@ const useUniverseOverview = () => {
     growthAndMargin,
     expectedGrowthAndMargin,
     revenueAndEbitda,
-    ruleOf40
+    ruleOf40,
+    isLoading,
+    fullEndpoint,
+    handleOptionsChange
   }
 }
+
+export default useUniverseOverview
 
 function destructuring (result) {
   const {
@@ -57,5 +89,3 @@ function destructuring (result) {
     ruleOf40Array
   }
 }
-
-export default useUniverseOverview

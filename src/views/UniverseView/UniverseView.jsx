@@ -9,14 +9,18 @@ import { ExpectedGrowthRateAndMarginCard } from './Components/ExpectedGrowthRate
 import { RuleGraph } from './Components/RuleGraph'
 import { Filter } from './Components/Filter'
 import useUniverseOverview from '../../hooks/useUniverseOverview'
+import { Information } from './Components/HeaderInformation'
 
 export function UniverseView () {
-  const { kpiAverage, countBySize, growthAndMargin, expectedGrowthAndMargin, revenueAndEbitda, ruleOf40 } = useUniverseOverview()
+  const { kpiAverage, countBySize, growthAndMargin, expectedGrowthAndMargin, revenueAndEbitda, ruleOf40, fullEndpoint, handleOptionsChange } = useUniverseOverview()
   return (
     <>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={12} md={12} lg={12}><Information handleOptionsChange={handleOptionsChange}/></Grid>
+      </Grid>
       <Grid container>
           <Grid item xs={12} sm={8} lg={6}><RuleGraph ruleOf40={ruleOf40}/></Grid>
-          <Grid item xs={12} sm={4} lg={6}><Filter/></Grid>
+          <Grid item xs={12} sm={4} lg={6}><Filter handleOptionsChange={handleOptionsChange} fullEndpoint={fullEndpoint}/></Grid>
       </Grid>
       <Divider />
       <Grid container>
