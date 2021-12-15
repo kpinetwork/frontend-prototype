@@ -1,19 +1,19 @@
 import React, { useState } from 'react'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import AccountCircle from '@material-ui/icons/AccountCircle'
-import Drawer from '@material-ui/core/Drawer'
-import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
-import InboxIcon from '@material-ui/icons/Inbox'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider
+} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import Divider from '@material-ui/core/Divider'
 import { Link } from 'wouter'
+import { AccountCircle, DesktopMacOutlined, AssignmentTwoTone, MenuOpen, Assessment } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#979393'
   },
   appBar: {
-    backgroundColor: '#37bd5a'
+    backgroundColor: '#25462db7'
   }
 }))
 
@@ -44,7 +44,7 @@ const Menu = () => {
                 <Link href='/'>
                   <ListItem button>
                       <ListItemIcon>
-                          <InboxIcon />
+                          <DesktopMacOutlined />
                       </ListItemIcon>
                       <ListItemText primary="Universe Overview" className={classes.itemsText} />
                   </ListItem>
@@ -52,7 +52,7 @@ const Menu = () => {
                 <Link href='/company-report'>
                   <ListItem button>
                       <ListItemIcon>
-                          <InboxIcon />
+                        <AssignmentTwoTone />
                       </ListItemIcon>
                       <ListItemText primary="Company report vs peers" className={classes.itemsText}/>
                   </ListItem>
@@ -60,7 +60,7 @@ const Menu = () => {
                 <Link href='/comparision-versus'>
                   <ListItem button>
                       <ListItemIcon>
-                          <InboxIcon />
+                        <Assessment/>
                       </ListItemIcon>
                       <ListItemText primary="Comparison versus peers" className={classes.itemsText}/>
                   </ListItem>
@@ -87,16 +87,16 @@ export const Header = (props) => {
         <AppBar position="static" className={classes.appBar}>
             <Toolbar>
             <IconButton onClick={toggleDrawer(true)} edge="start" className={props.classes.menuButton} color="inherit" aria-label="menu">
-                <MenuIcon />
+                <MenuOpen />
             </IconButton>
             <Typography variant="h6" className={props.classes.title}>
                 KPI Network
             </Typography>
             <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                color="inherit"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              color="inherit"
             >
                 <AccountCircle />
             </IconButton>
