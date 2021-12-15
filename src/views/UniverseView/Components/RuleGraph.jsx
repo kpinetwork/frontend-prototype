@@ -26,14 +26,12 @@ export function RuleGraph ({ ruleOf40 }) {
       const datasets = ruleOf40.map((row) => {
         const { name: label, revenue_growth_rate: x, ebitda_margin: y, revenue: r } = row
         const radio = r / 10
-        console.log('row', r)
         return {
           label,
           data: [{ x, y, r: radio }],
           backgroundColor: faker.internet.color()
         }
       })
-      console.log(datasets)
       setData((prev) => ({
         ...prev,
         datasets
