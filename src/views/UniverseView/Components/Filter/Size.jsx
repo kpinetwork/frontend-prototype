@@ -9,7 +9,7 @@ const options = [
   '$100 million +'
 ]
 
-export function Size ({ handleOptionsChange, fullEndpoint }) {
+export function Size ({ setFilters, fullEndpoint }) {
   const [selected, setSelected] = useState([])
   const isAllSelected = options.length > 0 && selected.length === options.length
 
@@ -24,7 +24,7 @@ export function Size ({ handleOptionsChange, fullEndpoint }) {
     const value = event.target.value
     if (value === 'all') {
       const all = selected.length === options.length ? [] : options
-      handleOptionsChange('size', all)
+      setFilters((prev) => ({ ...prev, size: all.toString() }))
       setSelected(all)
       return
     }
@@ -32,7 +32,7 @@ export function Size ({ handleOptionsChange, fullEndpoint }) {
     const list = [...selected]
     const index = list.indexOf(value)
     index === -1 ? list.push(value) : list.splice(index, 1)
-    handleOptionsChange('size', list)
+    setFilters((prev) => ({ ...prev, size: list.toString() }))
     setSelected(list)
   }
 

@@ -9,7 +9,7 @@ const options = [
   'Semiconductors'
 ]
 
-export function Sectors ({ handleOptionsChange, fullEndpoint }) {
+export function Sectors ({ setFilters, fullEndpoint }) {
   const [selected, setSelected] = useState([])
   const isAllSelected = options.length > 0 && selected.length === options.length
 
@@ -24,7 +24,7 @@ export function Sectors ({ handleOptionsChange, fullEndpoint }) {
     const value = event.target.value
     if (value === 'all') {
       const all = selected.length === options.length ? [] : options
-      handleOptionsChange('sector', all)
+      setFilters((prev) => ({ ...prev, sector: all.toString() }))
       setSelected(all)
       return
     }
@@ -32,7 +32,7 @@ export function Sectors ({ handleOptionsChange, fullEndpoint }) {
     const list = [...selected]
     const index = list.indexOf(value)
     index === -1 ? list.push(value) : list.splice(index, 1)
-    handleOptionsChange('sector', list)
+    setFilters((prev) => ({ ...prev, sector: list.toString() }))
     setSelected(list)
   }
 

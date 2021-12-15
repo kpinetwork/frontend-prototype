@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   }
 })
 
-export function Information ({ handleOptionsChange }) {
+export function Information ({ setYear }) {
   const [age, setAge] = useState('')
   const [years] = useState(() => {
     const years = []
@@ -38,7 +38,7 @@ export function Information ({ handleOptionsChange }) {
   const handleChange = (event) => {
     const { value } = event.target
     setAge(value)
-    handleOptionsChange('year', value)
+    setYear(value)
   }
 
   return (

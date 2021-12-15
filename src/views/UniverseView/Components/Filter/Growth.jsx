@@ -9,7 +9,7 @@ const options = [
   'Hyper growth (50%+)'
 ]
 
-export function Growth ({ handleOptionsChange, fullEndpoint }) {
+export function Growth ({ setFilters, fullEndpoint }) {
   const [selected, setSelected] = useState([])
   const isAllSelected = options.length > 0 && selected.length === options.length
 
@@ -24,7 +24,7 @@ export function Growth ({ handleOptionsChange, fullEndpoint }) {
     const value = event.target.value
     if (value === 'all') {
       const all = selected.length === options.length ? [] : options
-      handleOptionsChange('growth', all)
+      setFilters((prev) => ({ ...prev, growth_profile: all.toString() }))
       setSelected(all)
       return
     }
@@ -32,7 +32,7 @@ export function Growth ({ handleOptionsChange, fullEndpoint }) {
     const list = [...selected]
     const index = list.indexOf(value)
     index === -1 ? list.push(value) : list.splice(index, 1)
-    handleOptionsChange('growth', list)
+    setFilters((prev) => ({ ...prev, growth_profile: list.toString() }))
     setSelected(list)
   }
 

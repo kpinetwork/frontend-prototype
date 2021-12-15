@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 // eslint-disable-next-line no-unused-vars
-import { getUniverseOverViewFromObject, getUniverseOverviewFromQueryParams, getUniverseOverviewFromQueryParams2 } from '../service/universeOverview'
+import { getUniverseOverViewFromObject, getUniverseOverviewFromQueryParams } from '../service/universeOverview'
 
 const useUniverseOverview = () => {
   const [kpiAverage, setKpiAverage] = useState(null)
@@ -9,35 +9,26 @@ const useUniverseOverview = () => {
   const [expectedGrowthAndMargin, setExpectedGrowthAndMargin] = useState(null)
   const [revenueAndEbitda, setRevenueAndEbitda] = useState(null)
   const [ruleOf40, setRuleOf40] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
   const [fullEndpoint, setFullEndpoint] = useState(false)
-  const [currentYear] = useState(() => {
-    const date = new Date()
-    return date.getFullYear()
+  const [year, setYear] = useState(() => {
+    const year = new Date().getFullYear()
+    return year
   })
-  const options = {
-    year: currentYear,
-    sector: [],
-    investor: [],
-    size: [],
-    growth: [],
-    vertical: []
-  }
+  const [filters, setFilters] = useState(() => ({
+    sector: '',
+    investor_profile: '',
+    size: '',
+    growth_profile: '',
+    vertical: ''
+  }))
 
   useEffect(() => {
-    console.log(options)
-    getUniverseOverview({ year: '2020' })
-  }, [])
-
-  const handleOptionsChange = async (name, option) => {
-    options[name] = option
-    console.log(options)
-    setFullEndpoint(false)
-    // await getUniverseOverviewFromQueryParams({ year: '2020', vertical: 'Banking' })
-  }
+    console.log(year, filters)
+    getUniverseOverview({ year, ...filters })
+  }, [filters, year])
 
   const getUniverseOverview = async (options) => {
-    const result = await getUniverseOverViewFromObject(options)
+    const result = await getUniverseOverviewFromQueryParams(options)
     const {
       kpiAverageArray,
       countBySizeArray,
@@ -52,7 +43,6 @@ const useUniverseOverview = () => {
     setExpectedGrowthAndMargin(expectedGrowthAndMarginObject)
     setRevenueAndEbitda(revenueAndEbitdaObject)
     setRuleOf40(ruleOf40Array)
-    setIsLoading(false)
     setFullEndpoint(true)
   }
 
@@ -63,9 +53,9 @@ const useUniverseOverview = () => {
     expectedGrowthAndMargin,
     revenueAndEbitda,
     ruleOf40,
-    isLoading,
     fullEndpoint,
-    handleOptionsChange
+    setYear,
+    setFilters
   }
 }
 

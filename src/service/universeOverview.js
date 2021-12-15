@@ -21,10 +21,6 @@ export const getUniverseOverviewFromQueryParams = async (options) => {
   return data
 }
 
-export const getUniverseOverviewFromQueryParams2 = async (options) => {
-  console.log('Service Options', options)
-}
-
 export const getUniverseOverViewFromObject = async (year) => {
   const data = await UNIVERSE_OVERVIEW
   return data

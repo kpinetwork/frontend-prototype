@@ -9,13 +9,14 @@ const options = [
   'Family office'
 ]
 
-export function Investor ({ handleOptionsChange, fullEndpoint }) {
+export function Investor ({ setFilters, fullEndpoint }) {
   const [selected, setSelected] = useState([])
   const isAllSelected = options.length > 0 && selected.length === options.length
 
   useEffect(() => {
     if (fullEndpoint) {
       const all = selected.length === options.length ? [] : options
+
       setSelected(all)
     }
   }, [fullEndpoint])
@@ -24,7 +25,7 @@ export function Investor ({ handleOptionsChange, fullEndpoint }) {
     const value = event.target.value
     if (value === 'all') {
       const all = selected.length === options.length ? [] : options
-      handleOptionsChange('investor', all)
+      setFilters((prev) => ({ ...prev, investor_profile: all.toString() }))
       setSelected(all)
       return
     }
@@ -32,7 +33,7 @@ export function Investor ({ handleOptionsChange, fullEndpoint }) {
     const list = [...selected]
     const index = list.indexOf(value)
     index === -1 ? list.push(value) : list.splice(index, 1)
-    handleOptionsChange('investor', list)
+    setFilters((prev) => ({ ...prev, investor_profile: list.toString() }))
     setSelected(list)
   }
 

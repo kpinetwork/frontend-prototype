@@ -35,7 +35,7 @@ const options = [
   'Wholesale',
   'Horizontal'
 ]
-export function Vertical ({ handleOptionsChange, fullEndpoint }) {
+export function Vertical ({ setFilters, fullEndpoint }) {
   const [selected, setSelected] = useState([])
   const isAllSelected = options.length > 0 && selected.length === options.length
 
@@ -50,7 +50,7 @@ export function Vertical ({ handleOptionsChange, fullEndpoint }) {
     const value = event.target.value
     if (value === 'all') {
       const all = selected.length === options.length ? [] : options
-      handleOptionsChange('vertical', all)
+      setFilters((prev) => ({ ...prev, vertical: all.toString() }))
       setSelected(all)
       return
     }
@@ -58,7 +58,7 @@ export function Vertical ({ handleOptionsChange, fullEndpoint }) {
     const list = [...selected]
     const index = list.indexOf(value)
     index === -1 ? list.push(value) : list.splice(index, 1)
-    handleOptionsChange('vertical', list)
+    setFilters((prev) => ({ ...prev, vertical: list.toString() }))
     setSelected(list)
   }
 
