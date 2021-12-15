@@ -43,7 +43,6 @@ export const ExpectedGrowthRateAndMarginCard = ({ expectedGrowthAndMargin }) => 
         pageSize={6}
         disableSelectionOnClick
       />
-
     </CardKPI>
   )
 }
