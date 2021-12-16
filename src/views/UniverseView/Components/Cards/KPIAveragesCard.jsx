@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import { CardKPI } from '@components/Card/CardKPI'
+import HeadBodyGrid from '@components/BodyGrid'
 
 const columns = [
   { field: 'id', headerName: 'ID', hide: true },
@@ -14,7 +15,7 @@ const rows = [
   { id: 3, kpi: 'Rule of 40', value: '' }
 ]
 
-export const KPIAveragesCard = ({ kpiAverage }) => {
+export const KPIAveragesCard = ({ kpiAverage, isLoading }) => {
   const [data, setData] = React.useState(rows)
   useEffect(() => {
     if (kpiAverage) {
@@ -30,13 +31,15 @@ export const KPIAveragesCard = ({ kpiAverage }) => {
   }, [kpiAverage])
 
   return (
-    <CardKPI title={'KPI Averages'}>
-      <DataGrid
+  <CardKPI title={'KPI Averages'}>
+    {!isLoading
+      ? <DataGrid
         rows={data}
         columns={columns}
         pageSize={5}
         disableSelectionOnClick
       />
+      : <HeadBodyGrid/>}
     </CardKPI>
   )
 }

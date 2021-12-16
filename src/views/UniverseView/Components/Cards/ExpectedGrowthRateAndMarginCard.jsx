@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import { CardKPI } from '@components/Card/CardKPI'
+import HeadBodyGrid from '../../../../components/BodyGrid'
 
 const columns = [
   { field: 'id', headerName: 'ID', hide: true },
@@ -18,7 +19,7 @@ const columns = [
   { id: 6, count: 'ALL', growth: '12%', margin: '2%' }
 ] */
 
-export const ExpectedGrowthRateAndMarginCard = ({ expectedGrowthAndMargin }) => {
+export const ExpectedGrowthRateAndMarginCard = ({ expectedGrowthAndMargin, isLoading }) => {
   const [data, setData] = useState([])
   useEffect(() => {
     if (expectedGrowthAndMargin) {
@@ -37,12 +38,14 @@ export const ExpectedGrowthRateAndMarginCard = ({ expectedGrowthAndMargin }) => 
   }, [expectedGrowthAndMargin])
   return (
     <CardKPI title={'Growth and margin by size; projected'}>
-      <DataGrid
-        rows={data}
-        columns={columns}
-        pageSize={6}
-        disableSelectionOnClick
-      />
+        {!isLoading
+          ? <DataGrid
+              rows={data}
+              columns={columns}
+              pageSize={5}
+              disableSelectionOnClick
+            />
+          : <HeadBodyGrid/>}
     </CardKPI>
   )
 }

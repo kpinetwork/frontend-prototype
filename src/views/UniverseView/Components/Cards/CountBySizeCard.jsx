@@ -1,6 +1,7 @@
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import { CardKPI } from '@components/Card/CardKPI'
+import HeadBodyGrid from '@components/BodyGrid'
 
 const columns = [
   { field: 'id', headerName: 'ID', hide: true },
@@ -17,8 +18,7 @@ const columns = [
   { id: 6, count: 'TOTAL', value: '58' }
 ] */
 
-export const CountBySizeCard = ({ countBySize }) => {
-  //* Consider move to custom hook
+export const CountBySizeCard = ({ countBySize, isLoading }) => {
   const [data, setData] = useState([])
   useEffect(() => {
     if (countBySize) {
@@ -32,17 +32,17 @@ export const CountBySizeCard = ({ countBySize }) => {
       })
     }
   }, [countBySize])
+
   return (
-    // this is other way to render the component
-    <Suspense fallback={<spam>skeleton</spam>}>
       <CardKPI title={'Count By Size'}>
-        <DataGrid
-          rows={data}
-          columns={columns}
-          pageSize={6}
-          disableSelectionOnClick
-        />
+        {!isLoading
+          ? <DataGrid
+              rows={data}
+              columns={columns}
+              pageSize={5}
+              disableSelectionOnClick
+            />
+          : <HeadBodyGrid/>}
       </CardKPI>
-    </Suspense>
   )
 }

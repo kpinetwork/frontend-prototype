@@ -9,6 +9,7 @@ const useUniverseOverview = () => {
   const [expectedGrowthAndMargin, setExpectedGrowthAndMargin] = useState(null)
   const [revenueAndEbitda, setRevenueAndEbitda] = useState(null)
   const [ruleOf40, setRuleOf40] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
   const [fullEndpoint, setFullEndpoint] = useState(false)
   const [year, setYear] = useState(() => {
     const year = new Date().getFullYear()
@@ -24,6 +25,7 @@ const useUniverseOverview = () => {
 
   useEffect(() => {
     console.log(year, filters)
+    setIsLoading(true)
     getUniverseOverview({ year, ...filters })
   }, [filters, year])
 
@@ -44,6 +46,7 @@ const useUniverseOverview = () => {
     setRevenueAndEbitda(revenueAndEbitdaObject)
     setRuleOf40(ruleOf40Array)
     setFullEndpoint(true)
+    setIsLoading(false)
   }
 
   return {
@@ -53,6 +56,7 @@ const useUniverseOverview = () => {
     expectedGrowthAndMargin,
     revenueAndEbitda,
     ruleOf40,
+    isLoading,
     fullEndpoint,
     setYear,
     setFilters
