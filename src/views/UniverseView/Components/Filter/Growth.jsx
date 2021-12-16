@@ -1,14 +1,21 @@
 import React, { useState } from 'react'
 import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
 
-const options = [
-  'Negative growth (<0%)',
-  'Low growth (0-<10%)',
-  'Medium growth (10%-<30%)',
-  'High growth (30%-<50%)',
-  'Hyper growth (50%+)'
+const optionLabels = [
+  'Negative (<0%)',
+  'Low (0-<10%)',
+  'Medium (10%-<30%)',
+  'High (30%-<50%)',
+  'Hyper (50%+)'
 ]
 
+const options = [
+  'Negative',
+  'Low',
+  'Medium',
+  'High',
+  'Hyper'
+]
 export function Growth ({ setFilters, fillFilters }) {
   const [selected, setSelected] = useState([])
   const isAllSelected = options.length > 0 && selected.length === options.length
@@ -52,7 +59,7 @@ export function Growth ({ setFilters, fillFilters }) {
             />}
         label="Select All"
       />
-      {options.map((option) => (
+      {options.map((option, index) => (
         <FormControlLabel
           key={option}
           control={
@@ -62,7 +69,7 @@ export function Growth ({ setFilters, fillFilters }) {
               value={option}
               onChange={handleChange}
             />}
-          label={option}
+          label={optionLabels[index]}
         />
       ))}
     </FormGroup>

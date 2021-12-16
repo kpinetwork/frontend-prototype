@@ -3,10 +3,18 @@ import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
 
 const options = [
   '<$10 million',
+  '$10-<30 million',
+  '$30-<$50 million',
+  '$50-$100 million',
+  '$100 million+'
+]
+
+const optionsLabel = [
+  '<$10 million',
   '$10-<$30 million',
   '$30-<$50 million',
-  '$50-<$100 million',
-  '$100 million +'
+  '$50-$100 million',
+  '$100 million+'
 ]
 
 export function Size ({ setFilters, fillFilters }) {
@@ -52,7 +60,7 @@ export function Size ({ setFilters, fillFilters }) {
             />}
         label="Select All"
       />
-      {options.map((option) => (
+      {options.map((option, index) => (
         <FormControlLabel
           key={option}
           control={
@@ -62,7 +70,7 @@ export function Size ({ setFilters, fillFilters }) {
               value={option}
               onChange={handleChange}
             />}
-          label={option}
+          label={optionsLabel[index]}
         />
       ))}
     </FormGroup>
