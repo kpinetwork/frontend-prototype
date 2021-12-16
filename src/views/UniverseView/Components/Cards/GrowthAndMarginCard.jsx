@@ -43,6 +43,7 @@ export const GrowthAndMarginCard = ({ growthAndMargin, isLoading }) => {
           rows={data}
           columns={columns}
           pageSize={5}
+          rowsPerPageOptions={[5]}
           disableSelectionOnClick
         />
       : <HeadBodyGrid/>}
