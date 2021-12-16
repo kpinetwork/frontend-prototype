@@ -1,5 +1,5 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 const options = [
   'Accounting & Auditing',
@@ -35,16 +35,9 @@ const options = [
   'Wholesale',
   'Horizontal'
 ]
-export function Vertical ({ setFilters, fullEndpoint }) {
+export function Vertical ({ setFilters, fillFilters }) {
   const [selected, setSelected] = useState([])
   const isAllSelected = options.length > 0 && selected.length === options.length
-
-  useEffect(() => {
-    if (fullEndpoint) {
-      const all = selected.length === options.length ? [] : options
-      setSelected(all)
-    }
-  }, [fullEndpoint])
 
   const handleChange = (event) => {
     const value = event.target.value
@@ -65,6 +58,15 @@ export function Vertical ({ setFilters, fullEndpoint }) {
   return (
     <FormGroup>
       <span>Vertical</span>
+      <FormControlLabel
+        control={
+          <Checkbox
+            color='default'
+            checked={fillFilters}
+            disabled={true}
+            />}
+        label="All"
+      />
       <FormControlLabel
         control={
           <Checkbox

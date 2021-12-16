@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { BubbleChart } from '@components/BubbleChart'
 import faker from 'faker'
 import { CardKPI } from '@components/Card/CardKPI'
-import ThreeDots from '@components/ThreeDots'
 
 /* export const data1 = {
   datasets: [
@@ -18,7 +17,7 @@ import ThreeDots from '@components/ThreeDots'
   ]
 } */
 
-export function RuleGraph ({ ruleOf40, isLoading }) {
+export function RuleGraph ({ ruleOf40 }) {
   const [data, setData] = React.useState({
     datasets: []
   })
@@ -43,9 +42,7 @@ export function RuleGraph ({ ruleOf40, isLoading }) {
   return (
   <>
     <CardKPI title={'Rule of 40'} actions={false} overflow={'auto'} textAlign={'center'}>
-      {!isLoading
-        ? <BubbleChart data={data} />
-        : <ThreeDots/>}
+      <BubbleChart data={data} />
     </CardKPI>
   </>)
 }

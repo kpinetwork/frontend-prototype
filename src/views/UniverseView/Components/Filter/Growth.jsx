@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
 
 const options = [
@@ -9,16 +9,9 @@ const options = [
   'Hyper growth (50%+)'
 ]
 
-export function Growth ({ setFilters, fullEndpoint }) {
+export function Growth ({ setFilters, fillFilters }) {
   const [selected, setSelected] = useState([])
   const isAllSelected = options.length > 0 && selected.length === options.length
-
-  useEffect(() => {
-    if (fullEndpoint) {
-      const all = selected.length === options.length ? [] : options
-      setSelected(all)
-    }
-  }, [fullEndpoint])
 
   const handleChange = (event) => {
     const value = event.target.value
@@ -39,6 +32,15 @@ export function Growth ({ setFilters, fullEndpoint }) {
   return (
     <FormGroup>
      <span>Growth Profile</span>
+     <FormControlLabel
+        control={
+          <Checkbox
+            color='default'
+            checked={fillFilters}
+            disabled={true}
+            />}
+        label="All"
+      />
      <FormControlLabel
         control={
           <Checkbox
