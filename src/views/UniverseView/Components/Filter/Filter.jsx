@@ -1,11 +1,11 @@
 import React from 'react'
 import { Grid } from '@material-ui/core'
 import { CardKPI } from '@components/Card/CardKPI'
-import { Sectors } from './Filter/Sectors'
-import { Investor } from './Filter/Investor'
-import { Size } from './Filter/Size'
-import { Growth } from './Filter/Growth'
-import { Vertical } from './Filter/Vertical'
+import { Sectors } from './Sectors'
+import { Investor } from './Investor'
+import { Size } from './Size'
+import { Growth } from './Growth'
+import { Vertical } from './Vertical'
 
 export function Filter ({ setFilters, fullEndpoint }) {
   return (
