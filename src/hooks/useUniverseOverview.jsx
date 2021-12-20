@@ -13,21 +13,17 @@ const useUniverseOverview = () => {
   const [ruleOf40, setRuleOf40] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [fillFilters, setFillFilters] = useState(false)
-  const [render, setRender] = useState(false)
 
   useEffect(() => {
     console.log(year, filters)
-    setIsLoading(true)
-    getUniverseOverview({ year, ...filters })
-  }, [filters, year])
-
-  useEffect(() => {
     if (JSON.stringify(filters) === JSON.stringify(INITIAL_FILTER_STATE)) {
       setFillFilters(true)
     } else {
       setFillFilters(false)
     }
-  }, [filters])
+    setIsLoading(true)
+    getUniverseOverview({ year, ...filters })
+  }, [filters, year])
 
   const getUniverseOverview = async (options) => {
     const { year } = options
@@ -48,8 +44,6 @@ const useUniverseOverview = () => {
     setRuleOf40(ruleOf40Array)
     setCompanyList(ruleOf40Array)
     setIsLoading(false)
-    setRender(true)
-    if (!render) { setFillFilters(true) }
     SaveJsonLocalStorage('companyList', ruleOf40Array)
     SaveJsonLocalStorage('year', year)
   }
@@ -65,7 +59,8 @@ const useUniverseOverview = () => {
     fillFilters,
     year,
     setYear,
-    setFilters
+    setFilters,
+    filters
   }
 }
 

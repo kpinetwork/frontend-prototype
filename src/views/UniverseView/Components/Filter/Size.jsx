@@ -17,8 +17,13 @@ const optionsLabel = [
   '$100 million+'
 ]
 
-export function Size ({ setFilters, fillFilters }) {
-  const [selected, setSelected] = useState([])
+export function Size ({ setFilters, fillFilters, selectedList }) {
+  const [selected, setSelected] = useState(() => {
+    if (selectedList !== '') {
+      return selectedList.split(',')
+    }
+    return []
+  })
   const isAllSelected = options.length > 0 && selected.length === options.length
 
   const handleChange = (event) => {

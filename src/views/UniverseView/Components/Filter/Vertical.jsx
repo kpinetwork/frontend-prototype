@@ -1,5 +1,5 @@
-import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
 import React, { useState } from 'react'
+import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
 
 const options = [
   'Accounting & Auditing',
@@ -35,8 +35,14 @@ const options = [
   'Wholesale',
   'Horizontal'
 ]
-export function Vertical ({ setFilters, fillFilters }) {
-  const [selected, setSelected] = useState([])
+export function Vertical ({ setFilters, fillFilters, selectedList }) {
+  const [selected, setSelected] = useState(() => {
+    if (selectedList !== '') {
+      return selectedList.split(',')
+    }
+    return []
+  })
+
   const isAllSelected = options.length > 0 && selected.length === options.length
 
   const handleChange = (event) => {

@@ -24,3 +24,4 @@ Use [React](https://reactjs.org/) to develop a frontend prototype for a new webs
             UniverseView:
                 - universeOverview.jsx
 ````
+For develop test is posible use [vitest](https://vitest.dev/guide/)
