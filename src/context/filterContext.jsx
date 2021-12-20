@@ -21,7 +21,8 @@ export const FilterContextProvider = ({ children }) => {
   })
   const [year, setYear] = useState(() => {
     if (localStorage.getItem('year')) {
-      return localStorage.getItem('year')
+      const yearNumber = parseInt(localStorage.getItem('year'))
+      return yearNumber
     } else {
       const year = new Date().getFullYear()
       return year

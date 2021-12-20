@@ -531,3 +531,29 @@ export const UNIVERSE_OVERVIEW = {
     }
   ]
 }
+
+export const COMPANY_REPORT = {
+  description: {
+    name: 'MAMSoft',
+    id: 'dc8f7feb-149e-4f6e-9504-f24f2058860a',
+    sector: 'Application Software',
+    vertical: 'Life Sciences',
+    inves_profile_name: 'Early stage VC',
+    size_cohort: '$30-<$50 million',
+    margin_group: 'Low'
+  },
+  financial_profile: [
+    {
+      annual_revenue: '38'
+    },
+    {
+      annual_ebitda: '5'
+    },
+    {
+      anual_rule_of_40: '20'
+    },
+    {
+      current_revenue_growth: '117'
+    }
+  ]
+}

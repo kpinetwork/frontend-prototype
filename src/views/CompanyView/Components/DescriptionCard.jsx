@@ -1,40 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table, TableBody, TableCell, TableRow } from '@material-ui/core'
 import { CardKPI } from '@components/Card/CardKPI'
+import HeadBodyGrid from '../../../components/BodyGrid'
 
-export function DesciptionCard () {
+const INITIAL_DATA = [
+  { id: 1, key: 'name', label: 'Name', value: '' },
+  { id: 2, key: 'id', label: 'Unique ID', value: '' },
+  { id: 3, key: 'sector', label: 'Sector', value: '' },
+  { id: 4, key: 'vertical', label: 'Vertical', value: '' },
+  { id: 5, key: 'inves_profile_name', label: 'Investor Profile', value: '' },
+  { id: 6, key: 'size_cohort', label: 'Size Cohort', value: '' },
+  { id: 7, key: 'margin_group', label: 'Grwth Cohort', value: '' }
+]
+
+export function DesciptionCard ({ description, isLoading }) {
+  const [data, setData] = useState([])
+  useEffect(() => {
+    if (description) {
+      setData(INITIAL_DATA.map(item => ({ ...item, value: description[item.key] })))
+    }
+  }, [description])
   return (
         <CardKPI title={'Description'} actions={false} overflow='auto'>
             <Table>
                 <TableBody>
-                    <TableRow>
-                        <TableCell colSpan={8}>Name</TableCell>
-                        <TableCell align="right">NAMSoft</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan={8}>Unique ID</TableCell>
-                        <TableCell align="right">300</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan={8}>Sector</TableCell>
-                        <TableCell align="right">Aplication Software</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan={8}>Vertical</TableCell>
-                        <TableCell align="right">Life Science</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan={8}>Investor Profile</TableCell>
-                        <TableCell align="right">Early stage VC</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan={8}>Size Cohort</TableCell>
-                        <TableCell align="right">{'$30-$<50 million'}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan={8}>Growth cohort</TableCell>
-                        <TableCell align="right">{'Low growth (0-10%)'}</TableCell>
-                    </TableRow>
+                    {!isLoading
+                      ? data.map(row => (
+                            <TableRow key={row.id}>
+                                <TableCell colSpan={8}>{row.label}</TableCell>
+                                <TableCell align="right">{row.value}</TableCell>
+                            </TableRow>
+                      ))
+                      : <HeadBodyGrid/>}
                 </TableBody>
             </Table>
         </CardKPI>

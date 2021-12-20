@@ -1,30 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BubbleChart } from '@components/BubbleChart'
 import faker from 'faker'
 
-export const data = {
-  datasets: [
-    {
-      label: 'Red dataset',
-      data: Array.from({ length: 50 }, () => ({
-        x: faker.datatype.number({ min: -100, max: 100 }),
-        y: faker.datatype.number({ min: -100, max: 100 }),
-        r: faker.datatype.number({ min: 5, max: 20 })
-      })),
-      backgroundColor: 'rgba(243, 165, 76, 0.5)'
-    },
-    {
-      label: 'Blue dataset',
-      data: Array.from({ length: 50 }, () => ({
-        x: faker.datatype.number({ min: -100, max: 100 }),
-        y: faker.datatype.number({ min: -100, max: 100 }),
-        r: faker.datatype.number({ min: 5, max: 20 })
-      })),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)'
+export function ReportRuleGraph ({ ruleOf40 }) {
+  const [data, setData] = useState({
+    datasets: []
+  })
+  useEffect(() => {
+    if (ruleOf40) {
+      const datasets = ruleOf40.map((row) => {
+        const { name: label, revenue_growth_rate: x, ebitda_margin: y, revenue: r, company_id: id } = row
+        const radio = r / 10
+        return {
+          label,
+          data: [{
+            x,
+            y,
+            r: radio
+          }],
+          backgroundColor: faker.internet.color(),
+          id
+        }
+      })
+      setData((prev) => ({
+        ...prev,
+        datasets
+      }))
     }
-  ]
-}
-
-export function ReportRuleGraph () {
+  }, [ruleOf40])
   return <BubbleChart data={data} />
 }
