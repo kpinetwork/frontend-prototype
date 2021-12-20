@@ -24,8 +24,8 @@ const useStyles = makeStyles({
   }
 })
 
-export function Information ({ setYear }) {
-  const [age, setAge] = useState('')
+export function Information ({ year, setYear }) {
+  const [age, setAge] = useState(year)
   const [years] = useState(() => {
     const years = []
     for (let i = 0; i < 10; i++) {

@@ -12,11 +12,11 @@ import useUniverseOverview from '../../hooks/useUniverseOverview'
 import { Information } from './Components/HeaderInformation'
 
 export function UniverseView () {
-  const { kpiAverage, countBySize, growthAndMargin, expectedGrowthAndMargin, revenueAndEbitda, ruleOf40, fillFilters, isLoading, setYear, setFilters } = useUniverseOverview()
+  const { kpiAverage, countBySize, growthAndMargin, expectedGrowthAndMargin, revenueAndEbitda, ruleOf40, fillFilters, isLoading, year, setYear, setFilters } = useUniverseOverview()
   return (
     <>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={12} md={12} lg={12}><Information setYear={setYear}/></Grid>
+        <Grid item xs={12} sm={12} md={12} lg={12}><Information year={year} setYear={setYear}/></Grid>
       </Grid>
       <Grid container>
           <Grid item xs={12} sm={8} lg={6}><RuleGraph ruleOf40={ruleOf40} /></Grid>

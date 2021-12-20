@@ -1,16 +1,10 @@
-import { useEffect, useState } from 'react'
-// eslint-disable-next-line no-unused-vars
-import { getUniverseOverViewFromObject, getUniverseOverviewFromQueryParams } from '../service/universeOverview'
-
-const INITIAL_FILTER_STATE = {
-  sector: '',
-  investor_profile: '',
-  size: '',
-  growth_profile: '',
-  vertical: ''
-}
+import { useContext, useEffect, useState } from 'react'
+import FilterContext from '../context/filterContext'
+import { getUniverseOverviewFromQueryParams } from '../service/universeOverview'
+import { SaveJsonLocalStorage } from '../utils/useLocalStorage'
 
 const useUniverseOverview = () => {
+  const { filters, setFilters, year, setYear, INITIAL_FILTER_STATE, setCompanyList } = useContext(FilterContext)
   const [kpiAverage, setKpiAverage] = useState(null)
   const [countBySize, setCountBySize] = useState(null)
   const [growthAndMargin, setGrowthAndMargin] = useState(null)
@@ -20,11 +14,6 @@ const useUniverseOverview = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [fillFilters, setFillFilters] = useState(false)
   const [render, setRender] = useState(false)
-  const [year, setYear] = useState(() => {
-    const year = new Date().getFullYear()
-    return year
-  })
-  const [filters, setFilters] = useState(INITIAL_FILTER_STATE)
 
   useEffect(() => {
     console.log(year, filters)
@@ -41,6 +30,7 @@ const useUniverseOverview = () => {
   }, [filters])
 
   const getUniverseOverview = async (options) => {
+    const { year } = options
     const result = await getUniverseOverviewFromQueryParams(options)
     const {
       kpiAverageArray,
@@ -56,9 +46,12 @@ const useUniverseOverview = () => {
     setExpectedGrowthAndMargin(expectedGrowthAndMarginObject)
     setRevenueAndEbitda(revenueAndEbitdaObject)
     setRuleOf40(ruleOf40Array)
+    setCompanyList(ruleOf40Array)
     setIsLoading(false)
     setRender(true)
     if (!render) { setFillFilters(true) }
+    SaveJsonLocalStorage('companyList', ruleOf40Array)
+    SaveJsonLocalStorage('year', year)
   }
 
   return {
@@ -70,6 +63,7 @@ const useUniverseOverview = () => {
     ruleOf40,
     isLoading,
     fillFilters,
+    year,
     setYear,
     setFilters
   }

@@ -6,6 +6,7 @@ import { Header } from './components/Header'
 import { UniverseView } from './views/UniverseView/UniverseView'
 import { CompanyView } from './views/CompanyView/CompanyView'
 import { ComparisionView } from './views/ComparisionView/ComparisionView'
+import { FilterContextProvider } from './context/filterContext'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,9 +27,11 @@ const App = () => {
     <div className={classes.root}>
         <Header classes={classes} />
         <Switch>
-          <Route path="/" component={UniverseView} />
-          <Route path="/company-report" component={CompanyView} />
-          <Route path="/comparision-versus" component={ComparisionView} />
+          <FilterContextProvider>
+            <Route path="/" component={UniverseView} />
+            <Route path="/company-report/:companyId?" component={CompanyView} />
+            <Route path="/comparision-versus" component={ComparisionView} />
+          </FilterContextProvider>
         </Switch>
     </div>
   )
