@@ -23,7 +23,7 @@ export const ExpectedGrowthRateAndMarginCard = ({ expectedGrowthAndMargin, isLoa
   const [data, setData] = useState([])
   useEffect(() => {
     if (expectedGrowthAndMargin) {
-      const growth = Object.values(expectedGrowthAndMargin).map((row) => row[0])
+      const growth = Object.values(expectedGrowthAndMargin).map((row) => ({ ...row[0], ...row[1] }))
       setData(() => {
         return growth.map((row, index) => {
           row.growth = Number(row.growth)?.toFixed(2)
