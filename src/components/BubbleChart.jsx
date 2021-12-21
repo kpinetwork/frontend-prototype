@@ -7,10 +7,13 @@ import {
 } from 'chart.js'
 import { Bubble } from 'react-chartjs-2'
 import zoomPlugin from 'chartjs-plugin-zoom'
+import { useMediaQuery } from '@material-ui/core'
 
 ChartJS.register(LinearScale, PointElement, Tooltip, zoomPlugin)
 
 export function BubbleChart ({ data }) {
+  const isPhone = useMediaQuery('(max-width: 768px)')
+
   const handleclick = async (e, element) => {
     if (element.length > 0) {
       const { datasetIndex } = element[0]
@@ -45,6 +48,5 @@ export function BubbleChart ({ data }) {
     },
     onClick: handleclick
   }
-
-  return <Bubble options={options} data={data} width={100} height={40}/>
+  return <Bubble options={options} data={data} width={100} height={isPhone ? '80vh' : '40vh'} />
 }

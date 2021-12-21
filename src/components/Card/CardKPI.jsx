@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
+import { Button, Card, CardActions, CardContent, Typography, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React from 'react'
 
@@ -20,20 +20,28 @@ const useStyles = makeStyles({
     fontWeight: 'bold',
     letterSpacing: '0.5px'
   },
+  body: {
+    display: 'grid',
+    alignSelf: 'center',
+    justifySelf: 'center'
+  },
   pos: {
     marginBottom: 12
   }
 })
 
 export function CardKPI ({ children, title, actions = true, overflow = 'none', textAlign = 'none', height = '40vh' }) {
+  const isPhone = useMediaQuery('(max-width: 768px)')
+
   const classes = useStyles()
+
   return (
     <Card className={classes.root} style={{ overflow: overflow, textAlign: textAlign }}variant="outlined">
     <CardContent>
       <Typography className={classes.title} color="textSecondary" gutterBottom>
         {title}
       </Typography>
-      <div style={{ height: height, width: '100%' }}>
+      <div className={classes.body} style={{ height: isPhone ? '30vh' : height, width: '100%' }}>
           {children}
       </div>
     </CardContent>
