@@ -31,7 +31,7 @@ export const KPIAveragesCard = ({ kpiAverage, isLoading }) => {
   }, [kpiAverage])
 
   return (
-  <CardKPI title={'KPI Averages'}>
+  <CardKPI title={'KPI Averages'} actions={false}>
     {!isLoading
       ? <DataGrid
         rows={data}

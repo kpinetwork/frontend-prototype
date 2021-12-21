@@ -40,7 +40,7 @@ export const RevenueAndEbitdaCard = ({ revenueAndEbitda, isLoading }) => {
     }
   }, [revenueAndEbitda])
   return (
-    <CardKPI title={'Revenue & ebitda vs budget'}>
+    <CardKPI title={'Revenue & ebitda vs budget'} actions={false}>
       {!isLoading
         ? <DataGrid
             rows={data}

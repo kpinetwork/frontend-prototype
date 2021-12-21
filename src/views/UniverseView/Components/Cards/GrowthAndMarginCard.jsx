@@ -37,7 +37,7 @@ export const GrowthAndMarginCard = ({ growthAndMargin, isLoading }) => {
     }
   }, [growthAndMargin])
   return (
-    <CardKPI title={'Growth and margin by size; recent actuals'}>
+    <CardKPI title={'Growth and margin by size; recent actuals'} actions={false}>
     {!isLoading
       ? <DataGrid
           rows={data}

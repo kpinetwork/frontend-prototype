@@ -34,7 +34,7 @@ export const CountBySizeCard = ({ countBySize, isLoading }) => {
   }, [countBySize])
 
   return (
-      <CardKPI title={'Count By Size'}>
+      <CardKPI title={'Count By Size'} actions={false}>
         {!isLoading
           ? <DataGrid
               rows={data}

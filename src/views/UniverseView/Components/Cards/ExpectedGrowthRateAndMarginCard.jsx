@@ -37,7 +37,7 @@ export const ExpectedGrowthRateAndMarginCard = ({ expectedGrowthAndMargin, isLoa
     }
   }, [expectedGrowthAndMargin])
   return (
-    <CardKPI title={'Growth and margin by size; projected'}>
+    <CardKPI title={'Growth and margin by size; projected'} actions={false}>
         {!isLoading
           ? <DataGrid
               rows={data}
