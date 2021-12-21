@@ -557,3 +557,588 @@ export const COMPANY_REPORT = {
     }
   ]
 }
+
+export const COMPARISON_VERSUS_PEERS = {
+  company_comparison_data: {
+    name: 'MAMSoft',
+    sector: 'Application Software',
+    vertical: 'Life Sciences',
+    revenue: '38',
+    growth: '5',
+    revenue_vs_budget: '95',
+    ebitda_vs_budget: '83',
+    rule_of_40: '20'
+  },
+  peers_comparison_data: [
+    {
+      name: 'SONO TEK CORP',
+      sector: 'Computer Hardware',
+      vertical: 'Environment',
+      revenue: '$10-<30 million',
+      growth: '2',
+      revenue_vs_budget: '98',
+      ebitda_vs_budget: '127',
+      rule_of_40: '9'
+    },
+    {
+      name: 'DETERMINE, INC.',
+      sector: 'Application Software',
+      vertical: 'Ecommerce',
+      revenue: '$10-<30 million',
+      growth: '-8',
+      revenue_vs_budget: '100',
+      ebitda_vs_budget: '148',
+      rule_of_40: '-48'
+    },
+    {
+      name: 'Computer Programs & Systems Inc',
+      sector: 'Application Software',
+      vertical: 'Business Services',
+      revenue: '$100 million+',
+      growth: '33',
+      revenue_vs_budget: '93',
+      ebitda_vs_budget: '94',
+      rule_of_40: '8'
+    },
+    {
+      name: 'EGAIN Corp',
+      sector: 'Application Software',
+      vertical: 'Education',
+      revenue: '$50-$100 million',
+      growth: '9',
+      revenue_vs_budget: '108',
+      ebitda_vs_budget: '98',
+      rule_of_40: '20'
+    },
+    {
+      name: 'STREAMLINE HEALTH SOLUTIONS INC.',
+      sector: 'Application Software',
+      vertical: 'Government',
+      revenue: '$10-<30 million',
+      growth: '-5',
+      revenue_vs_budget: '103',
+      ebitda_vs_budget: '219',
+      rule_of_40: '-24'
+    },
+    {
+      name: 'INTEST CORP',
+      sector: 'Semiconductors',
+      vertical: 'Environment',
+      revenue: '$50-$100 million',
+      growth: '7',
+      revenue_vs_budget: '109',
+      ebitda_vs_budget: '90',
+      rule_of_40: '27'
+    },
+    {
+      name: 'LIGHTPATH TECHNOLOGIES INC',
+      sector: 'Computer Hardware',
+      vertical: 'Insurance',
+      revenue: '$30-<$50 million',
+      growth: '5',
+      revenue_vs_budget: '100',
+      ebitda_vs_budget: '114',
+      rule_of_40: '26'
+    },
+    {
+      name: 'ESPEY MFG & ELECTRONICS CORP',
+      sector: 'Computer Hardware',
+      vertical: 'Engineering',
+      revenue: '$30-<$50 million',
+      growth: '0',
+      revenue_vs_budget: '96',
+      ebitda_vs_budget: '21',
+      rule_of_40: '0'
+    },
+    {
+      name: 'TRIO-TECH INTERNATIONAL',
+      sector: 'Semiconductors',
+      vertical: 'Life Sciences',
+      revenue: '',
+      growth: '2',
+      revenue_vs_budget: '103',
+      ebitda_vs_budget: '78',
+      rule_of_40: '-13'
+    },
+    {
+      name: 'HURCO COMPANIES INC',
+      sector: 'Computer Hardware',
+      vertical: 'Infrastructure',
+      revenue: '$100 million+',
+      growth: '10',
+      revenue_vs_budget: '109',
+      ebitda_vs_budget: '54',
+      rule_of_40: '6'
+    },
+    {
+      name: 'Telaria, Inc.',
+      sector: 'Application Software',
+      vertical: 'Hotels',
+      revenue: '$50-$100 million',
+      growth: '-11',
+      revenue_vs_budget: '97',
+      ebitda_vs_budget: '78',
+      rule_of_40: '7'
+    },
+    {
+      name: 'Zedge, Inc.',
+      sector: 'Application Software',
+      vertical: 'Horizontal',
+      revenue: '$10-<30 million',
+      growth: '7',
+      revenue_vs_budget: '96',
+      ebitda_vs_budget: '210',
+      rule_of_40: '139'
+    },
+    {
+      name: 'PERCEPTRON INC/MI',
+      sector: 'Computer Hardware',
+      vertical: 'Wholesale',
+      revenue: '$50-$100 million',
+      growth: '2',
+      revenue_vs_budget: '108',
+      ebitda_vs_budget: '53',
+      rule_of_40: '-17'
+    },
+    {
+      name: 'AutoWeb, Inc.',
+      sector: 'Online Media',
+      vertical: 'Media',
+      revenue: '$50-$100 million',
+      growth: '0',
+      revenue_vs_budget: '109',
+      ebitda_vs_budget: '4',
+      rule_of_40: '-35'
+    },
+    {
+      name: 'AXT INC',
+      sector: 'Semiconductors',
+      vertical: 'Professional Services',
+      revenue: '$100 million+',
+      growth: '13',
+      revenue_vs_budget: '106',
+      ebitda_vs_budget: '104',
+      rule_of_40: '39'
+    },
+    {
+      name: 'RADISYS CORP',
+      sector: 'Computer Hardware',
+      vertical: 'Utilities',
+      revenue: '$100 million+',
+      growth: '-4',
+      revenue_vs_budget: '104',
+      ebitda_vs_budget: '372',
+      rule_of_40: '-26'
+    },
+    {
+      name: 'ADESTO TECHNOLOGIES Corp',
+      sector: 'Semiconductors',
+      vertical: 'Infrastructure',
+      revenue: '$100 million+',
+      growth: '-9',
+      revenue_vs_budget: '97',
+      ebitda_vs_budget: '128',
+      rule_of_40: '7'
+    },
+    {
+      name: 'APPLIED OPTOELECTRONICS, INC.',
+      sector: 'Semiconductors',
+      vertical: 'Manufacturing',
+      revenue: '$100 million+',
+      growth: '-20',
+      revenue_vs_budget: '102',
+      ebitda_vs_budget: '87',
+      rule_of_40: '28'
+    },
+    {
+      name: 'TRANSCAT INC',
+      sector: 'Computer Hardware',
+      vertical: 'Insurance',
+      revenue: '$100 million+',
+      growth: '19',
+      revenue_vs_budget: '109',
+      ebitda_vs_budget: '89',
+      rule_of_40: '11'
+    },
+    {
+      name: 'SEVCON, INC.',
+      sector: 'Semiconductors',
+      vertical: 'Business Services',
+      revenue: '$50-$100 million',
+      growth: '-9',
+      revenue_vs_budget: '94',
+      ebitda_vs_budget: '339',
+      rule_of_40: '14'
+    },
+    {
+      name: 'BSQUARE CORP /WA',
+      sector: 'Application Software',
+      vertical: 'Wholesale',
+      revenue: '$30-<$50 million',
+      growth: '-2',
+      revenue_vs_budget: '93',
+      ebitda_vs_budget: '40',
+      rule_of_40: '-38'
+    },
+    {
+      name: 'LGL GROUP INC',
+      sector: 'Computer Hardware',
+      vertical: 'Hotels',
+      revenue: '$10-<30 million',
+      growth: '1',
+      revenue_vs_budget: '97',
+      ebitda_vs_budget: '47',
+      rule_of_40: '-10'
+    },
+    {
+      name: 'CASTLIGHT HEALTH, INC.',
+      sector: 'Application Software',
+      vertical: 'Accounting & Auditing',
+      revenue: '$100 million+',
+      growth: '-3',
+      revenue_vs_budget: '105',
+      ebitda_vs_budget: '13',
+      rule_of_40: '-5'
+    },
+    {
+      name: 'SMITH MICRO SOFTWARE INC',
+      sector: 'Application Software',
+      vertical: 'Engineering',
+      revenue: '$30-<$50 million',
+      growth: '4',
+      revenue_vs_budget: '110',
+      ebitda_vs_budget: '47',
+      rule_of_40: '10'
+    },
+    {
+      name: 'Support.com, Inc.',
+      sector: 'Application Software',
+      vertical: 'Healthcare',
+      revenue: '$30-<$50 million',
+      growth: '-2',
+      revenue_vs_budget: '92',
+      ebitda_vs_budget: '111',
+      rule_of_40: '-32'
+    },
+    {
+      name: 'Covisint Corp',
+      sector: 'Application Software',
+      vertical: 'Consumer Services',
+      revenue: '$50-$100 million',
+      growth: '-8',
+      revenue_vs_budget: '100',
+      ebitda_vs_budget: '53',
+      rule_of_40: '-10'
+    },
+    {
+      name: 'FREQUENCY ELECTRONICS INC',
+      sector: 'Communication Equipment',
+      vertical: 'Government',
+      revenue: '$50-$100 million',
+      growth: '2',
+      revenue_vs_budget: '103',
+      ebitda_vs_budget: '-104',
+      rule_of_40: '35'
+    },
+    {
+      name: 'INTRICON CORP',
+      sector: 'Computer Hardware',
+      vertical: 'Government',
+      revenue: '$100 million+',
+      growth: '6',
+      revenue_vs_budget: '104',
+      ebitda_vs_budget: '98',
+      rule_of_40: '13'
+    },
+    {
+      name: 'NVE CORP /NEW/',
+      sector: 'Semiconductors',
+      vertical: 'Real Estate',
+      revenue: '$10-<30 million',
+      growth: '13',
+      revenue_vs_budget: '111',
+      ebitda_vs_budget: '77',
+      rule_of_40: '46'
+    },
+    {
+      name: 'VIDEO DISPLAY CORP',
+      sector: 'Computer Hardware',
+      vertical: 'Horizontal',
+      revenue: '$10-<30 million',
+      growth: '-2',
+      revenue_vs_budget: '110',
+      ebitda_vs_budget: '115',
+      rule_of_40: '3'
+    },
+    {
+      name: 'INNODATA INC',
+      sector: 'Application Software',
+      vertical: 'Life Sciences',
+      revenue: '$50-$100 million',
+      growth: '4',
+      revenue_vs_budget: '99',
+      ebitda_vs_budget: '105',
+      rule_of_40: '11'
+    },
+    {
+      name: 'AMERICAN SUPERCONDUCTOR CORP /DE/',
+      sector: 'Computer Hardware',
+      vertical: 'Life Sciences',
+      revenue: '',
+      growth: '-15',
+      revenue_vs_budget: '102',
+      ebitda_vs_budget: '69',
+      rule_of_40: '20'
+    },
+    {
+      name: 'TRAVELZOO',
+      sector: 'Online Media',
+      vertical: 'Law',
+      revenue: '$30-<$50 million',
+      growth: '-7',
+      revenue_vs_budget: '108',
+      ebitda_vs_budget: '-162',
+      rule_of_40: '-65'
+    },
+    {
+      name: 'Clearfield, Inc.',
+      sector: 'Communication Equipment',
+      vertical: 'Banking',
+      revenue: '$100 million+',
+      growth: '18',
+      revenue_vs_budget: '96',
+      ebitda_vs_budget: '119',
+      rule_of_40: '45'
+    },
+    {
+      name: 'IEH CORPORATION',
+      sector: 'Computer Hardware',
+      vertical: 'Law',
+      revenue: '$30-<$50 million',
+      growth: '4',
+      revenue_vs_budget: '94',
+      ebitda_vs_budget: '65',
+      rule_of_40: '26'
+    },
+    {
+      name: 'ID SYSTEMS INC',
+      sector: 'Communication Equipment',
+      vertical: 'Insurance',
+      revenue: '$50-$100 million',
+      growth: '-4',
+      revenue_vs_budget: '99',
+      ebitda_vs_budget: '71',
+      rule_of_40: '2'
+    },
+    {
+      name: 'Guidance Software, Inc.',
+      sector: 'Application Software',
+      vertical: 'Heavy Industry',
+      revenue: '$100 million+',
+      growth: '-2',
+      revenue_vs_budget: '111',
+      ebitda_vs_budget: '22',
+      rule_of_40: '-1'
+    },
+    {
+      name: 'MaxPoint Interactive, Inc.',
+      sector: 'Application Software',
+      vertical: 'Logistics',
+      revenue: '$100 million+',
+      growth: '-3',
+      revenue_vs_budget: '95',
+      ebitda_vs_budget: '28',
+      rule_of_40: '-1'
+    },
+    {
+      name: 'WESTELL TECHNOLOGIES INC',
+      sector: 'Communication Equipment',
+      vertical: 'Accounting & Auditing',
+      revenue: '$30-<$50 million',
+      growth: '-3',
+      revenue_vs_budget: '93',
+      ebitda_vs_budget: '48',
+      rule_of_40: '-10'
+    },
+    {
+      name: 'LUNA INNOVATIONS INC',
+      sector: 'Computer Hardware',
+      vertical: 'Law',
+      revenue: '$50-$100 million',
+      growth: '10',
+      revenue_vs_budget: '103',
+      ebitda_vs_budget: '105',
+      rule_of_40: '37'
+    },
+    {
+      name: 'Boxlight Corp',
+      sector: 'Application Software',
+      vertical: 'Transportation',
+      revenue: '$50-$100 million',
+      growth: '-6',
+      revenue_vs_budget: '99',
+      ebitda_vs_budget: '55',
+      rule_of_40: '137'
+    },
+    {
+      name: 'LEAF GROUP LTD.',
+      sector: 'Online Media',
+      vertical: 'Heavy Industry',
+      revenue: '$100 million+',
+      growth: '-4',
+      revenue_vs_budget: '96',
+      ebitda_vs_budget: '24',
+      rule_of_40: '49'
+    },
+    {
+      name: 'EXA CORP',
+      sector: 'Application Software',
+      vertical: 'Environment',
+      revenue: '$50-$100 million',
+      growth: '1',
+      revenue_vs_budget: '97',
+      ebitda_vs_budget: '81',
+      rule_of_40: '7'
+    },
+    {
+      name: 'MEDICAL TRANSCRIPTION BILLING, CORP',
+      sector: 'Application Software',
+      vertical: 'Media',
+      revenue: '$100 million+',
+      growth: '4',
+      revenue_vs_budget: '104',
+      ebitda_vs_budget: '153',
+      rule_of_40: '63'
+    },
+    {
+      name: 'SPARK NETWORKS INC',
+      sector: 'Online Media',
+      vertical: 'Fashion',
+      revenue: '$30-<$50 million',
+      growth: '1',
+      revenue_vs_budget: '103',
+      ebitda_vs_budget: '52',
+      rule_of_40: '-25'
+    },
+    {
+      name: 'TSR INC',
+      sector: 'Application Software',
+      vertical: 'Logistics',
+      revenue: '$50-$100 million',
+      growth: '0',
+      revenue_vs_budget: '104',
+      ebitda_vs_budget: '4',
+      rule_of_40: '4'
+    },
+    {
+      name: 'SilverSun Technologies, Inc.',
+      sector: 'Application Software',
+      vertical: 'Energy',
+      revenue: '$30-<$50 million',
+      growth: '2',
+      revenue_vs_budget: '94',
+      ebitda_vs_budget: '340',
+      rule_of_40: '15'
+    },
+    {
+      name: 'PARK ELECTROCHEMICAL CORP',
+      sector: 'Semiconductors',
+      vertical: 'Transportation',
+      revenue: '$30-<$50 million',
+      growth: '8',
+      revenue_vs_budget: '106',
+      ebitda_vs_budget: '76',
+      rule_of_40: '-5'
+    },
+    {
+      name: 'SERVOTRONICS INC /DE/',
+      sector: 'Computer Hardware',
+      vertical: 'Banking',
+      revenue: '$30-<$50 million',
+      growth: '-2',
+      revenue_vs_budget: '105',
+      ebitda_vs_budget: '-52',
+      rule_of_40: '-30'
+    },
+    {
+      name: 'INTEVAC INC',
+      sector: 'Computer Hardware',
+      vertical: 'Fashion',
+      revenue: '$50-$100 million',
+      growth: '1',
+      revenue_vs_budget: '104',
+      ebitda_vs_budget: '12',
+      rule_of_40: '-7'
+    },
+    {
+      name: 'R F INDUSTRIES LTD',
+      sector: 'Computer Hardware',
+      vertical: 'Transportation',
+      revenue: '$30-<$50 million',
+      growth: '3',
+      revenue_vs_budget: '94',
+      ebitda_vs_budget: '79',
+      rule_of_40: '-17'
+    },
+    {
+      name: 'Meet Group, Inc.',
+      sector: 'Online Media',
+      vertical: 'Mining',
+      revenue: '$100 million+',
+      growth: '41',
+      revenue_vs_budget: '103',
+      ebitda_vs_budget: '89',
+      rule_of_40: '44'
+    },
+    {
+      name: 'AMTECH SYSTEMS INC',
+      sector: 'Semiconductors',
+      vertical: 'Logistics',
+      revenue: '$50-$100 million',
+      growth: '5',
+      revenue_vs_budget: '111',
+      ebitda_vs_budget: '66',
+      rule_of_40: '4'
+    },
+    {
+      name: 'BK Technologies',
+      sector: 'Communication Equipment',
+      vertical: 'Real Estate',
+      revenue: '$30-<$50 million',
+      growth: '2',
+      revenue_vs_budget: '92',
+      ebitda_vs_budget: '630',
+      rule_of_40: '2'
+    },
+    {
+      name: 'ITERIS, INC.',
+      sector: 'Communication Equipment',
+      vertical: 'Healthcare',
+      revenue: '$100 million+',
+      growth: '4',
+      revenue_vs_budget: '92',
+      ebitda_vs_budget: '445',
+      rule_of_40: '12'
+    },
+    {
+      name: 'EVERSPIN TECHNOLOGIES INC',
+      sector: 'Semiconductors',
+      vertical: 'Entertainment',
+      revenue: '$30-<$50 million',
+      growth: '-4',
+      revenue_vs_budget: '109',
+      ebitda_vs_budget: '32',
+      rule_of_40: '2'
+    },
+    {
+      name: 'SONIC FOUNDRY INC',
+      sector: 'Application Software',
+      vertical: 'Entertainment',
+      revenue: '$30-<$50 million',
+      growth: '3',
+      revenue_vs_budget: '98',
+      ebitda_vs_budget: '708',
+      rule_of_40: '9'
+    }
+  ]
+}
