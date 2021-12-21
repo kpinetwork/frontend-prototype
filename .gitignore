@@ -4,3 +4,6 @@ dist
 dist-ssr
 *.local
 .env
+__snapshots__
+*.jsx.snap
+coverage
