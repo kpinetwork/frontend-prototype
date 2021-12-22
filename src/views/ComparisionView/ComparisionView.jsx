@@ -5,15 +5,15 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 import HeadBodyGrid from '../../components/BodyGrid'
 
 const columns = [
-  { field: 'name', headerName: 'Company', width: 200 },
-  { field: 'sector', headerName: 'Sector', width: 150 },
-  { field: 'vertical', headerName: 'Vertical', width: 150 },
-  { field: 'revenue', headerName: 'Revenue', width: 150 },
-  { field: 'growth', headerName: 'Growth', width: 150 },
-  { field: 'ebitda_margin', headerName: 'Ebitda Margin', width: 150 },
-  { field: 'revenue_vs_budget', headerName: 'Revenue vs budget', width: 200 },
-  { field: 'ebitda_vs_budget', headerName: 'Ebitda vs budget', width: 200 },
-  { field: 'rule_of_40', headerName: 'Rule of 40', width: 200 }
+  { field: 'name', headerName: 'Company', width: 200, align: 'left' },
+  { field: 'sector', headerName: 'Sector', width: 150, align: 'left' },
+  { field: 'vertical', headerName: 'Vertical', width: 150, align: 'left' },
+  { field: 'revenue', headerName: 'Revenue', width: 150, align: 'center' },
+  { field: 'growth', headerName: 'Growth', width: 150, align: 'center' },
+  { field: 'ebitda_margin', headerName: 'Ebitda Margin', width: 150, align: 'center' },
+  { field: 'revenue_vs_budget', headerName: 'Revenue vs budget', width: 200, align: 'center' },
+  { field: 'ebitda_vs_budget', headerName: 'Ebitda vs budget', width: 200, align: 'center' },
+  { field: 'rule_of_40', headerName: 'Rule of 40', width: 200, align: 'center' }
 ]
 
 export function ComparisionView ({ params }) {
@@ -27,7 +27,7 @@ export function ComparisionView ({ params }) {
                 <TableHead>
                   <TableRow >
                     {columns.map(column => (
-                      <TableCell key={column.field} align="right" style={{ fontWeight: 'bold' }}>
+                      <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}>
                         {column.headerName}
                       </TableCell>
                     ))}
@@ -35,28 +35,28 @@ export function ComparisionView ({ params }) {
                   <TableRow
                     key={companyComparison?.name}
                     style={{ backgroundColor: '#cececeb9' }}>
-                    <TableCell align="right">{companyComparison?.name}</TableCell>
-                    <TableCell align="right">{companyComparison?.sector}</TableCell>
-                    <TableCell align="right">{companyComparison?.vertical}</TableCell>
-                    <TableCell align="right">{companyComparison?.revenue}</TableCell>
-                    <TableCell align="right">{companyComparison?.growth}</TableCell>
-                    <TableCell align="right">{companyComparison?.ebitda_margin}</TableCell>
-                    <TableCell align="right">{companyComparison?.revenue_vs_budget}</TableCell>
-                    <TableCell align="right">{companyComparison?.ebitda_vs_budget}</TableCell>
-                    <TableCell align="right">{companyComparison?.rule_of_40}</TableCell>
+                    <TableCell align="left">{companyComparison?.name}</TableCell>
+                    <TableCell align="left">{companyComparison?.sector}</TableCell>
+                    <TableCell align="left">{companyComparison?.vertical}</TableCell>
+                    <TableCell align="center">{companyComparison?.revenue}</TableCell>
+                    <TableCell align="center">{companyComparison?.growth}</TableCell>
+                    <TableCell align="center">{companyComparison?.ebitda_margin}</TableCell>
+                    <TableCell align="center">{companyComparison?.revenue_vs_budget}</TableCell>
+                    <TableCell align="center">{companyComparison?.ebitda_vs_budget}</TableCell>
+                    <TableCell align="center">{companyComparison?.rule_of_40}</TableCell>
                   </TableRow>
                   <TableRow
                     key={rank?.revenue}
                     style={{ backgroundColor: '#cececeb9' }}>
-                    <TableCell align="right">{''}</TableCell>
-                    <TableCell align="right">{''}</TableCell>
-                    <TableCell align="right">{''}</TableCell>
-                    <TableCell align="right">{rank?.revenue}</TableCell>
-                    <TableCell align="right">{rank?.growth}</TableCell>
-                    <TableCell align="right">{rank?.ebitda_margin}</TableCell>
-                    <TableCell align="right">{rank?.revenue_vs_budget}</TableCell>
-                    <TableCell align="right">{rank?.ebitda_vs_budget}</TableCell>
-                    <TableCell align="right">{rank?.rule_of_40}</TableCell>
+                    <TableCell align="center">{''}</TableCell>
+                    <TableCell align="center">{''}</TableCell>
+                    <TableCell align="center">{''}</TableCell>
+                    <TableCell align="center">{rank?.revenue}</TableCell>
+                    <TableCell align="center">{rank?.growth}</TableCell>
+                    <TableCell align="center">{rank?.ebitda_margin}</TableCell>
+                    <TableCell align="center">{rank?.revenue_vs_budget}</TableCell>
+                    <TableCell align="center">{rank?.ebitda_vs_budget}</TableCell>
+                    <TableCell align="center">{rank?.rule_of_40}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -64,15 +64,15 @@ export function ComparisionView ({ params }) {
                     <TableRow
                       key={row.name}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                      <TableCell align="right">{row.name}</TableCell>
-                      <TableCell align="right">{row.sector}</TableCell>
-                      <TableCell align="right">{row.vertical}</TableCell>
-                      <TableCell align="right">{row.revenue}</TableCell>
-                      <TableCell align="right">{row.growth}</TableCell>
-                      <TableCell align="right">{row.ebitda_margin}</TableCell>
-                      <TableCell align="right">{row.revenue_vs_budget}</TableCell>
-                      <TableCell align="right">{row.ebitda_vs_budget}</TableCell>
-                      <TableCell align="right">{row.rule_of_40}</TableCell>
+                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left">{row.sector}</TableCell>
+                      <TableCell align="left">{row.vertical}</TableCell>
+                      <TableCell align="center">{row.revenue}</TableCell>
+                      <TableCell align="center">{row.growth}</TableCell>
+                      <TableCell align="center">{row.ebitda_margin}</TableCell>
+                      <TableCell align="center">{row.revenue_vs_budget}</TableCell>
+                      <TableCell align="center">{row.ebitda_vs_budget}</TableCell>
+                      <TableCell align="center">{row.rule_of_40}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
