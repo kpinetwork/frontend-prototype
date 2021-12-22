@@ -6,11 +6,12 @@ import { getCompanyReportFromQueryParams } from '../service/companyReport'
 export const useCompanyReport = ({ companyId }) => {
   // eslint-disable-next-line no-unused-vars
   const [_, setLocation] = useLocation()
-  const { filters, year, companyList } = useContext(FilterContext)
+  const { filters, year } = useContext(FilterContext)
   const [description, setDescription] = useState(null)
   const [financialProfile, setFinancialProfile] = useState(null)
   const [ruleOf40, setRuleOf40] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [companyList, setCompanyList] = useState([])
   const [company, setCompany] = useState(companyId)
 
   useEffect(() => {
@@ -30,6 +31,7 @@ export const useCompanyReport = ({ companyId }) => {
     setDescription(descriptionArray)
     setFinancialProfile(financialProfileArray)
     setRuleOf40(ruleOf40Array)
+    setCompanyList(ruleOf40Array)
     setIsLoading(false)
   }
 

@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
 import FilterContext from '../context/filterContext'
 import { getUniverseOverviewFromQueryParams } from '../service/universeOverview'
-import { SaveJsonLocalStorage } from '../utils/useLocalStorage'
 
 const useUniverseOverview = () => {
-  const { filters, setFilters, year, setYear, INITIAL_FILTER_STATE, setCompanyList } = useContext(FilterContext)
+  const { filters, setFilters, year, setYear, INITIAL_FILTER_STATE } = useContext(FilterContext)
   const [kpiAverage, setKpiAverage] = useState(null)
   const [countBySize, setCountBySize] = useState(null)
   const [growthAndMargin, setGrowthAndMargin] = useState(null)
@@ -26,7 +25,6 @@ const useUniverseOverview = () => {
   }, [filters, year])
 
   const getUniverseOverview = async (options) => {
-    const { year } = options
     const result = await getUniverseOverviewFromQueryParams(options)
     const {
       kpiAverageArray,
@@ -42,10 +40,7 @@ const useUniverseOverview = () => {
     setExpectedGrowthAndMargin(expectedGrowthAndMarginObject)
     setRevenueAndEbitda(revenueAndEbitdaObject)
     setRuleOf40(ruleOf40Array)
-    setCompanyList(ruleOf40Array)
     setIsLoading(false)
-    SaveJsonLocalStorage('companyList', ruleOf40Array)
-    SaveJsonLocalStorage('year', year)
   }
 
   return {

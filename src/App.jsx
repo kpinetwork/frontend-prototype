@@ -26,13 +26,13 @@ const App = () => {
   return (
     <div className={classes.root}>
         <Header classes={classes} />
-        <Switch>
           <FilterContextProvider>
-            <Route path="/" component={UniverseView} />
-            <Route path="/company-report/:companyId?" component={CompanyView} />
-            <Route path="/comparision-versus" component={ComparisionView} />
+            <Switch>
+              <Route path="/" component={UniverseView} />
+              <Route path="/company-report/:companyId?" component={CompanyView} />
+              <Route path="/comparision-versus" component={ComparisionView} />
+            </Switch>
           </FilterContextProvider>
-        </Switch>
     </div>
   )
 }
