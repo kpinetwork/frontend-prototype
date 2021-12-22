@@ -14,7 +14,6 @@ const useUniverseOverview = () => {
   const [fillFilters, setFillFilters] = useState(false)
 
   useEffect(() => {
-    console.log(year, filters)
     if (JSON.stringify(filters) === JSON.stringify(INITIAL_FILTER_STATE)) {
       setFillFilters(true)
     } else {

@@ -6,8 +6,6 @@ import { ReportRuleGraph } from './Components/ReportRuleGraph'
 import { useCompanyReport } from '../../hooks/useCompanyReport'
 import { SelectCompany } from './Components/SelectCompany'
 export function CompanyView ({ params }) {
-  // console.log('companyId', params?.companyId)
-  // c20dfba2-fdd8-409c-ab88-82bf7fc4778a
   const { description, financialProfile, ruleOf40, isLoading, companyList, setCompany, year } = useCompanyReport({ companyId: params?.companyId })
   return (
     <>

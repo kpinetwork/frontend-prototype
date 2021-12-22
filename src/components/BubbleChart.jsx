@@ -17,7 +17,6 @@ export function BubbleChart ({ data }) {
   const handleclick = async (e, element) => {
     if (element.length > 0) {
       const { datasetIndex } = element[0]
-      console.log(data.datasets[datasetIndex])
     }
   }
 
