@@ -25,14 +25,14 @@ const App = () => {
 
   return (
     <div className={classes.root}>
-        <Header classes={classes} />
-          <FilterContextProvider>
-            <Switch>
-              <Route path="/" component={UniverseView} />
-              <Route path="/company-report/:companyId?" component={CompanyView} />
-              <Route path="/comparision-versus" component={ComparisionView} />
-            </Switch>
-          </FilterContextProvider>
+      <Header classes={classes} />
+        <FilterContextProvider>
+          <Switch>
+            <Route path="/" component={UniverseView} />
+            <Route path="/company-report/:companyId?" component={CompanyView} />
+            <Route path="/comparision-versus/:companyId?" component={ComparisionView} />
+          </Switch>
+        </FilterContextProvider>
     </div>
   )
 }

@@ -1,5 +1,5 @@
+import React, { useEffect, useState } from 'react'
 import { Card, FormControl, makeStyles, MenuItem, Select } from '@material-ui/core'
-import React, { useState } from 'react'
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
@@ -24,14 +24,20 @@ const useStyles = makeStyles({
   }
 })
 
-export function SelectCompany ({ companyList, setCompany, year }) {
+export function SelectCompany ({ companyList, setCompanyID, year, companyID }) {
   const [company, setCompanyState] = useState('')
   const classes = useStyles()
   const handleChange = (event) => {
     const { value } = event.target
     setCompanyState(value)
-    setCompany(value)
+    setCompanyID(value)
   }
+
+  useEffect(() => {
+    if (companyList && companyID) {
+      setCompanyState(companyID)
+    }
+  }, [companyList])
 
   return (
     <>

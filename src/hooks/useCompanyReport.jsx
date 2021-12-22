@@ -5,21 +5,25 @@ import { getCompanyReportFromQueryParams } from '../service/companyReport'
 
 export const useCompanyReport = ({ companyId }) => {
   // eslint-disable-next-line no-unused-vars
-  const [_, setLocation] = useLocation()
-  const { filters, year } = useContext(FilterContext)
+  const [companyParams, _] = useState(companyId)
+  // eslint-disable-next-line no-unused-vars
+  const [__, setLocation] = useLocation()
+  const { filters, year, companyID, setCompanyID } = useContext(FilterContext)
   const [description, setDescription] = useState(null)
   const [financialProfile, setFinancialProfile] = useState(null)
-  const [ruleOf40, setRuleOf40] = useState(null)
+  const [ruleOf40, setRuleOf40] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const [companyList, setCompanyList] = useState([])
-  const [company, setCompany] = useState(companyId)
 
   useEffect(() => {
-    // console.log(company, filters, year, companyList)
-    setIsLoading(true)
-    getCompanyReport({ company_id: company, year: year, ...filters })
-    if (company) { setLocation(`/company-report/${company}`) }
-  }, [filters, year, company])
+    if (companyParams) {
+      setIsLoading(true)
+      getCompanyReport({ company_id: companyParams, year, ...filters })
+    } else {
+      setIsLoading(false)
+      getCompanyReport({ company_id: companyID, year, ...filters })
+      setLocation(`/company-report/${companyID}`)
+    }
+  }, [filters, year, companyID])
 
   const getCompanyReport = async (options) => {
     const result = await getCompanyReportFromQueryParams(options)
@@ -31,7 +35,6 @@ export const useCompanyReport = ({ companyId }) => {
     setDescription(descriptionArray)
     setFinancialProfile(financialProfileArray)
     setRuleOf40(ruleOf40Array)
-    setCompanyList(ruleOf40Array)
     setIsLoading(false)
   }
 
@@ -40,8 +43,8 @@ export const useCompanyReport = ({ companyId }) => {
     financialProfile,
     ruleOf40,
     isLoading,
-    companyList,
-    setCompany,
+    setCompanyID,
+    companyID,
     year
   }
 }

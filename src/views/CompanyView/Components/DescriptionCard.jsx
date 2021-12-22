@@ -17,23 +17,24 @@ export function DesciptionCard ({ description, isLoading }) {
   const [data, setData] = useState([])
   useEffect(() => {
     if (description) {
-      setData(INITIAL_DATA.map(item => ({ ...item, value: description[item.key] })))
+      setData(() => (INITIAL_DATA.map(item => ({ ...item, value: description[item.key] }))))
     }
   }, [description])
   return (
         <CardKPI title={'Description'} actions={false} overflow='auto'>
-            <Table>
+          {!isLoading
+            ? <Table>
                 <TableBody>
-                    {!isLoading
-                      ? data.map(row => (
-                            <TableRow key={row.id}>
-                                <TableCell colSpan={8}>{row.label}</TableCell>
-                                <TableCell align="right">{row.value}</TableCell>
-                            </TableRow>
-                      ))
-                      : <HeadBodyGrid/>}
+                  {data.map(row => (
+                    <TableRow key={row.id}>
+                        <TableCell colSpan={8}>{row.label}</TableCell>
+                        <TableCell align="right">{row.value}</TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
-            </Table>
+              </Table>
+            : <HeadBodyGrid/>
+          }
         </CardKPI>
 
   )

@@ -6,11 +6,25 @@ import { ReportRuleGraph } from './Components/ReportRuleGraph'
 import { useCompanyReport } from '../../hooks/useCompanyReport'
 import { SelectCompany } from './Components/SelectCompany'
 export function CompanyView ({ params }) {
-  const { description, financialProfile, ruleOf40, isLoading, companyList, setCompany, year } = useCompanyReport({ companyId: params?.companyId })
+  const {
+    description,
+    financialProfile,
+    ruleOf40,
+    isLoading,
+    setCompanyID,
+    companyID,
+    year
+  } = useCompanyReport({ companyId: params?.companyId })
   return (
     <>
      <Grid container spacing={3}>
-        <Grid item xs={12} sm={12} md={12} lg={12}><SelectCompany companyList={companyList} setCompany={setCompany} year={year}/></Grid>
+        <Grid item xs={12} sm={12} md={12} lg={12}>
+          <SelectCompany
+          companyList={ruleOf40}
+          setCompanyID={setCompanyID}
+          companyID={companyID}
+          year={year} />
+        </Grid>
       </Grid>
       <Grid container>
           <Grid item xs={12} sm={8} lg={12} xl={12}><ReportRuleGraph ruleOf40={ruleOf40}/></Grid>

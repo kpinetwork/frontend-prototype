@@ -2,7 +2,7 @@ import axios from 'axios'
 import { COMPARISON_VERSUS_PEERS } from './uowData'
 const { VITE_HOST: baseUrl } = import.meta.env
 
-const comparisonPeers = `${baseUrl}/comparison_peers`
+const comparisonPeers = `${baseUrl}/comparison`
 
 export const getComparisonPeersFromQueryParams = async (options) => {
   const { company_id: id, ...filters } = options

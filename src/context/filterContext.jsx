@@ -12,13 +12,14 @@ const Context = createContext({})
 
 export const FilterContextProvider = ({ children }) => {
   const [filters, setFilters] = useState(INITIAL_FILTER_STATE)
+  const [companyID, setCompanyID] = useState(undefined)
   const [year, setYear] = useState(() => {
     const year = new Date().getFullYear()
     return year
   })
 
   return (
-    <Context.Provider value={{ filters, setFilters, year, setYear, INITIAL_FILTER_STATE }}>
+    <Context.Provider value={{ filters, setFilters, year, setYear, companyID, setCompanyID, INITIAL_FILTER_STATE }}>
       {children}
     </Context.Provider>
   )

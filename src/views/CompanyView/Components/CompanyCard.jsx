@@ -28,18 +28,18 @@ export function CompanyCard ({ financialProfile, isLoading }) {
   }
   return (
         <CardKPI title={'Company financial profile'} actions={false} overflow='auto'>
-            <Table>
-                <TableBody>
-                    {!isLoading
-                      ? data.map(row => (
-                        <TableRow key={row.id}>
-                            <TableCell colSpan={8}>{row.label}</TableCell>
-                            <TableCell align="right">{getValue(row)}</TableCell>
-                        </TableRow>
-                      ))
-                      : <HeadBodyGrid/>}
-                </TableBody>
-            </Table>
+            {!isLoading
+              ? <Table>
+                  <TableBody>
+                    {data.map(row => (
+                      <TableRow key={row.id}>
+                        <TableCell colSpan={8}>{row.label}</TableCell>
+                        <TableCell align="right">{getValue(row)}</TableCell>
+                      </TableRow>))}
+                  </TableBody>
+                </Table>
+              : <HeadBodyGrid/>
+            }
         </CardKPI>
 
   )
