@@ -10,7 +10,7 @@ const INITIAL_DATA = [
   { id: 4, key: 'vertical', label: 'Vertical', value: '' },
   { id: 5, key: 'inves_profile_name', label: 'Investor Profile', value: '' },
   { id: 6, key: 'size_cohort', label: 'Size Cohort', value: '' },
-  { id: 7, key: 'margin_group', label: 'Grwth Cohort', value: '' }
+  { id: 7, key: 'margin_group', label: 'Growth Cohort', value: '' }
 ]
 
 export function DesciptionCard ({ description, isLoading }) {
