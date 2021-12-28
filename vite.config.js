@@ -16,6 +16,15 @@ export default defineConfig(({ mode }) => {
         '@components': path.resolve(__dirname, 'src/components')
       }
     },
+    build: {
+      rollupOptions: {
+        output: {
+          entryFileNames: 'assets/[name].js',
+          chunkFileNames: 'assets/[name].js',
+          assetFileNames: 'assets/[name].[ext]'
+        }
+      }
+    },
     test: {
       global: true,
       environment: 'happy-dom'
