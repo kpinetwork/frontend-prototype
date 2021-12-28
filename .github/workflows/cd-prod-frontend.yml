@@ -1,0 +1,107 @@
+name: CD process to deploy frontend project
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    name: Deploy to AWS --prod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone and checkout branch
+        uses: actions/checkout@master
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install vite
+        run: sudo npm i -g vite
+
+      - name: Running tests
+        run: CI=true npm run test --if-present
+
+      - name: Build project
+        run: vite build
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        id: init
+        env:
+          TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          cd infrastructure
+          terraform init -backend-config="access_key=$TF_VAR_aws_access_key_id" -backend-config="secret_key=$TF_VAR_aws_secret_access_key"
+      - name: Terraform Select Workspace
+        id: workspace
+        run: |
+          cd infrastructure
+          terraform workspace select prod
+      - name: Terraform Validate
+        id: validate
+        run: |
+          cd infrastructure
+          terraform validate -no-color
+      - name: Terraform Plan
+        id: plan
+        env:
+          TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          TF_VAR_aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+          TF_VAR_aws_terraform_user_provider: ${{ secrets.AWS_TERRAFORM_USER_PROVIDER }}
+        run: |
+          cd infrastructure
+          terraform plan -no-color
+        continue-on-error: true
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Terraform Apply
+        env:
+          TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          TF_VAR_aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+          TF_VAR_aws_terraform_user_provider: ${{ secrets.AWS_TERRAFORM_USER_PROVIDER }}
+        run: |
+          cd infrastructure
+          terraform apply -auto-approve
+      - name: Get Terraform outputs
+        id: tf-outputs
+        run: |
+          cd infrastructure
+          outputDistributionID=$(terraform output -raw distribution_id)
+          outputRegion=$(terraform output -raw region)
+          outputBucket=$(terraform output -raw bucket_name)
+          echo "::set-output name=distribution_id::$outputDistributionID"
+          echo "::set-output name=region::$outputRegion"
+          echo "::set-output name=bucket_distribution::$outputBucket"
+      - name: Sync S3
+        uses: jakejarvis/s3-sync-action@master
+        env:
+          SOURCE_DIR: './dist'
+          AWS_REGION: ${{ steps.tf-outputs.outputs.region }}
+          AWS_S3_BUCKET: ${{ steps.tf-outputs.outputs.bucket_distribution }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Invalidate Cloudfront Distribution
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          DISTRIBUTION: ${{ steps.tf-outputs.outputs.distribution_id }}
+          PATHS: '/index.html'
+          AWS_REGION: ${{ steps.tf-outputs.outputs.region }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
