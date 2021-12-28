@@ -4,6 +4,12 @@ dist
 dist-ssr
 *.local
 .env
+.env.*
 __snapshots__
 *.jsx.snap
 coverage
+
+# Directories terraform
+.terraform/
+infrastructure/.terraform/
+.vagrant/
