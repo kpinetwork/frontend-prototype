@@ -21,14 +21,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install vite
-        run: sudo npm i -g vite
-
       - name: Running tests
         run: CI=true npm run test --if-present
 
       - name: Build project
-        run: vite build
+        env:
+          VITE_HOST: ${{ secrets.VITE_HOST_PROD }}
+        run: npm run build
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
