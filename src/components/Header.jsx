@@ -100,6 +100,7 @@ export const Header = (props) => {
   const classes = useStyles()
 
   const toggleDrawer = (visibility) => (event) => {
+    console.log('visibilitry', visibility)
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return
     }
