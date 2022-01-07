@@ -7,6 +7,11 @@ import { UniverseView } from './views/UniverseView/UniverseView'
 import { CompanyView } from './views/CompanyView/CompanyView'
 import { ComparisionView } from './views/ComparisionView/ComparisionView'
 import { FilterContextProvider } from './context/filterContext'
+import { Amplify } from 'aws-amplify'
+import { withAuthenticator } from '@aws-amplify/ui-react'
+import '@aws-amplify/ui-react/styles.css'
+import awsExports from './aws-exports'
+Amplify.configure(awsExports)
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,12 +25,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const App = () => {
+const App = ({ signOut, user }) => {
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
-      <Header classes={classes} />
+      <Header classes={classes} signOut={signOut}/>
         <FilterContextProvider>
           <Switch>
             <Route path="/" component={UniverseView} />
@@ -37,4 +42,4 @@ const App = () => {
   )
 }
 
-export default App
+export default withAuthenticator(App)
