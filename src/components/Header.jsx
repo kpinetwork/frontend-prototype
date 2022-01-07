@@ -9,7 +9,9 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Divider
+  Divider,
+  Menu,
+  MenuItem
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'wouter'
@@ -31,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Menu = () => {
+const PageMenu = () => {
   const classes = useStyles()
 
   return (
@@ -70,16 +72,47 @@ const Menu = () => {
   )
 }
 
+const ProfileMenu = ({ signOut, visible, onProfileClose }) => {
+  return (
+    <Menu
+        id="menu-appbar"
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right'
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right'
+        }}
+        open={Boolean(visible)}
+        anchorEl={visible}
+        onClose={onProfileClose}
+    >
+      <MenuItem onClick={signOut}>Sign Out</MenuItem>
+    </Menu>
+  )
+}
+
 export const Header = (props) => {
   const [menuVisible, setMenuVisibility] = useState(false)
+  const [profileVisible, setProfileVisibility] = useState(false)
   const classes = useStyles()
 
   const toggleDrawer = (visibility) => (event) => {
+    console.log('visibilitry', visibility)
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return
     }
-
     setMenuVisibility(visibility)
+  }
+
+  const toggleProfile = (visibility) => (event) => {
+    setProfileVisibility(event.currentTarget)
+  }
+
+  const onProfileClose = () => {
+    setProfileVisibility(null)
   }
 
   return (
@@ -100,12 +133,18 @@ export const Header = (props) => {
               KPI Network
             </Typography>
             <IconButton
+              onClick={toggleProfile(true)}
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               color="inherit">
               <AccountCircle />
             </IconButton>
+            <ProfileMenu
+              signOut={props.signOut}
+              visible={profileVisible}
+              onProfileClose={onProfileClose}
+            />
             </Toolbar>
         </AppBar>
         {menuVisible
@@ -113,7 +152,7 @@ export const Header = (props) => {
               anchor="left"
               open={menuVisible}
               onClose={toggleDrawer(false)}>
-            <Menu/>
+            <PageMenu/>
             </Drawer>
           : null}
     </>

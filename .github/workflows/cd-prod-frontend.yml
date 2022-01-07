@@ -18,12 +18,27 @@ jobs:
         with:
           node-version: '14.x'
 
+      - name: Install amplify
+        run: npm install -g @aws-amplify/cli
+      
       - name: Install dependencies
         run: npm install
 
       - name: Running tests
         run: CI=true npm run test --if-present
-
+   
+      - name: Pull Amplify App 
+        env:
+          BUILD_COMMAND: build
+          AMPLIFY_ENV: prod
+          AMPLIFY_PROJECT: prodapp
+          AMPLIFY_APP: ${{ secrets.PROD_AMPLIFY_APP }}
+          USER_POOL_ID: ${{ secrets.PROD_USER_POOL_ID }}
+          USER_POOL_APP_ID: ${{ secrets.PROD_USER_POOL_APP_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AMPLIFY_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AMPLIFY_AWS_SECRET_ACCESS_KEY }}
+        run: sh ./scripts/amplify-pull.sh
+      
       - name: Build project
         env:
           VITE_HOST: ${{ secrets.VITE_HOST_PROD }}
