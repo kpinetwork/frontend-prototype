@@ -43,7 +43,7 @@ locals {
   cert_sans = local.is_production ? local.prod_certs : local.demo_certs
   domains = {
     "root" = var.domain
-    "prod" = "www.app.${var.domain}"
+    "prod" = "app.${var.domain}"
     "demo" = "app.demo.${var.domain}"
   }
 }
