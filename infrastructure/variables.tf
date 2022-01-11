@@ -32,19 +32,19 @@ variable "domain" {
 
 locals {
   prod_certs = [
-    "www.${var.domain}",
-    var.domain
+    "www.app.${var.domain}",
+    "app.${var.domain}"
   ]
   demo_certs = [
-    "${terraform.workspace}.${var.domain}"
+    "app.${terraform.workspace}.${var.domain}"
   ]
   environment = terraform.workspace
   is_production = local.environment == "prod"
   cert_sans = local.is_production ? local.prod_certs : local.demo_certs
   domains = {
     "root" = var.domain
-    "prod" = "www.${var.domain}"
-    "demo" = "demo.${var.domain}"
+    "prod" = "app.${var.domain}"
+    "demo" = "app.demo.${var.domain}"
   }
 }
 
