@@ -5,9 +5,9 @@ import HeadBodyGrid from '@components/BodyGrid'
 
 const columns = [
   { field: 'id', headerName: 'ID', hide: true },
-  { field: 'size_cohort', headerName: 'Size', width: 200 },
-  { field: 'revenue', headerName: 'Revenue', width: 150 },
-  { field: 'ebitda', headerName: 'Ebitda', width: 150 }
+  { field: 'size_cohort', headerName: 'Size', flex: 0.38, sortable: false },
+  { field: 'revenue', headerName: 'Revenue', flex: 0.31, sortable: false },
+  { field: 'ebitda', headerName: 'Ebitda', flex: 0.31, sortable: false }
 ]
 
 /* const rows = [
@@ -29,8 +29,8 @@ export const RevenueAndEbitdaCard = ({ revenueAndEbitda, isLoading }) => {
       })
       setData(() => {
         return growth.map((row, index) => {
-          row.revenue = Number(row.revenue)?.toFixed(2)
-          row.ebitda = Number(row.ebitda)?.toFixed(2)
+          row.revenue = Number(row.revenue)?.toFixed(2) + ' %'
+          row.ebitda = Number(row.ebitda)?.toFixed(2) + ' %'
           return {
             id: index,
             ...row

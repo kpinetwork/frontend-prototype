@@ -5,8 +5,8 @@ import HeadBodyGrid from '@components/BodyGrid'
 
 const columns = [
   { field: 'id', headerName: 'ID', hide: true },
-  { field: 'size_cohort', headerName: '# of companies by size', width: 230 },
-  { field: 'count', headerName: 'Count', width: 150 }
+  { field: 'size_cohort', headerName: '# of companies by size', flex: 0.65, sortable: false },
+  { field: 'count', headerName: 'Count', flex: 0.35, sortable: false }
 ]
 
 /* const rows = [

@@ -5,9 +5,9 @@ import HeadBodyGrid from '@components/BodyGrid'
 
 const columns = [
   { field: 'id', headerName: 'ID', hide: true },
-  { field: 'size_cohort', headerName: 'Size', width: 200 },
-  { field: 'growth', headerName: 'Growth', width: 150 },
-  { field: 'margin', headerName: 'Margin', width: 150 }
+  { field: 'size_cohort', headerName: 'Size', flex: 0.38, sortable: false },
+  { field: 'growth', headerName: 'Growth', flex: 0.31, sortable: false },
+  { field: 'margin', headerName: 'Margin', flex: 0.31, sortable: false }
 ]
 
 /* const rows = [
@@ -26,8 +26,8 @@ export const GrowthAndMarginCard = ({ growthAndMargin, isLoading }) => {
       const growth = Object.values(growthAndMargin).map((row) => ({ ...row[0], ...row[1] }))
       setData(() => {
         return growth.map((row, index) => {
-          row.growth = Number(row.growth)?.toFixed(2)
-          row.margin = Number(row.margin)?.toFixed(2)
+          row.growth = Number(row.growth)?.toFixed(2) + ' %'
+          row.margin = Number(row.margin)?.toFixed(2) + ' %'
           return {
             id: index,
             ...row

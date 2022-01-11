@@ -37,11 +37,11 @@ export function UniverseView () {
       </Grid>
       <Divider />
       <Grid container>
-          <Grid item xs={12} sm={6} lg={3}><KPIAveragesCard kpiAverage={kpiAverage} isLoading={isLoading}/></Grid>
-          <Grid item xs={12} sm={6} lg={3}><CountBySizeCard countBySize={countBySize} isLoading={isLoading}/></Grid>
-          <Grid item xs={12} sm={6} lg={3}><GrowthAndMarginCard growthAndMargin={growthAndMargin} isLoading={isLoading}/></Grid>
-          <Grid item xs={12} sm={6} lg={3}><RevenueAndEbitdaCard revenueAndEbitda={revenueAndEbitda} isLoading={isLoading}/></Grid>
-          <Grid item xs={12} sm={6} lg={3}><ExpectedGrowthRateAndMarginCard expectedGrowthAndMargin={expectedGrowthAndMargin} isLoading={isLoading}/></Grid>
+          <Grid item xs={12} sm={6} lg={4}><KPIAveragesCard kpiAverage={kpiAverage} isLoading={isLoading}/></Grid>
+          <Grid item xs={12} sm={6} lg={4}><CountBySizeCard countBySize={countBySize} isLoading={isLoading}/></Grid>
+          <Grid item xs={12} sm={6} lg={4}><GrowthAndMarginCard growthAndMargin={growthAndMargin} isLoading={isLoading}/></Grid>
+          <Grid item xs={12} sm={6} lg={6}><RevenueAndEbitdaCard revenueAndEbitda={revenueAndEbitda} isLoading={isLoading}/></Grid>
+          <Grid item xs={12} sm={6} lg={6}><ExpectedGrowthRateAndMarginCard expectedGrowthAndMargin={expectedGrowthAndMargin} isLoading={isLoading}/></Grid>
       </Grid>
     </>
   )

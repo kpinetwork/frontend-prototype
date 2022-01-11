@@ -29,16 +29,16 @@ export function BubbleChart ({ data }) {
     plugins: {
       zoom: {
         pan: {
-          enabled: true,
+          enabled: false,
           mode: 'xy',
           overScaleMode: 'y'
         },
         zoom: {
           wheel: {
-            enabled: true
+            enabled: false
           },
           pinch: {
-            enabled: true
+            enabled: false
           },
           mode: 'xy',
           overScaleMode: 'y'

@@ -5,9 +5,9 @@ import HeadBodyGrid from '../../../../components/BodyGrid'
 
 const columns = [
   { field: 'id', headerName: 'ID', hide: true },
-  { field: 'size_cohort', headerName: 'Size', width: 200 },
-  { field: 'growth', headerName: 'Growth', width: 150 },
-  { field: 'margin', headerName: 'Margin', width: 150 }
+  { field: 'size_cohort', headerName: 'Size', sortable: false , flex:0.38, sortingOrder: [null]},
+  { field: 'growth', headerName: 'Growth', sortable: false , flex: 0.31},
+  { field: 'margin', headerName: 'Margin', sortable: false, flex: 0.31}
 ]
 
 /* const rows = [
@@ -23,17 +23,26 @@ export const ExpectedGrowthRateAndMarginCard = ({ expectedGrowthAndMargin, isLoa
   const [data, setData] = useState([])
   useEffect(() => {
     if (expectedGrowthAndMargin) {
+      //console.log('data receive', expectedGrowthAndMargin);
+      // const hola = Object.values(expectedGrowthAndMargin);
+      //console.log('growth editado', hola[0])
+      // const {size,growthn,margin} = hola[0]
+      // console.log(size, growthn, margin)
+      // var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+      // const sortAlphaNum = (a, b) => a.localeCompare(b, 'en', { numeric: true })
       const growth = Object.values(expectedGrowthAndMargin).map((row) => ({ ...row[0], ...row[1] }))
+      console.log('growth', growth)
       setData(() => {
         return growth.map((row, index) => {
-          row.growth = Number(row.growth)?.toFixed(2)
-          row.margin = Number(row.margin)?.toFixed(2)
+          row.growth = Number(row.growth)?.toFixed(2) + ' %'
+          row.margin = Number(row.margin)?.toFixed(2) + ' %'
           return {
             id: index,
             ...row
           }
         })
       })
+      console.log('data',data);
     }
   }, [expectedGrowthAndMargin])
   return (

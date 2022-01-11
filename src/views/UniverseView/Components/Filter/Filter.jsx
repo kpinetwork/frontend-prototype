@@ -18,13 +18,13 @@ export function Filter ({ setFilters, fillFilters, filters }) {
   return (
     <CardKPI title={'Filters'} actions={false} overflow={'auto'} textAlign={'center'}>
         <Grid container>
-            <Grid item xs={12} sm={10} lg={6}>
+            <Grid item xs={12} sm={10} lg={4}>
                 <Sectors setFilters={setFilters} fillFilters={fillFilters} selectedList={sector}/>
             </Grid>
-            <Grid item xs={12} sm={10} lg={6}>
+            <Grid item xs={12} sm={10} lg={4}>
                 <Investor setFilters={setFilters} fillFilters={fillFilters} selectedList={investor}/>
             </Grid>
-            <Grid item xs={12} sm={10} lg={6}>
+            <Grid item xs={12} sm={10} lg={4}>
                <Size setFilters={setFilters}fillFilters={fillFilters} selectedList={size}/>
             </Grid>
             <Grid item xs={12} sm={10} lg={6}>
