@@ -62,6 +62,6 @@ function destructuring (result) {
   return {
     companyComparisonData,
     rankData,
-    peersComparisonDataArray
+    peersComparisonDataArray,
   }
 }
