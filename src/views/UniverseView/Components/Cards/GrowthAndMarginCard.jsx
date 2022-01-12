@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import { CardKPI } from '@components/Card/CardKPI'
+import {order, sortByKey} from '../../../../utils/sortSizeCohort'
 import HeadBodyGrid from '@components/BodyGrid'
 
 const columns = [
@@ -25,14 +26,16 @@ export const GrowthAndMarginCard = ({ growthAndMargin, isLoading }) => {
     if (growthAndMargin) {
       const growth = Object.values(growthAndMargin).map((row) => ({ ...row[0], ...row[1] }))
       setData(() => {
-        return growth.map((row, index) => {
+        const ordered_growth = growth.map((row, index) => {
           row.growth = Number(row.growth)?.toFixed(2) + ' %'
           row.margin = Number(row.margin)?.toFixed(2) + ' %'
           return {
-            id: index,
+            id: order[row.size_cohort],
             ...row
           }
         })
+        sortByKey(ordered_growth,'id');
+        return ordered_growth
       })
     }
   }, [growthAndMargin])
