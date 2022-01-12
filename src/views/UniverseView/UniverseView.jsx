@@ -6,10 +6,10 @@ import { KPIAveragesCard } from './Components/Cards/KPIAveragesCard'
 import { GrowthAndMarginCard } from './Components/Cards/GrowthAndMarginCard'
 import { RevenueAndEbitdaCard } from './Components/Cards/RevenueAndEbitdaCard'
 import { ExpectedGrowthRateAndMarginCard } from './Components/Cards/ExpectedGrowthRateAndMarginCard'
-import { Filter } from './Components/Filter/Filter'
+import { Filter } from '../../components/Filter/Filter'
 import { RuleGraph } from './Components/RuleGraph'
 import useUniverseOverview from '../../hooks/useUniverseOverview'
-import { Information } from './Components/HeaderInformation'
+import { Information } from '../../components/HeaderInformation'
 
 export function UniverseView () {
   const {
@@ -33,7 +33,7 @@ export function UniverseView () {
       </Grid>
       <Grid container>
           <Grid item xs={12} sm={8} lg={6}><RuleGraph ruleOf40={ruleOf40} /></Grid>
-          <Grid item xs={12} sm={4} lg={6}><Filter setFilters={setFilters} fillFilters={fillFilters} filters={filters}/></Grid>
+          <Grid item xs={12} sm={4} lg={6}><Filter setFilters={setFilters} fillFilters={fillFilters} filters={filters} xs={12} sm={10} md ={10} lg={6} xl={4}/></Grid>
       </Grid>
       <Divider />
       <Grid container>

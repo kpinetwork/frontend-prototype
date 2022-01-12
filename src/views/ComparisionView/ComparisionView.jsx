@@ -2,7 +2,8 @@ import React from 'react'
 import { Grid } from '@material-ui/core'
 import { CardKPI } from '@components/Card/CardKPI'
 import { useComparisonPeers } from '../../hooks/useComparisionPeers'
-import { Filter } from '../UniverseView/Components/Filter/Filter'
+import { Filter } from '../../components/Filter/Filter'
+import { Information } from '../../components/HeaderInformation'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
 import HeadBodyGrid from '../../components/BodyGrid'
 
@@ -19,11 +20,14 @@ const columns = [
 ]
 
 export function ComparisionView ({ params }) {
-  const { companyComparison, rank, peersComparison, isLoading, filters, setFilters} = useComparisonPeers({ companyId: params?.companyId })
+  const { companyComparison, rank, peersComparison, isLoading, year, setYear,filters, setFilters} = useComparisonPeers({ companyId: params?.companyId })
   return (
     <>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={12} md={12} lg={12}><Information year={year} setYear={setYear}/></Grid>
+       </Grid>
       <Grid container>
-        <Grid item xs={12} sm={12} lg={12}><Filter setFilters={setFilters} fillFilters={false} filters={filters}/></Grid>
+        <Grid item xs={12} sm={12} lg={12}><Filter setFilters={setFilters} fillFilters={false} filters={filters} xs={12} sm={6} md ={4} lg={3} xl={3}/></Grid>
       </Grid>
       <CardKPI title={'Comparison versus peers'} actions={false} height={'80vh'} fullScreen={true}>
         {!isLoading
