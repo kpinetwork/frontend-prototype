@@ -10,7 +10,7 @@ variable "environment" {}
 variable "is_production" {}
 locals {
   aliases = var.is_production ? [
-    var.domain,
+    "www.${var.sub_domain}",
     var.sub_domain
   ] : [
     var.sub_domain
