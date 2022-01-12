@@ -15,15 +15,7 @@ export const ExpectedGrowthRateAndMarginCard = ({ expectedGrowthAndMargin, isLoa
   const [data, setData] = useState([])
   useEffect(() => {
     if (expectedGrowthAndMargin) {
-      //console.log('data receive', expectedGrowthAndMargin);
-      // const hola = Object.values(expectedGrowthAndMargin);
-      //console.log('growth editado', hola[0])
-      // const {size,growthn,margin} = hola[0]
-      // console.log(size, growthn, margin)
-      // var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
-      // const sortAlphaNum = (a, b) => a.localeCompare(b, 'en', { numeric: true })
       const growth = Object.values(expectedGrowthAndMargin).map((row) => ({ ...row[0], ...row[1] }))
-      console.log('growth', growth)
       setData(() => {
         const orderedGrowth = growth.map((row, index) => {
           row.growth = Number(row.growth)?.toFixed(2) + ' %'
@@ -36,7 +28,6 @@ export const ExpectedGrowthRateAndMarginCard = ({ expectedGrowthAndMargin, isLoa
         sortByKey(orderedGrowth, 'id')
         return orderedGrowth
       })
-      console.log('data',data);
     }
   }, [expectedGrowthAndMargin])
   return (
