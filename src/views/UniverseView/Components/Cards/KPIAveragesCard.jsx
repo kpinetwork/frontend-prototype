@@ -20,7 +20,6 @@ export const KPIAveragesCard = ({ kpiAverage, isLoading }) => {
 
   useEffect(() => {
     if (kpiAverage) {
-      console.log(kpiAverage)
       setData((prevState) => {
         return prevState.map((row) => {
           row.value = row.id - 1 === 2 ? Number(Object.values(kpiAverage[row.id - 1]))?.toFixed(2) : Number(Object.values(kpiAverage[row.id - 1]))?.toFixed(2) + ' %'
