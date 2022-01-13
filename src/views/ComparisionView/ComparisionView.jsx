@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect,  useState  }from 'react'
 import { Grid } from '@material-ui/core'
 import { CardKPI } from '@components/Card/CardKPI'
 import { useComparisonPeers } from '../../hooks/useComparisionPeers'
@@ -19,8 +19,41 @@ const columns = [
   { field: 'rule_of_40', headerName: 'Rule of 40', width: 200, align: 'center' }
 ]
 
+const INITIAL_DATA = [
+  { id: 1, key: 'name', value: '', sign: '', position: 'right' , align: 'left'},
+  { id: 2, key: 'sector', value: '', sign: '', position: 'right',align: 'left'},
+  { id: 3, key: 'vertical', value: '', sign: '', position: 'right', align: 'left'},
+  { id: 4, key: 'revenue', value: '', sign: '$', position: 'left', align: 'center'},
+  { id: 5, key: 'growth', value: '', sign: '%', position: 'right', align: 'center'},
+  { id: 6, key: 'ebitda_margin', value: '', sign: '%', position: 'right', align: 'center' },
+  { id: 7, key: 'revenue_vs_budget', value: '', sign: '%', position: 'right', align: 'center' },
+  { id: 8, key: 'ebitda_vs_budget', value: '', sign: '%', position: 'right', align: 'center' },
+  { id: 9, key: 'rule_of_40', value: '', sign: '', position: 'right', align: 'center' }
+
+]
+
 export function ComparisionView ({ params }) {
   const { companyComparison, rank, peersComparison, isLoading, year, setYear,filters, setFilters} = useComparisonPeers({ companyId: params?.companyId })
+  const [data, setData] = useState([])
+
+  const validPeersComparison = () => {
+    if (peersComparison == null) {
+      return [];
+    } else return peersComparison;
+  }
+
+  useEffect(() => {
+    if (companyComparison) {
+      setData(INITIAL_DATA.map(item => ({ ...item, value: companyComparison[item.key] })))
+    }
+  }, [companyComparison])
+
+  const getValue = (item) => {
+    if (item.value) {
+      return item.position === 'left' ? item.sign + ' ' + item.value : item.value + ' ' + item.sign
+    } else return ""
+  }
+
   return (
     <>
       <Grid container spacing={3}>
@@ -41,19 +74,12 @@ export function ComparisionView ({ params }) {
                       </TableCell>
                     ))}
                   </TableRow>
-                  <TableRow
-                    key={companyComparison?.name}
-                    style={{ backgroundColor: '#cececeb9' }}>
-                    <TableCell align="left">{companyComparison?.name}</TableCell>
-                    <TableCell align="left">{companyComparison?.sector}</TableCell>
-                    <TableCell align="left">{companyComparison?.vertical}</TableCell>
-                    <TableCell align="center">{'$ '+ companyComparison?.revenue}</TableCell>
-                    <TableCell align="center">{companyComparison?.growth + ' %'}</TableCell>
-                    <TableCell align="center">{companyComparison?.ebitda_margin + ' %'}</TableCell>
-                    <TableCell align="center">{companyComparison?.revenue_vs_budget + ' %'}</TableCell>
-                    <TableCell align="center">{companyComparison?.ebitda_vs_budget + ' %'}</TableCell>
-                    <TableCell align="center">{companyComparison?.rule_of_40}</TableCell>
-                  </TableRow>
+
+                    <TableRow
+                      key={companyComparison?.name}
+                      style={{ backgroundColor: '#cececeb9' }}>
+                        {data.map(item => (<TableCell align={item.align}>{getValue(item)}</TableCell>))}
+                    </TableRow>
                   <TableRow
                     key={rank?.revenue}
                     style={{ backgroundColor: '#cececeb9' }}>
@@ -69,9 +95,9 @@ export function ComparisionView ({ params }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {peersComparison.map((row) => (
+                  {validPeersComparison().map((row) => (
                     <TableRow
-                      key={row.name}
+                      key={row?.name}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                       <TableCell align="left">{row.name}</TableCell>
                       <TableCell align="left">{row.sector}</TableCell>
