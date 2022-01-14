@@ -1,10 +1,9 @@
-import React, { useEffect,  useState  }from 'react'
-import { Grid } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
 import { CardKPI } from '@components/Card/CardKPI'
 import { useComparisonPeers } from '../../hooks/useComparisionPeers'
 import { Filter } from '../../components/Filter/Filter'
 import { Information } from '../../components/HeaderInformation'
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
+import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
 import HeadBodyGrid from '../../components/BodyGrid'
 
 const columns = [
@@ -20,11 +19,11 @@ const columns = [
 ]
 
 const INITIAL_DATA = [
-  { id: 1, key: 'name', value: '', sign: '', position: 'right' , align: 'left'},
-  { id: 2, key: 'sector', value: '', sign: '', position: 'right',align: 'left'},
-  { id: 3, key: 'vertical', value: '', sign: '', position: 'right', align: 'left'},
-  { id: 4, key: 'revenue', value: '', sign: '$', position: 'left', align: 'center'},
-  { id: 5, key: 'growth', value: '', sign: '%', position: 'right', align: 'center'},
+  { id: 1, key: 'name', value: '', sign: '', position: 'right', align: 'left' },
+  { id: 2, key: 'sector', value: '', sign: '', position: 'right', align: 'left' },
+  { id: 3, key: 'vertical', value: '', sign: '', position: 'right', align: 'left' },
+  { id: 4, key: 'revenue', value: '', sign: '$', position: 'left', align: 'center' },
+  { id: 5, key: 'growth', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 6, key: 'ebitda_margin', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 7, key: 'revenue_vs_budget', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 8, key: 'ebitda_vs_budget', value: '', sign: '%', position: 'right', align: 'center' },
@@ -33,13 +32,13 @@ const INITIAL_DATA = [
 ]
 
 export function ComparisionView ({ params }) {
-  const { companyComparison, rank, peersComparison, isLoading, year, setYear,filters, setFilters} = useComparisonPeers({ companyId: params?.companyId })
+  const { companyComparison, rank, peersComparison, isLoading, year, setYear, filters, setFilters } = useComparisonPeers({ companyId: params?.companyId })
   const [data, setData] = useState([])
 
   const validPeersComparison = () => {
     if (peersComparison == null) {
-      return [];
-    } else return peersComparison;
+      return []
+    } else return peersComparison
   }
 
   useEffect(() => {
@@ -51,7 +50,7 @@ export function ComparisionView ({ params }) {
   const getValue = (item) => {
     if (item.value) {
       return item.position === 'left' ? item.sign + ' ' + item.value : item.value + ' ' + item.sign
-    } else return ""
+    } else return ''
   }
 
   return (
@@ -78,7 +77,7 @@ export function ComparisionView ({ params }) {
                     <TableRow
                       key={companyComparison?.name}
                       style={{ backgroundColor: '#cececeb9' }}>
-                        {data.map(item => (<TableCell align={item.align}>{getValue(item)}</TableCell>))}
+                        {data.map((item, index) => (<TableCell key={`${index}-${item.key}-comparison-peers`} align={item.align}>{getValue(item)}</TableCell>))}
                     </TableRow>
                   <TableRow
                     key={rank?.revenue}
