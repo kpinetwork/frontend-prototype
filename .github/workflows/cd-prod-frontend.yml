@@ -115,7 +115,7 @@ jobs:
         uses: chetan/invalidate-cloudfront-action@master
         env:
           DISTRIBUTION: ${{ steps.tf-outputs.outputs.distribution_id }}
-          PATHS: '/index.html'
+          PATHS: '/*'
           AWS_REGION: ${{ steps.tf-outputs.outputs.region }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

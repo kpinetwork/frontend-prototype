@@ -4,7 +4,7 @@ import { CardKPI } from '@components/Card/CardKPI'
 import HeadBodyGrid from '@components/BodyGrid'
 
 const columns = [
-  { field: 'id', headerName: 'ID', hide: true},
+  { field: 'id', headerName: 'ID', hide: true },
   { field: 'kpi', headerName: 'All companies', flex: 0.60, sortable: false },
   { field: 'value', headerName: 'All Sectors', flex: 0.40, sortable: false }
 ]
@@ -18,12 +18,11 @@ const rows = [
 export const KPIAveragesCard = ({ kpiAverage, isLoading }) => {
   const [data, setData] = React.useState(rows)
 
-
   useEffect(() => {
     if (kpiAverage) {
       setData((prevState) => {
         return prevState.map((row) => {
-          row.value =  row.id - 1 === 2 ? Number(Object.values(kpiAverage[row.id - 1]))?.toFixed(2) : Number(Object.values(kpiAverage[row.id - 1]))?.toFixed(2) + ' %'
+          row.value = row.id - 1 === 2 ? Number(Object.values(kpiAverage[row.id - 1]))?.toFixed(2) : Number(Object.values(kpiAverage[row.id - 1]))?.toFixed(2) + ' %'
           return {
             ...row
           }

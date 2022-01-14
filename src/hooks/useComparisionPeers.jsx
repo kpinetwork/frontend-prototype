@@ -9,7 +9,7 @@ export const useComparisonPeers = ({ companyId }) => {
   const [companyParams, _] = useState(companyId)
   // eslint-disable-next-line no-unused-vars
   const [__, setLocation] = useLocation()
-  const { filters, setFilters,year, setYear, companyID, setCompanyID } = useContext(FilterContext)
+  const { filters, setFilters, year, setYear, companyID, setCompanyID } = useContext(FilterContext)
   const [companyComparison, setCompanyComparison] = useState({})
   const [rank, setRank] = useState({})
   const [peersComparison, setPeersComparison] = useState([])
@@ -50,7 +50,7 @@ export const useComparisonPeers = ({ companyId }) => {
     setYear,
     filters,
     setFilters
-    }
+  }
 }
 
 function destructuring (result) {
@@ -62,6 +62,6 @@ function destructuring (result) {
   return {
     companyComparisonData,
     rankData,
-    peersComparisonDataArray,
+    peersComparisonDataArray
   }
 }
