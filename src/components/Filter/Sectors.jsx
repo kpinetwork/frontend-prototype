@@ -58,11 +58,7 @@ export function Sectors ({ setFilters, fillFilters, selectedList }) {
         label="Select All"
       />
       {options.map((option) => (
-<<<<<<< HEAD
         <FormControlLabel
-=======
-        <FormControlLabel 
->>>>>>> 9c5fbdf (feat: KPI-90 add year selection componente in each screen)
           labelPlacement='end'
           key={option}
           control={
@@ -78,8 +74,6 @@ export function Sectors ({ setFilters, fillFilters, selectedList }) {
     </FormGroup>
   )
 }
-<<<<<<< HEAD
-=======
 
 /* export function Sectors ({ handleOptionsChange }) {
   const [sectors, setSelectors] = useState({
@@ -126,4 +120,3 @@ export function Sectors ({ setFilters, fillFilters, selectedList }) {
 //   const result = res.map(res => res[1])
 //   callback(name, result)
 // }
->>>>>>> 9c5fbdf (feat: KPI-90 add year selection componente in each screen)
