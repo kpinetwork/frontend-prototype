@@ -7,7 +7,7 @@ import { Size } from './Size'
 import { Growth } from './Growth'
 import { Vertical } from './Vertical'
 
-export function Filter ({ setFilters, fillFilters, filters }) {
+export function Filter ({ setFilters, fillFilters, filters, xs, sm , md, lg, xl }) {
   const {
     growth_profile: growth,
     investor_profile: investor,
@@ -16,21 +16,21 @@ export function Filter ({ setFilters, fillFilters, filters }) {
     vertical
   } = filters
   return (
-    <CardKPI title={'Filters'} actions={false} overflow={'auto'} textAlign={'center'}>
-        <Grid container>
-            <Grid item xs={12} sm={10} lg={6}>
+    <CardKPI title={'Filters'} actions={false} overflow={'auto'} textAlign={'start'}>
+        <Grid container >
+            <Grid item xs={xs} sm={sm} md ={md} lg={lg} xl={xl} style={{marginTop: 35}}>
                 <Sectors setFilters={setFilters} fillFilters={fillFilters} selectedList={sector}/>
             </Grid>
-            <Grid item xs={12} sm={10} lg={6}>
+            <Grid item xs={xs} sm={sm} md ={md} lg={lg} xl={xl} style={{marginTop: 35}}>
                 <Investor setFilters={setFilters} fillFilters={fillFilters} selectedList={investor}/>
             </Grid>
-            <Grid item xs={12} sm={10} lg={6}>
+            <Grid item xs={xs} sm={sm} md ={md} lg={lg} xl={xl} style={{marginTop: 35}}>
                <Size setFilters={setFilters}fillFilters={fillFilters} selectedList={size}/>
             </Grid>
-            <Grid item xs={12} sm={10} lg={6}>
+            <Grid item xs={xs} sm={sm} md ={md} lg={lg} xl={xl} style={{marginTop: 35}}>
                 <Growth setFilters={setFilters} fillFilters={fillFilters} selectedList={growth}/>
             </Grid>
-            <Grid item xs={12} sm={10} lg={12}>
+            <Grid item xs={xs} sm={sm} md ={md} lg={lg} xl={xl} style={{marginTop: 35}}>
                 <Vertical setFilters={setFilters} fillFilters={fillFilters} selectedList={vertical}/>
             </Grid>
         </Grid>

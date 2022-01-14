@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import { CardKPI } from '@components/Card/CardKPI'
+import {order, sortByKey} from '../../../../utils/sortSizeCohort'
 import HeadBodyGrid from '@components/BodyGrid'
 
 const columns = [
   { field: 'id', headerName: 'ID', hide: true },
-  { field: 'size_cohort', headerName: 'Size', width: 200 },
-  { field: 'revenue', headerName: 'Revenue', width: 150 },
-  { field: 'ebitda', headerName: 'Ebitda', width: 150 }
+  { field: 'size_cohort', headerName: 'Size', flex: 0.38, sortable: false },
+  { field: 'revenue', headerName: 'Revenue', flex: 0.31, sortable: false },
+  { field: 'ebitda', headerName: 'Ebitda', flex: 0.31, sortable: false }
 ]
 
 /* const rows = [
@@ -28,14 +29,16 @@ export const RevenueAndEbitdaCard = ({ revenueAndEbitda, isLoading }) => {
         return mergerow
       })
       setData(() => {
-        return growth.map((row, index) => {
-          row.revenue = Number(row.revenue)?.toFixed(2)
-          row.ebitda = Number(row.ebitda)?.toFixed(2)
+        const ordered_growth = growth.map((row, index) => {
+          row.revenue = Number(row.revenue)?.toFixed(2) + ' %'
+          row.ebitda = Number(row.ebitda)?.toFixed(2) + ' %'
           return {
-            id: index,
+            id: order[row.size_cohort],
             ...row
           }
         })
+        sortByKey(ordered_growth,'id');
+        return ordered_growth
       })
     }
   }, [revenueAndEbitda])

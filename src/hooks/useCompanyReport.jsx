@@ -8,7 +8,7 @@ export const useCompanyReport = ({ companyId }) => {
   const [companyParams, _] = useState(companyId)
   // eslint-disable-next-line no-unused-vars
   const [__, setLocation] = useLocation()
-  const { filters, year, companyID, setCompanyID } = useContext(FilterContext)
+  const { filters, setFilters, year, setYear, companyID, setCompanyID } = useContext(FilterContext)
   const [description, setDescription] = useState(null)
   const [financialProfile, setFinancialProfile] = useState(null)
   const [ruleOf40, setRuleOf40] = useState([])
@@ -45,7 +45,10 @@ export const useCompanyReport = ({ companyId }) => {
     isLoading,
     setCompanyID,
     companyID,
-    year
+    year,
+    setYear,
+    filters,
+    setFilters
   }
 }
 

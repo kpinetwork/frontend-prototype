@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import { CardKPI } from '@components/Card/CardKPI'
+import {order, sortByKey} from '../../../../utils/sortSizeCohort'
 import HeadBodyGrid from '@components/BodyGrid'
 
 const columns = [
   { field: 'id', headerName: 'ID', hide: true },
-  { field: 'size_cohort', headerName: 'Size', width: 200 },
-  { field: 'growth', headerName: 'Growth', width: 150 },
-  { field: 'margin', headerName: 'Margin', width: 150 }
+  { field: 'size_cohort', headerName: 'Size', flex: 0.38, sortable: false },
+  { field: 'growth', headerName: 'Growth', flex: 0.31, sortable: false },
+  { field: 'margin', headerName: 'Margin', flex: 0.31, sortable: false }
 ]
 
 /* const rows = [
@@ -25,14 +26,16 @@ export const GrowthAndMarginCard = ({ growthAndMargin, isLoading }) => {
     if (growthAndMargin) {
       const growth = Object.values(growthAndMargin).map((row) => ({ ...row[0], ...row[1] }))
       setData(() => {
-        return growth.map((row, index) => {
-          row.growth = Number(row.growth)?.toFixed(2)
-          row.margin = Number(row.margin)?.toFixed(2)
+        const ordered_growth = growth.map((row, index) => {
+          row.growth = Number(row.growth)?.toFixed(2) + ' %'
+          row.margin = Number(row.margin)?.toFixed(2) + ' %'
           return {
-            id: index,
+            id: order[row.size_cohort],
             ...row
           }
         })
+        sortByKey(ordered_growth,'id');
+        return ordered_growth
       })
     }
   }, [growthAndMargin])

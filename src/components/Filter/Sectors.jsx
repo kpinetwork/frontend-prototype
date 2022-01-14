@@ -58,7 +58,8 @@ export function Sectors ({ setFilters, fillFilters, selectedList }) {
         label="Select All"
       />
       {options.map((option) => (
-        <FormControlLabel
+        <FormControlLabel 
+          labelPlacement='end'
           key={option}
           control={
             <Checkbox
