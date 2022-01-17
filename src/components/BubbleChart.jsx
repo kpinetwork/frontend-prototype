@@ -23,7 +23,17 @@ export function BubbleChart ({ data }) {
   const options = {
     scales: {
       y: {
+        title: {
+          text: 'Ebitda margin',
+          display: true
+        },
         beginAtZero: true
+      },
+      x: {
+        title: {
+          text: 'Revenue growth',
+          display: true
+        }
       }
     },
     plugins: {

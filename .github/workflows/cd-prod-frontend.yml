@@ -42,6 +42,7 @@ jobs:
       - name: Build project
         env:
           VITE_HOST: ${{ secrets.VITE_HOST_PROD }}
+          VITE_APP: ${{ secrets.VITE_APP_PROD }}
           VITE_ENV: prod
         run: npm run build
 
