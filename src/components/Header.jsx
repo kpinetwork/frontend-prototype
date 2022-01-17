@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#979393'
   },
   appBar: {
-    backgroundColor: '#25462db7'
+    backgroundColor: '#1d3557'
   },
   link: {
     textDecoration: 'none'

@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
   title: {
     fontSize: 18,
-    color: '#0d5600',
+    color: '#005f83',
     fontWeight: 'bold',
     letterSpacing: '0.5px'
   },
