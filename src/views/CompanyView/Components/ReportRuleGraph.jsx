@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BubbleChart } from '@components/BubbleChart'
 import faker from 'faker'
+import { CardKPI } from '@components/Card/CardKPI'
 
 export function ReportRuleGraph ({ ruleOf40 }) {
   const [data, setData] = useState({
@@ -28,5 +29,9 @@ export function ReportRuleGraph ({ ruleOf40 }) {
       }))
     }
   }, [ruleOf40])
-  return <BubbleChart data={data} />
+  return (<>
+    <CardKPI title={'Rule of 40'} actions={false} overflow={'auto'} textAlign={'center'}>
+      <BubbleChart data={data} />
+    </CardKPI>
+  </>)
 }

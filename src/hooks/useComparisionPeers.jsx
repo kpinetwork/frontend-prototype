@@ -9,7 +9,7 @@ export const useComparisonPeers = ({ companyId }) => {
   const [companyParams, _] = useState(companyId)
   // eslint-disable-next-line no-unused-vars
   const [__, setLocation] = useLocation()
-  const { filters, year, companyID, setCompanyID } = useContext(FilterContext)
+  const { filters, setFilters, year, setYear, companyID, setCompanyID } = useContext(FilterContext)
   const [companyComparison, setCompanyComparison] = useState({})
   const [rank, setRank] = useState({})
   const [peersComparison, setPeersComparison] = useState([])
@@ -25,7 +25,7 @@ export const useComparisonPeers = ({ companyId }) => {
       setLocation(`/comparision-versus/${companyID}`)
       getComparisonPeers({ company_id: companyID, year, ...filters })
     }
-  }, [])
+  }, [filters, year])
 
   const getComparisonPeers = async (options) => {
     const result = await getComparisonPeersFromQueryParams(options)
@@ -45,7 +45,11 @@ export const useComparisonPeers = ({ companyId }) => {
     peersComparison,
     rank,
     setRank,
-    isLoading
+    isLoading,
+    year,
+    setYear,
+    filters,
+    setFilters
   }
 }
 

@@ -3,20 +3,6 @@ import { BubbleChart } from '@components/BubbleChart'
 import faker from 'faker'
 import { CardKPI } from '@components/Card/CardKPI'
 
-/* export const data1 = {
-  datasets: [
-    {
-      label: 'KPI Network',
-      data: Array.from({ length: 50 }, () => ({
-        x: faker.datatype.number({ min: -100, max: 100 }),
-        y: faker.datatype.number({ min: -100, max: 100 }),
-        r: faker.datatype.number({ min: 5, max: 20 })
-      })),
-      backgroundColor: 'rgba(243, 165, 76, 0.5)'
-    }
-  ]
-} */
-
 export function RuleGraph ({ ruleOf40 }) {
   const [data, setData] = React.useState({
     datasets: []

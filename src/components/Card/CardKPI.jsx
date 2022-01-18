@@ -41,7 +41,7 @@ export function CardKPI ({ children, title, actions = true, overflow = 'none', t
       <Typography className={classes.title} color="textSecondary" gutterBottom>
         {title}
       </Typography>
-      <div className={classes.body} style={{ height: (!fullScreen && isPhone) ? '30vh' : height, width: '100%' }}>
+      <div className={classes.body} style={{ height: (!fullScreen && isPhone) ? '40vh' : height, width: '100%' }}>
           {children}
       </div>
     </CardContent>
