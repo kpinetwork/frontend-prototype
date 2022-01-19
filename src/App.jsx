@@ -10,8 +10,11 @@ import { FilterContextProvider } from './context/filterContext'
 import { Amplify } from 'aws-amplify'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import '@aws-amplify/ui-react/styles.css'
+import { updatedAwsConfig } from './awsConfig'
 import awsExports from './aws-exports'
-Amplify.configure(awsExports)
+
+const { VITE_ENV: env } = import.meta.env
+env === 'prod' ? Amplify.configure(awsExports) : Amplify.configure(updatedAwsConfig)
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,4 +45,4 @@ const App = ({ signOut, user }) => {
   )
 }
 
-export default withAuthenticator(App)
+export default withAuthenticator(App, { loginMechanisms: ['email', 'google'] })
