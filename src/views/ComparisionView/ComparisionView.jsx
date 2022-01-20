@@ -50,7 +50,11 @@ export function ComparisionView ({ params }) {
   const getValue = (item) => {
     if (item.value) {
       return item.position === 'left' ? item.sign + ' ' + item.value : item.value + ' ' + item.sign
-    } else return ''
+    } else return 'NA'
+  }
+
+  const getPercentageValues = (value) => {
+    return value ? `${value} %` : 'NA'
   }
 
   return (
@@ -102,11 +106,11 @@ export function ComparisionView ({ params }) {
                       <TableCell align="left">{row.sector}</TableCell>
                       <TableCell align="left">{row.vertical}</TableCell>
                       <TableCell align="center">{row.revenue}</TableCell>
-                      <TableCell align="center">{row.growth + ' %'}</TableCell>
-                      <TableCell align="center">{row.ebitda_margin + ' %'}</TableCell>
-                      <TableCell align="center">{row.revenue_vs_budget + ' %'}</TableCell>
-                      <TableCell align="center">{row.ebitda_vs_budget + ' %'}</TableCell>
-                      <TableCell align="center">{row.rule_of_40}</TableCell>
+                      <TableCell align="center">{getPercentageValues(row.growth)}</TableCell>
+                      <TableCell align="center">{getPercentageValues(row.ebitda_margin)}</TableCell>
+                      <TableCell align="center">{getPercentageValues(row.revenue_vs_budget)}</TableCell>
+                      <TableCell align="center">{getPercentageValues(row.ebitda_vs_budget)}</TableCell>
+                      <TableCell align="center">{row.rule_of_40 || 'NA'}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

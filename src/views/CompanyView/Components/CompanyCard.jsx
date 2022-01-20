@@ -25,6 +25,7 @@ export function CompanyCard ({ financialProfile, isLoading }) {
     if (row.value) {
       return row.position === 'left' ? row.sign + ' ' + row.value : row.value + ' ' + row.sign
     }
+    return 'NA'
   }
   return (
         <CardKPI title={'Company financial profile'} actions={false} overflow='auto'>
