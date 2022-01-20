@@ -15,7 +15,8 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'wouter'
-import { AccountCircle, DesktopMacOutlined, AssignmentTwoTone, MenuOpen, Assessment } from '@material-ui/icons'
+import { AccountCircle, DesktopMacOutlined, AssignmentTwoTone, MenuOpen, Assessment, Business } from '@material-ui/icons'
+const { VITE_APP: appUrl } = import.meta.env
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +30,10 @@ const useStyles = makeStyles((theme) => ({
     color: '#979393'
   },
   appBar: {
-    backgroundColor: '#25462db7'
+    backgroundColor: '#1d3557'
+  },
+  link: {
+    textDecoration: 'none'
   }
 }))
 
@@ -67,6 +71,14 @@ const PageMenu = () => {
               <ListItemText primary="Comparison versus peers" className={classes.itemsText}/>
           </ListItem>
         </Link>
+        <a href={appUrl} className={classes.link}>
+          <ListItem button>
+              <ListItemIcon>
+                <Business/>
+              </ListItemIcon>
+              <ListItemText primary="About us" className={classes.itemsText}/>
+          </ListItem>
+        </a>
       </List>
     </div>
   )
