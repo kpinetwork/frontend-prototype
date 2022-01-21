@@ -6,20 +6,6 @@
 # @param alias An alias block, conflicts with ttl & records.
 # ----------------------------------------------------------------------------------------------------------------------
 
-resource "aws_route53_record" "kpinetwork_domain" {
-  zone_id = var.hosted_zone_id
-  name = var.domain
-  type = "A"
-
-  alias {
-    name = var.aws_cloudfront_distribution.domain_name
-    zone_id = var.aws_cloudfront_distribution.hosted_zone_id
-    evaluate_target_health = false
-  }
-
-  count = var.is_production ? 1 : 0
-}
-
 resource "aws_route53_record" "kpinetwork_sub_domain" {
   zone_id = var.hosted_zone_id
   name = var.sub_domain
