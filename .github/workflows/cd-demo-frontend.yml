@@ -44,6 +44,8 @@ jobs:
       - name: Build project demo
         env:
           VITE_HOST: ${{ secrets.VITE_HOST_DEMO }}
+          VITE_APP: ${{ secrets.VITE_APP_DEMO }}
+          VITE_ENV: demo
         run: npm run build-demo
 
       - name: Setup Terraform
