@@ -6,6 +6,7 @@ import { Header } from './components/Header'
 import { UniverseView } from './views/UniverseView/UniverseView'
 import { CompanyView } from './views/CompanyView/CompanyView'
 import { ComparisionView } from './views/ComparisionView/ComparisionView'
+import { AdminPanelView } from './views/AdminPanel/AdminPanelView'
 import { FilterContextProvider } from './context/filterContext'
 import { Amplify } from 'aws-amplify'
 import { withAuthenticator } from '@aws-amplify/ui-react'
@@ -39,6 +40,7 @@ const App = ({ signOut, user }) => {
             <Route path="/" component={UniverseView} />
             <Route path="/company-report/:companyId?" component={CompanyView} />
             <Route path="/comparision-versus/:companyId?" component={ComparisionView} />
+            <Route path="/admin" component={AdminPanelView} />
           </Switch>
         </FilterContextProvider>
     </div>
