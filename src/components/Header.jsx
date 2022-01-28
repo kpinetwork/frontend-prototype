@@ -79,6 +79,14 @@ const PageMenu = () => {
               <ListItemText primary="About us" className={classes.itemsText}/>
           </ListItem>
         </a>
+        <Link href='/admin'>
+          <ListItem button>
+              <ListItemIcon>
+                <Assessment/>
+              </ListItemIcon>
+              <ListItemText primary="Admin Panel" className={classes.itemsText}/>
+          </ListItem>
+        </Link>
       </List>
     </div>
   )
