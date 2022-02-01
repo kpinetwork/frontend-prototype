@@ -22,7 +22,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const rows = [
-  { id: '1', name: 'MAMSoft', sector: 'Application Software', vertical: 'Software', is_public_data: false }
+  { id: '1', name: 'MAMSoft', sector: 'Application Software', vertical: 'Software', is_public_data: false },
+  { id: '2', name: 'Meet Group, Inc', sector: 'Online Media', vertical: 'Mining', is_public_data: true }
 ]
 
 export function CompaniesPanelTable () {
