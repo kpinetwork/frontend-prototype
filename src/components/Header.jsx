@@ -79,7 +79,7 @@ const PageMenu = () => {
               <ListItemText primary="About us" className={classes.itemsText}/>
           </ListItem>
         </a>
-        <Link href='/admin'>
+        <Link href='/admin/users'>
           <ListItem button>
               <ListItemIcon>
                 <Assessment/>
