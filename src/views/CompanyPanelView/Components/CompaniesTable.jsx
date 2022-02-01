@@ -37,7 +37,7 @@ export function CompaniesPanelTable () {
                         <TableCell>Name</TableCell>
                         <TableCell>Sector</TableCell>
                         <TableCell className={classes.hide}>Vertical</TableCell>
-                        <TableCell>Public data?</TableCell>
+                        <TableCell>Public data</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -47,7 +47,7 @@ export function CompaniesPanelTable () {
                             <TableCell>{row.sector}</TableCell>
                             <TableCell className={classes.hide}>{row.vertical}</TableCell>
                             <TableCell>
-                                <Checkbox checked={row.is_public_data}></Checkbox>
+                                <Checkbox checked={row.is_public_data} color="primary"></Checkbox>
                             </TableCell>
                         </TableRow>
                     ))}

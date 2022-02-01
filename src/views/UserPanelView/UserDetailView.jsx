@@ -1,9 +1,9 @@
 import React from 'react'
 import { Grid, Box } from '@material-ui/core'
-import { AdminPanelContainer } from './../Admin/AdminPanelContainer'
+import { AdminPanelContainer } from './../AdminPanel/AdminPanelContainer'
 import { UserCard } from './Components/UserCard'
 import { UserTabs } from './UserTabs'
-import { TitlePanel } from './../Admin/Components/TitlePanel'
+import { TitlePanel } from './../AdminPanel/Components/TitlePanel'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({

@@ -1,8 +1,8 @@
 import React from 'react'
 import { Grid, Box } from '@material-ui/core'
 import { CompaniesPanelTable } from './Components/CompaniesTable'
-import { AdminPanelContainer } from './../Admin/AdminPanelContainer'
-import { TitlePanel } from './../Admin/Components/TitlePanel'
+import { AdminPanelContainer } from '../AdminPanel/AdminPanelContainer'
+import { TitlePanel } from '../AdminPanel/Components/TitlePanel'
 
 export function CompanyPanelView () {
   return (
