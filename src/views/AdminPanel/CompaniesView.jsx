@@ -5,7 +5,10 @@ import { CompaniesPanelTable } from './Components/Companies/CompaniesTable'
 export function CompaniesPanelView () {
   return (
     <Grid>
-        <Typography>Companies View - Draft</Typography>
+        <Typography>Companies View</Typography>
+        <Typography variant="caption" display="block" gutterBottom>
+        Indicate with a check mark the companies that must display their data publicly.
+        </Typography>
         <CompaniesPanelTable />
     </Grid>
   )
