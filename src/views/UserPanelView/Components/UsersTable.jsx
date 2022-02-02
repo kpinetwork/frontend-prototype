@@ -1,6 +1,7 @@
 import React from 'react'
 import { Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { useLocation } from 'wouter'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,7 +22,13 @@ const rows = [
 ]
 
 export function UsersPanelTable () {
+  // eslint-disable-next-line no-unused-vars
+  const [__, setLocation] = useLocation()
   const classes = useStyles()
+
+  const changeRoute = (email) => {
+    setLocation(`/admin/users/${email}`)
+  }
 
   return (
     <div className={classes.root}>
@@ -37,9 +44,9 @@ export function UsersPanelTable () {
                 <TableBody>
                     { rows.map((row) => (
                         <TableRow key={row.id}>
-                            <TableCell>{row.email}</TableCell>
-                            <TableCell>{row.role}</TableCell>
-                            <TableCell>{row.status}</TableCell>
+                            <TableCell onClick={(_) => changeRoute(row?.email)}>{row?.email}</TableCell>
+                            <TableCell>{row?.role}</TableCell>
+                            <TableCell>{row?.status}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
