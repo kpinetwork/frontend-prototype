@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Paper } from '@material-ui/core'
+import { Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Paper, Chip, Box, CircularProgress } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useLocation } from 'wouter'
 
@@ -14,14 +14,23 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%'
     }
+  },
+  head: {
+    '&.MuiTableRow-head': {
+      backgroundColor: '#959cae'
+    },
+    '&.MuiTableCell-head': {
+      color: 'white',
+      fontWeight: 'bold'
+    }
+  },
+  roleName: {
+    marginRight: 10,
+    textTransform: 'capitalize'
   }
 }))
 
-const rows = [
-  { id: '1', email: 'kelly.castro@ioet.com', role: 'Customer', status: 'Active' }
-]
-
-export function UsersPanelTable () {
+export function UsersPanelTable ({ users, isLoading }) {
   // eslint-disable-next-line no-unused-vars
   const [__, setLocation] = useLocation()
   const classes = useStyles()
@@ -30,28 +39,56 @@ export function UsersPanelTable () {
     setLocation(`/admin/users/${email}`)
   }
 
+  const comesFromGoogle = (username) => {
+    return username && username.includes('Google') ? 'Google' : 'Cognito'
+  }
+
+  const getRoleName = (role) => {
+    if (role == null) return ''
+    const _role = role.split('_')
+    return _role.length === 3 ? _role[1] : ''
+  }
+
+  const getRoles = (groups) => {
+    const roles = groups || []
+    return <div key={`roles-${groups}`} style={{ display: 'flex' }}>
+      {roles.map((role) => {
+        return (
+          <Chip key={role} label={getRoleName(role)} variant="outlined" className={classes.roleName}/>
+        )
+      })}
+    </div>
+  }
+
   return (
     <div className={classes.root}>
-        <TableContainer component={Paper}>
+        {!isLoading &&
+          <TableContainer component={Paper}>
             <Table>
                 <TableHead>
-                    <TableRow>
-                        <TableCell>Email</TableCell>
-                        <TableCell>Role</TableCell>
-                        <TableCell>Status</TableCell>
+                    <TableRow className={classes.head}>
+                        <TableCell className={classes.head}>Email</TableCell>
+                        <TableCell className={classes.head}>Role</TableCell>
+                        <TableCell className={classes.head}>Provider</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    { rows.map((row) => (
-                        <TableRow key={row.id}>
-                            <TableCell onClick={(_) => changeRoute(row?.email)}>{row?.email}</TableCell>
-                            <TableCell>{row?.role}</TableCell>
-                            <TableCell>{row?.status}</TableCell>
+                    { users.map((user) => (
+                        <TableRow key={user?.email}>
+                            <TableCell onClick={(_) => changeRoute(user?.email)}>{user?.email}</TableCell>
+                            <TableCell>{getRoles(user?.roles)}</TableCell>
+                            <TableCell>{comesFromGoogle(user?.username)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
         </TableContainer>
+        }
+        {isLoading &&
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <CircularProgress color="inherit"/>
+        </Box>
+    }
     </div>
   )
 }
