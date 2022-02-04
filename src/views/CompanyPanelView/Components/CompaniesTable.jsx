@@ -10,9 +10,7 @@ const useStyles = makeStyles(theme => ({
   hide: {
     [theme.breakpoints.down('sm')]: {
       display: 'none'
-    },
-    color: 'white',
-    fontWeight: 'bold'
+    }
   },
   root: {
     [theme.breakpoints.up('md')]: {
@@ -99,7 +97,7 @@ export function CompaniesPanelTable () {
             <TableRow className={classes.head}>
               <TableCell className={classes.head}>Name</TableCell>
               <TableCell className={classes.head}>Sector</TableCell>
-              <TableCell className={classes.hide}>Vertical</TableCell>
+              <TableCell className={`${classes.hide} ${classes.head}`}>Vertical</TableCell>
               <TableCell className={classes.head}>Public data</TableCell>
             </TableRow>
           </TableHead>
