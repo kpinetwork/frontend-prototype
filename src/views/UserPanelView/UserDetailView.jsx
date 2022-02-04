@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Grid, Box } from '@material-ui/core'
 import { AdminPanelContainer } from './../AdminPanel/AdminPanelContainer'
 import { UserCard } from './Components/UserCard'
 import { UserTabs } from './UserTabs'
 import { TitlePanel } from './../AdminPanel/Components/TitlePanel'
 import { makeStyles } from '@material-ui/core/styles'
+import useUserDetails from './../../hooks/useUserDetails'
+import LoadingProgress from './../../components/Progress'
+import CardMessage from './../../components/CardMessage'
+import { isEmptyObject } from './../../utils/userFunctions'
+import { PermissionsView } from './../PermissionsView/PermissionsView'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,17 +29,55 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+function UserView ({ user, roles, permissions, classes, openPermissions, setOpenPermissions }) {
+  if (isEmptyObject(user)) {
+    return (
+      <CardMessage
+        title="User Not Fount"
+        message="Seems like this user does not exist in KPI Network"
+        type="error"
+      />
+    )
+  }
+  if (openPermissions) {
+    return (
+      <Box>
+        <PermissionsView setOpenPermissions={setOpenPermissions} email={user?.email}/>
+      </Box>
+    )
+  }
+  return (
+    <Box>
+      <TitlePanel title="User Details - Summary"/>
+      <UserCard rootClass={classes.root} user={user}/>
+      <UserTabs rootClass={classes.root} user={user} roles={roles} permissions={permissions} setOpenPermissions={setOpenPermissions}/>
+    </Box>
+  )
+}
+
 export function UserDetailView ({ params }) {
   const classes = useStyles()
+  const { user, roles, permissions, isLoading } = useUserDetails(params)
+  const [assignPermissions, setAssignPermissions] = useState(false)
 
   return (
     <Grid>
       <AdminPanelContainer initialTab="users">
-        <Box>
-          <TitlePanel title="User Details - Summary"/>
-          <UserCard rootClass={classes.root}/>
-          <UserTabs rootClass={classes.root}/>
-        </Box>
+        {!isLoading &&
+          <UserView
+            user={user}
+            permissions={permissions}
+            roles={roles}
+            classes={classes}
+            openPermissions={assignPermissions}
+            setOpenPermissions={setAssignPermissions}
+          />
+        }
+        {isLoading &&
+          <Box className={classes.root}>
+            <LoadingProgress />
+          </Box>
+        }
       </AdminPanelContainer>
     </Grid>
   )
