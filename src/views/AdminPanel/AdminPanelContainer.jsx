@@ -20,10 +20,6 @@ export function AdminPanelContainer ({ initialTab, children }) {
   const [tab, setTab] = useState('users')
   const classes = useStyles()
 
-  const changeTab = (_event, value) => {
-    setTab(value)
-  }
-
   useEffect(() => {
     const currentTab = initialTab || tab
     setTab(currentTab)
@@ -40,8 +36,6 @@ export function AdminPanelContainer ({ initialTab, children }) {
                 orientation={isPhone ? 'horizontal' : 'vertical'}
                 variant="scrollable"
                 value={tab}
-                onChange={changeTab}
-                sx={{ borderRight: 1, borderColor: 'divider' }}
                 TabIndicatorProps={{ className: classes.indicator }}
             >
                 <Tab className={classes.tabs} label="Users" value="users" href="/admin/users"/>

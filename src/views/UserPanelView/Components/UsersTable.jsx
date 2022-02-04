@@ -1,5 +1,6 @@
 import React from 'react'
-import { Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Paper, Chip, Box, CircularProgress } from '@material-ui/core'
+import { Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Paper, Chip } from '@material-ui/core'
+import LoadingProgress from './../../../components/Progress'
 import { makeStyles } from '@material-ui/core/styles'
 import { useLocation } from 'wouter'
 
@@ -17,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   },
   head: {
     '&.MuiTableRow-head': {
-      backgroundColor: '#959cae'
+      backgroundColor: '#2f5487'
     },
     '&.MuiTableCell-head': {
       color: 'white',
@@ -36,7 +37,7 @@ export function UsersPanelTable ({ users, isLoading }) {
   const classes = useStyles()
 
   const changeRoute = (email) => {
-    setLocation(`/admin/users/${email}`)
+    setLocation(`/admin/users/${email}/`)
   }
 
   const comesFromGoogle = (username) => {
@@ -46,7 +47,7 @@ export function UsersPanelTable ({ users, isLoading }) {
   const getRoleName = (role) => {
     if (role == null) return ''
     const _role = role.split('_')
-    return _role.length === 3 ? _role[1] : ''
+    return _role.length === 3 ? _role[1] : role
   }
 
   const getRoles = (groups) => {
@@ -85,9 +86,7 @@ export function UsersPanelTable ({ users, isLoading }) {
         </TableContainer>
         }
         {isLoading &&
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <CircularProgress color="inherit"/>
-        </Box>
+        <LoadingProgress />
     }
     </div>
   )

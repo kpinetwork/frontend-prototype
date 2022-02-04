@@ -11,12 +11,17 @@ export const useUsers = () => {
   }, [])
 
   const getUsersData = async (options) => {
-    const result = await getUsers(options)
-    const {
-      usersArray
-    } = destructuring(result)
-    setUsers(usersArray)
-    setIsLoading(false)
+    try {
+      const result = await getUsers(options)
+      const {
+        usersArray
+      } = destructuring(result)
+      setUsers(usersArray)
+      setIsLoading(false)
+    } catch (_error) {
+      setUsers([])
+      setIsLoading(false)
+    }
   }
 
   return {

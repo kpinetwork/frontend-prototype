@@ -4,7 +4,7 @@ import { Typography } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   title: {
-    color: '#959cae',
+    color: '#2f5487',
     fontWeight: 'bold',
     paddingTop: 20,
     paddingBottom: 20

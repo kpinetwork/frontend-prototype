@@ -17,7 +17,7 @@ export function UserCard ({ user, rootClass }) {
             </TableRow>
             <TableRow>
                 <TableCell>Role</TableCell>
-                <TableCell>{user?.groups}</TableCell>
+                <TableCell>{user?.roles}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell>Status</TableCell>
