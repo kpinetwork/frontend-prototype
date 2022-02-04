@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import { getCompanyPanelFromQueryParams } from '../service/companyPanel'
 
