@@ -1,8 +1,8 @@
 import React from 'react'
-import { Grid, Button, Box, Table, TableBody, TableHead, TableRow, TableCell } from '@material-ui/core'
+import { Grid, Chip, Button, Box, Table, TableBody, TableHead, TableRow, TableCell } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 
-export function PermissionsTab ({ rootClass, permissions, setOpenPermissions }) {
+export function PermissionsTab ({ rootClass, permissionClass, permissions, setOpenPermissions }) {
   return (
     <Grid>
       <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>
@@ -17,11 +17,13 @@ export function PermissionsTab ({ rootClass, permissions, setOpenPermissions }) 
         </TableHead>
         <TableBody>
             {
-              permissions.map((company, index) => {
+              permissions.map((permission, index) => {
                 return (
-                  <TableRow key={`user-${company?.id}-${index}`}>
-                    <TableCell>{company?.name}</TableCell>
-                    <TableCell>{company?.permission}</TableCell>
+                  <TableRow key={`user-${permission?.id}-${index}`}>
+                    <TableCell>{permission?.name}</TableCell>
+                    <TableCell>
+                      <Chip label={permission?.permission} variant="outlined" className={permissionClass}/>
+                    </TableCell>
                   </TableRow>
                 )
               })

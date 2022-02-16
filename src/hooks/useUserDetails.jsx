@@ -6,11 +6,13 @@ export const useUserDetails = ({ email }) => {
   const [roles, setRoles] = useState([])
   const [permissions, setPermissions] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [dataChanged, setDataChanged] = useState(false)
 
   useEffect(() => {
     setIsLoading(true)
     getUserData(email)
-  }, [])
+    setDataChanged(false)
+  }, [dataChanged])
 
   const getUserData = async (email) => {
     try {
@@ -37,7 +39,8 @@ export const useUserDetails = ({ email }) => {
     user,
     roles,
     permissions,
-    isLoading
+    isLoading,
+    setDataChanged
   }
 }
 

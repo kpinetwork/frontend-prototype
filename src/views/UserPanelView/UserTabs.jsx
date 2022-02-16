@@ -16,6 +16,9 @@ const useStyles = makeStyles(theme => ({
   },
   indicator: {
     backgroundColor: '#008b9a'
+  },
+  permission: {
+    textTransform: 'capitalize'
   }
 }))
 
@@ -53,7 +56,7 @@ export function UserTabs ({ params, rootClass, user, roles, permissions, setOpen
             </Box>
             <Box>
               <TabPanel value={tab} index={'permissions'}>
-                <PermissionsTab rootClass={rootClass} permissions={permissions} setOpenPermissions={setOpenPermissions}/>
+                <PermissionsTab rootClass={rootClass} permissionClass={classes.permission} permissions={permissions} setOpenPermissions={setOpenPermissions}/>
               </TabPanel>
               <TabPanel value={tab} index={'roles'}>
                 <RolesTab rootClass={rootClass} userRoles={user?.roles} roles={roles}/>
