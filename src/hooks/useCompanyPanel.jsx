@@ -6,9 +6,13 @@ const useCompanyPanel = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    getCompanyState()
+  }, [])
+
+  const getCompanyState = () => {
     setIsLoading(true)
     getCompanyPanel()
-  }, [])
+  }
 
   const getCompanyPanel = async () => {
     const result = await getCompanyPanelFromQueryParams()
@@ -18,12 +22,14 @@ const useCompanyPanel = () => {
   }
   return {
     companies,
-    isLoading
+    isLoading,
+    getCompanyState
   }
 }
 
 function destructuring (companies) {
-  return companies.map(({ id, name, sector, vertical }) => ({ id, name, sector, vertical }))
+  // eslint-disable-next-line camelcase
+  return companies.map(({ id, name, sector, vertical, is_public }) => ({ id, name, sector, vertical, is_public }))
 }
 
 export default useCompanyPanel
