@@ -40,10 +40,6 @@ export function UsersPanelTable ({ users, isLoading }) {
     setLocation(`/admin/users/${email}/`)
   }
 
-  const comesFromGoogle = (username) => {
-    return username && username.includes('Google') ? 'Google' : 'Cognito'
-  }
-
   const getRoleName = (role) => {
     if (role == null) return ''
     const _role = role.split('_')
@@ -70,7 +66,6 @@ export function UsersPanelTable ({ users, isLoading }) {
                     <TableRow className={classes.head}>
                         <TableCell className={classes.head}>Email</TableCell>
                         <TableCell className={classes.head}>Role</TableCell>
-                        <TableCell className={classes.head}>Provider</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -78,7 +73,6 @@ export function UsersPanelTable ({ users, isLoading }) {
                         <TableRow key={user?.email}>
                             <TableCell onClick={(_) => changeRoute(user?.email)}>{user?.email}</TableCell>
                             <TableCell>{getRoles(user?.roles)}</TableCell>
-                            <TableCell>{comesFromGoogle(user?.username)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

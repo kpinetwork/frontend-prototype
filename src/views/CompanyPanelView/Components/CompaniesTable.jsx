@@ -102,6 +102,11 @@ export function CompaniesPanelTable () {
     setPage(0)
   }
 
+  const onCancel = async (_) => {
+    await getCompanyState()
+    setChange(false)
+  }
+
   return (
     <div className={classes.root}>
       {!wantsChange &&
@@ -110,14 +115,14 @@ export function CompaniesPanelTable () {
           className={classes.textButton}
           startIcon={<Settings style={{ color: '#364b8a' }}/>}
           >
-            Change public data
+            Change publicly
           </Button>
         </Box>
       }
       {
         wantsChange &&
         <Box pb={5}>
-          <Typography variant="body2">Select all the companies that will have their information publicly.</Typography>
+          <Typography variant="body2">Select all the companies that will be shared over KPI.</Typography>
         </Box>
       }
       <TableContainer component={Paper}>
@@ -127,7 +132,7 @@ export function CompaniesPanelTable () {
               <TableCell className={classes.head}>Name</TableCell>
               <TableCell className={classes.head}>Sector</TableCell>
               <TableCell className={`${classes.hide} ${classes.head}`}>Vertical</TableCell>
-              <TableCell className={classes.head}>Public data</TableCell>
+              <TableCell className={classes.head}>Public</TableCell>
             </TableRow>
           </TableHead>
           {!isLoading && (
@@ -176,7 +181,7 @@ export function CompaniesPanelTable () {
       {wantsChange &&
         <ButtonActions
         onOk={onSave}
-        onCancel={(_) => setChange(false)}
+        onCancel={onCancel}
         okName="Save"
         cancelName="Cancel"
        />
