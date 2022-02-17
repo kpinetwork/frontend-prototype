@@ -85,7 +85,7 @@ export function CompaniesPanelTable () {
   const onSave = async (_) => {
     const companiesToChange = getChangedCompanies(companies, selected)
     if (Object.keys(companiesToChange.companies).length > 0) {
-      await changeCompanyPublicly(getChangedCompanies(companies, selected))
+      await changeCompanyPublicly(companiesToChange)
     }
     setChange(false)
     await getCompanyState()
