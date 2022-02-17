@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Button, Typography, Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Paper, Checkbox, TableFooter, TablePagination } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Settings } from '@material-ui/icons'
+import { changeCompanyPublicly } from '../../../service/changeCompanyPublicly'
 import useCompanyPanel from '../../../hooks/useCompanyPanel'
 import LoadingProgress from './../../../components/Progress'
 import ButtonActions from './../../../components/Actions'
@@ -42,12 +43,18 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export function CompaniesPanelTable () {
-  const { companies, isLoading } = useCompanyPanel()
+  const { companies, isLoading, getCompanyState } = useCompanyPanel()
   const [wantsChange, setChange] = useState(false)
   const [page, setPage] = useState(0)
   const [selected, setSelected] = useState([])
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const classes = useStyles()
+
+  useEffect(() => {
+    mapPublicCompanies()
+  }, [companies])
+
+  const mapPublicCompanies = () => setSelected(companies.filter(company => company.is_public).map(company => company.id))
 
   const handleChange = (event, companyId) => {
     const checked = event.target.checked
@@ -58,6 +65,30 @@ export function CompaniesPanelTable () {
         return prev.filter(id => id !== companyId)
       }
     })
+  }
+
+  const getChangedCompanies = (companies, selected) => {
+    return {
+      companies: companies.filter(company => {
+        // eslint-disable-next-line camelcase
+        const { is_public, id } = company
+        // eslint-disable-next-line camelcase
+        if ((is_public && selected.includes(id)) || (!is_public && !selected.includes(id))) {
+          return false
+        }
+        return true
+        // eslint-disable-next-line camelcase
+      }).reduce((prev, { id, is_public }) => ({ ...prev, [id]: !is_public }), {})
+    }
+  }
+
+  const onSave = async (_) => {
+    const companiesToChange = getChangedCompanies(companies, selected)
+    if (Object.keys(companiesToChange.companies).length > 0) {
+      await changeCompanyPublicly(companiesToChange)
+    }
+    setChange(false)
+    await getCompanyState()
   }
 
   const isSelected = (company, selectedIds) => {
@@ -73,6 +104,11 @@ export function CompaniesPanelTable () {
     setPage(0)
   }
 
+  const onCancel = async (_) => {
+    mapPublicCompanies()
+    setChange(false)
+  }
+
   return (
     <div className={classes.root}>
       {!wantsChange &&
@@ -81,14 +117,14 @@ export function CompaniesPanelTable () {
           className={classes.textButton}
           startIcon={<Settings style={{ color: '#364b8a' }}/>}
           >
-            Change public data
+            Change publicly
           </Button>
         </Box>
       }
       {
         wantsChange &&
         <Box pb={5}>
-          <Typography variant="body2">Select all the companies that will have their information publicly.</Typography>
+          <Typography variant="body2">Select all the companies that will be shared over KPI.</Typography>
         </Box>
       }
       <TableContainer component={Paper}>
@@ -98,7 +134,7 @@ export function CompaniesPanelTable () {
               <TableCell className={classes.head}>Name</TableCell>
               <TableCell className={classes.head}>Sector</TableCell>
               <TableCell className={`${classes.hide} ${classes.head}`}>Vertical</TableCell>
-              <TableCell className={classes.head}>Public data</TableCell>
+              <TableCell className={classes.head}>Public</TableCell>
             </TableRow>
           </TableHead>
           {!isLoading && (
@@ -146,8 +182,8 @@ export function CompaniesPanelTable () {
       </TableContainer>
       {wantsChange &&
         <ButtonActions
-        onOk={(_) => setChange(false)}
-        onCancel={(_) => setChange(false)}
+        onOk={onSave}
+        onCancel={onCancel}
         okName="Save"
         cancelName="Cancel"
        />
