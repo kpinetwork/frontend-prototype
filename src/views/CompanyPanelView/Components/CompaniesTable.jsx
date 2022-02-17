@@ -51,8 +51,10 @@ export function CompaniesPanelTable () {
   const classes = useStyles()
 
   useEffect(() => {
-    setSelected(companies.filter(company => company.is_public).map(company => company.id))
+    mapPublicCompanies()
   }, [companies])
+
+  const mapPublicCompanies = () => setSelected(companies.filter(company => company.is_public).map(company => company.id))
 
   const handleChange = (event, companyId) => {
     const checked = event.target.checked
@@ -103,7 +105,7 @@ export function CompaniesPanelTable () {
   }
 
   const onCancel = async (_) => {
-    await getCompanyState()
+    mapPublicCompanies()
     setChange(false)
   }
 
