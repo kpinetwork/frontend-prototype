@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Backdrop, Typography, Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Checkbox, TableFooter, TablePagination } from '@material-ui/core'
-import useCompanyPanel from '../../hooks/useCompanyPanel'
+import usePublicCompanies from '../../hooks/usePublicCompanies'
 import useCompanyPermissions from './../../hooks/useCompanyPermissions'
 import { makeStyles } from '@material-ui/core/styles'
 import { TitlePanel } from './../AdminPanel/Components/TitlePanel'
@@ -39,7 +39,7 @@ export function PermissionsView ({ setOpenPermissions, email }) {
   const [selected, setSelected] = useState([])
   const [data, setData] = useState([])
   const [rowsPerPage, setRowsPerPage] = useState(10)
-  const { companies, isLoading } = useCompanyPanel()
+  const { companies, isLoading } = usePublicCompanies()
   const { permissions, successChange, isPermissionsLoading, isUpdatingPermissions, assignCompanyPermissions } = useCompanyPermissions(email)
   const classes = useStyles()
 
@@ -106,8 +106,9 @@ export function PermissionsView ({ setOpenPermissions, email }) {
     const allowed = getAllowedPermissions()
     const revoked = getRevokedPermissions()
     const companyPermissions = Object.assign(allowed, revoked)
-
-    assignCompanyPermissions(companyPermissions, email)
+    if (Object.keys(companyPermissions).length > 0) {
+      assignCompanyPermissions(companyPermissions, email)
+    }
   }
 
   return (

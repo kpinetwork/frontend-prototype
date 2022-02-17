@@ -39,6 +39,10 @@ export function SelectCompany ({ companyList, setCompanyID, year, companyID }) {
     }
   }, [companyList])
 
+  const getValidList = (list) => {
+    return list || []
+  }
+
   return (
     <>
         <Card className={classes.root} variant="outlined">
@@ -50,8 +54,8 @@ export function SelectCompany ({ companyList, setCompanyID, year, companyID }) {
                     onChange={handleChange}
                     className={classes.select}
                 >
-                {companyList.map((row) => (
-                      <MenuItem key={row.company_id} value={row.company_id}>{row.name}</MenuItem>
+                {getValidList(companyList).map((row) => (
+                      <MenuItem key={row?.id} value={row?.id}>{row?.name}</MenuItem>
                 ))}
                 </Select>
             </FormControl>

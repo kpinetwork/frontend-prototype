@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { useLocation } from 'wouter'
 import FilterContext from '../context/filterContext'
 import { getCompanyReportFromQueryParams } from '../service/companyReport'
+import { getPublicCompanies } from '../service/company'
 
 export const useCompanyReport = ({ companyId }) => {
   // eslint-disable-next-line no-unused-vars
@@ -12,10 +13,12 @@ export const useCompanyReport = ({ companyId }) => {
   const [description, setDescription] = useState(null)
   const [financialProfile, setFinancialProfile] = useState(null)
   const [ruleOf40, setRuleOf40] = useState([])
+  const [companies, setCompanies] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    if (companyParams) {
+    getCompanies()
+    if (companyParams && companyParams !== 'undefined') {
       setIsLoading(true)
       getCompanyReport({ company_id: companyParams, year, ...filters })
     } else {
@@ -24,6 +27,15 @@ export const useCompanyReport = ({ companyId }) => {
       setLocation(`/company-report/${companyID}`)
     }
   }, [filters, year, companyID])
+
+  const getCompanies = async () => {
+    try {
+      const result = await getPublicCompanies()
+      setCompanies(result)
+    } catch (_error) {
+      setCompanies([])
+    }
+  }
 
   const getCompanyReport = async (options) => {
     const result = await getCompanyReportFromQueryParams(options)
@@ -40,6 +52,7 @@ export const useCompanyReport = ({ companyId }) => {
 
   return {
     description,
+    companies,
     financialProfile,
     ruleOf40,
     isLoading,
