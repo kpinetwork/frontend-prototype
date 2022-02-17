@@ -57,8 +57,13 @@ function UserView ({ user, roles, permissions, classes, openPermissions, setOpen
 
 export function UserDetailView ({ params }) {
   const classes = useStyles()
-  const { user, roles, permissions, isLoading } = useUserDetails(params)
+  const { user, roles, permissions, isLoading, setDataChanged } = useUserDetails(params)
   const [assignPermissions, setAssignPermissions] = useState(false)
+
+  const updateView = (value) => {
+    setDataChanged(true)
+    setAssignPermissions(value)
+  }
 
   return (
     <Grid>
@@ -70,7 +75,7 @@ export function UserDetailView ({ params }) {
             roles={roles}
             classes={classes}
             openPermissions={assignPermissions}
-            setOpenPermissions={setAssignPermissions}
+            setOpenPermissions={updateView}
           />
         }
         {isLoading &&
