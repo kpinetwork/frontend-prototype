@@ -119,13 +119,6 @@ export function PermissionsView ({ setOpenPermissions, email }) {
         <Typography variant="body2">{email} will be able to view company information without data anonymization.</Typography>
       </Box>
       {
-        successChange &&
-        <Box mb={3}>
-          <Alert wrap="wrap" variation="info" isDismissible={true} heading="Permissions changed">
-          </Alert>
-        </Box>
-      }
-      {
         successChange === false &&
         <Box mb={3}>
           <Alert wrap="wrap" variation="error" isDismissible={true} heading="Cannot change permissions"></Alert>
@@ -143,7 +136,7 @@ export function PermissionsView ({ setOpenPermissions, email }) {
                <TableCell className={classes.head}>Allow</TableCell>
              </TableRow>
            </TableHead>
-           {!isLoading && (
+           {!isLoading && !isPermissionsLoading && (
              <TableBody>
              {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((company) => (
                <TableRow key={company.id}>
@@ -156,7 +149,7 @@ export function PermissionsView ({ setOpenPermissions, email }) {
              ))}
            </TableBody>
            )}
-           {isLoading &&
+           {(isLoading || isPermissionsLoading) &&
             <TableBody>
               <TableRow>
                 <TableCell colSpan={3}>

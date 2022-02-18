@@ -56,7 +56,7 @@ export function UserTabs ({ params, rootClass, user, roles, permissions, setOpen
             </Box>
             <Box>
               <TabPanel value={tab} index={'permissions'}>
-                <PermissionsTab rootClass={rootClass} permissionClass={classes.permission} permissions={permissions} setOpenPermissions={setOpenPermissions}/>
+                <PermissionsTab rootClass={rootClass} permissionClass={classes.permission} permissions={permissions} setOpenPermissions={setOpenPermissions} roles={user?.roles}/>
               </TabPanel>
               <TabPanel value={tab} index={'roles'}>
                 <RolesTab rootClass={rootClass} userRoles={user?.roles} roles={roles}/>

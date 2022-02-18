@@ -6,12 +6,12 @@ const useCompanyPermissions = (username) => {
   const [isPermissionsLoading, setIsLoading] = useState(false)
   const [successChange, setSuccessChange] = useState(null)
   const [isUpdatingPermissions, setUpdatingPermissions] = useState(false)
+  const [changed, setChanged] = useState(false)
 
   useEffect(() => {
     setIsLoading(true)
     getCompanyPermissions(username)
-    setSuccessChange(null)
-  }, [])
+  }, [changed])
 
   const getCompanyPermissions = async (username) => {
     try {
@@ -33,6 +33,7 @@ const useCompanyPermissions = (username) => {
       }
       assignPermissions(body, username)
       setSuccessChange(true)
+      setChanged(!changed)
     } catch (_error) {
       setSuccessChange(false)
     } finally {
