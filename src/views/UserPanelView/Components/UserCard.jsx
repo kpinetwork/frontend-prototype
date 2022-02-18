@@ -8,10 +8,6 @@ export function UserCard ({ user, rootClass }) {
         <Table className={rootClass}>
           <TableBody>
             <TableRow>
-                <TableCell style={{ width: 120 }}>ID</TableCell>
-                <TableCell>{user?.id}</TableCell>
-            </TableRow>
-            <TableRow>
                 <TableCell>Email</TableCell>
                 <TableCell>{user?.email}</TableCell>
             </TableRow>

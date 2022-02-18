@@ -14,7 +14,6 @@ export const getCompanyReportFromQueryParams = async (options) => {
     },
     headers: headers
   })
-
   const data = await response.data
   return data
 }

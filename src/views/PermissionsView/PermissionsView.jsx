@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
-import { Box, Typography, Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Paper, Checkbox, TableFooter, TablePagination } from '@material-ui/core'
-import useCompanyPanel from '../../hooks/useCompanyPanel'
+import React, { useState, useEffect } from 'react'
+import { Box, Backdrop, Typography, Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Checkbox, TableFooter, TablePagination } from '@material-ui/core'
+import usePublicCompanies from '../../hooks/usePublicCompanies'
+import useCompanyPermissions from './../../hooks/useCompanyPermissions'
 import { makeStyles } from '@material-ui/core/styles'
 import { TitlePanel } from './../AdminPanel/Components/TitlePanel'
 import LoadingProgress from './../../components/Progress'
 import ButtonActions from './../../components/Actions'
+import { Alert } from '@aws-amplify/ui-react'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,22 +28,39 @@ const useStyles = makeStyles(theme => ({
       color: 'white',
       fontWeight: 'bold'
     }
+  },
+  paper: {
+    background: 'transparent'
   }
 }))
 
 export function PermissionsView ({ setOpenPermissions, email }) {
   const [page, setPage] = useState(0)
   const [selected, setSelected] = useState([])
+  const [data, setData] = useState([])
   const [rowsPerPage, setRowsPerPage] = useState(10)
-  const { companies, isLoading } = useCompanyPanel()
+  const { companies, isLoading } = usePublicCompanies()
+  const { permissions, successChange, isPermissionsLoading, isUpdatingPermissions, assignCompanyPermissions } = useCompanyPermissions(email)
   const classes = useStyles()
+
+  useEffect(() => {
+    setData([...companies])
+    fillSelected()
+  }, [companies])
+
+  const fillSelected = () => {
+    const initialSelected = permissions.map((permission) => {
+      return permission?.id
+    })
+    setSelected(initialSelected)
+  }
 
   const handleChange = (event, companyId) => {
     const checked = event.target.checked
 
     setSelected(prev => {
       if (checked) {
-        return [...prev, companies.find(company => company.id === companyId)?.id]
+        return [...prev, data.find(company => company.id === companyId)?.id]
       } else {
         return prev.filter(id => id !== companyId)
       }
@@ -61,6 +80,37 @@ export function PermissionsView ({ setOpenPermissions, email }) {
     setPage(0)
   }
 
+  const getAllowedPermissions = () => {
+    const companies = {}
+    selected.forEach(companyID => {
+      const alreadyAllowed = permissions.some(permission => permission?.id === companyID)
+      if (!alreadyAllowed) {
+        companies[companyID] = true
+      }
+    })
+    return companies
+  }
+
+  const getRevokedPermissions = () => {
+    const companies = {}
+    permissions.forEach(permission => {
+      const alreadyAllowed = selected.some(companyID => permission?.id === companyID)
+      if (!alreadyAllowed) {
+        companies[permission?.id] = false
+      }
+    })
+    return companies
+  }
+
+  const assignPermissions = async () => {
+    const allowed = getAllowedPermissions()
+    const revoked = getRevokedPermissions()
+    const companyPermissions = Object.assign(allowed, revoked)
+    if (Object.keys(companyPermissions).length > 0) {
+      assignCompanyPermissions(companyPermissions, email)
+    }
+  }
+
   return (
     <Box className={classes.root}>
       <TitlePanel title="Assign View Permission" />
@@ -68,7 +118,16 @@ export function PermissionsView ({ setOpenPermissions, email }) {
         <Typography variant="body2">Select all companies you want to assign VIEW permission to {email}.</Typography>
         <Typography variant="body2">{email} will be able to view company information without data anonymization.</Typography>
       </Box>
-      <TableContainer component={Paper}>
+      {
+        successChange === false &&
+        <Box mb={3}>
+          <Alert wrap="wrap" variation="error" isDismissible={true} heading="Cannot change permissions"></Alert>
+        </Box>
+      }
+      <Backdrop open={isUpdatingPermissions} className={classes.paper}>
+        <LoadingProgress />
+      </Backdrop>
+      <TableContainer>
          <Table>
            <TableHead>
              <TableRow className={classes.head}>
@@ -77,9 +136,9 @@ export function PermissionsView ({ setOpenPermissions, email }) {
                <TableCell className={classes.head}>Allow</TableCell>
              </TableRow>
            </TableHead>
-           {!isLoading && (
+           {!isLoading && !isPermissionsLoading && (
              <TableBody>
-             {companies.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((company) => (
+             {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((company) => (
                <TableRow key={company.id}>
                  <TableCell>{company.name}</TableCell>
                  <TableCell>{company.sector}</TableCell>
@@ -90,7 +149,7 @@ export function PermissionsView ({ setOpenPermissions, email }) {
              ))}
            </TableBody>
            )}
-           {isLoading &&
+           {(isLoading || isPermissionsLoading) &&
             <TableBody>
               <TableRow>
                 <TableCell colSpan={3}>
@@ -99,12 +158,12 @@ export function PermissionsView ({ setOpenPermissions, email }) {
             </TableRow>
             </TableBody>
            }
-           {!isLoading &&
+           {!isLoading && !isPermissionsLoading &&
             <TableFooter>
               <TableRow>
                 <TablePagination
                   colSpan={3}
-                  count={companies.length}
+                  count={data.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}
@@ -117,7 +176,7 @@ export function PermissionsView ({ setOpenPermissions, email }) {
          </Table>
        </TableContainer>
        <ButtonActions
-        onOk={(_) => setOpenPermissions(false)}
+        onOk={(_) => assignPermissions()}
         onCancel={(_) => setOpenPermissions(false)}
         okName="Save"
         cancelName="Cancel"

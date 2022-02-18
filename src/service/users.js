@@ -34,3 +34,17 @@ export const getRoles = async () => {
   const data = await response.json()
   return data
 }
+
+export const getPermissions = async (username) => {
+  const headers = await getAuthorizationHeader()
+  const response = await axios.get(`${usersUrl}/${username}/company_permissions`, { headers })
+  const data = response.data
+  return data
+}
+
+export const assignPermissions = async (data, username) => {
+  const headers = await getAuthorizationHeader()
+  const response = await axios.put(`${usersUrl}/${username}/company_permissions`, data, { headers })
+  const body = response.data
+  return body
+}

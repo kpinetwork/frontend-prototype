@@ -1,7 +1,6 @@
 import React from 'react'
 import { Amplify } from 'aws-amplify'
 import { Authenticator } from '@aws-amplify/ui-react'
-import CustomAuthComponents from './components/CustomAuthComponents'
 import { makeStyles } from '@material-ui/core/styles'
 import { Switch, Route } from 'wouter'
 import { Header } from './components/Header'
@@ -53,7 +52,7 @@ function AppRoutes ({ signOut }) {
 
 function App () {
   return (
-    <Authenticator socialProviders={[]} components={CustomAuthComponents()} variation="modal">
+    <Authenticator socialProviders={[]} variation="modal">
       {({ signOut }) => {
         return (
           <AppRoutes
