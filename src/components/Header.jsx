@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'wouter'
-import { useAdmin } from '../hooks/useIsAdmin'
+import { useIsAdmin } from '../hooks/useIsAdmin'
 import { AccountCircle, DesktopMacOutlined, AssignmentTwoTone, MenuOpen, Assessment, Business } from '@material-ui/icons'
 const { VITE_APP: appUrl } = import.meta.env
 
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PageMenu = () => {
   const classes = useStyles()
-  const isAdmin = useAdmin()
+  const isAdmin = useIsAdmin()
 
   return (
     <div className={classes.root}>

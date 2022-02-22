@@ -18,7 +18,7 @@ export const getAuthorizationHeader = async () => {
   }
 }
 
-export const isAdmin = async () => {
+export const verifyIsAdmin = async () => {
   const userInfo = await Auth.currentAuthenticatedUser()
   const adminRole = userInfo.signInUserSession.idToken.payload['cognito:groups'].filter(group => group.includes('admin'))
   const isAdmin = adminRole.length > 0

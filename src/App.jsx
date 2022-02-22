@@ -15,7 +15,7 @@ import '@aws-amplify/ui-react/styles.css'
 import './App.scss'
 import { updatedAwsConfig } from './awsConfig'
 import awsExports from './aws-exports'
-import { useAdmin } from './hooks/useIsAdmin'
+import { useIsAdmin } from './hooks/useIsAdmin'
 
 const { VITE_ENV: env } = import.meta.env
 env === 'prod' ? Amplify.configure(awsExports) : Amplify.configure(updatedAwsConfig)
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 function AppRoutes ({ signOut }) {
   const classes = useStyles()
-  const isAdmin = useAdmin()
+  const isAdmin = useIsAdmin()
   return (
     <div className={classes.root}>
       <Header classes={classes} signOut={signOut}/>

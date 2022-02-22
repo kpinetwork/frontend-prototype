@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { isAdmin } from '../service/session'
+import { verifyIsAdmin } from '../service/session'
 
-export const useAdmin = () => {
+export const useIsAdmin = () => {
   const [isAdminRole, setIsAdminRole] = useState(false)
   useEffect(
     () => {
-      isAdmin().then((isAdmin) => setIsAdminRole(isAdmin))
+      verifyIsAdmin().then((isAdmin) => setIsAdminRole(isAdmin))
     }
     , [])
   return isAdminRole
