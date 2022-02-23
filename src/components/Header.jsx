@@ -63,14 +63,6 @@ const PageMenu = () => {
               <ListItemText primary="Company report vs peers" className={classes.itemsText}/>
           </ListItem>
         </Link>
-        <Link href='/comparision-versus'>
-          <ListItem button>
-              <ListItemIcon>
-                <Assessment/>
-              </ListItemIcon>
-              <ListItemText primary="Comparison versus peers" className={classes.itemsText}/>
-          </ListItem>
-        </Link>
         <a href={appUrl} className={classes.link}>
           <ListItem button>
               <ListItemIcon>

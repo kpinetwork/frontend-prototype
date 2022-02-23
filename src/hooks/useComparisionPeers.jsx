@@ -1,15 +1,11 @@
 import { useContext, useEffect, useState } from 'react'
-import { useLocation } from 'wouter'
 import FilterContext from '../context/filterContext'
-// eslint-disable-next-line no-unused-vars
-import { getComparisonPeersFromObject, getComparisonPeersFromQueryParams } from '../service/comparisonPeers'
+import { getComparisonPeersFromQueryParams } from '../service/comparisonPeers'
 
 export const useComparisonPeers = ({ companyId }) => {
   // eslint-disable-next-line no-unused-vars
   const [companyParams, _] = useState(companyId)
-  // eslint-disable-next-line no-unused-vars
-  const [__, setLocation] = useLocation()
-  const { filters, setFilters, year, setYear, companyID, setCompanyID } = useContext(FilterContext)
+  const { filters, year, companyID } = useContext(FilterContext)
   const [companyComparison, setCompanyComparison] = useState({})
   const [rank, setRank] = useState({})
   const [peersComparison, setPeersComparison] = useState([])
@@ -18,11 +14,9 @@ export const useComparisonPeers = ({ companyId }) => {
   useEffect(() => {
     if (companyParams) {
       setIsLoading(true)
-      setCompanyID(companyParams)
       getComparisonPeers({ company_id: companyParams, year, ...filters })
     } else {
       setIsLoading(true)
-      setLocation(`/comparision-versus/${companyID}`)
       getComparisonPeers({ company_id: companyID, year, ...filters })
     }
   }, [filters, year])
@@ -45,11 +39,7 @@ export const useComparisonPeers = ({ companyId }) => {
     peersComparison,
     rank,
     setRank,
-    isLoading,
-    year,
-    setYear,
-    filters,
-    setFilters
+    isLoading
   }
 }
 

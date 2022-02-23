@@ -7,6 +7,8 @@ import { useCompanyReport } from '../../hooks/useCompanyReport'
 import { Filter } from '../../components/Filter/Filter'
 import { Information } from '../../components/HeaderInformation'
 import { SelectCompany } from './Components/SelectCompany'
+import { ComparisonView } from './../ComparisonView/ComparisonView'
+
 export function CompanyView ({ params }) {
   const {
     description,
@@ -40,6 +42,9 @@ export function CompanyView ({ params }) {
       <Grid container>
           <Grid item xs={12} sm={6} lg={6} xl={6}><DesciptionCard description={description} isLoading={isLoading}/></Grid>
           <Grid item xs={12} sm={6} lg={6} xl={6}><CompanyCard financialProfile={financialProfile} isLoading={isLoading}/></Grid>
+      </Grid>
+      <Grid>
+        <ComparisonView params={params}/>
       </Grid>
     </>
   )
