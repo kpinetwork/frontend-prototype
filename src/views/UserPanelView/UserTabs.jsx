@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export function UserTabs ({ params, rootClass, user, roles, permissions, setOpenPermissions }) {
+export function UserTabs ({ params, rootClass, user, roles, permissions, setOpenPermissions, setUser }) {
   const [tab, setTab] = useState('permissions')
   const classes = useStyles()
 
@@ -56,10 +56,21 @@ export function UserTabs ({ params, rootClass, user, roles, permissions, setOpen
             </Box>
             <Box>
               <TabPanel value={tab} index={'permissions'}>
-                <PermissionsTab rootClass={rootClass} permissionClass={classes.permission} permissions={permissions} setOpenPermissions={setOpenPermissions} roles={user?.roles}/>
+                <PermissionsTab
+                  rootClass={rootClass}
+                  permissionClass={classes.permission}
+                  permissions={permissions}
+                  setOpenPermissions={setOpenPermissions}
+                  roles={user?.roles}
+                />
               </TabPanel>
               <TabPanel value={tab} index={'roles'}>
-                <RolesTab rootClass={rootClass} userRoles={user?.roles} roles={roles} email={user?.email}/>
+                <RolesTab
+                  rootClass={rootClass}
+                  roles={roles}
+                  user={user}
+                  setUser={setUser}
+                />
               </TabPanel>
             </Box>
           </Box>

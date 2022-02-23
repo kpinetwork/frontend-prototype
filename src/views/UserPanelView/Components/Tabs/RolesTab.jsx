@@ -3,6 +3,7 @@ import { Grid, Snackbar, Button, Box, FormControl, FormControlLabel, RadioGroup,
 import { makeStyles } from '@material-ui/core/styles'
 import { Settings } from '@material-ui/icons'
 import ButtonActions from './../../../../components/Actions'
+import LoadingProgress from './../../../../components/Progress'
 import useUserRole from './../../../../hooks/useUserRole'
 import { Alert } from '@aws-amplify/ui-react'
 
@@ -32,11 +33,11 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export function RolesTab ({ rootClass, userRoles, roles, email }) {
+export function RolesTab ({ rootClass, roles, user, setUser }) {
   const classes = useStyles()
   const [wantsChange, setChange] = useState(false)
   const [activeRole, setRole] = useState('customer')
-  const { changed, changeUserRoles } = useUserRole()
+  const { changed, isUpdatingRole, changeUserRoles } = useUserRole()
   const [openError, setOpenError] = useState(false)
 
   const wantsChangeRole = (value) => {
@@ -44,15 +45,18 @@ export function RolesTab ({ rootClass, userRoles, roles, email }) {
   }
 
   const changeUserRole = async () => {
-    if (userRoles[0] !== activeRole) {
+    if (user?.roles[0] !== activeRole) {
       const data = {
         new_role: activeRole,
-        current_role: userRoles[0]
+        current_role: user?.roles[0]
       }
-      const response = await changeUserRoles(data, email)
-      if (response == null) {
+      const response = await changeUserRoles(data, user?.email)
+      if (response) {
+        setRole(activeRole)
+        setUser((prevUser) => ({ ...prevUser, roles: [activeRole] }))
+      } else {
         setOpenError(true)
-        setRole(userRoles[0])
+        setRole(user?.roles[0])
       }
       setChange(false)
     }
@@ -63,9 +67,9 @@ export function RolesTab ({ rootClass, userRoles, roles, email }) {
   }
 
   useEffect(() => {
-    if (userRoles == null || userRoles.length === 0) setRole('customer')
+    if (user?.roles == null || user?.roles.length === 0) setRole('customer')
     else {
-      const firstRole = userRoles[0]
+      const firstRole = user?.roles[0]
       setRole(firstRole)
     }
   }, [changed])
@@ -78,6 +82,10 @@ export function RolesTab ({ rootClass, userRoles, roles, email }) {
       >
         <Alert variation="error">Cannot change user role</Alert>
       </Snackbar>
+      {
+        isUpdatingRole &&
+        <LoadingProgress />
+      }
       {!wantsChange &&
         <Box className={classes.row}>
           <Button onClick={(_) => wantsChangeRole(true)}
