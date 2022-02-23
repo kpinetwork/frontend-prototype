@@ -35,6 +35,17 @@ export const getRoles = async () => {
   return data
 }
 
+export const changeUserRole = async (email, data) => {
+  const headers = await getAuthorizationHeader()
+  const url = `${usersUrl}/${email}/roles`
+  const response = await axios.put(url,
+    data,
+    { headers }
+  )
+  const body = response.data
+  return body
+}
+
 export const getPermissions = async (username) => {
   const headers = await getAuthorizationHeader()
   const response = await axios.get(`${usersUrl}/${username}/company_permissions`, { headers })
