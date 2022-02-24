@@ -41,7 +41,6 @@ function AppRoutes ({ signOut }) {
           <Switch>
             <Route path="/" component={UniverseView} />
             <Route path="/company-report/:companyId?" component={CompanyView} />
-            <Route exact path="/admin/companies" component={CompanyPanelView} />
             {isAdmin && (
               <>
                 <Route exact path="/admin/users" component={UserPanelView} />
