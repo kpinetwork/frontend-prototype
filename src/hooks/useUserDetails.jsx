@@ -37,6 +37,7 @@ export const useUserDetails = ({ email }) => {
 
   return {
     user,
+    setUser,
     roles,
     permissions,
     isLoading,

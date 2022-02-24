@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function UserView ({ user, roles, permissions, classes, openPermissions, setOpenPermissions }) {
+function UserView ({ user, roles, permissions, classes, openPermissions, setOpenPermissions, setUser }) {
   if (isEmptyObject(user)) {
     return (
       <CardMessage
@@ -50,14 +50,16 @@ function UserView ({ user, roles, permissions, classes, openPermissions, setOpen
     <Box>
       <TitlePanel title="User Details - Summary"/>
       <UserCard rootClass={classes.root} user={user}/>
-      <UserTabs rootClass={classes.root} user={user} roles={roles} permissions={permissions} setOpenPermissions={setOpenPermissions}/>
+      <UserTabs rootClass={classes.root} user={user} roles={roles} permissions={permissions}
+        setOpenPermissions={setOpenPermissions} setUser={setUser}
+      />
     </Box>
   )
 }
 
 export function UserDetailView ({ params }) {
   const classes = useStyles()
-  const { user, roles, permissions, isLoading, setDataChanged } = useUserDetails(params)
+  const { user, setUser, roles, permissions, isLoading, setDataChanged } = useUserDetails(params)
   const [assignPermissions, setAssignPermissions] = useState(false)
 
   const updateView = (value) => {
@@ -76,6 +78,7 @@ export function UserDetailView ({ params }) {
             classes={classes}
             openPermissions={assignPermissions}
             setOpenPermissions={updateView}
+            setUser={setUser}
           />
         }
         {isLoading &&
