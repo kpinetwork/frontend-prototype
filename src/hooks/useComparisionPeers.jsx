@@ -2,9 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import FilterContext from '../context/filterContext'
 import { getComparisonPeersFromQueryParams } from '../service/comparisonPeers'
 
-export const useComparisonPeers = ({ companyId }) => {
-  // eslint-disable-next-line no-unused-vars
-  const [companyParams, _] = useState(companyId)
+export const useComparisonPeers = ({ fromUniverseOverview }) => {
   const { filters, year, companyID } = useContext(FilterContext)
   const [companyComparison, setCompanyComparison] = useState({})
   const [rank, setRank] = useState({})
@@ -12,14 +10,15 @@ export const useComparisonPeers = ({ companyId }) => {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    if (companyParams) {
-      setIsLoading(true)
-      getComparisonPeers({ company_id: companyParams, year, ...filters })
+    if (fromUniverseOverview) {
+      getComparisonPeers({ year, from_main: fromUniverseOverview, ...filters })
     } else {
-      setIsLoading(true)
-      getComparisonPeers({ company_id: companyID, year, ...filters })
+      if (companyID) {
+        setIsLoading(true)
+        getComparisonPeers({ company_id: companyID, year, ...filters })
+      }
     }
-  }, [filters, year])
+  }, [filters, year, companyID])
 
   const getComparisonPeers = async (options) => {
     const result = await getComparisonPeersFromQueryParams(options)

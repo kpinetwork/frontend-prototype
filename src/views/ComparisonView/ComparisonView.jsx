@@ -29,8 +29,8 @@ const INITIAL_DATA = [
 
 ]
 
-export function ComparisonView ({ params }) {
-  const { companyComparison, rank, peersComparison, isLoading } = useComparisonPeers({ companyId: params?.companyId })
+export function ComparisonView ({ params, fromUniverseOverview }) {
+  const { companyComparison, rank, peersComparison, isLoading } = useComparisonPeers({ fromUniverseOverview })
   const [data, setData] = useState([])
 
   const validPeersComparison = () => {
@@ -70,24 +70,28 @@ export function ComparisonView ({ params }) {
                     ))}
                   </TableRow>
 
+                    { !fromUniverseOverview &&
+                      <TableRow
+                        key={companyComparison?.name}
+                        style={{ backgroundColor: '#cececeb9' }}>
+                          {data.map((item, index) => (<TableCell key={`${index}-${item.key}-comparison-peers`} align={item.align}>{getValue(item)}</TableCell>))}
+                      </TableRow>
+                    }
+                  { !fromUniverseOverview &&
                     <TableRow
-                      key={companyComparison?.name}
+                      key={rank?.revenue}
                       style={{ backgroundColor: '#cececeb9' }}>
-                        {data.map((item, index) => (<TableCell key={`${index}-${item.key}-comparison-peers`} align={item.align}>{getValue(item)}</TableCell>))}
+                      <TableCell align="center">{''}</TableCell>
+                      <TableCell align="center">{''}</TableCell>
+                      <TableCell align="center">{''}</TableCell>
+                      <TableCell align="center">{rank?.revenue}</TableCell>
+                      <TableCell align="center">{rank?.growth}</TableCell>
+                      <TableCell align="center">{rank?.ebitda_margin}</TableCell>
+                      <TableCell align="center">{rank?.revenue_vs_budget}</TableCell>
+                      <TableCell align="center">{rank?.ebitda_vs_budget}</TableCell>
+                      <TableCell align="center">{rank?.rule_of_40}</TableCell>
                     </TableRow>
-                  <TableRow
-                    key={rank?.revenue}
-                    style={{ backgroundColor: '#cececeb9' }}>
-                    <TableCell align="center">{''}</TableCell>
-                    <TableCell align="center">{''}</TableCell>
-                    <TableCell align="center">{''}</TableCell>
-                    <TableCell align="center">{rank?.revenue}</TableCell>
-                    <TableCell align="center">{rank?.growth}</TableCell>
-                    <TableCell align="center">{rank?.ebitda_margin}</TableCell>
-                    <TableCell align="center">{rank?.revenue_vs_budget}</TableCell>
-                    <TableCell align="center">{rank?.ebitda_vs_budget}</TableCell>
-                    <TableCell align="center">{rank?.rule_of_40}</TableCell>
-                  </TableRow>
+                  }
                 </TableHead>
                 <TableBody>
                   {validPeersComparison().map((row) => (
