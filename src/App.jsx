@@ -14,6 +14,7 @@ import '@aws-amplify/ui-react/styles.css'
 import './App.scss'
 import { updatedAwsConfig } from './awsConfig'
 import awsExports from './aws-exports'
+import { useIsAdmin } from './hooks/useIsAdmin'
 
 const { VITE_ENV: env } = import.meta.env
 env === 'prod' ? Amplify.configure(awsExports) : Amplify.configure(updatedAwsConfig)
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 function AppRoutes ({ signOut }) {
   const classes = useStyles()
+  const isAdmin = useIsAdmin()
   return (
     <div className={classes.root}>
       <Header classes={classes} signOut={signOut}/>
@@ -39,9 +41,18 @@ function AppRoutes ({ signOut }) {
           <Switch>
             <Route path="/" component={UniverseView} />
             <Route path="/company-report/:companyId?" component={CompanyView} />
-            <Route exact path="/admin/users" component={UserPanelView} />
             <Route exact path="/admin/companies" component={CompanyPanelView} />
-            <Route exact path="/admin/users/:email" component={UserDetailView} />
+            {isAdmin && (
+              <>
+                <Route exact path="/admin/users" component={UserPanelView} />
+                <Route exact path="/admin/companies" component={CompanyPanelView} />
+                <Route exact path="/admin/users/:email" component={UserDetailView} />
+              </>
+            )
+            }
+            <Route component={() => (
+            <div><center><p> Page not Found 404 </p></center></div>
+            )} />
           </Switch>
         </FilterContextProvider>
     </div>
