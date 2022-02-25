@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
-import FilterContext from '../context/filterContext'
+import Context from '../context/appContext'
 import { getUniverseOverviewFromQueryParams } from '../service/universeOverview'
 
 const useUniverseOverview = () => {
-  const { filters, setFilters, year, setYear, INITIAL_FILTER_STATE } = useContext(FilterContext)
+  const { filters, setFilters, year, setYear, INITIAL_FILTER_STATE } = useContext(Context).filterFields
   const [kpiAverage, setKpiAverage] = useState(null)
   const [countBySize, setCountBySize] = useState(null)
   const [growthAndMargin, setGrowthAndMargin] = useState(null)

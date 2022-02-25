@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
-import FilterContext from '../context/filterContext'
+import Context from '../context/appContext'
 import { getComparisonPeersFromQueryParams } from '../service/comparisonPeers'
 
 export const useComparisonPeers = ({ fromUniverseOverview }) => {
-  const { filters, year, companyID } = useContext(FilterContext)
+  const { filters, year, companyID } = useContext(Context).filterFields
   const [companyComparison, setCompanyComparison] = useState({})
   const [rank, setRank] = useState({})
   const [peersComparison, setPeersComparison] = useState([])

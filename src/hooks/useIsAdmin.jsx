@@ -3,10 +3,14 @@ import { verifyIsAdmin } from '../service/session'
 
 export const useIsAdmin = () => {
   const [isAdminRole, setIsAdminRole] = useState(false)
+  const [isRoleLoading, setIsRoleLoading] = useState(true)
   useEffect(
     () => {
-      verifyIsAdmin().then((isAdmin) => setIsAdminRole(isAdmin))
+      verifyIsAdmin().then((isAdmin) => {
+        setIsAdminRole(isAdmin)
+        setIsRoleLoading(false)
+      })
     }
     , [])
-  return isAdminRole
+  return { isAdmin: isAdminRole, isRoleLoading }
 }

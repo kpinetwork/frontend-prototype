@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
   AppBar,
   Toolbar,
@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'wouter'
-import { useIsAdmin } from '../hooks/useIsAdmin'
+import Context from '../context/appContext'
 import { AccountCircle, DesktopMacOutlined, AssignmentTwoTone, MenuOpen, Assessment, Business } from '@material-ui/icons'
 const { VITE_APP: appUrl } = import.meta.env
 
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PageMenu = ({ onClose }) => {
   const classes = useStyles()
-  const isAdmin = useIsAdmin()
+  const { isAdmin } = useContext(Context)
 
   return (
     <div className={classes.root}>
