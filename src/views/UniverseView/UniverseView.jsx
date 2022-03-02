@@ -10,6 +10,7 @@ import { Filter } from '../../components/Filter/Filter'
 import { RuleGraph } from './Components/RuleGraph'
 import useUniverseOverview from '../../hooks/useUniverseOverview'
 import { Information } from '../../components/HeaderInformation'
+import { ComparisonView } from './../ComparisonView/ComparisonView'
 
 export function UniverseView () {
   const {
@@ -42,6 +43,9 @@ export function UniverseView () {
           <Grid item xs={12} sm={6} lg={4}><GrowthAndMarginCard growthAndMargin={growthAndMargin} isLoading={isLoading}/></Grid>
           <Grid item xs={12} sm={6} lg={6}><RevenueAndEbitdaCard revenueAndEbitda={revenueAndEbitda} isLoading={isLoading}/></Grid>
           <Grid item xs={12} sm={6} lg={6}><ExpectedGrowthRateAndMarginCard expectedGrowthAndMargin={expectedGrowthAndMargin} isLoading={isLoading}/></Grid>
+      </Grid>
+      <Grid>
+        <ComparisonView fromUniverseOverview={true}/>
       </Grid>
     </>
   )

@@ -6,7 +6,6 @@ import { Switch, Route } from 'wouter'
 import { Header } from './components/Header'
 import { UniverseView } from './views/UniverseView/UniverseView'
 import { CompanyView } from './views/CompanyView/CompanyView'
-import { ComparisionView } from './views/ComparisionView/ComparisionView'
 import { UserPanelView } from './views/UserPanelView/UserPanelView'
 import { CompanyPanelView } from './views/CompanyPanelView/CompanyPanelView'
 import { UserDetailView } from './views/UserPanelView/UserDetailView'
@@ -42,7 +41,6 @@ function AppRoutes ({ signOut }) {
           <Switch>
             <Route path="/" component={UniverseView} />
             <Route path="/company-report/:companyId?" component={CompanyView} />
-            <Route path="/comparision-versus/:companyId?" component={ComparisionView} />
             {isAdmin && (
               <>
                 <Route exact path="/admin/users" component={UserPanelView} />
