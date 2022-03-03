@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react'
+import { useIsAdmin } from '../hooks/useIsAdmin'
 
 const INITIAL_FILTER_STATE = {
   sector: '',
@@ -10,16 +11,17 @@ const INITIAL_FILTER_STATE = {
 
 const Context = createContext({})
 
-export const FilterContextProvider = ({ children }) => {
+export const AppContextProvider = ({ children }) => {
   const [filters, setFilters] = useState(INITIAL_FILTER_STATE)
   const [companyID, setCompanyID] = useState(undefined)
   const [year, setYear] = useState(() => {
     const year = new Date().getFullYear()
     return year
   })
+  const { isAdmin, isRoleLoading } = useIsAdmin()
 
   return (
-    <Context.Provider value={{ filters, setFilters, year, setYear, companyID, setCompanyID, INITIAL_FILTER_STATE }}>
+    <Context.Provider value={ { filterFields: { filters, setFilters, year, setYear, companyID, setCompanyID, INITIAL_FILTER_STATE }, isAdmin, isRoleLoading }} >
       {children}
     </Context.Provider>
   )
