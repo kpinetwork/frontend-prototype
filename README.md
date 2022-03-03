@@ -20,7 +20,7 @@ Use [React](https://reactjs.org/) to develop a frontend prototype for a new webs
             - universeOverview.js
         views:
             CopanyView:
-            ComparisionView:
+            ComparisonView:
             UniverseView:
                 - universeOverview.jsx
 ````

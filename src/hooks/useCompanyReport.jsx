@@ -18,7 +18,7 @@ export const useCompanyReport = ({ companyId }) => {
 
   useEffect(() => {
     getCompanies()
-    if (companyParams && companyParams !== 'undefined') {
+    if (companyParams && companyParams !== 'undefined' && companyParams === companyID) {
       setIsLoading(true)
       getCompanyReport({ company_id: companyParams, year, ...filters })
     } else {

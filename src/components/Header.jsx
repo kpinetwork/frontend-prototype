@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const PageMenu = () => {
+const PageMenu = ({ onClose }) => {
   const classes = useStyles()
   const isAdmin = useIsAdmin()
 
@@ -49,7 +49,7 @@ const PageMenu = () => {
             <ListItemText primary="KPI Network" className={classes.title} />
         </ListItem>
         <Divider />
-        <Link href='/'>
+        <Link href='/' onClick={onClose}>
           <ListItem button>
               <ListItemIcon>
                   <DesktopMacOutlined />
@@ -57,7 +57,7 @@ const PageMenu = () => {
               <ListItemText primary="Universe Overview" className={classes.itemsText} />
           </ListItem>
         </Link>
-        <Link href='/company-report'>
+        <Link href='/company-report' onClick={onClose}>
           <ListItem button>
               <ListItemIcon>
                 <AssignmentTwoTone />
@@ -65,15 +65,7 @@ const PageMenu = () => {
               <ListItemText primary="Company report vs peers" className={classes.itemsText}/>
           </ListItem>
         </Link>
-        <Link href='/comparision-versus'>
-          <ListItem button>
-              <ListItemIcon>
-                <Assessment/>
-              </ListItemIcon>
-              <ListItemText primary="Comparison versus peers" className={classes.itemsText}/>
-          </ListItem>
-        </Link>
-        <a href={appUrl} className={classes.link}>
+        <a href={appUrl} className={classes.link} onClick={onClose}>
           <ListItem button>
               <ListItemIcon>
                 <Business/>
@@ -81,7 +73,7 @@ const PageMenu = () => {
               <ListItemText primary="About us" className={classes.itemsText}/>
           </ListItem>
         </a>
-        {isAdmin && <Link href='/admin/users'>
+        {isAdmin && <Link href='/admin/users' onClick={onClose}>
           <ListItem button>
               <ListItemIcon>
                 <Assessment/>
@@ -173,7 +165,7 @@ export const Header = (props) => {
               anchor="left"
               open={menuVisible}
               onClose={toggleDrawer(false)}>
-            <PageMenu/>
+            <PageMenu onClose={toggleDrawer(false)}/>
             </Drawer>
           : null}
     </>
