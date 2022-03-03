@@ -52,7 +52,6 @@ function AppRoutes ({ signOut }) {
       <Switch>
         <Route path="/" component={UniverseView} />
         <Route path="/company-report/:companyId?" component={CompanyView} />
-        <Route path="/comparision-versus/:companyId?" component={ComparisionView} />
         <Route exact path="/admin/users" component={(props) => renderIfAdmin(UserPanelView, props)} />
         <Route exact path="/admin/companies" component={(props) => renderIfAdmin(CompanyPanelView, props)} />
         <Route exact path="/admin/users/:email" component={(props) => renderIfAdmin(UserDetailView, props)} />
