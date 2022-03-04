@@ -9,7 +9,7 @@ const INITIAL_DATA = [
   { id: 3, key: 'sector', label: 'Sector', value: '' },
   { id: 4, key: 'vertical', label: 'Vertical', value: '' },
   { id: 5, key: 'inves_profile_name', label: 'Investor Profile', value: '' },
-  { id: 6, key: 'size_cohort', label: 'Size Cohort', value: '' },
+  { id: 6, key: 'size_cohort', label: 'Current Size Cohort', value: '' },
   { id: 7, key: 'margin_group', label: 'Growth Cohort', value: '' }
 ]
 

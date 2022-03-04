@@ -12,6 +12,7 @@ import { UserDetailView } from './views/UserPanelView/UserDetailView'
 import { ErrorView } from './views/DefaultView/ErrorView'
 import LoadingProgress from './components/Progress'
 import Context, { AppContextProvider } from './context/appContext'
+import CustomSignUpComponents from './components/CustomSignUpComponent'
 import '@aws-amplify/ui-react/styles.css'
 import './App.scss'
 import { updatedAwsConfig } from './awsConfig'
@@ -64,7 +65,7 @@ function AppRoutes ({ signOut }) {
 
 function App () {
   return (
-    <Authenticator socialProviders={[]} variation="modal">
+    <Authenticator socialProviders={[]} components={CustomSignUpComponents()} variation="modal">
       {({ signOut }) => {
         return (
           <AppContextProvider>
