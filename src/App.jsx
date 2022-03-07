@@ -30,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1
+  },
+  authenticator: {
+    height: '100vh'
   }
 }))
 
@@ -64,8 +67,23 @@ function AppRoutes ({ signOut }) {
 }
 
 function App () {
+  const classes = useStyles()
+  const formFields = {
+    confirmResetPassword: {
+      confirmation_code: {
+        labelHidden: false,
+        isRequired: true,
+        label: 'Code:'
+      },
+      password: {
+        labelHidden: false,
+        isRequired: true,
+        label: 'Password:'
+      }
+    }
+  }
   return (
-    <Authenticator socialProviders={[]} components={CustomSignUpComponents()} variation="modal">
+    <Authenticator className={classes.authenticator} socialProviders={[]} formFields={formFields} components={CustomSignUpComponents()}>
       {({ signOut }) => {
         return (
           <AppContextProvider>
