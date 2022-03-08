@@ -19,7 +19,9 @@ const CustomSignUpComponents = () => {
         return (
           <>
             <Authenticator.SignUp.FormFields />
-            <Typography className={classes.hint} >Password must be at least 8 characters long and must contain lowercase, uppercase and symbols</Typography>
+            <Typography className={classes.hint} >
+              Password must be at least 8 characters long and must contain lowercase, uppercase, numeric and symbols characters
+            </Typography>
           </>
         )
       }
