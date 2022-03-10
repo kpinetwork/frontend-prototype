@@ -38,8 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 function AppRoutes ({ signOut }) {
   const classes = useStyles()
-  const context = useContext(Context)
-  const { isAdmin, isRoleLoading } = context
+  const { isAdmin, isRoleLoading, user } = useContext(Context)
   const renderIfAdmin = (Component, props) => {
     if (isRoleLoading) {
       return <LoadingProgress />
@@ -58,7 +57,7 @@ function AppRoutes ({ signOut }) {
         <Route path="/company-report/:companyId?" component={CompanyView} />
         <Route exact path="/admin/users" component={(props) => renderIfAdmin(UserPanelView, props)} />
         <Route exact path="/admin/companies" component={(props) => renderIfAdmin(CompanyPanelView, props)} />
-        <Route exact path="/admin/users/:email" component={(props) => renderIfAdmin(UserDetailView, props)} />
+        <Route exact path="/admin/users/detail/" component={(props) => renderIfAdmin(UserDetailView, { ...props, email: user.selectedEmail })} />
         <Route exact path="/forbidden" component={(props) => <ErrorView {...props} message={'Forbidden'} code={'403'} />} />
         <Route component={(props) => <ErrorView {...props} message={'Not Found'} code={'404'} />} />
       </Switch>

@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Paper, Chip } from '@material-ui/core'
 import LoadingProgress from './../../../components/Progress'
 import { makeStyles } from '@material-ui/core/styles'
 import { useLocation } from 'wouter'
+import Context from '../../../context/appContext'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,9 +36,10 @@ export function UsersPanelTable ({ users, isLoading }) {
   // eslint-disable-next-line no-unused-vars
   const [__, setLocation] = useLocation()
   const classes = useStyles()
+  const { setSelectedEmail } = useContext(Context).user
 
-  const changeRoute = (email) => {
-    setLocation(`/admin/users/${email}/`)
+  const changeRoute = () => {
+    setLocation('/admin/users/detail/')
   }
 
   const getRoleName = (role) => {
@@ -71,7 +73,10 @@ export function UsersPanelTable ({ users, isLoading }) {
                 <TableBody>
                     { users.map((user) => (
                         <TableRow key={user?.email}>
-                            <TableCell onClick={(_) => changeRoute(user?.email)}>{user?.email}</TableCell>
+                            <TableCell onClick={(_) => {
+                              changeRoute()
+                              setSelectedEmail(user?.email)
+                            }}>{user?.email}</TableCell>
                             <TableCell>{getRoles(user?.roles)}</TableCell>
                         </TableRow>
                     ))}
