@@ -57,9 +57,10 @@ function UserView ({ user, roles, permissions, classes, openPermissions, setOpen
   )
 }
 
-export function UserDetailView ({ params }) {
+export function UserDetailView (props) {
+  const { email } = props
   const classes = useStyles()
-  const { user, setUser, roles, permissions, isLoading, setDataChanged } = useUserDetails(params)
+  const { user, setUser, roles, permissions, isLoading, setDataChanged } = useUserDetails({ email })
   const [assignPermissions, setAssignPermissions] = useState(false)
 
   const updateView = (value) => {
