@@ -14,6 +14,7 @@ const Context = createContext({})
 export const AppContextProvider = ({ children }) => {
   const [filters, setFilters] = useState(INITIAL_FILTER_STATE)
   const [companyID, setCompanyID] = useState(undefined)
+  const [selectedEmail, setSelectedEmail] = useState(undefined)
   const [year, setYear] = useState(() => {
     const year = new Date().getFullYear()
     return year
@@ -21,7 +22,12 @@ export const AppContextProvider = ({ children }) => {
   const { isAdmin, isRoleLoading } = useIsAdmin()
 
   return (
-    <Context.Provider value={ { filterFields: { filters, setFilters, year, setYear, companyID, setCompanyID, INITIAL_FILTER_STATE }, isAdmin, isRoleLoading }} >
+    <Context.Provider value={ {
+      filterFields: { filters, setFilters, year, setYear, companyID, setCompanyID, INITIAL_FILTER_STATE },
+      isAdmin,
+      isRoleLoading,
+      user: { selectedEmail, setSelectedEmail }
+    }} >
       {children}
     </Context.Provider>
   )
