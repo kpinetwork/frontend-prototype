@@ -13,7 +13,7 @@ export const useCompanyReport = ({ companyId }) => {
   const [description, setDescription] = useState(null)
   const [financialProfile, setFinancialProfile] = useState(null)
   const [ruleOf40, setRuleOf40] = useState([])
-  const [companies, setCompanies] = useState([])
+  const [publicCompanies, setPublicCompanies] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -31,9 +31,9 @@ export const useCompanyReport = ({ companyId }) => {
   const getCompanies = async () => {
     try {
       const result = await getPublicCompanies()
-      setCompanies(result)
+      setPublicCompanies(result.companies)
     } catch (_error) {
-      setCompanies([])
+      setPublicCompanies([])
     }
   }
 
@@ -52,7 +52,7 @@ export const useCompanyReport = ({ companyId }) => {
 
   return {
     description,
-    companies,
+    publicCompanies,
     financialProfile,
     ruleOf40,
     isLoading,

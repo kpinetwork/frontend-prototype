@@ -15,7 +15,7 @@ export const getCompanies = async () => {
 
 export const getPublicCompanies = async () => {
   const headers = await getAuthorizationHeader()
-  const response = await fetch(`${companiesUrl}/public?limit=62`, {
+  const response = await fetch(`${companiesUrl}/public`, {
     method: 'GET',
     headers: headers
   })
