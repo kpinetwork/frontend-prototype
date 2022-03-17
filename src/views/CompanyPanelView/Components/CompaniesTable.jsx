@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+/* eslint-disable camelcase */
+import React, { useState } from 'react'
 import { Box, Button, Typography, Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Paper, Checkbox, TableFooter, TablePagination } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Settings } from '@material-ui/icons'
@@ -43,69 +44,61 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export function CompaniesPanelTable () {
-  const { companies, isLoading, getCompanyState } = useCompanyPanel()
+  const [offset, setOffset] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const { total, companies, isLoading, getCompanyPanel } = useCompanyPanel({ limit: rowsPerPage, offset })
   const [wantsChange, setChange] = useState(false)
   const [page, setPage] = useState(0)
-  const [selected, setSelected] = useState([])
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [companiesToChange, setCompaniesToChange] = useState({})
   const classes = useStyles()
 
-  useEffect(() => {
-    mapPublicCompanies()
-  }, [companies])
+  const isCompanyChecked = (company) => {
+    const { is_public, id } = company
+    if (id in companiesToChange) {
+      return companiesToChange[id]
+    }
+    return is_public
+  }
 
-  const mapPublicCompanies = () => setSelected(companies.filter(company => company.is_public).map(company => company.id))
-
-  const handleChange = (event, companyId) => {
+  const handleChange = (event, company) => {
     const checked = event.target.checked
-    setSelected(prev => {
-      if (checked) {
-        return [...prev, companies.find(company => company.id === companyId)?.id]
+    const { is_public, id } = company
+    setCompaniesToChange(prev => {
+      if (checked !== is_public) {
+        return ({ ...prev, [id]: !is_public })
       } else {
-        return prev.filter(id => id !== companyId)
+        delete prev[id]
+        return ({ ...prev })
       }
     })
   }
 
-  const getChangedCompanies = (companies, selected) => {
-    return {
-      companies: companies.filter(company => {
-        // eslint-disable-next-line camelcase
-        const { is_public, id } = company
-        // eslint-disable-next-line camelcase
-        if ((is_public && selected.includes(id)) || (!is_public && !selected.includes(id))) {
-          return false
-        }
-        return true
-        // eslint-disable-next-line camelcase
-      }).reduce((prev, { id, is_public }) => ({ ...prev, [id]: !is_public }), {})
-    }
-  }
-
   const onSave = async (_) => {
-    const companiesToChange = getChangedCompanies(companies, selected)
-    if (Object.keys(companiesToChange.companies).length > 0) {
-      await changeCompanyPublicly(companiesToChange)
+    if (Object.keys(companiesToChange).length > 0) {
+      await changeCompanyPublicly({ companies: companiesToChange })
     }
     setChange(false)
-    await getCompanyState()
-  }
-
-  const isSelected = (company, selectedIds) => {
-    return selectedIds.some(id => id === company?.id)
+    await getCompanyPanel({ limit: rowsPerPage, offset })
   }
 
   const handleChangePage = (_event, newPage) => {
+    const nextOffset = newPage * rowsPerPage
+    setOffset(nextOffset)
     setPage(newPage)
+    getCompanyPanel({ limit: rowsPerPage, offset: nextOffset })
   }
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value)
+    const newOffset = 0
+    const nextRowPerPage = +event.target.value
+    setRowsPerPage(nextRowPerPage)
     setPage(0)
+    setOffset(newOffset)
+    getCompanyPanel({ limit: nextRowPerPage, offset: newOffset })
   }
 
   const onCancel = async (_) => {
-    mapPublicCompanies()
+    setCompaniesToChange({})
     setChange(false)
   }
 
@@ -139,15 +132,15 @@ export function CompaniesPanelTable () {
           </TableHead>
           {!isLoading && (
             <TableBody>
-            {companies.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((company) => (
+            {companies.map((company) => (
               <TableRow key={company.id}>
                 <TableCell>{company.name}</TableCell>
                 <TableCell>{company.sector}</TableCell>
                 <TableCell className={classes.hide}>{company.vertical}</TableCell>
                 <TableCell>
-                  <Checkbox onChange={(e) => handleChange(e, company.id)}
+                  <Checkbox onChange={(e) => handleChange(e, company)}
                   color="primary" disabled={!wantsChange}
-                  checked={isSelected(company, selected)}
+                  checked={isCompanyChecked(company)}
                   />
                 </TableCell>
               </TableRow>
@@ -168,7 +161,7 @@ export function CompaniesPanelTable () {
               <TableRow>
                 <TablePagination
                   colSpan={3}
-                  count={companies.length}
+                  count={total}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}
