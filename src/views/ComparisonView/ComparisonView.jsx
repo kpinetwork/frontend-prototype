@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { CardKPI } from '@components/Card/CardKPI'
 import { useComparisonPeers } from '../../hooks/useComparisionPeers'
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Box } from '@material-ui/core'
+import { CloudDownload } from '@material-ui/icons'
 import HeadBodyGrid from '../../components/BodyGrid'
+import { saveAs } from 'file-saver'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles(theme => ({
+  exportButton: {
+    textTransform: 'none',
+    margin: 10
+  }
+}))
 
 const columns = [
   { field: 'name', headerName: 'Company', width: 200, align: 'left' },
@@ -26,12 +36,31 @@ const INITIAL_DATA = [
   { id: 7, key: 'revenue_vs_budget', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 8, key: 'ebitda_vs_budget', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 9, key: 'rule_of_40', value: '', sign: '', position: 'right', align: 'center' }
-
 ]
 
+const ExportOption = ({ buttonClass, isLoading, downloading, saveComparisonReport }) => {
+  return (
+    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+     {
+       !isLoading &&
+       <Button
+         variant='text'
+         onClick={saveComparisonReport}
+         startIcon={<CloudDownload style={{ color: '#364b8a' }}/>}
+         className={buttonClass}
+       >
+         {downloading ? 'Loading ...' : 'Export CSV'}
+       </Button>
+     }
+    </Box>
+  )
+}
+
 export function ComparisonView ({ params, fromUniverseOverview }) {
-  const { companyComparison, rank, peersComparison, isLoading } = useComparisonPeers({ fromUniverseOverview })
+  const { companyComparison, rank, peersComparison, isLoading, downloadComparisonCsv } = useComparisonPeers({ fromUniverseOverview })
   const [data, setData] = useState([])
+  const [downloading, setDownloading] = useState(false)
+  const classes = useStyles()
 
   const validPeersComparison = () => {
     if (peersComparison == null) {
@@ -55,9 +84,26 @@ export function ComparisonView ({ params, fromUniverseOverview }) {
     return value ? `${value} %` : 'NA'
   }
 
+  const saveComparisonReport = async () => {
+    setDownloading(true)
+    const data = await downloadComparisonCsv()
+    setDownloading(false)
+    const blob = new Blob([data], { type: 'text/csv;charset=utf-8' })
+    saveAs(blob, 'ComparisonPeers.csv')
+  }
+
   return (
     <>
-      <CardKPI title={'Comparison versus peers'} actions={false} height={'80vh'} fullScreen={true}>
+      <CardKPI title={'Comparison versus peers'} actions={true} height={'80vh'} fullScreen={true}
+      topActions={
+        <ExportOption
+          buttonClass={classes.exportButton}
+          saveComparisonReport={saveComparisonReport}
+          isLoading={isLoading}
+          downloading={downloading}
+        />
+      }
+      >
         {!isLoading
           ? <TableContainer component={Paper}>
               <Table>

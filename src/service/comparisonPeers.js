@@ -22,3 +22,16 @@ export const getComparisonPeersFromObject = async (year) => {
   const data = await COMPARISON_VERSUS_PEERS
   return data
 }
+
+export const downloadComparisonPeers = async (options) => {
+  const { company_id: id, ...filters } = options
+  const headers = await getAuthorizationHeader()
+  const response = await axios.get(`${comparisonPeers}/${id}/download`, {
+    params: {
+      ...filters
+    },
+    headers: headers
+  })
+  const data = await response.data
+  return data
+}
