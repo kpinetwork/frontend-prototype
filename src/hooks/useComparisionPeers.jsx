@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import Context from '../context/appContext'
-import { getComparisonPeersFromQueryParams } from '../service/comparisonPeers'
+import { getComparisonPeersFromQueryParams, downloadComparisonPeers } from '../service/comparisonPeers'
 
 export const useComparisonPeers = ({ fromUniverseOverview }) => {
   const { filters, year, companyID } = useContext(Context).filterFields
@@ -33,12 +33,26 @@ export const useComparisonPeers = ({ fromUniverseOverview }) => {
     setIsLoading(false)
   }
 
+  const downloadComparisonCsv = async () => {
+    let options = { year, from_main: fromUniverseOverview, ...filters }
+    if (!fromUniverseOverview && companyID) {
+      options = { company_id: companyID, ...options }
+    }
+    try {
+      const result = await downloadComparisonPeers(options)
+      return result
+    } catch (_error) {
+      return null
+    }
+  }
+
   return {
     companyComparison,
     peersComparison,
     rank,
     setRank,
-    isLoading
+    isLoading,
+    downloadComparisonCsv
   }
 }
 

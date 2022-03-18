@@ -30,7 +30,7 @@ const useStyles = makeStyles({
   }
 })
 
-export function CardKPI ({ children, title, actions = true, overflow = 'none', textAlign = 'none', height = '40vh', fullScreen = false }) {
+export function CardKPI ({ children, topActions, title, actions = true, overflow = 'none', textAlign = 'none', height = '40vh', fullScreen = false }) {
   const isPhone = useMediaQuery('(max-width: 768px)')
 
   const classes = useStyles()
@@ -41,6 +41,9 @@ export function CardKPI ({ children, title, actions = true, overflow = 'none', t
       <Typography className={classes.title} color="textSecondary" gutterBottom>
         {title}
       </Typography>
+      <div>
+        {topActions}
+      </div>
       <div className={classes.body} style={{ height: (!fullScreen && isPhone) ? '40vh' : height, width: '100%' }}>
           {children}
       </div>
