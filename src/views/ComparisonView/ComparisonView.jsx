@@ -100,7 +100,7 @@ export function ComparisonView ({ params, fromUniverseOverview }) {
 
   return (
     <>
-      <CardKPI title={'Peer Group Analysis'} actions={true} height={'80vh'} fullScreen={true}
+      <CardKPI title={'Peer Group Analysis'} actions={false} height={'80vh'} fullScreen={true}
       topActions={
         <ExportOption
           buttonClass={classes.exportButton}
