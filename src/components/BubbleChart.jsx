@@ -14,12 +14,6 @@ ChartJS.register(LinearScale, PointElement, Tooltip, zoomPlugin)
 export function BubbleChart ({ data }) {
   const isPhone = useMediaQuery('(max-width: 768px)')
 
-  const handleclick = async (e, element) => {
-    if (element.length > 0) {
-      const { datasetIndex } = element[0]
-    }
-  }
-
   const options = {
     scales: {
       y: {
@@ -53,9 +47,16 @@ export function BubbleChart ({ data }) {
           mode: 'xy',
           overScaleMode: 'y'
         }
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            const raw = context.raw
+            return `${context.dataset.label}: (${raw.x}, ${raw.y})`
+          }
+        }
       }
-    },
-    onClick: handleclick
+    }
   }
   return <Bubble options={options} data={data} width={100} height={isPhone ? '80vh' : '40vh'} />
 }
