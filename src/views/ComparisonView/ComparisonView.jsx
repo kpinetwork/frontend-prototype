@@ -84,6 +84,12 @@ export function ComparisonView ({ params, fromUniverseOverview }) {
     return value ? `${value} %` : 'NA'
   }
 
+  const getRevenueValue = (value) => {
+    if (value === 'NaN' || value == null) return 'NA'
+    const isNumber = !isNaN(value)
+    return isNumber ? `$ ${value}` : value
+  }
+
   const saveComparisonReport = async () => {
     setDownloading(true)
     const data = await downloadComparisonCsv()
@@ -131,7 +137,7 @@ export function ComparisonView ({ params, fromUniverseOverview }) {
                       <TableCell align="left">{row.name}</TableCell>
                       <TableCell align="left">{row.sector}</TableCell>
                       <TableCell align="left">{row.vertical}</TableCell>
-                      <TableCell align="center">{row.revenue}</TableCell>
+                      <TableCell align="center">{getRevenueValue(row.revenue)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.growth)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.ebitda_margin)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.revenue_vs_budget)}</TableCell>
