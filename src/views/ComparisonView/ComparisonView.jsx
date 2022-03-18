@@ -57,7 +57,7 @@ const ExportOption = ({ buttonClass, isLoading, downloading, saveComparisonRepor
 }
 
 export function ComparisonView ({ params, fromUniverseOverview }) {
-  const { companyComparison, rank, peersComparison, isLoading, downloadComparisonCsv } = useComparisonPeers({ fromUniverseOverview })
+  const { companyComparison, peersComparison, isLoading, downloadComparisonCsv } = useComparisonPeers({ fromUniverseOverview })
   const [data, setData] = useState([])
   const [downloading, setDownloading] = useState(false)
   const classes = useStyles()
@@ -94,7 +94,7 @@ export function ComparisonView ({ params, fromUniverseOverview }) {
 
   return (
     <>
-      <CardKPI title={'Comparison versus peers'} actions={true} height={'80vh'} fullScreen={true}
+      <CardKPI title={'Peer Group Analysis'} actions={true} height={'80vh'} fullScreen={true}
       topActions={
         <ExportOption
           buttonClass={classes.exportButton}
@@ -115,7 +115,6 @@ export function ComparisonView ({ params, fromUniverseOverview }) {
                       </TableCell>
                     ))}
                   </TableRow>
-
                     { !fromUniverseOverview &&
                       <TableRow
                         key={companyComparison?.name}
@@ -123,21 +122,6 @@ export function ComparisonView ({ params, fromUniverseOverview }) {
                           {data.map((item, index) => (<TableCell key={`${index}-${item.key}-comparison-peers`} align={item.align}>{getValue(item)}</TableCell>))}
                       </TableRow>
                     }
-                  { !fromUniverseOverview &&
-                    <TableRow
-                      key={rank?.revenue}
-                      style={{ backgroundColor: '#cececeb9' }}>
-                      <TableCell align="center">{''}</TableCell>
-                      <TableCell align="center">{''}</TableCell>
-                      <TableCell align="center">{''}</TableCell>
-                      <TableCell align="center">{rank?.revenue}</TableCell>
-                      <TableCell align="center">{rank?.growth}</TableCell>
-                      <TableCell align="center">{rank?.ebitda_margin}</TableCell>
-                      <TableCell align="center">{rank?.revenue_vs_budget}</TableCell>
-                      <TableCell align="center">{rank?.ebitda_vs_budget}</TableCell>
-                      <TableCell align="center">{rank?.rule_of_40}</TableCell>
-                    </TableRow>
-                  }
                 </TableHead>
                 <TableBody>
                   {validPeersComparison().map((row) => (
