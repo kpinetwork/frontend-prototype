@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Settings } from '@material-ui/icons'
 import { changeCompanyPublicly } from '../../../service/changeCompanyPublicly'
 import useCompanyPanel from '../../../hooks/useCompanyPanel'
+import useCompaniesToChange from '../../../hooks/useCompaniesToChange'
 import LoadingProgress from './../../../components/Progress'
 import ButtonActions from './../../../components/Actions'
 
@@ -49,29 +50,8 @@ export function CompaniesPanelTable () {
   const { total, companies, isLoading, getCompanyPanel } = useCompanyPanel({ limit: rowsPerPage, offset })
   const [wantsChange, setChange] = useState(false)
   const [page, setPage] = useState(0)
-  const [companiesToChange, setCompaniesToChange] = useState({})
+  const { companiesToChange, isCompanyChecked, handleChange, cleanCompaniesToChange } = useCompaniesToChange()
   const classes = useStyles()
-
-  const isCompanyChecked = (company) => {
-    const { is_public, id } = company
-    if (id in companiesToChange) {
-      return companiesToChange[id]
-    }
-    return is_public
-  }
-
-  const handleChange = (event, company) => {
-    const checked = event.target.checked
-    const { is_public, id } = company
-    setCompaniesToChange(prev => {
-      if (checked !== is_public) {
-        return ({ ...prev, [id]: !is_public })
-      } else {
-        delete prev[id]
-        return ({ ...prev })
-      }
-    })
-  }
 
   const onSave = async (_) => {
     if (Object.keys(companiesToChange).length > 0) {
@@ -95,11 +75,6 @@ export function CompaniesPanelTable () {
     setPage(0)
     setOffset(newOffset)
     getCompanyPanel({ limit: nextRowPerPage, offset: newOffset })
-  }
-
-  const onCancel = async (_) => {
-    setCompaniesToChange({})
-    setChange(false)
   }
 
   return (
@@ -138,9 +113,9 @@ export function CompaniesPanelTable () {
                 <TableCell>{company.sector}</TableCell>
                 <TableCell className={classes.hide}>{company.vertical}</TableCell>
                 <TableCell>
-                  <Checkbox onChange={(e) => handleChange(e, company)}
+                  <Checkbox onChange={(event) => handleChange({ event, company, field: 'is_public' })}
                   color="primary" disabled={!wantsChange}
-                  checked={isCompanyChecked(company)}
+                  checked={isCompanyChecked({ company, field: 'is_public' })}
                   />
                 </TableCell>
               </TableRow>
@@ -176,7 +151,10 @@ export function CompaniesPanelTable () {
       {wantsChange &&
         <ButtonActions
         onOk={onSave}
-        onCancel={onCancel}
+        onCancel={() => {
+          cleanCompaniesToChange()
+          setChange(false)
+        }}
         okName="Save"
         cancelName="Cancel"
        />

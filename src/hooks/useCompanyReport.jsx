@@ -30,7 +30,7 @@ export const useCompanyReport = ({ companyId }) => {
 
   const getCompanies = async () => {
     try {
-      const result = await getPublicCompanies()
+      const result = await getPublicCompanies({})
       setPublicCompanies(result.companies)
     } catch (_error) {
       setPublicCompanies([])

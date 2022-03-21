@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Box, Backdrop, Typography, Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Checkbox, TableFooter, TablePagination } from '@material-ui/core'
 import usePublicCompanies from '../../hooks/usePublicCompanies'
 import useCompanyPermissions from './../../hooks/useCompanyPermissions'
+import useCompaniesToChange from './../../hooks/useCompaniesToChange'
 import { makeStyles } from '@material-ui/core/styles'
 import { TitlePanel } from './../AdminPanel/Components/TitlePanel'
 import LoadingProgress from './../../components/Progress'
@@ -36,78 +37,40 @@ const useStyles = makeStyles(theme => ({
 
 export function PermissionsView ({ setOpenPermissions, email }) {
   const [page, setPage] = useState(0)
-  const [selected, setSelected] = useState([])
-  const [data, setData] = useState([])
+  const [offset, setOffset] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
-  const { companies, isLoading } = usePublicCompanies()
+  const { total, companies, isLoading, getCompanies } = usePublicCompanies({ limit: rowsPerPage, offset })
   const { permissions, successChange, isPermissionsLoading, isUpdatingPermissions, assignCompanyPermissions } = useCompanyPermissions(email)
+  const { companiesToChange, isCompanyChecked, handleChange, cleanCompaniesToChange } = useCompaniesToChange()
   const classes = useStyles()
+  const initialSelected = permissions.map((permission) => {
+    return permission?.id
+  })
 
-  useEffect(() => {
-    setData([...companies])
-    fillSelected()
-  }, [companies])
-
-  const fillSelected = () => {
-    const initialSelected = permissions.map((permission) => {
-      return permission?.id
-    })
-    setSelected(initialSelected)
-  }
-
-  const handleChange = (event, companyId) => {
-    const checked = event.target.checked
-
-    setSelected(prev => {
-      if (checked) {
-        return [...prev, data.find(company => company.id === companyId)?.id]
-      } else {
-        return prev.filter(id => id !== companyId)
-      }
-    })
-  }
-
-  const isSelected = (company, selectedIds) => {
-    return selectedIds.some(id => id === company?.id)
+  const isCompanyInitialAllowed = (companyId) => {
+    return initialSelected.includes(companyId)
   }
 
   const handleChangePage = (_event, newPage) => {
+    const nextOffset = newPage * rowsPerPage
+    setOffset(nextOffset)
     setPage(newPage)
+    getCompanies({ limit: rowsPerPage, offset: nextOffset })
   }
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value)
+    const newOffset = 0
+    const nextRowPerPage = +event.target.value
+    setRowsPerPage(nextRowPerPage)
     setPage(0)
-  }
-
-  const getAllowedPermissions = () => {
-    const companies = {}
-    selected.forEach(companyID => {
-      const alreadyAllowed = permissions.some(permission => permission?.id === companyID)
-      if (!alreadyAllowed) {
-        companies[companyID] = true
-      }
-    })
-    return companies
-  }
-
-  const getRevokedPermissions = () => {
-    const companies = {}
-    permissions.forEach(permission => {
-      const alreadyAllowed = selected.some(companyID => permission?.id === companyID)
-      if (!alreadyAllowed) {
-        companies[permission?.id] = false
-      }
-    })
-    return companies
+    setOffset(newOffset)
+    getCompanies({ limit: nextRowPerPage, offset: newOffset })
   }
 
   const assignPermissions = async () => {
-    const allowed = getAllowedPermissions()
-    const revoked = getRevokedPermissions()
-    const companyPermissions = Object.assign(allowed, revoked)
-    if (Object.keys(companyPermissions).length > 0) {
-      assignCompanyPermissions(companyPermissions, email)
+    if (Object.keys(companiesToChange).length > 0) {
+      await assignCompanyPermissions(companiesToChange, email)
+      cleanCompaniesToChange()
     }
   }
 
@@ -138,15 +101,25 @@ export function PermissionsView ({ setOpenPermissions, email }) {
            </TableHead>
            {!isLoading && !isPermissionsLoading && (
              <TableBody>
-             {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((company) => (
-               <TableRow key={company.id}>
-                 <TableCell>{company.name}</TableCell>
-                 <TableCell>{company.sector}</TableCell>
-                 <TableCell>
-                   <Checkbox onChange={(e) => handleChange(e, company.id)} color="primary" checked={isSelected(company, selected)} />
-                 </TableCell>
-               </TableRow>
-             ))}
+             {companies.map((company) => {
+               const allowedCompany = { ...company, allowed: isCompanyInitialAllowed(company.id) }
+               return (
+                <TableRow key={company.id}>
+                <TableCell>{company.name}</TableCell>
+                <TableCell>{company.sector}</TableCell>
+                <TableCell>
+                  <Checkbox onChange={(event) => {
+                    handleChange({ event, company: allowedCompany, field: 'allowed' })
+                  }} color="primary"
+                 checked={
+                   isCompanyChecked({ company: allowedCompany, field: 'allowed' })
+                 }
+                  />
+                </TableCell>
+              </TableRow>
+               )
+             })
+             }
            </TableBody>
            )}
            {(isLoading || isPermissionsLoading) &&
@@ -163,7 +136,7 @@ export function PermissionsView ({ setOpenPermissions, email }) {
               <TableRow>
                 <TablePagination
                   colSpan={3}
-                  count={data.length}
+                  count={total}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}
@@ -177,7 +150,10 @@ export function PermissionsView ({ setOpenPermissions, email }) {
        </TableContainer>
        <ButtonActions
         onOk={(_) => assignPermissions()}
-        onCancel={(_) => setOpenPermissions(false)}
+        onCancel={(_) => {
+          cleanCompaniesToChange()
+          setOpenPermissions(false)
+        }}
         okName="Save"
         cancelName="Cancel"
        />
