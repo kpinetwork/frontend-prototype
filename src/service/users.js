@@ -12,7 +12,7 @@ export const getUsers = async (options) => {
   if (token) {
     queryToken = `&token=${encodeURIComponent(token)}`
   }
-  const response = await axios.get(`${usersUrl}?new=True&limit=${limit}${queryToken}`,
+  const response = await axios.get(`${usersUrl}?limit=${limit}${queryToken}`,
     { headers }
   )
   const body = await response.data
