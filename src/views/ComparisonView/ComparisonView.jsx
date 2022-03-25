@@ -87,7 +87,7 @@ export function ComparisonView ({ params, fromUniverseOverview }) {
   const getRevenueValue = (value) => {
     if (value === 'NaN' || value == null) return 'NA'
     const isNumber = !isNaN(value)
-    return isNumber ? `$ ${value}` : value
+    return isNumber ? `$ ${Math.round(value)}` : value
   }
 
   const saveComparisonReport = async () => {
