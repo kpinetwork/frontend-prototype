@@ -76,6 +76,9 @@ export function ComparisonView ({ params, fromUniverseOverview }) {
 
   const getValue = (item) => {
     if (item.value) {
+      if (item.key === 'revenue') {
+        return item.position === 'left' ? item.sign + ' ' + Math.round(item.value) : Math.round(item.value) + ' ' + item.sign
+      }
       return item.position === 'left' ? item.sign + ' ' + item.value : item.value + ' ' + item.sign
     } else return 'NA'
   }
