@@ -23,7 +23,7 @@ export function CompanyCard ({ financialProfile, isLoading }) {
 
   const getValue = (row) => {
     if (row.value) {
-      return row.position === 'left' ? row.sign + ' ' + row.value : row.value + ' ' + row.sign
+      return row.position === 'left' ? row.sign + ' ' + Math.round(row.value) : Math.round(row.value) + ' ' + row.sign
     }
     return 'NA'
   }
