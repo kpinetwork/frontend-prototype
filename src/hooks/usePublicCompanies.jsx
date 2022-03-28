@@ -14,12 +14,14 @@ const usePublicCompanies = (options) => {
     setIsLoading(true)
     try {
       const result = await getPublicCompanies(options)
-      const { total, companies } = result
+      const { total, companiesArray } = destructuring(result)
       setTotal(total)
-      setCompanies(companies)
+      setCompanies(companiesArray)
+      return companiesArray
     } catch (_error) {
       setTotal(0)
       setCompanies([])
+      return []
     } finally {
       setIsLoading(false)
     }
@@ -27,9 +29,18 @@ const usePublicCompanies = (options) => {
   return {
     total,
     companies,
+    setCompanies,
     isLoading,
     getCompanies
   }
 }
 
 export default usePublicCompanies
+
+function destructuring (result) {
+  return {
+    // eslint-disable-next-line camelcase
+    companiesArray: result.companies,
+    total: result.total
+  }
+}

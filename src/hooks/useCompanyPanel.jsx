@@ -12,19 +12,37 @@ const useCompanyPanel = (options) => {
 
   const getCompanyPanel = async (options) => {
     setIsLoading(true)
-    const result = await getCompanyPanelFromQueryParams(options)
-    const { total, companies } = result
-    setTotal(total)
-    // eslint-disable-next-line camelcase
-    setCompanies(companies.map(({ id, name, sector, vertical, is_public }) => ({ id, name, sector, vertical, is_public })))
-    setIsLoading(false)
+    try {
+      const result = await getCompanyPanelFromQueryParams(options)
+      const {
+        companiesArray,
+        total
+      } = destructuring(result)
+      setCompanies(companiesArray)
+      setTotal(total)
+      setIsLoading(false)
+      return companiesArray
+    } catch (_error) {
+      setCompanies([])
+      setIsLoading(false)
+      return []
+    }
   }
   return {
     total,
     companies,
+    setCompanies,
     isLoading,
     getCompanyPanel
   }
 }
 
 export default useCompanyPanel
+
+function destructuring (result) {
+  return {
+    // eslint-disable-next-line camelcase
+    companiesArray: result.companies.map(({ id, name, sector, vertical, is_public }) => ({ id, name, sector, vertical, is_public })),
+    total: result.total
+  }
+}

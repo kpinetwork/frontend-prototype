@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Backdrop, Typography, Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Checkbox, TableFooter, TablePagination } from '@material-ui/core'
 import usePublicCompanies from '../../hooks/usePublicCompanies'
 import useCompanyPermissions from './../../hooks/useCompanyPermissions'
@@ -39,23 +39,52 @@ export function PermissionsView ({ setOpenPermissions, email }) {
   const [page, setPage] = useState(0)
   const [offset, setOffset] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
-  const { total, companies, isLoading, getCompanies } = usePublicCompanies({ limit: rowsPerPage, offset })
+  const { total, companies, setCompanies, isLoading, getCompanies } = usePublicCompanies({ limit: rowsPerPage, offset })
   const { permissions, successChange, isPermissionsLoading, isUpdatingPermissions, assignCompanyPermissions } = useCompanyPermissions(email)
   const { companiesToChange, isCompanyChecked, handleChange, cleanCompaniesToChange } = useCompaniesToChange()
+  const [totalCompanies, setTotalCompanies] = useState([])
+  const [maxPage, setMaxPage] = useState(0)
   const classes = useStyles()
   const initialSelected = permissions.map((permission) => {
     return permission?.id
   })
 
+  useEffect(() => {
+    initCompanies(rowsPerPage, offset)
+  }, [])
+
   const isCompanyInitialAllowed = (companyId) => {
     return initialSelected.includes(companyId)
   }
 
-  const handleChangePage = (_event, newPage) => {
+  const initCompanies = async (limit, offset) => {
+    const response = await getCompanies({ limit: limit, offset })
+    setTotalCompanies(response)
+  }
+
+  const callNextCompanies = async (newPage) => {
     const nextOffset = newPage * rowsPerPage
     setOffset(nextOffset)
     setPage(newPage)
-    getCompanies({ limit: rowsPerPage, offset: nextOffset })
+    setMaxPage(newPage)
+    const response = await getCompanies({ limit: rowsPerPage, offset: nextOffset })
+    setTotalCompanies([...totalCompanies, ...response])
+  }
+
+  const setCompaniesFromTotalCompanies = (newPage, newRowsPerPage) => {
+    setPage(newPage)
+    const offset = newPage * newRowsPerPage
+    const max = (newPage - page) < 0 ? page * newRowsPerPage : offset + newRowsPerPage
+    setCompanies(totalCompanies.slice(offset, max))
+  }
+
+  const handleChangePage = (_event, newPage) => {
+    const firstTimeCalled = newPage > page && newPage > maxPage
+    if (newPage > page && firstTimeCalled) {
+      callNextCompanies(newPage)
+    } else {
+      setCompaniesFromTotalCompanies(newPage, rowsPerPage)
+    }
   }
 
   const handleChangeRowsPerPage = (event) => {
@@ -64,7 +93,8 @@ export function PermissionsView ({ setOpenPermissions, email }) {
     setRowsPerPage(nextRowPerPage)
     setPage(0)
     setOffset(newOffset)
-    getCompanies({ limit: nextRowPerPage, offset: newOffset })
+    setMaxPage(0)
+    initCompanies(nextRowPerPage, newOffset)
   }
 
   const assignPermissions = async () => {
