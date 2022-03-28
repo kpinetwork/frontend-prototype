@@ -6,8 +6,9 @@ export const useComparisonPeers = ({ fromUniverseOverview }) => {
   const { filters, year, companyID } = useContext(Context).filterFields
   const [companyComparison, setCompanyComparison] = useState({})
   const [rank, setRank] = useState({})
+  const [ruleOf40, setRuleOf40] = useState([])
   const [peersComparison, setPeersComparison] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [peersIsLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     if (fromUniverseOverview) {
@@ -25,11 +26,13 @@ export const useComparisonPeers = ({ fromUniverseOverview }) => {
     const {
       companyComparisonData,
       rankData,
-      peersComparisonDataArray
+      peersComparisonDataArray,
+      ruleOf40Array
     } = destructuring(result)
     setCompanyComparison(companyComparisonData)
     setRank(rankData)
     setPeersComparison(peersComparisonDataArray)
+    setRuleOf40(ruleOf40Array)
     setIsLoading(false)
   }
 
@@ -50,8 +53,9 @@ export const useComparisonPeers = ({ fromUniverseOverview }) => {
     companyComparison,
     peersComparison,
     rank,
+    ruleOf40,
     setRank,
-    isLoading,
+    peersIsLoading,
     downloadComparisonCsv
   }
 }
@@ -60,11 +64,13 @@ function destructuring (result) {
   const {
     company_comparison_data: companyComparisonData,
     rank: rankData,
-    peers_comparison_data: peersComparisonDataArray
+    peers_comparison_data: peersComparisonDataArray,
+    rule_of_40: ruleOf40Array
   } = result
   return {
     companyComparisonData,
     rankData,
-    peersComparisonDataArray
+    peersComparisonDataArray,
+    ruleOf40Array
   }
 }

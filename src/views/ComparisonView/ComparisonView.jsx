@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { CardKPI } from '@components/Card/CardKPI'
-import { useComparisonPeers } from '../../hooks/useComparisionPeers'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Box } from '@material-ui/core'
 import { CloudDownload } from '@material-ui/icons'
 import HeadBodyGrid from '../../components/BodyGrid'
 import { saveAs } from 'file-saver'
 import { makeStyles } from '@material-ui/core/styles'
+import { isEmptyObject } from './../../utils/userFunctions'
 
 const useStyles = makeStyles(theme => ({
   exportButton: {
@@ -56,8 +56,7 @@ const ExportOption = ({ buttonClass, isLoading, downloading, saveComparisonRepor
   )
 }
 
-export function ComparisonView ({ params, fromUniverseOverview }) {
-  const { companyComparison, peersComparison, isLoading, downloadComparisonCsv } = useComparisonPeers({ fromUniverseOverview })
+export function ComparisonView ({ companyComparison, peersComparison, isLoading, downloadComparisonCsv, fromUniverseOverview }) {
   const [data, setData] = useState([])
   const [downloading, setDownloading] = useState(false)
   const classes = useStyles()
@@ -75,20 +74,20 @@ export function ComparisonView ({ params, fromUniverseOverview }) {
   }, [companyComparison])
 
   const getValue = (item) => {
-    if (item.value) {
-      if (item.key === 'revenue') {
-        return item.position === 'left' ? item.sign + ' ' + Math.round(item.value) : Math.round(item.value) + ' ' + item.sign
-      }
-      return item.position === 'left' ? item.sign + ' ' + item.value : item.value + ' ' + item.sign
-    } else return 'NA'
+    if (item.value == null || item.value === 'NA') return 'NA'
+    if (item.key === 'revenue') {
+      return item.position === 'left' ? item.sign + ' ' + Math.round(item.value) : Math.round(item.value) + ' ' + item.sign
+    }
+    return item.position === 'left' ? item.sign + ' ' + item.value : item.value + ' ' + item.sign
   }
 
   const getPercentageValues = (value) => {
-    return value ? `${value} %` : 'NA'
+    if (value == null || value === 'NA') return 'NA'
+    return `${value} %`
   }
 
   const getRevenueValue = (value) => {
-    if (value === 'NaN' || value == null) return 'NA'
+    if (value == null || value === 'NA') return 'NA'
     const isNumber = !isNaN(value)
     return isNumber ? `$ ${Math.round(value)}` : value
   }
@@ -124,7 +123,7 @@ export function ComparisonView ({ params, fromUniverseOverview }) {
                       </TableCell>
                     ))}
                   </TableRow>
-                    { !fromUniverseOverview &&
+                    { !fromUniverseOverview && !isEmptyObject(companyComparison) &&
                       <TableRow
                         key={companyComparison?.name}
                         style={{ backgroundColor: '#cececeb9' }}>
@@ -145,7 +144,7 @@ export function ComparisonView ({ params, fromUniverseOverview }) {
                       <TableCell align="center">{getPercentageValues(row.ebitda_margin)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.revenue_vs_budget)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.ebitda_vs_budget)}</TableCell>
-                      <TableCell align="center">{row.rule_of_40 || 'NA'}</TableCell>
+                      <TableCell align="center">{row.rule_of_40 !== null ? row.rule_of_40 : 'NA'}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
