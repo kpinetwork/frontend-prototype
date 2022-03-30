@@ -31,7 +31,7 @@ const useCompanyPermissions = (username) => {
         username: username,
         companies: data
       }
-      assignPermissions(body, username)
+      await assignPermissions(body, username)
       setSuccessChange(true)
       setChanged(!changed)
     } catch (_error) {

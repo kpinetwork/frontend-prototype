@@ -13,7 +13,7 @@ import { ComparisonView } from './../ComparisonView/ComparisonView'
 export function CompanyView ({ params }) {
   const {
     description,
-    companies,
+    publicCompanies,
     financialProfile,
     isLoading,
     setCompanyID,
@@ -37,7 +37,7 @@ export function CompanyView ({ params }) {
         <Grid item xs={12} sm={12} md={12} lg={12}><Information year={year} setYear={setYear}/></Grid>
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <SelectCompany
-          companyList={companies}
+          companyList={publicCompanies}
           setCompanyID={setCompanyID}
           companyID={companyID}
           year={year} />
