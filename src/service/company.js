@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { getAuthorizationHeader } from './session'
 const { VITE_HOST: baseUrl } = import.meta.env
 
@@ -13,12 +14,12 @@ export const getCompanies = async () => {
   return data
 }
 
-export const getPublicCompanies = async () => {
+export const getPublicCompanies = async (options) => {
   const headers = await getAuthorizationHeader()
-  const response = await fetch(`${companiesUrl}/public?limit=62`, {
-    method: 'GET',
+  const response = await axios.get(`${companiesUrl}/public`, {
+    params: options,
     headers: headers
   })
-  const data = await response.json()
+  const data = await response.data
   return data
 }
