@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
+/* eslint-disable camelcase */
+import React, { useEffect, useState } from 'react'
 import { Box, Button, Typography, Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Paper, Checkbox, TableFooter, TablePagination } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Settings } from '@material-ui/icons'
 import { changeCompanyPublicly } from '../../../service/changeCompanyPublicly'
 import useCompanyPanel from '../../../hooks/useCompanyPanel'
+import useCompaniesToChange from '../../../hooks/useCompaniesToChange'
 import LoadingProgress from './../../../components/Progress'
 import ButtonActions from './../../../components/Actions'
 
@@ -43,70 +45,66 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export function CompaniesPanelTable () {
-  const { companies, isLoading, getCompanyState } = useCompanyPanel()
+  const [offset, setOffset] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const { total, companies, setCompanies, isLoading, getCompanyPanel } = useCompanyPanel({ limit: rowsPerPage, offset })
   const [wantsChange, setChange] = useState(false)
   const [page, setPage] = useState(0)
-  const [selected, setSelected] = useState([])
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [maxPage, setMaxPage] = useState(0)
+  const [totalCompanies, setTotalCompanies] = useState([])
+  const { companiesToChange, isCompanyChecked, handleChange, cleanCompaniesToChange } = useCompaniesToChange()
   const classes = useStyles()
 
   useEffect(() => {
-    mapPublicCompanies()
-  }, [companies])
+    initCompanies(rowsPerPage, offset)
+  }, [])
 
-  const mapPublicCompanies = () => setSelected(companies.filter(company => company.is_public).map(company => company.id))
-
-  const handleChange = (event, companyId) => {
-    const checked = event.target.checked
-    setSelected(prev => {
-      if (checked) {
-        return [...prev, companies.find(company => company.id === companyId)?.id]
-      } else {
-        return prev.filter(id => id !== companyId)
-      }
-    })
+  const initCompanies = async (limit, offset) => {
+    const response = await getCompanyPanel({ limit: limit, offset })
+    setTotalCompanies(response)
   }
 
-  const getChangedCompanies = (companies, selected) => {
-    return {
-      companies: companies.filter(company => {
-        // eslint-disable-next-line camelcase
-        const { is_public, id } = company
-        // eslint-disable-next-line camelcase
-        if ((is_public && selected.includes(id)) || (!is_public && !selected.includes(id))) {
-          return false
-        }
-        return true
-        // eslint-disable-next-line camelcase
-      }).reduce((prev, { id, is_public }) => ({ ...prev, [id]: !is_public }), {})
-    }
+  const callNextCompanies = async (newPage) => {
+    const nextOffset = newPage * rowsPerPage
+    setOffset(nextOffset)
+    setPage(newPage)
+    setMaxPage(newPage)
+    const response = await getCompanyPanel({ limit: rowsPerPage, offset: nextOffset })
+    setTotalCompanies([...totalCompanies, ...response])
+  }
+
+  const setCompaniesFromTotalCompanies = (newPage, newRowsPerPage) => {
+    setPage(newPage)
+    const offset = newPage * newRowsPerPage
+    const max = (newPage - page) < 0 ? page * newRowsPerPage : offset + newRowsPerPage
+    setCompanies(totalCompanies.slice(offset, max))
   }
 
   const onSave = async (_) => {
-    const companiesToChange = getChangedCompanies(companies, selected)
-    if (Object.keys(companiesToChange.companies).length > 0) {
-      await changeCompanyPublicly(companiesToChange)
+    if (Object.keys(companiesToChange).length > 0) {
+      await changeCompanyPublicly({ companies: companiesToChange })
     }
     setChange(false)
-    await getCompanyState()
-  }
-
-  const isSelected = (company, selectedIds) => {
-    return selectedIds.some(id => id === company?.id)
+    await getCompanyPanel({ limit: rowsPerPage, offset: page * rowsPerPage })
   }
 
   const handleChangePage = (_event, newPage) => {
-    setPage(newPage)
+    const firstTimeCalled = newPage > page && newPage > maxPage
+    if (newPage > page && firstTimeCalled) {
+      callNextCompanies(newPage)
+    } else {
+      setCompaniesFromTotalCompanies(newPage, rowsPerPage)
+    }
   }
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value)
+    const newOffset = 0
+    const nextRowPerPage = +event.target.value
+    setRowsPerPage(nextRowPerPage)
     setPage(0)
-  }
-
-  const onCancel = async (_) => {
-    mapPublicCompanies()
-    setChange(false)
+    setOffset(newOffset)
+    setMaxPage(0)
+    initCompanies(nextRowPerPage, newOffset)
   }
 
   return (
@@ -139,15 +137,15 @@ export function CompaniesPanelTable () {
           </TableHead>
           {!isLoading && (
             <TableBody>
-            {companies.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((company) => (
+            {companies.map((company) => (
               <TableRow key={company.id}>
                 <TableCell>{company.name}</TableCell>
                 <TableCell>{company.sector}</TableCell>
                 <TableCell className={classes.hide}>{company.vertical}</TableCell>
                 <TableCell>
-                  <Checkbox onChange={(e) => handleChange(e, company.id)}
+                  <Checkbox onChange={(event) => handleChange({ event, company, field: 'is_public' })}
                   color="primary" disabled={!wantsChange}
-                  checked={isSelected(company, selected)}
+                  checked={isCompanyChecked({ company, field: 'is_public' })}
                   />
                 </TableCell>
               </TableRow>
@@ -168,7 +166,7 @@ export function CompaniesPanelTable () {
               <TableRow>
                 <TablePagination
                   colSpan={3}
-                  count={companies.length}
+                  count={total}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onPageChange={handleChangePage}
@@ -183,7 +181,10 @@ export function CompaniesPanelTable () {
       {wantsChange &&
         <ButtonActions
         onOk={onSave}
-        onCancel={onCancel}
+        onCancel={() => {
+          cleanCompaniesToChange()
+          setChange(false)
+        }}
         okName="Save"
         cancelName="Cancel"
        />

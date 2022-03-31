@@ -1,35 +1,48 @@
 import { useEffect, useState } from 'react'
 import { getCompanyPanelFromQueryParams } from '../service/companyPanel'
 
-const useCompanyPanel = () => {
+const useCompanyPanel = (options) => {
+  const [total, setTotal] = useState(0)
   const [companies, setCompanies] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    getCompanyState()
+    getCompanyPanel(options)
   }, [])
 
-  const getCompanyState = () => {
+  const getCompanyPanel = async (options) => {
     setIsLoading(true)
-    getCompanyPanel()
-  }
-
-  const getCompanyPanel = async () => {
-    const result = await getCompanyPanelFromQueryParams()
-    const companies = destructuring(result)
-    setCompanies(companies)
-    setIsLoading(false)
+    try {
+      const result = await getCompanyPanelFromQueryParams(options)
+      const {
+        companiesArray,
+        total
+      } = destructuring(result)
+      setCompanies(companiesArray)
+      setTotal(total)
+      setIsLoading(false)
+      return companiesArray
+    } catch (_error) {
+      setCompanies([])
+      setIsLoading(false)
+      return []
+    }
   }
   return {
+    total,
     companies,
+    setCompanies,
     isLoading,
-    getCompanyState
+    getCompanyPanel
   }
-}
-
-function destructuring (companies) {
-  // eslint-disable-next-line camelcase
-  return companies.map(({ id, name, sector, vertical, is_public }) => ({ id, name, sector, vertical, is_public }))
 }
 
 export default useCompanyPanel
+
+function destructuring (result) {
+  return {
+    // eslint-disable-next-line camelcase
+    companiesArray: result.companies.map(({ id, name, sector, vertical, is_public }) => ({ id, name, sector, vertical, is_public })),
+    total: result.total
+  }
+}

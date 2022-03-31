@@ -9,6 +9,7 @@ import { ExpectedGrowthRateAndMarginCard } from './Components/Cards/ExpectedGrow
 import { Filter } from '../../components/Filter/Filter'
 import { RuleGraph } from './Components/RuleGraph'
 import useUniverseOverview from '../../hooks/useUniverseOverview'
+import { useComparisonPeers } from '../../hooks/useComparisionPeers'
 import { Information } from '../../components/HeaderInformation'
 import { ComparisonView } from './../ComparisonView/ComparisonView'
 
@@ -27,6 +28,12 @@ export function UniverseView () {
     setFilters,
     filters
   } = useUniverseOverview()
+  const {
+    companyComparison,
+    peersComparison,
+    peersIsLoading,
+    downloadComparisonCsv
+  } = useComparisonPeers({ fromUniverseOverview: true })
   return (
     <>
       <Grid container spacing={3}>
@@ -45,7 +52,13 @@ export function UniverseView () {
           <Grid item xs={12} sm={6} lg={6}><ExpectedGrowthRateAndMarginCard expectedGrowthAndMargin={expectedGrowthAndMargin} isLoading={isLoading}/></Grid>
       </Grid>
       <Grid>
-        <ComparisonView fromUniverseOverview={true}/>
+        <ComparisonView
+          fromUniverseOverview={true}
+          companyComparison={companyComparison}
+          peersComparison={peersComparison}
+          isLoading={peersIsLoading}
+          downloadComparisonCsv={downloadComparisonCsv}
+        />
       </Grid>
     </>
   )
