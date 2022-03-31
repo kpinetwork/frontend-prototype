@@ -15,12 +15,8 @@ export const RevenueAndEbitdaCard = ({ revenueAndEbitda, isLoading }) => {
   const [data, setData] = useState([])
   useEffect(() => {
     if (revenueAndEbitda) {
-      const growth = Object.values(revenueAndEbitda).map((row) => {
-        const mergerow = { ...row[0], ...row[1] }
-        return mergerow
-      })
       setData(() => {
-        const orderedGrowth = growth.map((row, index) => {
+        const orderedGrowth = Object.values(revenueAndEbitda).map((row, index) => {
           row.revenue = Number(row.revenue)?.toFixed(2) + ' %'
           row.ebitda = Number(row.ebitda)?.toFixed(2) + ' %'
           return {
