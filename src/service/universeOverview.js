@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { UNIVERSE_OVERVIEW } from './uowData'
 import { getAuthorizationHeader } from './session'
 const { VITE_HOST: baseUrl } = import.meta.env
 
