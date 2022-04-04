@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { UNIVERSE_OVERVIEW } from './uowData'
 import { getAuthorizationHeader } from './session'
 const { VITE_HOST: baseUrl } = import.meta.env
 
@@ -25,10 +24,5 @@ export const getUniverseOverviewFromQueryParams = async (options) => {
     headers: headers
   })
   const data = await response.data
-  return data
-}
-
-export const getUniverseOverViewFromObject = async (year) => {
-  const data = await UNIVERSE_OVERVIEW
   return data
 }

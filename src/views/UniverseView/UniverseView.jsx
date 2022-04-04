@@ -20,7 +20,6 @@ export function UniverseView () {
     growthAndMargin,
     expectedGrowthAndMargin,
     revenueAndEbitda,
-    ruleOf40,
     fillFilters,
     isLoading,
     year,
@@ -31,6 +30,7 @@ export function UniverseView () {
   const {
     companyComparison,
     peersComparison,
+    ruleOf40,
     peersIsLoading,
     downloadComparisonCsv
   } = useComparisonPeers({ fromUniverseOverview: true })

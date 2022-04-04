@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { COMPARISON_VERSUS_PEERS } from './uowData'
 import { getAuthorizationHeader } from './session'
 const { VITE_HOST: baseUrl } = import.meta.env
 
@@ -15,11 +14,6 @@ export const getComparisonPeersFromQueryParams = async (options) => {
     headers: headers
   })
   const data = await response.data
-  return data
-}
-
-export const getComparisonPeersFromObject = async (year) => {
-  const data = await COMPARISON_VERSUS_PEERS
   return data
 }
 
