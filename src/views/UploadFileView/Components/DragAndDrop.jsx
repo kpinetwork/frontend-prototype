@@ -1,8 +1,8 @@
-import React from 'react'
-import { Button, Paper, Typography, makeStyles } from '@material-ui/core'
+import React, { useState } from 'react'
+import { Button, Paper, Typography, makeStyles, Snackbar } from '@material-ui/core'
+import { Alert } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
 import FolderIcon from '../../../components/Icons/FolderIcon'
-import { FileUpload } from '@mui/icons-material'
 import { uploadFileData } from '../../../service/uploadFileData'
 
 const useStyles = makeStyles({
@@ -32,15 +32,23 @@ const useStyles = makeStyles({
 
 export default function DragAndDrop (props) {
   const classes = useStyles()
-  const { acceptedFiles, getRootProps, getInputProps } =
+  const [open, setOpen] = useState(false)
+  const [confirmMessage, setConfirmMessage] = useState('')
+  const { acceptedFiles, fileRejections, getRootProps, getInputProps } =
     useDropzone({
       maxFiles: 1,
       accept: '.csv,.xlsx'
     })
 
   const acceptedFileItems = acceptedFiles.map((file) => (
+    <Alert severity="success" key={file.path}>{file.path} - {file.size} bytes </Alert>
+  ))
+
+  const fileRejectionItems = fileRejections.map(({ file, errors }) => (
     <li key={file.path}>
-      {file.path} - {file.size} bytes
+        {errors.map(e => (
+          <Alert severity="error" key={e.code}>{file.path}: {e.message} </Alert>
+        ))}
     </li>
   ))
 
@@ -53,12 +61,32 @@ export default function DragAndDrop (props) {
     })
   }
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setOpen(false)
+  }
+
   const onClick = async (_) => {
+    let result = ''
     const fileToUpload = acceptedFiles[0]
-    await uploadFileData({
-      fileName: fileToUpload.name,
-      file: await (getBinaryFromFile(fileToUpload))
-    })
+    if (fileToUpload !== undefined) {
+      result = await uploadFileData({
+        fileName: fileToUpload.name,
+        file: await (getBinaryFromFile(fileToUpload))
+      })
+    } else {
+      setConfirmMessage('Please, select a file to uploaded')
+    }
+    if (result.uploaded) {
+      setConfirmMessage('File was uploaded successfully!!')
+    }
+    if (result.error) {
+      setConfirmMessage(`File was not uploaded: ${result.error}`)
+    }
+    setOpen(true)
   }
 
   return (
@@ -75,19 +103,28 @@ export default function DragAndDrop (props) {
         </div>
       </Paper>
       <aside>
-        <h4 className={classes.title}>File name and size</h4>
-        <ul className={classes.fileInfo}>{acceptedFileItems}</ul>
+      <h4 className={classes.title}>File name and size</h4>
+      {acceptedFileItems.length > 0
+        ? <ul className={classes.fileInfo}>{acceptedFileItems}</ul>
+        : <ul className={classes.fileInfo}>{fileRejectionItems}</ul>
+        }
       </aside>
+
       <div className={classes.buttonContainer}>
         <Button
           color="primary"
-          startIcon={<FileUpload />}
           variant="contained"
           onClick={onClick}
         >
           Upload File
         </Button>
       </div>
+      <Snackbar
+        open={open}
+        autoHideDuration={2000}
+        message={confirmMessage}
+        onClose={handleClose}
+      />
     </div>
   )
 }
