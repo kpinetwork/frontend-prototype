@@ -37,7 +37,7 @@ export default function DragAndDrop (props) {
   const { acceptedFiles, fileRejections, getRootProps, getInputProps } =
     useDropzone({
       maxFiles: 1,
-      accept: '.csv,.xlsx'
+      accept: '.csv'
     })
 
   const acceptedFileItems = acceptedFiles.map((file) => (
@@ -120,6 +120,7 @@ export default function DragAndDrop (props) {
         </Button>
       </div>
       <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={open}
         autoHideDuration={2000}
         message={confirmMessage}
