@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Grid, Tabs, Tab, useMediaQuery, Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   tabs: {
     '& .MuiTab-wrapper': {
       flexDirection: 'row',
@@ -28,23 +28,35 @@ export function AdminPanelContainer ({ initialTab, children }) {
   return (
     <>
       <Grid>
-        <Box
-            sx={{ flexGrow: 1, display: isPhone ? '' : 'flex' }}
-        >
+        <Box sx={{ flexGrow: 1, display: isPhone ? '' : 'flex' }}>
           <Box>
             <Tabs
-                orientation={isPhone ? 'horizontal' : 'vertical'}
-                variant="scrollable"
-                value={tab}
-                TabIndicatorProps={{ className: classes.indicator }}
+              orientation={isPhone ? 'horizontal' : 'vertical'}
+              variant="scrollable"
+              value={tab}
+              TabIndicatorProps={{ className: classes.indicator }}
             >
-                <Tab className={classes.tabs} label="Users" value="users" href="/admin/users"/>
-                <Tab className={classes.tabs} label="Companies" value="companies" href="/admin/companies"/>
+              <Tab
+                className={classes.tabs}
+                label="Users"
+                value="users"
+                href="/admin/users"
+              />
+              <Tab
+                className={classes.tabs}
+                label="Companies"
+                value="companies"
+                href="/admin/companies"
+              />
+              <Tab
+                className={classes.tabs}
+                label="Import Data"
+                value="import_data"
+                href="/admin/import_data"
+              />
             </Tabs>
           </Box>
-          <div style={{ padding: 20 }}>
-            {children}
-          </div>
+          <div style={{ padding: 20 }}>{children}</div>
         </Box>
       </Grid>
     </>

@@ -8,6 +8,7 @@ import { UniverseView } from './views/UniverseView/UniverseView'
 import { CompanyView } from './views/CompanyView/CompanyView'
 import { UserPanelView } from './views/UserPanelView/UserPanelView'
 import { CompanyPanelView } from './views/CompanyPanelView/CompanyPanelView'
+import { UploadFileView } from './views/UploadFileView/UploadFileView'
 import { UserDetailView } from './views/UserPanelView/UserDetailView'
 import { ErrorView } from './views/DefaultView/ErrorView'
 import LoadingProgress from './components/Progress'
@@ -19,7 +20,9 @@ import { updatedAwsConfig } from './awsConfig'
 import awsExports from './aws-exports'
 
 const { VITE_ENV: env } = import.meta.env
-env === 'prod' ? Amplify.configure(awsExports) : Amplify.configure(updatedAwsConfig)
+env === 'prod'
+  ? Amplify.configure(awsExports)
+  : Amplify.configure(updatedAwsConfig)
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,15 +54,47 @@ function AppRoutes ({ signOut }) {
 
   return (
     <div className={classes.root}>
-      <Header classes={classes} signOut={signOut}/>
+      <Header classes={classes} signOut={signOut} />
       <Switch>
         <Route path="/" component={UniverseView} />
         <Route path="/company-report/:companyId?" component={CompanyView} />
-        <Route exact path="/admin/users" component={(props) => renderIfAdmin(UserPanelView, props)} />
-        <Route exact path="/admin/companies" component={(props) => renderIfAdmin(CompanyPanelView, props)} />
-        <Route exact path="/admin/users/detail/" component={(props) => renderIfAdmin(UserDetailView, { ...props, email: user.selectedEmail })} />
-        <Route exact path="/forbidden" component={(props) => <ErrorView {...props} message={'Forbidden'} code={'403'} />} />
-        <Route component={(props) => <ErrorView {...props} message={'Not Found'} code={'404'} />} />
+        <Route
+          exact
+          path="/admin/users"
+          component={(props) => renderIfAdmin(UserPanelView, props)}
+        />
+        <Route
+          exact
+          path="/admin/companies"
+          component={(props) => renderIfAdmin(CompanyPanelView, props)}
+        />
+        <Route
+          exact
+          path="/admin/import_data"
+          component={(props) => renderIfAdmin(UploadFileView, props)}
+        />
+        <Route
+          exact
+          path="/admin/users/detail/"
+          component={(props) =>
+            renderIfAdmin(UserDetailView, {
+              ...props,
+              email: user.selectedEmail
+            })
+          }
+        />
+        <Route
+          exact
+          path="/forbidden"
+          component={(props) => (
+            <ErrorView {...props} message={'Forbidden'} code={'403'} />
+          )}
+        />
+        <Route
+          component={(props) => (
+            <ErrorView {...props} message={'Not Found'} code={'404'} />
+          )}
+        />
       </Switch>
     </div>
   )
@@ -82,13 +117,16 @@ function App () {
     }
   }
   return (
-    <Authenticator className={classes.authenticator} socialProviders={[]} formFields={formFields} components={CustomSignUpComponents()}>
+    <Authenticator
+      className={classes.authenticator}
+      socialProviders={[]}
+      formFields={formFields}
+      components={CustomSignUpComponents()}
+    >
       {({ signOut }) => {
         return (
           <AppContextProvider>
-            <AppRoutes
-              signOut={signOut}
-            />
+            <AppRoutes signOut={signOut} />
           </AppContextProvider>
         )
       }}
