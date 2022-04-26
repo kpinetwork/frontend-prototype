@@ -10,11 +10,11 @@ const optionLabels = [
 ]
 
 const options = [
-  'Negative',
-  'Low',
-  'Medium',
-  'High',
-  'Hyper'
+  'Negative growth (<0%)',
+  'Low growth (0-<10%)',
+  'Medium growth (10%-<30%)',
+  'High growth (30%-<50%)',
+  'Hyper growth (50%+)'
 ]
 export function Growth ({ setFilters, fillFilters, selectedList }) {
   const [selected, setSelected] = useState(() => {
