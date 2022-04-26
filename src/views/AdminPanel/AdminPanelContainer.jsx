@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 export function AdminPanelContainer ({ initialTab, children }) {
   const isPhone = useMediaQuery('(max-width: 768px)')
+  const isTablet = useMediaQuery('(max-width: 1400px)')
   const [tab, setTab] = useState('users')
   const classes = useStyles()
 
@@ -28,7 +29,7 @@ export function AdminPanelContainer ({ initialTab, children }) {
   return (
     <>
       <Grid>
-        <Box sx={{ flexGrow: 1, display: isPhone ? '' : 'flex' }}>
+        <Box sx={{ flexGrow: 1, display: isPhone || isTablet ? '' : 'flex' }}>
           <Box>
             <Tabs
               orientation={isPhone ? 'horizontal' : 'vertical'}
@@ -56,7 +57,7 @@ export function AdminPanelContainer ({ initialTab, children }) {
               />
             </Tabs>
           </Box>
-          <div style={{ padding: 20 }}>{children}</div>
+          <Box style={{ padding: 20, width: '100%' }}>{children}</Box>
         </Box>
       </Grid>
     </>
