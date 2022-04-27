@@ -9,6 +9,15 @@ export const getUserIdToken = async () => {
   }
 }
 
+export const getUserId = async () => {
+  try {
+    const user = await Auth.currentAuthenticatedUser()
+    return user.attributes.sub
+  } catch (_error) {
+    return ''
+  }
+}
+
 export const getAuthorizationHeader = async () => {
   const token = await getUserIdToken()
 
