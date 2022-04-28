@@ -4,6 +4,7 @@ import { Alert } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
 import FolderIcon from '../../../components/Icons/FolderIcon'
 import { uploadFileData } from '../../../service/uploadFileData'
+import { getUserId } from './../../../service/session'
 
 const useStyles = makeStyles({
   root: {
@@ -33,6 +34,7 @@ const useStyles = makeStyles({
 export default function DragAndDrop (props) {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
+  const { onConnectETL, onDisconnectETL, onSendRegister } = props
   const [confirmMessage, setConfirmMessage] = useState('')
   const { acceptedFiles, fileRejections, getRootProps, getInputProps } =
     useDropzone({
@@ -69,24 +71,37 @@ export default function DragAndDrop (props) {
     setOpen(false)
   }
 
+  const callWebsocketRegister = async (user, file) => {
+    onSendRegister(user, file)
+  }
+
+  const onFileSent = async (response) => {
+    if (response.uploaded) {
+      setConfirmMessage('File was uploaded successfully!!')
+      const user = await getUserId()
+      callWebsocketRegister(user, response.filename)
+    }
+    if (response.error) {
+      onDisconnectETL()
+      setConfirmMessage(`File was not uploaded: ${response.error}`)
+    }
+    setOpen(true)
+  }
+
   const onClick = async (_) => {
-    let result = ''
     const fileToUpload = acceptedFiles[0]
-    if (fileToUpload !== undefined) {
-      result = await uploadFileData({
+
+    if (fileToUpload == null) {
+      setConfirmMessage('Please, select a file to uploaded')
+      setOpen(true)
+    } else {
+      onConnectETL()
+      const response = await uploadFileData({
         fileName: fileToUpload.name,
         file: await (getBinaryFromFile(fileToUpload))
       })
-    } else {
-      setConfirmMessage('Please, select a file to uploaded')
+      onFileSent(response)
     }
-    if (result.uploaded) {
-      setConfirmMessage('File was uploaded successfully!!')
-    }
-    if (result.error) {
-      setConfirmMessage(`File was not uploaded: ${result.error}`)
-    }
-    setOpen(true)
   }
 
   return (
