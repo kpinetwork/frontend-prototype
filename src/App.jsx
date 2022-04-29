@@ -57,7 +57,7 @@ function AppRoutes ({ signOut }) {
   }, [])
 
   const onSocketMessage = useCallback((dataSocket) => {
-    setMessage(dataSocket)
+    setMessage(JSON.parse(dataSocket))
     onDisconnectETL()
   }, [])
 
@@ -78,7 +78,10 @@ function AppRoutes ({ signOut }) {
     }
   }, [])
 
-  const onCloseSnackbar = () => {
+  const onCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
     setMessage(null)
   }
 
@@ -113,7 +116,7 @@ function AppRoutes ({ signOut }) {
         onClose={onCloseSnackbar}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <Alert variation="info">{messageFromETL}</Alert>
+        <Alert variation="success" isDismissible={false}>{messageFromETL}</Alert>
       </Snackbar>
       <Switch>
         <Route path="/" component={UniverseView} />
