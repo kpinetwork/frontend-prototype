@@ -1,56 +1,98 @@
 import React, { useState } from 'react'
-import { Button, Paper, Typography, makeStyles, Snackbar } from '@material-ui/core'
+import Papa from 'papaparse'
+import { Button, Paper, Typography, makeStyles, Snackbar, Box } from '@material-ui/core'
 import { Alert } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
-import FolderIcon from '../../../components/Icons/FolderIcon'
 import { uploadFileData } from '../../../service/uploadFileData'
+import { getUserId } from './../../../service/session'
+import RestartAltIcon from '@mui/icons-material/RestartAlt'
+import FolderIcon from '../../../components/Icons/FolderIcon'
+import PreviewTable from './PreviewTable'
 
 const useStyles = makeStyles({
   root: {
     textAlign: 'center',
-    padding: 20
+    padding: 20,
+    minWidth: '25%',
+    alignSelf: 'center'
   },
   container: {
     borderStyle: 'dotted',
-    padding: 10,
-    borderColor: '#A38C8C'
+    borderWidth: 2,
+    padding: 20,
+    borderColor: '#A38C8C',
+    textAlign: 'center'
   },
   title: {
     fontSize: 16,
     color: '#2f5487',
     fontWeight: 'bold',
-    letterSpacing: '0.5px'
-  },
-  buttonContainer: {
+    letterSpacing: '0.5px',
     textAlign: 'center'
   },
-  fileInfo: {
-    fontSize: 16,
-    letterSpacing: '0.5px'
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row-reverse'
+  },
+  fileInfoContainer: {
+    flexDirection: 'column',
+    margin: '20px'
+  },
+  resetButton: {
+    marginRight: 10,
+    width: 130,
+    alignItem: 'center'
+  },
+  editButton: {
+    backgroundColor: '#364b8a',
+    color: 'white',
+    marginRight: 10,
+    width: 130
+  },
+  uploadButton: {
+    backgroundColor: '#364b8a',
+    color: 'white',
+    marginRight: 10
   }
 })
 
 export default function DragAndDrop (props) {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
+  const { onConnectETL, onDisconnectETL, onSendRegister } = props
   const [confirmMessage, setConfirmMessage] = useState('')
+  const [headRows, setHeadRows] = useState([])
+  const [bodyRows, setBodyRows] = useState([])
+  const onDrop = (acceptedFiles, fileRejections) => {
+    if (fileRejections.length === 0) parseFile(acceptedFiles)
+  }
   const { acceptedFiles, fileRejections, getRootProps, getInputProps } =
     useDropzone({
+      onDrop,
       maxFiles: 1,
       accept: '.csv'
     })
 
-  const acceptedFileItems = acceptedFiles.map((file) => (
-    <Alert severity="success" key={file.path}>{file.path} - {file.size} bytes </Alert>
-  ))
+  const acceptedFilesItems = acceptedFiles.map((file) => (<Alert severity="success" key={file.path}>{file.path} - {file.size} bytes </Alert>))
 
   const fileRejectionItems = fileRejections.map(({ file, errors }) => (
-    <li key={file.path}>
-        {errors.map(e => (
-          <Alert severity="error" key={e.code}>{file.path}: {e.message} </Alert>
-        ))}
-    </li>
+    errors.map(e => (
+      <Alert severity="error" key={e.code}>{file.path}: {e.message} </Alert>
+    ))
   ))
+
+  const parseFile = (acceptedFiles) => {
+    Papa.parse(acceptedFiles[0], {
+      complete: function (results) {
+        mapParsedData(results.data)
+      }
+    })
+  }
+
+  const mapParsedData = (parsedData) => {
+    setHeadRows(parsedData.slice(0, 3))
+    setBodyRows(parsedData.slice(3))
+  }
 
   function getBinaryFromFile (file) {
     return new Promise((resolve, reject) => {
@@ -69,56 +111,91 @@ export default function DragAndDrop (props) {
     setOpen(false)
   }
 
-  const onClick = async (_) => {
-    let result = ''
-    const fileToUpload = acceptedFiles[0]
-    if (fileToUpload !== undefined) {
-      result = await uploadFileData({
-        fileName: fileToUpload.name,
-        file: await (getBinaryFromFile(fileToUpload))
-      })
-    } else {
-      setConfirmMessage('Please, select a file to uploaded')
-    }
-    if (result.uploaded) {
+  const callWebsocketRegister = async (user, file) => {
+    onSendRegister(user, file)
+  }
+
+  const onFileSent = async (response) => {
+    if (response.uploaded) {
       setConfirmMessage('File was uploaded successfully!!')
+      const user = await getUserId()
+      callWebsocketRegister(user, response.filename)
     }
-    if (result.error) {
-      setConfirmMessage(`File was not uploaded: ${result.error}`)
+    if (response.error) {
+      onDisconnectETL()
+      setConfirmMessage(`File was not uploaded: ${response.error}`)
     }
     setOpen(true)
   }
 
+  const onClick = async (_) => {
+    const fileToUpload = acceptedFiles[0]
+
+    if (fileToUpload == null) {
+      setConfirmMessage('Please, select a file to uploaded')
+      setOpen(true)
+    } else {
+      onConnectETL()
+      const response = await uploadFileData({
+        fileName: fileToUpload.name,
+        file: await (getBinaryFromFile(fileToUpload))
+      })
+      onFileSent(response)
+    }
+  }
+
   return (
-    <div>
-      <Paper elevation={8} className={classes.root}>
-        <div className={classes.container}>
-          <div {...getRootProps({ className: 'dropzone' })}>
+    <Box>
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Paper elevation={8} className={ classes.root }>
+          <Box {...getRootProps({ className: 'dropzone' })} className={classes.container}>
             <input {...getInputProps()} />
             <FolderIcon />
             <Typography variant="h6" className={classes.title}>
               Drag and drop your file here, or click to select your file
             </Typography>
-          </div>
-        </div>
-      </Paper>
-      <aside>
-      <h4 className={classes.title}>File name and size</h4>
-      {acceptedFileItems.length > 0
-        ? <ul className={classes.fileInfo}>{acceptedFileItems}</ul>
-        : <ul className={classes.fileInfo}>{fileRejectionItems}</ul>
-        }
-      </aside>
-
-      <div className={classes.buttonContainer}>
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={onClick}
-        >
-          Upload File
-        </Button>
-      </div>
+          </Box>
+        </Paper>
+      </Box>
+      <Box display="flex" justifyContent="center" alignItems="center" className={classes.fileInfoContainer}>
+        {acceptedFiles.length > 0 && (
+          <Typography variant='h4' className={classes.title}>File name and size</Typography>
+        )}
+        <>
+          {acceptedFilesItems.length > 0
+            ? <>{acceptedFilesItems}</>
+            : <>{fileRejectionItems}</>
+          }
+        </>
+      </Box>
+      {acceptedFiles.length > 0 && fileRejectionItems.length === 0 && (
+        <>
+          <Box className={classes.buttonContainer}>
+            <Button
+              variant='outlined'
+              className={classes.resetButton}
+            >Reset
+              <RestartAltIcon color="action" fontSize="small" sx={{ marginLeft: 0.4 }}></RestartAltIcon>
+            </Button>
+            <Button
+              variant="contained"
+              className={classes.editButton}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="contained"
+              onClick={onClick}
+              className={classes.uploadButton}
+            >
+              Upload File
+            </Button>
+          </Box>
+          <Box style={{ marginTop: '20px' }}>
+            <PreviewTable head={headRows} body={bodyRows}></PreviewTable>
+          </Box>
+        </>
+      )}
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={open}
@@ -126,6 +203,6 @@ export default function DragAndDrop (props) {
         message={confirmMessage}
         onClose={handleClose}
       />
-    </div>
+    </Box>
   )
 }

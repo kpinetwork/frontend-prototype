@@ -1,6 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useCallback, useRef, useEffect } from 'react'
 import { Amplify } from 'aws-amplify'
-import { Authenticator } from '@aws-amplify/ui-react'
+import { Authenticator, Alert } from '@aws-amplify/ui-react'
+import { Snackbar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Switch, Route, Redirect } from 'wouter'
 import { Header } from './components/Header'
@@ -18,6 +19,7 @@ import '@aws-amplify/ui-react/styles.css'
 import './App.scss'
 import { updatedAwsConfig } from './awsConfig'
 import awsExports from './aws-exports'
+const { VITE_WEBSOCKET: websocketUrl } = import.meta.env
 
 const { VITE_ENV: env } = import.meta.env
 env === 'prod'
@@ -42,6 +44,59 @@ const useStyles = makeStyles((theme) => ({
 function AppRoutes ({ signOut }) {
   const classes = useStyles()
   const { isAdmin, isRoleLoading, user } = useContext(Context)
+  const socket = useRef()
+  const [isConnected, setConnected] = useState(false)
+  const [messageFromETL, setMessage] = useState(null)
+
+  const onSocketOpen = useCallback(() => {
+    setConnected(true)
+  }, [])
+
+  const onSocketClose = useCallback(() => {
+    setConnected(false)
+  }, [])
+
+  const onSocketMessage = useCallback((dataSocket) => {
+    try {
+      setMessage(JSON.parse(dataSocket))
+    } catch (_error) {
+      setMessage('Cannot process data')
+    }
+    onDisconnectETL()
+  }, [])
+
+  const onConnectETL = useCallback(() => {
+    if (socket.current?.readyState !== WebSocket.OPEN) {
+      socket.current = new WebSocket(websocketUrl)
+      socket.current.addEventListener('open', onSocketOpen)
+      socket.current.addEventListener('close', onSocketClose)
+      socket.current.addEventListener('message', (event) => {
+        onSocketMessage(event?.data)
+      })
+    }
+  }, [])
+
+  const onDisconnectETL = useCallback(() => {
+    if (isConnected) {
+      socket.current?.close()
+    }
+  }, [])
+
+  const onCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setMessage(null)
+  }
+
+  const onSendRegister = useCallback((username, filename) => {
+    socket.current?.send(JSON.stringify({
+      action: 'register',
+      user: username,
+      file: filename
+    }))
+  }, [])
+
   const renderIfAdmin = (Component, props) => {
     if (isRoleLoading) {
       return <LoadingProgress />
@@ -52,9 +107,21 @@ function AppRoutes ({ signOut }) {
     return <Component {...props} />
   }
 
+  useEffect(() => {
+    return () => {
+      socket.current?.close()
+    }
+  }, [])
+
   return (
     <div className={classes.root}>
       <Header classes={classes} signOut={signOut} />
+      <Snackbar open={messageFromETL != null} autoHideDuration={6000}
+        onClose={onCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert variation="success" isDismissible={false}>{messageFromETL}</Alert>
+      </Snackbar>
       <Switch>
         <Route path="/" component={UniverseView} />
         <Route path="/company-report/:companyId?" component={CompanyView} />
@@ -71,7 +138,7 @@ function AppRoutes ({ signOut }) {
         <Route
           exact
           path="/admin/import_data"
-          component={(props) => renderIfAdmin(UploadFileView, props)}
+          component={(props) => renderIfAdmin(UploadFileView, { ...props, onConnectETL, onDisconnectETL, onSendRegister })}
         />
         <Route
           exact

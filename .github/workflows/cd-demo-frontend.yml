@@ -43,6 +43,7 @@ jobs:
       
       - name: Build project demo
         env:
+          VITE_WEBSOCKET: ${{ secrets.VITE_WEBSOCKET_DEMO }}
           VITE_HOST: ${{ secrets.VITE_HOST_DEMO }}
           VITE_APP: ${{ secrets.VITE_APP_DEMO }}
           VITE_ENV: demo
