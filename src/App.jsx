@@ -57,7 +57,11 @@ function AppRoutes ({ signOut }) {
   }, [])
 
   const onSocketMessage = useCallback((dataSocket) => {
-    setMessage(JSON.parse(dataSocket))
+    try {
+      setMessage(JSON.parse(dataSocket))
+    } catch (_error) {
+      setMessage('Cannot process data')
+    }
     onDisconnectETL()
   }, [])
 
@@ -67,7 +71,7 @@ function AppRoutes ({ signOut }) {
       socket.current.addEventListener('open', onSocketOpen)
       socket.current.addEventListener('close', onSocketClose)
       socket.current.addEventListener('message', (event) => {
-        onSocketMessage(event.data)
+        onSocketMessage(event?.data)
       })
     }
   }, [])
