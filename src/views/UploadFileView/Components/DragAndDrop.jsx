@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import Papa from 'papaparse'
 import { Button, Paper, Typography, makeStyles, Snackbar, Box } from '@material-ui/core'
-import { Alert } from '@mui/material'
+import { Alert, Modal } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
 import { uploadFileData } from '../../../service/uploadFileData'
 import { getUserId } from './../../../service/session'
 import RestartAltIcon from '@mui/icons-material/RestartAlt'
 import FolderIcon from '../../../components/Icons/FolderIcon'
 import PreviewTable from './PreviewTable'
+import ButtonActions from '../../../components/Actions'
 
 const useStyles = makeStyles({
   root: {
@@ -53,18 +54,38 @@ const useStyles = makeStyles({
     backgroundColor: '#364b8a',
     color: 'white',
     marginRight: 10
+  },
+  modal: {
+    textAlign: 'center',
+    backgroundColor: 'white',
+    width: '300px',
+    padding: 10,
+    borderRadius: 5,
+    position: 'absolute',
+    top: '50%',
+    left: '54%',
+    transform: 'translate(-50%, -50%)'
   }
 })
 
 export default function DragAndDrop (props) {
   const classes = useStyles()
+  const [initialData, setInitialData] = useState([])
   const [open, setOpen] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
   const { onConnectETL, onDisconnectETL, onSendRegister } = props
   const [confirmMessage, setConfirmMessage] = useState('')
   const [headRows, setHeadRows] = useState([])
   const [bodyRows, setBodyRows] = useState([])
   const onDrop = (acceptedFiles, fileRejections) => {
-    if (fileRejections.length === 0) parseFile(acceptedFiles)
+    if (fileRejections.length === 0) {
+      Papa.parse(acceptedFiles[0], {
+        complete: function (results) {
+          setInitialData(results.data)
+          setParsedData(results.data)
+        }
+      })
+    }
   }
   const { acceptedFiles, fileRejections, getRootProps, getInputProps } =
     useDropzone({
@@ -81,17 +102,14 @@ export default function DragAndDrop (props) {
     ))
   ))
 
-  const parseFile = (acceptedFiles) => {
-    Papa.parse(acceptedFiles[0], {
-      complete: function (results) {
-        mapParsedData(results.data)
-      }
-    })
-  }
-
-  const mapParsedData = (parsedData) => {
+  const setParsedData = (parsedData) => {
     setHeadRows(parsedData.slice(0, 3))
     setBodyRows(parsedData.slice(3))
+  }
+
+  const resetParsedData = () => {
+    setParsedData(initialData)
+    setOpenModal(false)
   }
 
   function getBinaryFromFile (file) {
@@ -173,6 +191,7 @@ export default function DragAndDrop (props) {
           <Box className={classes.buttonContainer}>
             <Button
               variant='outlined'
+              onClick={() => setOpenModal(true)}
               className={classes.resetButton}
             >Reset
               <RestartAltIcon color="action" fontSize="small" sx={{ marginLeft: 0.4 }}></RestartAltIcon>
@@ -191,6 +210,18 @@ export default function DragAndDrop (props) {
               Upload File
             </Button>
           </Box>
+          <Modal open={openModal}>
+            <Box className={classes.modal}>
+              <Typography variant="body2">Are you sure you want to reset this form?</Typography>
+              <ButtonActions
+                onOk={resetParsedData}
+                okName='YES'
+                onCancel={() => setOpenModal(false)}
+                cancelName='NO'
+                style={{ paddingTop: 10, paddingLeft: 20 }}
+              ></ButtonActions>
+            </Box>
+          </Modal>
           <Box style={{ marginTop: '20px' }}>
             <PreviewTable head={headRows} body={bodyRows}></PreviewTable>
           </Box>
