@@ -1,18 +1,33 @@
 import React from 'react'
+import '@testing-library/jest-dom/extend-expect'
+import { render, screen } from '@testing-library/react'
 import PreviewTable from './PreviewTable'
-import renderer from 'react-test-renderer'
 
-describe('Preview table', () => {
-  it('render correctly', () => {
-    const tree = renderer.create(<PreviewTable head={[]} body={[]}/>).toJSON()
-    expect(tree).toMatchSnapshot()
-  })
+const defautlProps = {
+  head: [
+    ['col1, col2, col3'],
+    ['col12, col22, col33']
+  ],
+  body: [
+    ['row1', 'row2', 'row3'],
+    ['row12', 'row22', 'row32']
+  ]
+}
+const setUp = (props) => {
+  render(<PreviewTable {...defautlProps} {...props} />)
+}
 
-  it('send data to component', () => {
-    const tree = renderer.create(<PreviewTable head={
-        [['col1, col2, col3'],
-          ['col1, col2, col3']]}
-        body={[['row1', 'row2', 'row3'], ['row1', 'row2', 'row3']]} />).toJSON()
-    expect(tree).toMatchSnapshot()
+describe('<PreviewTable />', () => {
+  describe('renders', () => {
+    it('Should render preview table', () => {
+      setUp()
+      const table = screen.getByRole('table')
+      const row = screen.getAllByRole('row')
+      const cell = screen.getAllByRole('cell')
+
+      expect(table).toBeInTheDocument()
+      expect(row).toHaveLength(4)
+      expect(cell).toHaveLength(6)
+    })
   })
 })

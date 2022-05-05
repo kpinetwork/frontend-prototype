@@ -77,6 +77,7 @@ export default function DragAndDrop (props) {
   const [confirmMessage, setConfirmMessage] = useState('')
   const [headRows, setHeadRows] = useState([])
   const [bodyRows, setBodyRows] = useState([])
+
   const onDrop = (acceptedFiles, fileRejections) => {
     if (fileRejections.length === 0) {
       Papa.parse(acceptedFiles[0], {
@@ -87,6 +88,7 @@ export default function DragAndDrop (props) {
       })
     }
   }
+
   const { acceptedFiles, fileRejections, getRootProps, getInputProps } =
     useDropzone({
       onDrop,
@@ -167,7 +169,7 @@ export default function DragAndDrop (props) {
       <Box display="flex" justifyContent="center" alignItems="center">
         <Paper elevation={8} className={ classes.root }>
           <Box {...getRootProps({ className: 'dropzone' })} className={classes.container}>
-            <input {...getInputProps()} />
+            <input data-testid="drop-input" {...getInputProps()} />
             <FolderIcon />
             <Typography variant="h6" className={classes.title}>
               Drag and drop your file here, or click to select your file
