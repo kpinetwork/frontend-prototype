@@ -112,7 +112,7 @@ export default function PreviewModal ({ open, onClose, onOk, onCancel, validData
   }
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth={800}
+    <Dialog open={open} onClose={onClose}
       PaperProps={{
         style: {
           backgroundColor: '#f3f4f8',
@@ -127,7 +127,7 @@ export default function PreviewModal ({ open, onClose, onOk, onCancel, validData
         </Box>
       </DialogTitle>
       <DialogContent>
-        <Box sx={{ width: 800 }} p={2}>
+        <Box sx={{ width: 500 }} p={2}>
           {!validData &&
             <Box>
               <Box sx={{ marginBottom: 20 }}>

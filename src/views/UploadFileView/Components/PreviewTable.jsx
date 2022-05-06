@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Paper, TextField, Box, Select, MenuItem } from '@material-ui/core'
-import { Vertical, Sector, InvestorProfile } from './../../../utils/constants/CompanyDescription'
+import { VERTICALS, SECTORS, INVESTOR_PROFILES } from './../../../utils/constants/CompanyDescription'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
@@ -35,9 +35,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const options = {
-  2: Object.values(Sector),
-  3: Object.values(Vertical),
-  4: Object.values(InvestorProfile)
+  2: SECTORS,
+  3: VERTICALS,
+  4: INVESTOR_PROFILES
 }
 
 export default function PreviewTable ({ head, body, edit }) {
