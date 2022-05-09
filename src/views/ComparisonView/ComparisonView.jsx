@@ -134,7 +134,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                 <TableBody>
                   {validPeersComparison().map((row) => (
                     <TableRow
-                      key={row?.name}
+                      key={row?.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                       <TableCell align="left">{row.name}</TableCell>
                       <TableCell align="left">{row.sector}</TableCell>
