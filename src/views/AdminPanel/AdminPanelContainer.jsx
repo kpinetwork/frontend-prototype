@@ -57,7 +57,7 @@ export function AdminPanelContainer ({ initialTab, children }) {
               />
             </Tabs>
           </Box>
-          <Box style={{ padding: 20, width: isPhone || isTablet ? '100%' : 'calc(100% - 160px)' }}>{children}</Box>
+          <Box style={{ padding: 20, width: '100%' }}>{children}</Box>
         </Box>
       </Grid>
     </>
