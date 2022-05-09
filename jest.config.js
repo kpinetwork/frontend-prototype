@@ -6,15 +6,21 @@ module.exports = {
     '/node_modules/'
   ],
 
+  // moduleDirectories: [
+  //   '.',
+  //   'src',
+  //   'node_modules'
+  // ],
+
   moduleFileExtensions: [
     'js',
     'jsx'
   ],
 
-  rootDir: './',
+  rootDir: './src',
 
   moduleNameMapper: {
-    '^@components(.*)$': '<rootDir>/src/components$1'
+    '^@components(.*)$': '<rootDir>/components$1'
   },
 
   // modulePaths: ['src'],
