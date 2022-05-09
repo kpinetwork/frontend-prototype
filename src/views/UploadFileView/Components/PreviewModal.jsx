@@ -109,8 +109,10 @@ export default function PreviewModal ({ open, onClose, onOk, onCancel, validData
       const repeatedScenarios = []
       for (const scenario of keys) {
         const metrics = Object.keys(company.scenarios[scenario]).filter((metric) => company.scenarios[scenario][metric])
-        const metricText = metrics.join(', ')
-        repeatedScenarios.push(`${scenario}: ${metricText}`)
+        if (metrics && metrics.length > 0) {
+          const metricText = metrics.join(', ')
+          repeatedScenarios.push(`${scenario}: ${metricText}`)
+        }
       }
       return { name: company.companies_name, scenarios: repeatedScenarios }
     })
