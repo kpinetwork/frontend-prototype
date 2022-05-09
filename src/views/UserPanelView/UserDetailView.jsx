@@ -13,11 +13,8 @@ import { PermissionsView } from './../PermissionsView/PermissionsView'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    [theme.breakpoints.up('md')]: {
-      width: '80vh'
-    },
-    [theme.breakpoints.between('sm', 'md')]: {
-      mimWidth: '55vh'
+    [theme.breakpoints.up('sm')]: {
+      width: '600px'
     },
     [theme.breakpoints.down('sm')]: {
       width: '100%'
