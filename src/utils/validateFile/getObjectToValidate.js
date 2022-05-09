@@ -16,7 +16,7 @@ const getValueFromRow = (row, indexColumn, arrayValues) => {
   return row[_index]
 }
 
-const getCompanyScenarioFromRow = (companyScenario, indexYear, metricName, year) => {
+const getCompanyScenarioFromRow = (companyScenario, metricName, year) => {
   const scenarioActive = companyScenario || {}
   const yearScenario = scenarioActive[year] || []
   yearScenario.push(metricName)
@@ -38,9 +38,9 @@ const getCompanyScenarios = (head, companyRow, scenariosIndex, metricsIndex) => 
   for (const indexYear of getIndexArray(head[2])) {
     if (isValidValue(companyRow[indexYear])) {
       const year = head[2][indexYear]
-      const metricName = getValueFromRow(head[1], indexYear, metricsIndex)
-      const scenarioName = getValueFromRow(head[0], indexYear, scenariosIndex)
-      scenarios[scenarioName] = getCompanyScenarioFromRow(scenarios[scenarioName], indexYear, metricName, year)
+      const metricName = getValueFromRow(head[1], indexYear, metricsIndex).split(':')[1]
+      const scenarioName = getValueFromRow(head[0], indexYear, scenariosIndex).split(':')[1]
+      scenarios[scenarioName] = getCompanyScenarioFromRow(scenarios[scenarioName], metricName, year)
     }
   }
   return scenarios

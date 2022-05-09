@@ -152,7 +152,7 @@ export default function PreviewContainer (props) {
   }
 
   return (
-    <Box>
+    <Box data-testid='preview-container'>
       <DragAndDrop
         getInputProps={getInputProps}
         getRootProps={getRootProps}

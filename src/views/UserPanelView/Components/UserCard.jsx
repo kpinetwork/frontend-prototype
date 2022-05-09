@@ -3,9 +3,9 @@ import { Card, CardContent, Table, TableBody, TableCell, TableRow } from '@mater
 
 export function UserCard ({ user, rootClass }) {
   return (
-    <Card>
-      <CardContent>
-        <Table className={rootClass}>
+    <Card className={rootClass}>
+      <CardContent style={{ overflowX: 'auto' }}>
+        <Table>
           <TableBody>
             <TableRow>
                 <TableCell>Email</TableCell>

@@ -6,7 +6,7 @@
     "build": "vite build",
     "build-demo": "vite build --mode demo",
     "serve": "vite preview",
-    "test": "jest",
+    "test": "jest --env=jsdom",
     "coverage": "vitest --coverage",
     "clear-jest": "jest --clearCache"
   },
@@ -41,6 +41,8 @@
     "@babel/core": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.3",
     "@vitejs/plugin-react": "^1.0.0",
     "babel-jest": "^27.4.5",
     "c8": "7.10.0",

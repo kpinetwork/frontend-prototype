@@ -20,6 +20,9 @@ export default function PreviewModal ({ open, onClose, onOk, onCancel, validData
   const classes = useStyles()
 
   const getListFromValues = (data, title, text) => {
+    if (data == null || Object.keys(data).length === 0) {
+      return <></>
+    }
     return (
       <Box sx={{ marginBottom: 20 }}>
         <Typography variant='body1'>{title}</Typography>
@@ -50,6 +53,9 @@ export default function PreviewModal ({ open, onClose, onOk, onCancel, validData
 
   const getExistingNames = () => {
     const names = data.existing_names || []
+    if (names.length === 0) {
+      return <></>
+    }
     const text = 'The following companies already exist on KPI, please change with a valid name'
     return (
       <Box sx={{ marginBottom: 20 }}>
