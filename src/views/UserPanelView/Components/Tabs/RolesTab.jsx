@@ -126,6 +126,11 @@ export function RolesTab ({ rootClass, roles, user, setUser }) {
         onCancel={(_) => wantsChangeRole(false)}
         okName="Save"
         cancelName="Cancel"
+        style={{
+          flexDirection: 'row-reverse',
+          display: 'flex',
+          paddingTop: 10
+        }}
         />
       }
     </Grid>
