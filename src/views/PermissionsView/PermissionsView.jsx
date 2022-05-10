@@ -186,11 +186,6 @@ export function PermissionsView ({ setOpenPermissions, email }) {
         }}
         okName="Save"
         cancelName="Cancel"
-        style={{
-          flexDirection: 'row-reverse',
-          display: 'flex',
-          paddingTop: 10
-        }}
        />
     </Box>
   )

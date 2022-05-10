@@ -1,13 +1,16 @@
 import React from 'react'
-import { makeStyles, Modal, Box, Typography } from '@material-ui/core'
+import { makeStyles, Modal, Box } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import ButtonActions from '../../../components/Actions'
 
 const useStyles = makeStyles({
   modal: {
     textAlign: 'center',
     backgroundColor: 'white',
-    width: '300px',
-    padding: 10,
+    width: '400px',
+    padding: 15,
+    paddingTop: 30,
+    paddingBottom: 30,
     borderRadius: 5,
     position: 'absolute',
     top: '50%',
@@ -21,13 +24,12 @@ export default function ResetModal ({ open, onOk, onCancel }) {
   return (
         <Modal open={open}>
             <Box className={classes.modal}>
-                <Typography variant="body2">Are you sure you want to reset this form?</Typography>
+                <Typography variant="subtitle1" fontSize={'18px'} pb={3}>Are you sure you want to reset this form?</Typography>
                 <ButtonActions
                     onOk={onOk}
                     okName='YES'
                     onCancel={onCancel}
-                    cancelName='NO'
-                    style={{ paddingTop: 10, paddingLeft: 20 }}>
+                    cancelName='NO'>
                 </ButtonActions>
             </Box>
         </Modal>

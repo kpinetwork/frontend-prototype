@@ -161,11 +161,6 @@ export default function PreviewModal ({ open, onClose, onOk, onCancel, validData
             cancelName={'Edit data'}
             onOk={onOk}
             onCancel={onCancel}
-            style={{
-              flexDirection: 'row-reverse',
-              display: 'flex',
-              paddingTop: 10
-            }}
           />
         }
         {!validData &&

@@ -187,11 +187,6 @@ export function CompaniesPanelTable () {
         }}
         okName="Save"
         cancelName="Cancel"
-        style={{
-          flexDirection: 'row-reverse',
-          display: 'flex',
-          paddingTop: 10
-        }}
        />
       }
     </div>
