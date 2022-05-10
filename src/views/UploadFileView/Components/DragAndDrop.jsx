@@ -88,7 +88,7 @@ export function DragAndDrop (props) {
       <Box display="flex" justifyContent="center" alignItems="center">
         <Paper elevation={8} className={ classes.root }>
           <Box {...getRootProps({ className: 'dropzone' })} className={classes.container}>
-            <input {...getInputProps()} />
+            <input data-testid="drop-input" {...getInputProps()} />
             <FolderIcon />
             <Typography variant="h6" className={classes.title}>
               Drag and drop your file here, or click to select your file
