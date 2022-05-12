@@ -23,7 +23,7 @@ const hookResponse = {
   ],
   setCompanies: jest.fn(),
   isLoading: false,
-  getCompanyPanel: jest.fn()
+  getCompanyPanel: () => {}
 }
 
 jest.mock('../../../../src/hooks/useCompanyPanel')
@@ -38,17 +38,11 @@ describe('<CompaniesPanelTable />', () => {
   describe('Render', () => {
     it('Should render Companies Panel Table component', async () => {
       useCompanyPanel.mockImplementation(() => hookResponse)
+      setUp()
       await waitFor(() => {
-        setUp()
-        const changePubliclyButton = screen.getByText('Change publicly')
-        const tableCols = screen.getAllByRole('columnheader')
-        const nameHeader = screen.getByRole('columnheader', { name: 'Name' })
-        const publicHeader = screen.getByRole('columnheader', { name: 'Public' })
-
-        expect(changePubliclyButton).toBeInTheDocument()
-        expect(tableCols).toHaveLength(4)
-        expect(nameHeader).toBeInTheDocument()
-        expect(publicHeader).toBeInTheDocument()
+        expect(screen.getByText('Change publicly')).toBeInTheDocument()
+        expect(screen.getByRole('columnheader', { name: 'Name' })).toBeInTheDocument()
+        expect(screen.getByRole('columnheader', { name: 'Public' })).toBeInTheDocument()
       })
     })
 
