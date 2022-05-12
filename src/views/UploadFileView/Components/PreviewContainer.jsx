@@ -10,6 +10,7 @@ import PreviewTable from './PreviewTable'
 import { DragAndDrop, ButtonOptions } from './DragAndDrop'
 import { isEmptyObject } from '../../../utils/userFunctions'
 import PreviewModal from './PreviewModal'
+import InvalidFormatModal from './InvalidFormatModal'
 import ResetModal from './ResetModal'
 
 export default function PreviewContainer (props) {
@@ -18,13 +19,15 @@ export default function PreviewContainer (props) {
   const [initialData, setInitialData] = useState([])
   const [confirmMessage, setConfirmMessage] = useState('')
   const [headRows, setHeadRows] = useState([])
-  const [bodyRows, setBodyRows] = useState([])
   const [editedRows, setEditedRows] = useState([])
+  const [loadingInfo, setLoadingInfo] = useState(false)
   const [edit, setEdit] = useState(false)
   const [validData, setIsValid] = useState(false)
   const [dataValidated, setData] = useState({})
   const [onValidating, setIsValidating] = useState(false)
   const [openModal, setOpenModal] = useState(false)
+  const [errorObject, setErrorObject] = useState({})
+  const [errorFormat, setErrorFormat] = useState(false)
   const [openResetModal, setOpenResetModal] = useState(false)
   const onDrop = (acceptedFiles, fileRejections) => {
     setEdit(false)
@@ -46,6 +49,7 @@ export default function PreviewContainer (props) {
   ))
 
   const parseFile = (acceptedFiles) => {
+    setLoadingInfo(true)
     Papa.parse(acceptedFiles[0], {
       complete: function (results) {
         setInitialData(JSON.parse(JSON.stringify(results.data)))
@@ -58,10 +62,20 @@ export default function PreviewContainer (props) {
     return Papa.unparse([...headRows, ...editedRows])
   }
 
+  const buildErrorObject = (data) => {
+    const obj = Object.fromEntries(
+      data.map((_elem, index) => [
+        [index], []
+      ])
+    )
+    setErrorObject(obj)
+  }
+
   const mapParsedData = (parsedData) => {
+    buildErrorObject(parsedData.slice(3))
     setHeadRows(parsedData.slice(0, 3))
-    setBodyRows(parsedData.slice(3))
     setEditedRows([...parsedData].slice(3))
+    setLoadingInfo(false)
   }
 
   const resetParsedData = () => {
@@ -124,7 +138,7 @@ export default function PreviewContainer (props) {
   }
 
   const onCancel = () => {
-    setEditedRows(bodyRows)
+    setErrorFormat(false)
     setOpenResetModal(true)
     setEdit(false)
   }
@@ -162,6 +176,19 @@ export default function PreviewContainer (props) {
     setValidData(false)
   }
 
+  const validateFormatErrorRows = () => {
+    const validFormat = Object.keys(errorObject).filter(row => errorObject[row].length > 0).length === 0
+    setErrorFormat(!validFormat)
+    return validFormat
+  }
+
+  const onValidate = async () => {
+    const validFormat = validateFormatErrorRows()
+    if (validFormat) {
+      await onValidateData()
+    }
+  }
+
   return (
     <Box data-testid='preview-container'>
       <DragAndDrop
@@ -178,6 +205,13 @@ export default function PreviewContainer (props) {
         onCancel={onCloseModal}
         validData={validData}
         data={dataValidated}
+      />
+      <InvalidFormatModal
+        open={errorFormat}
+        onClose={() => {
+          setErrorFormat(false)
+        }}
+        errorObject={errorObject}
       />
       <ResetModal
         open = {openResetModal}
@@ -200,10 +234,16 @@ export default function PreviewContainer (props) {
           <ButtonOptions
             onCancel={onCancel}
             setEdit={setEdit}
-            onValidateData={onValidateData}
+            onValidateData={onValidate}
           />
           <Box style={{ marginTop: '20px' }}>
-            <PreviewTable head={headRows} body={editedRows} edit={edit}></PreviewTable>
+            <PreviewTable
+              head={headRows}
+              body={editedRows}
+              edit={edit}
+              errorObject={errorObject}
+              isLoading={loadingInfo}
+            />
           </Box>
         </>
       )}
