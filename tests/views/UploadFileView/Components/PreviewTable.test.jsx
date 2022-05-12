@@ -6,14 +6,18 @@ import PreviewTable from '../../../../src/views/UploadFileView/Components/Previe
 
 const props = {
   head: [
-    ['UID', 'Name', 'Sector', 'Vertical', 'Investor profile', ':Actuals', ''],
-    ['', '', '', '', '', ':Revenue', ':Ebitda'],
-    ['', '', '', '', '', '2020', '2020']
+    ['UID', 'Name', 'Sector', 'Vertical', 'Investor profile', 'Size cohort', ':Actuals', ''],
+    ['', '', '', '', '', '', ':Revenue', ':Ebitda'],
+    ['', '', '', '', '', '', '2020', '2020']
   ],
   body: [
-    ['', 'Company A', 'Application Software', 'Engineering', 'Early stage VC', '4.56', '11.1'],
-    ['', 'Company BC', 'Application Software', 'Engineering', 'Growth stage VC', '8.01', '21.3']
-  ]
+    ['', 'Company A', 'Application Software', 'Engineering', 'Early stage VC', '100+', '4.56', '11.1'],
+    ['', 'Company BC', 'Application Software', 'Engineering', 'Growth stage VC', '<10', '8.01', '21.3']
+  ],
+  errorObject: {
+    0: [],
+    1: []
+  }
 }
 const setUp = (defaultProps) => {
   render(<PreviewTable {...props} {...defaultProps}/>)
@@ -32,6 +36,36 @@ describe('<PreviewTable /> without edit feature', () => {
   })
 })
 
+describe('<PreviewTable /> with format validation', () => {
+  it('Should render preview table with metric value error style', () => {
+    const invalidMetric = '4,56'
+    setUp({
+      edit: false,
+      body: [
+        ['', ' A ', 'Application Software', 'Engineering', 'Early stage VC', '', invalidMetric, '11.1']
+      ]
+    })
+    const inputCells = screen.getAllByRole('cell')
+    const cell = inputCells.filter(td => td.firstChild.textContent === invalidMetric)[0]
+
+    expect(cell.firstChild.firstChild).toHaveStyle('color: red')
+  })
+
+  it('Should render preview table with select cell error style', () => {
+    const invalidVertical = 'Engineering 2'
+    setUp({
+      edit: false,
+      body: [
+        ['Hola', ' A ', 'Application Software', invalidVertical, 'Early stage VC', '', '4,56', '11.1']
+      ]
+    })
+    const inputCells = screen.getAllByRole('cell')
+    const cell = inputCells.filter(td => td.firstChild.textContent === invalidVertical)[0]
+
+    expect(cell.firstChild.firstChild).toHaveStyle('color: red')
+  })
+})
+
 describe('<PreviewTable /> with edit feature', () => {
   beforeEach(() => {
     setUp({ edit: true })
@@ -42,7 +76,7 @@ describe('<PreviewTable /> with edit feature', () => {
     const inputCells = screen.getAllByRole('textbox')
 
     expect(table).toBeInTheDocument()
-    expect(inputCells).toHaveLength(props.body.length * 3)
+    expect(inputCells).toHaveLength(props.body.length * 4)
   })
 
   it('Should change value when editing textfield table cell', () => {
@@ -56,7 +90,7 @@ describe('<PreviewTable /> with edit feature', () => {
   })
 
   it('Should change value when editing select input table cell', async () => {
-    const sector = 'Communication Equipment'
+    const sector = 'communication equipment'
 
     fireEvent.mouseDown(screen.getAllByRole('button')[0])
     fireEvent.click(screen.getAllByRole('option')[1])

@@ -10,6 +10,7 @@ import PreviewTable from './PreviewTable'
 import { DragAndDrop, ButtonOptions } from './DragAndDrop'
 import { isEmptyObject } from '../../../utils/userFunctions'
 import PreviewModal from './PreviewModal'
+import InvalidFormatModal from './InvalidFormatModal'
 
 export default function PreviewContainer (props) {
   const [open, setOpen] = useState(false)
@@ -23,6 +24,8 @@ export default function PreviewContainer (props) {
   const [dataValidated, setData] = useState({})
   const [onValidating, setIsValidating] = useState(false)
   const [openModal, setOpenModal] = useState(false)
+  const [errorObject, setErrorObject] = useState({})
+  const [errorFormat, setErrorFormat] = useState(false)
   const onDrop = (acceptedFiles, fileRejections) => {
     if (fileRejections.length === 0) parseFile(acceptedFiles)
   }
@@ -53,7 +56,17 @@ export default function PreviewContainer (props) {
     return Papa.unparse([...headRows, ...editedRows])
   }
 
+  const buildErrorObject = (data) => {
+    const obj = Object.fromEntries(
+      data.map((_elem, index) => [
+        [index], []
+      ])
+    )
+    setErrorObject(obj)
+  }
+
   const mapParsedData = (parsedData) => {
+    buildErrorObject(parsedData.slice(3))
     setHeadRows(parsedData.slice(0, 3))
     setBodyRows(parsedData.slice(3))
     setEditedRows([...parsedData].slice(3))
@@ -115,6 +128,7 @@ export default function PreviewContainer (props) {
 
   const onCancel = () => {
     setEditedRows(bodyRows)
+    setErrorFormat(false)
     setEdit(false)
   }
 
@@ -151,6 +165,19 @@ export default function PreviewContainer (props) {
     setValidData(false)
   }
 
+  const validateFormatErrorRows = () => {
+    const validFormat = Object.keys(errorObject).filter(row => row.length > 0).length === 0
+    setErrorFormat(!validFormat)
+    return validFormat
+  }
+
+  const onValidate = async () => {
+    const validFormat = validateFormatErrorRows()
+    if (validFormat) {
+      await onValidateData()
+    }
+  }
+
   return (
     <Box data-testid='preview-container'>
       <DragAndDrop
@@ -168,6 +195,13 @@ export default function PreviewContainer (props) {
         validData={validData}
         data={dataValidated}
       />
+      <InvalidFormatModal
+        open={errorFormat}
+        onClose={() => {
+          setErrorFormat(false)
+        }}
+        errorObject={errorObject}
+      />
       {acceptedFiles.length > 0 && fileRejectionItems.length === 0 && (
         <>
           {
@@ -184,10 +218,10 @@ export default function PreviewContainer (props) {
           <ButtonOptions
             onCancel={onCancel}
             setEdit={setEdit}
-            onValidateData={onValidateData}
+            onValidateData={onValidate}
           />
           <Box style={{ marginTop: '20px' }}>
-            <PreviewTable head={headRows} body={editedRows} edit={edit}></PreviewTable>
+            <PreviewTable head={headRows} body={editedRows} edit={edit} errorObject={errorObject}></PreviewTable>
           </Box>
         </>
       )}

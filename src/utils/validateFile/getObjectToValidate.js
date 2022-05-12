@@ -56,3 +56,7 @@ export const getObjectFromPreview = (head, body) => {
   })
   return toSend
 }
+
+export const getFirstScenarioIndex = (row) => {
+  return row.findIndex(elem => elem.startsWith(':'))
+}
