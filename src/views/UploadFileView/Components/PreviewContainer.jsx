@@ -11,10 +11,12 @@ import { DragAndDrop, ButtonOptions } from './DragAndDrop'
 import { isEmptyObject } from '../../../utils/userFunctions'
 import PreviewModal from './PreviewModal'
 import InvalidFormatModal from './InvalidFormatModal'
+import ResetModal from './ResetModal'
 
 export default function PreviewContainer (props) {
   const [open, setOpen] = useState(false)
   const { onConnectETL, onDisconnectETL, onSendRegister } = props
+  const [initialData, setInitialData] = useState([])
   const [confirmMessage, setConfirmMessage] = useState('')
   const [headRows, setHeadRows] = useState([])
   const [bodyRows, setBodyRows] = useState([])
@@ -26,7 +28,9 @@ export default function PreviewContainer (props) {
   const [openModal, setOpenModal] = useState(false)
   const [errorObject, setErrorObject] = useState({})
   const [errorFormat, setErrorFormat] = useState(false)
+  const [openResetModal, setOpenResetModal] = useState(false)
   const onDrop = (acceptedFiles, fileRejections) => {
+    setEdit(false)
     if (fileRejections.length === 0) parseFile(acceptedFiles)
   }
   const { acceptedFiles, fileRejections, getRootProps, getInputProps } =
@@ -47,6 +51,7 @@ export default function PreviewContainer (props) {
   const parseFile = (acceptedFiles) => {
     Papa.parse(acceptedFiles[0], {
       complete: function (results) {
+        setInitialData(JSON.parse(JSON.stringify(results.data)))
         mapParsedData(results.data)
       }
     })
@@ -70,6 +75,11 @@ export default function PreviewContainer (props) {
     setHeadRows(parsedData.slice(0, 3))
     setBodyRows(parsedData.slice(3))
     setEditedRows([...parsedData].slice(3))
+  }
+
+  const resetParsedData = () => {
+    mapParsedData(JSON.parse(JSON.stringify(initialData)))
+    setOpenResetModal(false)
   }
 
   function getBinaryFromFile (file) {
@@ -129,6 +139,7 @@ export default function PreviewContainer (props) {
   const onCancel = () => {
     setEditedRows(bodyRows)
     setErrorFormat(false)
+    setOpenResetModal(true)
     setEdit(false)
   }
 
@@ -201,6 +212,11 @@ export default function PreviewContainer (props) {
           setErrorFormat(false)
         }}
         errorObject={errorObject}
+      />
+      <ResetModal
+        open = {openResetModal}
+        onOk = {resetParsedData}
+        onCancel = { () => setOpenResetModal(false)}
       />
       {acceptedFiles.length > 0 && fileRejectionItems.length === 0 && (
         <>
