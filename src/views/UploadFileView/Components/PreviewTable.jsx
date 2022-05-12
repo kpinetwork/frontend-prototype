@@ -57,7 +57,7 @@ const options = {
   4: getLowerObject(INVESTOR_PROFILES)
 }
 
-export default function PreviewTable ({ head, body, edit, errorObject }) {
+export default function PreviewTable ({ head, body, edit, errorObject, isLoading }) {
   const classes = useStyles()
   const [isChange, setChange] = useState(false)
   const selectIndex = [2, 3, 4]
@@ -160,7 +160,9 @@ export default function PreviewTable ({ head, body, edit, errorObject }) {
 
   return (
     <TableContainer component={Paper}>
-      <Table>
+      {
+        !isLoading &&
+        <Table>
         <TableHead>
           {
             head.length > 0 &&
@@ -221,6 +223,7 @@ export default function PreviewTable ({ head, body, edit, errorObject }) {
           }
         </TableBody>
       </Table>
+      }
     </TableContainer>
   )
 }

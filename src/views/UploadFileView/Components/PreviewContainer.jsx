@@ -19,8 +19,8 @@ export default function PreviewContainer (props) {
   const [initialData, setInitialData] = useState([])
   const [confirmMessage, setConfirmMessage] = useState('')
   const [headRows, setHeadRows] = useState([])
-  const [bodyRows, setBodyRows] = useState([])
   const [editedRows, setEditedRows] = useState([])
+  const [loadingInfo, setLoadingInfo] = useState(false)
   const [edit, setEdit] = useState(false)
   const [validData, setIsValid] = useState(false)
   const [dataValidated, setData] = useState({})
@@ -49,6 +49,7 @@ export default function PreviewContainer (props) {
   ))
 
   const parseFile = (acceptedFiles) => {
+    setLoadingInfo(true)
     Papa.parse(acceptedFiles[0], {
       complete: function (results) {
         setInitialData(JSON.parse(JSON.stringify(results.data)))
@@ -73,8 +74,8 @@ export default function PreviewContainer (props) {
   const mapParsedData = (parsedData) => {
     buildErrorObject(parsedData.slice(3))
     setHeadRows(parsedData.slice(0, 3))
-    setBodyRows(parsedData.slice(3))
     setEditedRows([...parsedData].slice(3))
+    setLoadingInfo(false)
   }
 
   const resetParsedData = () => {
@@ -137,7 +138,6 @@ export default function PreviewContainer (props) {
   }
 
   const onCancel = () => {
-    setEditedRows(bodyRows)
     setErrorFormat(false)
     setOpenResetModal(true)
     setEdit(false)
@@ -177,7 +177,7 @@ export default function PreviewContainer (props) {
   }
 
   const validateFormatErrorRows = () => {
-    const validFormat = Object.keys(errorObject).filter(row => row.length > 0).length === 0
+    const validFormat = Object.keys(errorObject).filter(row => errorObject[row].length > 0).length === 0
     setErrorFormat(!validFormat)
     return validFormat
   }
@@ -237,7 +237,13 @@ export default function PreviewContainer (props) {
             onValidateData={onValidate}
           />
           <Box style={{ marginTop: '20px' }}>
-            <PreviewTable head={headRows} body={editedRows} edit={edit} errorObject={errorObject}></PreviewTable>
+            <PreviewTable
+              head={headRows}
+              body={editedRows}
+              edit={edit}
+              errorObject={errorObject}
+              isLoading={loadingInfo}
+            />
           </Box>
         </>
       )}
