@@ -13,7 +13,7 @@ const setUp = (props) => {
 describe('<CustomTooltipTitle />', () => {
   it('show tooltip title when mouse over', async () => {
     const container = setUp({ name, title })
-    const icon = container.querySelector('[aria-hidden="true"')
+    const icon = container.querySelector('[aria-hidden="true"]')
 
     fireEvent.mouseOver(icon)
     const tooltip = await screen.findByText(title)
@@ -25,7 +25,7 @@ describe('<CustomTooltipTitle />', () => {
     const customColor = 'black'
     const container = setUp({ name, title, customColor })
 
-    const icon = container.querySelector('[aria-hidden="true"')
+    const icon = container.querySelector('[aria-hidden="true"]')
 
     expect(icon).toHaveStyle(`color: ${customColor}; font-size: 18px`)
   })
