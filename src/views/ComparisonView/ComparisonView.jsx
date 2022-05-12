@@ -6,6 +6,8 @@ import HeadBodyGrid from '../../components/BodyGrid'
 import { saveAs } from 'file-saver'
 import { makeStyles } from '@material-ui/core/styles'
 import { isEmptyObject } from './../../utils/userFunctions'
+import CustomTooltipTitle from '../../components/CustomTooltip'
+import { tooltipTitles } from '../../utils/tooltipTitles'
 
 const useStyles = makeStyles(theme => ({
   exportButton: {
@@ -15,15 +17,15 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const columns = [
-  { field: 'name', headerName: 'Company', width: 200, align: 'left' },
-  { field: 'sector', headerName: 'Sector', width: 150, align: 'left' },
-  { field: 'vertical', headerName: 'Vertical', width: 150, align: 'left' },
-  { field: 'revenue', headerName: 'Revenue', width: 150, align: 'center' },
-  { field: 'growth', headerName: 'Growth', width: 150, align: 'center' },
-  { field: 'ebitda_margin', headerName: 'Ebitda Margin', width: 150, align: 'center' },
-  { field: 'revenue_vs_budget', headerName: 'Revenue vs budget', width: 200, align: 'center' },
-  { field: 'ebitda_vs_budget', headerName: 'Ebitda vs budget', width: 200, align: 'center' },
-  { field: 'rule_of_40', headerName: 'Rule of 40', width: 200, align: 'center' }
+  { field: 'name', headerName: 'Company', width: 200, align: 'left', needsTooltip: false },
+  { field: 'sector', headerName: 'Sector', width: 150, align: 'left', needsTooltip: false },
+  { field: 'vertical', headerName: 'Vertical', width: 150, align: 'left', needsTooltip: false },
+  { field: 'revenue', headerName: 'Revenue', width: 150, align: 'center', needsTooltip: true },
+  { field: 'growth', headerName: 'Growth', width: 150, align: 'center', needsTooltip: true },
+  { field: 'ebitda_margin', headerName: 'Ebitda Margin', width: 150, align: 'center', needsTooltip: true },
+  { field: 'revenue_vs_budget', headerName: 'Revenue vs budget', width: 200, align: 'center', needsTooltip: true },
+  { field: 'ebitda_vs_budget', headerName: 'Ebitda vs budget', width: 200, align: 'center', needsTooltip: true },
+  { field: 'rule_of_40', headerName: 'Rule of 40', width: 200, align: 'center', needsTooltip: true }
 ]
 
 const INITIAL_DATA = [
@@ -117,11 +119,18 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
               <Table>
                 <TableHead>
                   <TableRow >
-                    {columns.map(column => (
-                      <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}>
-                        {column.headerName}
-                      </TableCell>
-                    ))}
+                    {columns.map(column => {
+                      return (
+                        <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}>
+                          {column.needsTooltip
+                            ? <CustomTooltipTitle
+                              name={column.headerName}
+                              title={tooltipTitles[column.field]}
+                            />
+                            : column.headerName}
+                        </TableCell>
+                      )
+                    })}
                   </TableRow>
                     { !fromUniverseOverview && !isEmptyObject(companyComparison) &&
                       <TableRow

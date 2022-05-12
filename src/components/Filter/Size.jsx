@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
+import CustomTooltipTitle from '../CustomTooltip'
+import { tooltipTitles } from '../../utils/tooltipTitles'
 
 const options = [
   '<$10 million',
@@ -44,7 +46,13 @@ export function Size ({ setFilters, fillFilters, selectedList }) {
 
   return (
     <FormGroup>
-      <span>Size</span>
+      <CustomTooltipTitle
+        name={'Size'}
+        title={tooltipTitles.size_cohort}
+        justifyContent='start'
+        nameStyle={{ marginRight: 10 }}
+        variant='body1'
+      />
       <FormControlLabel
         control={
           <Checkbox
