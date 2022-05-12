@@ -64,6 +64,21 @@ describe('<PreviewTable /> with format validation', () => {
 
     expect(cell.firstChild.firstChild).toHaveStyle('color: red')
   })
+
+  it('Edit metric texfield and set empty should not show an error', () => {
+    setUp({
+      edit: true,
+      body: [
+        ['Hola', ' A ', 'Application Software', 'Engineering', 'Early stage VC', 'Size', '3,78', '11.1']
+      ]
+    })
+    const inputCells = screen.getAllByRole('textbox')
+    const cell = inputCells.filter(elem => elem.value === '3,78')[0]
+
+    fireEvent.change(cell, { target: { value: '' } })
+
+    expect(cell.value).toBe('')
+  })
 })
 
 describe('<PreviewTable /> with edit feature', () => {

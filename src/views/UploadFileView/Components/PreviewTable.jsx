@@ -117,8 +117,11 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
     const firstIndex = getFirstScenarioIndex(head[0])
     const pattern = getPattern(columnIndex)
     const regex = new RegExp(pattern)
-    if (columnIndex < selectIndex[0] || (value !== '' && columnIndex >= firstIndex)) {
+    if ((columnIndex < selectIndex[0] && columnIndex !== 0) || (value !== '' && columnIndex >= firstIndex)) {
       return testRegex(rowIndex, columnIndex, value, regex)
+    }
+    if (value === '' && columnIndex >= firstIndex) {
+      modifyErrorObject(rowIndex, columnIndex, true)
     }
     return true
   }
@@ -210,6 +213,7 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
                               onChange={(event) => {
                                 onCellChange(rowIndex, index, event.target.value)
                               }}
+                              required={index === 1}
                             />
                         }
                       </Box>
