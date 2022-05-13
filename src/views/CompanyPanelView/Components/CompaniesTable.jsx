@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
   root: {
     [theme.breakpoints.up('md')]: {
-      width: '80vh'
+      width: '80%'
     },
     [theme.breakpoints.between('sm', 'md')]: {
       mimWidth: '55vh'
@@ -60,7 +60,7 @@ export function CompaniesPanelTable () {
   }, [])
 
   const initCompanies = async (limit, offset) => {
-    const response = await getCompanyPanel({ limit: limit, offset })
+    const response = await getCompanyPanel({ limit, offset })
     setTotalCompanies(response)
   }
 
@@ -129,6 +129,7 @@ export function CompaniesPanelTable () {
         <Table>
           <TableHead>
             <TableRow className={classes.head}>
+              <TableCell className={classes.head}>ID</TableCell>
               <TableCell className={classes.head}>Name</TableCell>
               <TableCell className={classes.head}>Sector</TableCell>
               <TableCell className={`${classes.hide} ${classes.head}`}>Vertical</TableCell>
@@ -139,6 +140,7 @@ export function CompaniesPanelTable () {
             <TableBody>
             {companies.map((company) => (
               <TableRow key={company.id}>
+                <TableCell>{company.id}</TableCell>
                 <TableCell>{company.name}</TableCell>
                 <TableCell>{company.sector}</TableCell>
                 <TableCell className={classes.hide}>{company.vertical}</TableCell>

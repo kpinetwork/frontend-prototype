@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
+import CustomTooltipTitle from '../CustomTooltip'
+import { tooltipTitles } from '../../utils/tooltipTitles'
 
 const optionLabels = [
   'Negative (<0%)',
@@ -43,7 +45,13 @@ export function Growth ({ setFilters, fillFilters, selectedList }) {
 
   return (
     <FormGroup>
-     <span>Growth Profile</span>
+      <CustomTooltipTitle
+        name={'Growth Profile'}
+        title={tooltipTitles.size_cohort}
+        justifyContent='start'
+        nameStyle={{ marginRight: 10 }}
+        variant='body1'
+      />
      <FormControlLabel
         control={
           <Checkbox

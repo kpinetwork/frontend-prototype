@@ -2,7 +2,7 @@ import React from 'react'
 import { Grid, Box } from '@material-ui/core'
 import { AdminPanelContainer } from '../AdminPanel/AdminPanelContainer'
 import { TitlePanel } from '../AdminPanel/Components/TitlePanel'
-import DragAndDrop from './Components/DragAndDrop'
+import PreviewContainer from './Components/PreviewContainer'
 
 export function UploadFileView (props) {
   return (
@@ -10,7 +10,7 @@ export function UploadFileView (props) {
       <AdminPanelContainer initialTab="import_data">
         <Box>
           <TitlePanel title="Import Data" />
-          <DragAndDrop {...props}/>
+          <PreviewContainer {...props}/>
         </Box>
       </AdminPanelContainer>
     </Grid>
