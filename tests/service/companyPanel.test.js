@@ -23,15 +23,16 @@ describe('fetchCompanies', () => {
           {
             id: '1234',
             name: 'Sample company',
-            sector: 'test sector',
-            vertical: 'vertical sector',
-            inves_profile_name: 'test invest profile',
+            sector: 'Application Software',
+            vertical: 'Education',
+            inves_profile_name: 'Growth stage VC',
             is_public: false
           }
         ]
       }
       axios.get.mockResolvedValueOnce(dataResponse)
       await getCompanyPanelFromQueryParams({ limit: 1, offset: 0 })
+
       expect(axios.get).toHaveBeenCalledWith(`${companies}?limit=1&offset=0`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
     })
   })

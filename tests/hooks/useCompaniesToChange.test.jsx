@@ -27,6 +27,7 @@ describe('useCompaniesToChange', () => {
     await act(async () => {
       hookResponse = renderHook(() => useCompaniesToChange())
     })
+
     act(() => {
       hookResponse.result.current.handleChange(
         {
@@ -38,11 +39,42 @@ describe('useCompaniesToChange', () => {
 
     expect(hookResponse.result.current.companiesToChange).toEqual(mockHook.companiesToChange)
   })
+
+  it('CompanyChecked should return if company is check in case it is already in companiesToChange', async () => {
+    let hookResponse
+    await act(async () => {
+      hookResponse = renderHook(() => useCompaniesToChange())
+    })
+
+    act(() => {
+      hookResponse.result.current.handleChange(
+        {
+          event: { target: { checked: true } },
+          company: { id: '123', is_public: false },
+          field: 'is_public'
+        })
+    })
+    const isChecked = hookResponse.result.current.isCompanyChecked({ company: { id: '123', is_public: false }, field: 'is_public' })
+
+    expect(isChecked).toBeTruthy()
+  })
+
+  it('CompanyChecked should return if company is check in case it is not in companiesToChange', async () => {
+    let hookResponse
+    await act(async () => {
+      hookResponse = renderHook(() => useCompaniesToChange())
+    })
+    const isChecked = hookResponse.result.current.isCompanyChecked({ company: { id: '123', is_public: false }, field: 'is_public' })
+
+    expect(isChecked).toBeFalsy()
+  })
+
   it('Company panel hook should return empty object when there are no companies to change', async () => {
     let hookResponse
     await act(async () => {
       hookResponse = renderHook(() => useCompaniesToChange())
     })
+
     act(() => {
       hookResponse.result.current.handleChange(
         {
@@ -54,6 +86,7 @@ describe('useCompaniesToChange', () => {
 
     expect(hookResponse.result.current.companiesToChange).toEqual({})
   })
+
   it('Company panel hook should return empty object when clean CompaniesToChange', async () => {
     let hookResponse
     await act(async () => {

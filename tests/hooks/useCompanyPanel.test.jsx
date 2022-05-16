@@ -8,8 +8,8 @@ const serviceResponse = {
     {
       id: '1234',
       name: 'Sample company',
-      sector: 'test sector',
-      vertical: 'vertical sector',
+      sector: 'Application Software',
+      vertical: 'Education',
       is_public: false
     }
   ]
@@ -38,6 +38,7 @@ describe('useCompanyPanel', () => {
     expect(hookResponse.result.current.total).toEqual(serviceResponse.total)
     expect(hookResponse.result.current.companies).toEqual(serviceResponse.companies)
   })
+
   it('company panel hook should return error', async () => {
     mockServices('error')
     let hookResponse
@@ -45,6 +46,7 @@ describe('useCompanyPanel', () => {
     await act(async () => {
       hookResponse = renderHook(() => useCompanyPanel())
     })
+
     expect(hookResponse.result.current.total).toEqual(0)
     expect(hookResponse.result.current.companies).toEqual([])
   })

@@ -23,6 +23,7 @@ describe('fetch changeCompanyPublicly', () => {
       }
       axios.put.mockResolvedValueOnce(dataResponse)
       await changeCompanyPublicly({ companies: { 123: true } })
+
       expect(axios.put).toHaveBeenCalledWith(`${changeCompany}`, { companies: { 123: true } }, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
     })
   })

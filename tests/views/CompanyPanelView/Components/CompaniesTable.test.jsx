@@ -1,88 +1,96 @@
 import React from 'react'
-import { Auth } from 'aws-amplify'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { CompaniesPanelTable } from '../../../../src/views/CompanyPanelView/Components/CompaniesTable'
-import useCompanyPanel from '../../../../src/hooks/useCompanyPanel'
+import useCompaniesPanelTable from '../../../../src/hooks/useCompaniesPanelTable'
+
+jest.mock('../../../../src/hooks/useCompaniesPanelTable')
+
+const hookResponse = {
+  initCompanies: jest.fn(),
+  rowsPerPage: 10,
+  offset: 0,
+  wantsChange: false,
+  setChange: jest.fn(),
+  isLoading: false,
+  companies: [
+    {
+      id: '1234',
+      name: 'Sample company abc',
+      sector: 'Application Software',
+      vertical: 'Education',
+      inves_profile_name: 'Growth stage VC',
+      is_public: false
+    }
+  ],
+  handleChange: jest.fn(),
+  isCompanyChecked: jest.fn(),
+  total: 1,
+  page: 0,
+  handleChangePage: jest.fn(),
+  handleChangeRowsPerPage: jest.fn(),
+  cleanCompaniesToChange: jest.fn(),
+  onSave: jest.fn()
+}
 
 const setUp = () => {
   render(<CompaniesPanelTable />)
 }
 
-const hookResponse = {
-  total: 1,
-  companies: [
-    {
-      id: '1234',
-      name: 'Sample company',
-      sector: 'test sector',
-      vertical: 'vertical sector',
-      inves_profile_name: 'test invest profile',
-      is_public: false
-    }
-  ],
-  setCompanies: jest.fn(),
-  isLoading: false,
-  getCompanyPanel: () => {}
-}
-
-jest.mock('../../../../src/hooks/useCompanyPanel')
-
-jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
-  getAccessToken: () => ({
-    getJwtToken: () => ('Secret-Token')
-  })
-})
-
 describe('<CompaniesPanelTable />', () => {
-  describe('Render', () => {
-    it('Should render Companies Panel Table component', async () => {
-      useCompanyPanel.mockImplementation(() => hookResponse)
+  describe('render', () => {
+    it('Should render Companies Panel Table component', () => {
+      useCompaniesPanelTable.mockImplementation(() => hookResponse)
       setUp()
-      await waitFor(() => {
-        expect(screen.getByText('Change publicly')).toBeInTheDocument()
-        expect(screen.getByRole('columnheader', { name: 'Name' })).toBeInTheDocument()
-        expect(screen.getByRole('columnheader', { name: 'Public' })).toBeInTheDocument()
-      })
+
+      const rows = screen.getAllByRole('row')
+      const button = screen.getByText('Change publicly')
+      const company = screen.getByRole('row', { name: '1234 Sample company abc Application Software Education' })
+      const pagination = screen.getByRole('row', { name: 'Rows per page: 10 1-1 of 1' })
+
+      expect(screen.getByRole('table'))
+      expect(rows).toHaveLength(3)
+      expect(screen.getByRole('checkbox'))
+      expect(button).toBeInTheDocument()
+      expect(company).toBeInTheDocument()
+      expect(pagination).toBeInTheDocument()
     })
 
-    describe('Actions', () => {
-      it('Click on change publicly, check checkbox and save changes', async () => {
-        useCompanyPanel.mockImplementation(() => hookResponse)
-        setUp()
-        await waitFor(() => {
-          fireEvent.click(screen.getByText('Change publicly'))
-        })
-        const textInformation = screen.getByText('Select all the companies that will be shared over KPI.')
-        const checkbox = screen.getByRole('checkbox')
+    it('Should render loading progress when isLoading equals true', () => {
+      const response = { ...hookResponse, isLoading: true }
+      useCompaniesPanelTable.mockImplementation(() => response)
+      setUp()
 
-        expect(checkbox.checked).toBeFalsy()
+      expect(screen.getByRole('progressbar')).toBeInTheDocument()
+    })
+  })
 
-        fireEvent.click(checkbox)
-        const saveButton = screen.getByText('Save')
-        fireEvent.click(saveButton)
+  describe('actions', () => {
+    it('click on Change Publicly', () => {
+      useCompaniesPanelTable.mockImplementation(() => hookResponse)
+      setUp()
+      fireEvent.click(screen.getByText('Change publicly'))
 
-        expect(textInformation).toBeInTheDocument()
-        expect(saveButton).toBeInTheDocument()
-        expect(checkbox.checked).toBeTruthy()
-      })
-      it('Click on change publicly, check checkbox and cancel changes', async () => {
-        useCompanyPanel.mockImplementation(() => hookResponse)
-        setUp()
-        await waitFor(() => {
-          fireEvent.click(screen.getByText('Change publicly'))
-        })
-        const checkbox = screen.getByRole('checkbox')
+      expect(hookResponse.setChange).toHaveBeenCalled()
+    })
 
-        expect(checkbox.checked).toBeFalsy()
+    it('handleChange should be called when click in checkbox', () => {
+      useCompaniesPanelTable.mockImplementation(() => hookResponse)
+      setUp()
+      fireEvent.click(screen.getByRole('checkbox'))
 
-        fireEvent.click(checkbox)
-        const cancelButton = screen.getByText('Cancel')
-        fireEvent.click(cancelButton)
+      expect(hookResponse.handleChange).toHaveBeenCalled()
+    })
 
-        expect(checkbox.checked).toBeFalsy()
-        expect(cancelButton).not.toBeInTheDocument()
-      })
+    it('click on cancel', () => {
+      const response = { ...hookResponse, wantsChange: true }
+      useCompaniesPanelTable.mockImplementation(() => response)
+      setUp()
+
+      fireEvent.click(screen.getByText('Cancel'))
+
+      expect(hookResponse.cleanCompaniesToChange).toHaveBeenCalled()
+      expect(hookResponse.setChange).toHaveBeenCalled()
     })
   })
 })
