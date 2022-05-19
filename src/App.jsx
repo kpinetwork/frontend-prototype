@@ -11,6 +11,7 @@ import { UserPanelView } from './views/UserPanelView/UserPanelView'
 import { CompanyPanelView } from './views/CompanyPanelView/CompanyPanelView'
 import { UploadFileView } from './views/UploadFileView/UploadFileView'
 import { UserDetailView } from './views/UserPanelView/UserDetailView'
+import { CompanyDetailView } from './views/CompanyDetailsPanelView/CompanyDetailView'
 import { ErrorView } from './views/DefaultView/ErrorView'
 import LoadingProgress from './components/Progress'
 import Context, { AppContextProvider } from './context/appContext'
@@ -140,6 +141,15 @@ function AppRoutes ({ signOut }) {
           path="/admin/import_data"
           component={(props) => renderIfAdmin(UploadFileView, { ...props, onConnectETL, onDisconnectETL, onSendRegister })}
         />
+        <Route
+          exact
+          path="/admin/companies/detail"
+          component={(props) =>
+            renderIfAdmin(CompanyDetailView, {
+              ...props
+            })
+          }
+        ></Route>
         <Route
           exact
           path="/admin/users/detail/"

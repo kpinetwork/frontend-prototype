@@ -14,19 +14,24 @@ const useStyles = makeStyles(theme => ({
     color: 'white'
   },
   row: {
-    flexDirection: 'row-reverse',
     display: 'flex',
     paddingTop: 10
+  },
+  rowReverse: {
+    display: 'flex',
+    marginTop: 10,
+    flexDirection: 'row-reverse'
   }
 }))
 
-export default function ButtonActions ({ okName, cancelName, onOk, onCancel }) {
+export default function ButtonActions ({ okName, cancelName, onOk, onCancel, reverse = true }) {
   const classes = useStyles()
   return (
-    <Box className={classes.row}>
+    <Box className={reverse ? classes.rowReverse : classes.row}>
       <Button onClick={onOk}
         className={classes.mainButton}
         variant='contained'
+        style={{ marginRight: reverse ? 0 : 20 }}
        >
         {okName}
       </Button>
