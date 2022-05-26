@@ -65,14 +65,6 @@ const PageMenu = ({ onClose }) => {
               <ListItemText primary="Company report vs peers" className={classes.itemsText}/>
           </ListItem>
         </Link>
-        <a href={appUrl} className={classes.link} onClick={onClose}>
-          <ListItem button>
-              <ListItemIcon>
-                <Business/>
-              </ListItemIcon>
-              <ListItemText primary="About us" className={classes.itemsText}/>
-          </ListItem>
-        </a>
         {isAdmin && <Link href='/admin/users' onClick={onClose}>
           <ListItem button>
               <ListItemIcon>
@@ -81,6 +73,14 @@ const PageMenu = ({ onClose }) => {
               <ListItemText primary="Admin Panel" className={classes.itemsText}/>
           </ListItem>
         </Link> }
+        <a href={appUrl} className={classes.link} onClick={onClose}>
+          <ListItem button>
+              <ListItemIcon>
+                <Business/>
+              </ListItemIcon>
+              <ListItemText primary="About us" className={classes.itemsText}/>
+          </ListItem>
+        </a>
       </List>
     </div>
   )

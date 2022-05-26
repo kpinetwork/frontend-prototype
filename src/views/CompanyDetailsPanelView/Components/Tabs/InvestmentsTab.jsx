@@ -56,7 +56,8 @@ export function InvestmentsTab () {
   }
 
   const getRounds = (investments) => {
-    return investments.map(invest => invest.round)
+    const rounds = investments.map(invest => invest.round)
+    return rounds.filter(round => /^\d+$/.test(round))
   }
 
   return (
