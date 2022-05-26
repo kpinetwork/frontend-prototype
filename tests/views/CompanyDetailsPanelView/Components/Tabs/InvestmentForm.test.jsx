@@ -9,7 +9,8 @@ const defaultProps = {
   error: undefined,
   onChange: jest.fn(),
   investment: {},
-  onSave: jest.fn()
+  onSave: jest.fn(),
+  rounds: []
 }
 
 const setUp = (props) => {
@@ -77,7 +78,20 @@ describe('<InvestmentForm />', () => {
 
       selects.forEach(select => {
         fireEvent.mouseDown(select)
-        fireEvent.click(screen.getAllByRole('option')[1])
+        fireEvent.click(screen.getAllByRole('option')[0])
+      })
+
+      expect(defaultProps.onChange).toBeCalledTimes(selects.length)
+    })
+
+    it('should call onChange with selects when round is not default', () => {
+      setUp({ rounds: [1] })
+      const buttons = screen.getAllByRole('button')
+      const selects = buttons.filter(button => !(['Save', 'Cancel'].includes(button.textContent)))
+
+      selects.forEach(select => {
+        fireEvent.mouseDown(select)
+        fireEvent.click(screen.getAllByRole('option')[0])
       })
 
       expect(defaultProps.onChange).toBeCalledTimes(selects.length)

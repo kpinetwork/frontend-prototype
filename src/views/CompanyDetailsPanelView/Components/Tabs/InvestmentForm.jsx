@@ -4,6 +4,7 @@ import ButtonActions from '../../../../components/Actions'
 import { STRUCTURES, OWNERSHIPS } from '../../../../utils/constants/Investment'
 import { INVESTOR_PROFILES } from '../../../../utils/constants/CompanyDescription'
 import { CardActions } from '@mui/material'
+import moment from 'moment'
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -46,11 +47,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export function InvestmentForm ({ onCancel, edit, error, onChange, investment, onSave }) {
+export function InvestmentForm ({ onCancel, edit, error, onChange, investment, onSave, rounds }) {
   const classes = useStyles()
 
   const getYear = () => {
     return new Date().getFullYear() + 3
+  }
+
+  const getRound = () => {
+    if (rounds == null || rounds.length === 0) {
+      return [{ value: 1, name: moment.localeData().ordinal(1) }]
+    }
+    const lastRound = Math.max(...rounds)
+    return [{ value: lastRound + 1, name: moment.localeData().ordinal(lastRound + 1) }]
   }
 
   return (
@@ -100,8 +109,9 @@ export function InvestmentForm ({ onCancel, edit, error, onChange, investment, o
                     variant='outlined'
                     className={classes.inputBorder}
                   >
-                      <MenuItem value='1' className={classes.inputText}>1st round</MenuItem>
-                      <MenuItem value='2' className={classes.inputText}>2nd round</MenuItem>
+                      {getRound().map(
+                        round => <MenuItem value={round.value} key={round.value} className={classes.inputText}>{round.name} round</MenuItem>
+                      )}
                   </Select>
               </FormControl>
               <FormControl className={classes.input}>

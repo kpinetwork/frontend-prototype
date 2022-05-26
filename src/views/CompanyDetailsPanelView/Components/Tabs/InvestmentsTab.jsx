@@ -55,6 +55,10 @@ export function InvestmentsTab () {
     }
   }
 
+  const getRounds = (investments) => {
+    return investments.map(invest => invest.round)
+  }
+
   return (
     <Grid>
       <Box>
@@ -72,6 +76,7 @@ export function InvestmentsTab () {
                   setError(undefined)
                 }}
                 onSave={onSave}
+                rounds={getRounds(investments)}
               />
             </Box>
         }
