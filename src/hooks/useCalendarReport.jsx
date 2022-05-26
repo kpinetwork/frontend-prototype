@@ -53,7 +53,6 @@ export const useCalendarReport = ({ fromUniverseOverview, selectedYear }) => {
     peersComparison,
     calendarPeersLoading,
     setCalendarYear,
-    getCalendarReport,
     downloadComparisonCsv
   }
 }

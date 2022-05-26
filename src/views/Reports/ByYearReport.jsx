@@ -6,7 +6,7 @@ import { ComparisonView } from './../ComparisonView/ComparisonView'
 import { useCalendarReport } from '../../hooks/useCalendarReport'
 
 export const ByYearReport = ({ fromUniverseOverview }) => {
-  const [investYear, setInvestYear] = useState(0)
+  const [investYear, setInvestYear] = useState(null)
   const [type, setType] = useState('calendar')
 
   const {

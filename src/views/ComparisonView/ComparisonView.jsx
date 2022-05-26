@@ -103,16 +103,16 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
   }
 
   return (
-    <>
-      <Box>
-        <ExportOption
-          buttonClass={classes.exportButton}
-          saveComparisonReport={saveComparisonReport}
-          isLoading={isLoading}
-          downloading={downloading}
-        />
+    <div style={{ overflow: 'none' }}>
+      <ExportOption
+        buttonClass={classes.exportButton}
+        saveComparisonReport={saveComparisonReport}
+        isLoading={isLoading}
+        downloading={downloading}
+      />
+      <div style={{ height: '80vh', display: 'grid', alignSelf: 'center', justifySelf: 'center' }}>
         {!isLoading
-          ? <TableContainer component={Paper}>
+          ? <TableContainer component={Paper} >
               <Table>
                 <TableHead>
                   <TableRow >
@@ -157,7 +157,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
               </Table>
             </TableContainer>
           : <HeadBodyGrid/>}
-      </Box>
-    </>
+      </div>
+    </div>
   )
 }
