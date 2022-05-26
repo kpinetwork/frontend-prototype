@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-// import { CardKPI } from '@components/Card/CardKPI'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Box } from '@material-ui/core'
 import { CloudDownload } from '@material-ui/icons'
 import HeadBodyGrid from '../../components/BodyGrid'
@@ -110,7 +109,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
         isLoading={isLoading}
         downloading={downloading}
       />
-      <div style={{ height: '80vh', display: 'grid', alignSelf: 'center', justifySelf: 'center' }}>
+      <div style={{ height: '50vh', display: 'grid', alignSelf: 'center', justifySelf: 'center' }}>
         {!isLoading
           ? <TableContainer component={Paper} >
               <Table>

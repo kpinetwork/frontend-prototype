@@ -4,9 +4,9 @@ import { YearSelector } from '../../components/YearSelector'
 import { InvestmentYearSelector } from '../../components/InvestmentYearSelector'
 import { ComparisonView } from './../ComparisonView/ComparisonView'
 import { useCalendarReport } from '../../hooks/useCalendarReport'
+import { useInvestmentYearReport } from '../../hooks/useInvestmentYearReport'
 
 export const ByYearReport = ({ fromUniverseOverview }) => {
-  const [investYear, setInvestYear] = useState(null)
   const [type, setType] = useState('calendar')
 
   const {
@@ -18,9 +18,17 @@ export const ByYearReport = ({ fromUniverseOverview }) => {
     downloadComparisonCsv
   } = useCalendarReport({ fromUniverseOverview, selectedYear: new Date().getFullYear() })
 
+  const {
+    investYear,
+    investmentCompanyComparison,
+    investmentPeersComparison,
+    investmenteIsLoading,
+    setInvestYear
+  } = useInvestmentYearReport({ fromUniverseOverview, selectedYear: null })
+
   const data = {
     calendar: { companyComparison, peersComparison, isLoading: calendarPeersLoading },
-    investment: { companyComparison: {}, peersComparison: [], isLoading: false }
+    investment: { companyComparison: investmentCompanyComparison, peersComparison: investmentPeersComparison, isLoading: investmenteIsLoading }
   }
   const getData = (type) => {
     return data[type]

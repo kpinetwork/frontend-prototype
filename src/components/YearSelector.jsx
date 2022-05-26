@@ -28,7 +28,7 @@ export const YearSelector = ({ nameOfSelect, year, onChange }) => {
       <FormControl sx={{ m: 1, minWidth: 150 }} >
       <InputLabel id="year-label">{nameOfSelect}</InputLabel>
       <Select
-          value={year}
+          value={year || ''}
           label="Age"
           onChange={onChange}
           className={classes.select}
