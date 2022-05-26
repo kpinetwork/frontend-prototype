@@ -3,6 +3,7 @@ import { Box, Grid, Button, Table, TableHead, TableRow, TableCell, TableBody } f
 import { InvestmentForm } from './InvestmentForm'
 import { Add } from '@material-ui/icons'
 import useCompanyDetails from '../../../../hooks/useCompanyDetails'
+import LoadingProgress from '../../../../components/Progress'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
@@ -119,6 +120,9 @@ export function InvestmentsTab () {
               }
             </TableBody>
           </Table>
+        }
+        {isLoading &&
+          <LoadingProgress />
         }
       </Box>
     </Grid>
