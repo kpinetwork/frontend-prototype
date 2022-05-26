@@ -1,10 +1,10 @@
 import React from 'react'
-import { Box, Tab, Container } from '@material-ui/core'
+import { Box, Tab } from '@material-ui/core'
 import { TabContext, TabList, TabPanel } from '@material-ui/lab'
-import { YearSelector } from './YearSelector'
-import { InvestmentYearSelector } from './InvestmentYearSelector'
+import { ByYearReport } from '../views/Reports/ByYearReport'
+import { CardKPI } from './Card/CardKPI'
 
-export const PeerGroupTabs = ({ year, onChange }) => {
+export const PeerGroupTabs = ({ fromUniverseOverview }) => {
   const [value, setValue] = React.useState('1')
 
   const handleChange = (event, newValue) => {
@@ -13,31 +13,23 @@ export const PeerGroupTabs = ({ year, onChange }) => {
 
   return (
     <>
-    <TabContext value={value}>
-    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <TabList onChange={handleChange}>
-        <Tab label="By Year" value="1" />
-        </TabList>
-    </Box>
-    <TabPanel value="1">
-      <Box>
-        <Container>
-          <Box sx={{ display: 'flex' }}>
-            <YearSelector
-              nameOfSelect="Calendar Year"
-              year={year}
-              onChange={onChange}
-            />
-            <InvestmentYearSelector
-              nameOfSelect="Investment Year"
-              year={year}
-              onChange={onChange}
-            />
-          </Box>
-        </Container>
+    <CardKPI title={'Peer Group Analysis'} actions={false} height={'80vh'} fullScreen={true}>
+      <TabContext value={value}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList onChange={handleChange}>
+            <Tab label="By Year" value="1" />
+            <Tab label="By Metric" value="2" />
+          </TabList>
       </Box>
-    </TabPanel>
-    </TabContext>
+      <TabPanel value="1" >
+        <Box style={{ width: '100%' }}>
+          <ByYearReport
+            fromUniverseOverview={fromUniverseOverview}
+          />
+        </Box>
+      </TabPanel>
+      </TabContext>
+    </CardKPI>
     </>
   )
 }

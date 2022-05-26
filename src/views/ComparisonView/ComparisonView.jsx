@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { CardKPI } from '@components/Card/CardKPI'
+// import { CardKPI } from '@components/Card/CardKPI'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Box } from '@material-ui/core'
 import { CloudDownload } from '@material-ui/icons'
 import HeadBodyGrid from '../../components/BodyGrid'
@@ -104,16 +104,13 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
 
   return (
     <>
-      <CardKPI title={'Peer Group Analysis'} actions={false} height={'80vh'} fullScreen={true}
-      topActions={
+      <Box>
         <ExportOption
           buttonClass={classes.exportButton}
           saveComparisonReport={saveComparisonReport}
           isLoading={isLoading}
           downloading={downloading}
         />
-      }
-      >
         {!isLoading
           ? <TableContainer component={Paper}>
               <Table>
@@ -160,7 +157,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
               </Table>
             </TableContainer>
           : <HeadBodyGrid/>}
-      </CardKPI>
+      </Box>
     </>
   )
 }

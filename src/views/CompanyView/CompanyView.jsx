@@ -8,7 +8,7 @@ import { useComparisonPeers } from '../../hooks/useComparisionPeers'
 import { Filter } from '../../components/Filter/Filter'
 import { Information } from '../../components/HeaderInformation'
 import { SelectCompany } from './Components/SelectCompany'
-import { ComparisonView } from './../ComparisonView/ComparisonView'
+import { PeerGroupTabs } from '../../components/PeerGroupTabs'
 
 export function CompanyView ({ params }) {
   const {
@@ -24,17 +24,12 @@ export function CompanyView ({ params }) {
     setFilters
   } = useCompanyReport({ companyId: params?.companyId })
   const {
-    companyComparison,
-    peersComparison,
-    ruleOf40,
-    peersIsLoading,
-    downloadComparisonCsv
+    ruleOf40
   } = useComparisonPeers({ fromUniverseOverview: false })
 
   return (
     <>
      <Grid container>
-        <Grid item xs={12} sm={12} md={12} lg={12}><Information year={year} setYear={setYear}/></Grid>
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <SelectCompany
           companyList={publicCompanies}
@@ -44,13 +39,9 @@ export function CompanyView ({ params }) {
         </Grid>
       </Grid>
       <Grid>
-        <ComparisonView params={params}
-          companyComparison={companyComparison}
-          peersComparison={peersComparison}
-          isLoading={peersIsLoading}
-          downloadComparisonCsv={downloadComparisonCsv}
-        />
+          <PeerGroupTabs fromUniverseOverview={false}/>
       </Grid>
+      <Grid item xs={12} sm={12} md={12} lg={12}><Information year={year} setYear={setYear}/></Grid>
       <Grid container>
           <Grid item xs={12} sm={8} lg={6}><ReportRuleGraph ruleOf40={ruleOf40}/></Grid>
           <Grid item xs={12} sm={4} lg={6}><Filter setFilters={setFilters} fillFilters={false} filters={filters} xs={12} sm={10} md ={10} lg={6} xl={4}/></Grid>

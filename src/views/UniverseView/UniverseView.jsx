@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import Divider from '@material-ui/core/Divider'
 import { CountBySizeCard } from './Components/Cards/CountBySizeCard'
@@ -11,10 +11,9 @@ import { RuleGraph } from './Components/RuleGraph'
 import useUniverseOverview from '../../hooks/useUniverseOverview'
 import { useComparisonPeers } from '../../hooks/useComparisionPeers'
 import { Information } from '../../components/HeaderInformation'
-import { ComparisonView } from './../ComparisonView/ComparisonView'
+import { PeerGroupTabs } from '../../components/PeerGroupTabs'
 
 export function UniverseView () {
-  const [ruleOf40Data, setRuleOf40] = useState([])
   const {
     kpiAverage,
     countBySize,
@@ -29,28 +28,18 @@ export function UniverseView () {
     filters
   } = useUniverseOverview()
   const {
-    companyComparison,
-    peersComparison,
-    ruleOf40,
-    peersIsLoading,
-    downloadComparisonCsv
+    ruleOf40
   } = useComparisonPeers({ fromUniverseOverview: true })
   return (
     <>
+      <Grid>
+        <PeerGroupTabs fromUniverseOverview={true}/>
+      </Grid>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12} lg={12}><Information year={year} setYear={setYear}/></Grid>
       </Grid>
-      <Grid>
-        <ComparisonView
-          fromUniverseOverview={true}
-          companyComparison={companyComparison}
-          peersComparison={peersComparison}
-          isLoading={peersIsLoading}
-          downloadComparisonCsv={downloadComparisonCsv}
-        />
-      </Grid>
       <Grid container>
-          <Grid item xs={12} sm={8} lg={6}><RuleGraph ruleOf40={ruleOf40Data} /></Grid>
+          <Grid item xs={12} sm={8} lg={6}><RuleGraph ruleOf40={ruleOf40} /></Grid>
           <Grid item xs={12} sm={4} lg={6}><Filter setFilters={setFilters} fillFilters={fillFilters} filters={filters} xs={12} sm={10} md ={10} lg={6} xl={4}/></Grid>
       </Grid>
       <Divider />
