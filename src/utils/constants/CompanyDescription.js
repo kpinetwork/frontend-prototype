@@ -45,5 +45,6 @@ export const INVESTOR_PROFILES = [
   'Growth stage VC',
   'Private equity',
   'Founder backed',
-  'Family office'
+  'Family office',
+  'Public'
 ]

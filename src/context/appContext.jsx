@@ -15,6 +15,7 @@ export const AppContextProvider = ({ children }) => {
   const [filters, setFilters] = useState(INITIAL_FILTER_STATE)
   const [companyID, setCompanyID] = useState(undefined)
   const [selectedEmail, setSelectedEmail] = useState(undefined)
+  const [selectedCompanyID, setSelectedCompanyID] = useState(undefined)
   const [year, setYear] = useState(() => {
     const year = new Date().getFullYear()
     return year
@@ -26,7 +27,8 @@ export const AppContextProvider = ({ children }) => {
       filterFields: { filters, setFilters, year, setYear, companyID, setCompanyID, INITIAL_FILTER_STATE },
       isAdmin,
       isRoleLoading,
-      user: { selectedEmail, setSelectedEmail }
+      user: { selectedEmail, setSelectedEmail },
+      company: { selectedCompanyID, setSelectedCompanyID }
     }} >
       {children}
     </Context.Provider>
