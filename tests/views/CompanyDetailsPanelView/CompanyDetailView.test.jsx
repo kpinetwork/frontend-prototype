@@ -3,9 +3,14 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import { CompanyDetailView } from '../../../src/views/CompanyDetailsPanelView/CompanyDetailView'
 import useCompanyDetails from '../../../src/hooks/useCompanyDetails'
+import Context from '../../../src/context/appContext'
 
 const setUp = () => {
-  render(<CompanyDetailView />)
+  render(
+    <Context.Provider value={{ company: { selectedCompanyID: 'id' } }}>
+      <CompanyDetailView />
+    </Context.Provider>
+  )
 }
 
 jest.mock('../../../src/hooks/useCompanyDetails')

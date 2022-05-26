@@ -37,6 +37,36 @@ describe('<InvestmentsTab/>', () => {
     expect(cellInvestDate).toBeInTheDocument()
   })
 
+  it('should render table with imcomplete data', () => {
+    const response = {
+      addInvestment: jest.fn(),
+      investments: [{
+        company_id: 'id',
+        id: '123',
+        investment_date: '2019-02'
+      }],
+      isLoading: false
+    }
+    useCompanyDetails.mockImplementation(() => response)
+    setUp()
+
+    const cells = screen.getAllByText('NA')
+
+    expect(cells).toHaveLength(5)
+  })
+
+  it('should render progress line if data is loading', () => {
+    const response = {
+      addInvestment: jest.fn(),
+      investments: [],
+      isLoading: true
+    }
+    useCompanyDetails.mockImplementation(() => response)
+    setUp()
+
+    expect(screen.getByRole('progressbar'))
+  })
+
   it('click on add button should open form', () => {
     useCompanyDetails.mockImplementation(() => hookResponse)
     setUp()

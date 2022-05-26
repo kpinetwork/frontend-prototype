@@ -1,18 +1,23 @@
-export const getCompanyInvestments = (companyID) => {
-  return [
-    {
-      company_id: companyID,
-      id: '123',
-      investment_date: '2019-02',
-      divestment_date: null,
-      round: 1,
-      structure: 'Primary',
-      ownership: 'Minority',
-      investor_type: 'Private equity'
-    }
-  ]
+import axios from 'axios'
+import { getAuthorizationHeader } from './session'
+const { VITE_HOST: baseUrl } = import.meta.env
+
+const investmentsUrl = `${baseUrl}/investments`
+
+export const getCompanyInvestments = async (companyID) => {
+  const headers = await getAuthorizationHeader()
+  const response = await axios.get(`${investmentsUrl}/${companyID}`, {
+    headers: headers
+  })
+  const data = await response.data
+  return data
 }
 
-export const addCompanyInvestment = (companyID, investment) => {
-  return { company_id: companyID, investment: investment, added: true }
+export const addCompanyInvestment = async (companyID, investment) => {
+  const headers = await getAuthorizationHeader()
+  const response = await axios.post(`${investmentsUrl}/${companyID}`, investment, {
+    headers: headers
+  })
+  const data = await response.data
+  return data
 }

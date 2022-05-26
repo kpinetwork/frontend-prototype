@@ -27,6 +27,8 @@ const defaultProps = {
 
 }
 
+jest.mock('file-saver', () => ({ saveAs: jest.fn() }))
+
 const setUp = (props) => {
   render(<ComparisonView {...defaultProps} {...props}/>)
 }
