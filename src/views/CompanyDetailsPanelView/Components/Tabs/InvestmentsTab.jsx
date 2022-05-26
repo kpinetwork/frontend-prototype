@@ -103,7 +103,7 @@ export function InvestmentsTab () {
               </TableRow>
             </TableHead>
             <TableBody>
-              {
+              { investments && investments.length > 0 &&
                 investments.map((invest) => {
                   return (
                     <TableRow key={invest.id}>

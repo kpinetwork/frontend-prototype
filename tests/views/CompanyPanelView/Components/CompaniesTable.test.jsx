@@ -1,8 +1,10 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen, fireEvent } from '@testing-library/react'
+import * as wouter from 'wouter'
 import { CompaniesPanelTable } from '../../../../src/views/CompanyPanelView/Components/CompaniesTable'
 import useCompaniesPanelTable from '../../../../src/hooks/useCompaniesPanelTable'
+import Context from '../../../../src/context/appContext'
 
 jest.mock('../../../../src/hooks/useCompaniesPanelTable')
 
@@ -33,8 +35,14 @@ const hookResponse = {
   onSave: jest.fn()
 }
 
+const setSelectedCompanyIDMock = jest.fn()
+
 const setUp = () => {
-  render(<CompaniesPanelTable />)
+  render(
+    <Context.Provider value={{ company: { setSelectedCompanyID: setSelectedCompanyIDMock } }}>
+      <CompaniesPanelTable />
+    </Context.Provider>
+  )
 }
 
 describe('<CompaniesPanelTable />', () => {
@@ -91,6 +99,19 @@ describe('<CompaniesPanelTable />', () => {
 
       expect(hookResponse.cleanCompaniesToChange).toHaveBeenCalled()
       expect(hookResponse.setChange).toHaveBeenCalled()
+    })
+
+    it('click on ID cell', () => {
+      const response = { ...hookResponse, wantsChange: true }
+      const setLocationMock = jest.fn()
+      jest.spyOn(wouter, 'useLocation').mockReturnValue(['', setLocationMock])
+      useCompaniesPanelTable.mockImplementation(() => response)
+      setUp()
+
+      fireEvent.click(screen.getByRole('cell', { name: '1234' }))
+
+      expect(setSelectedCompanyIDMock).toHaveBeenCalled()
+      expect(setLocationMock).toHaveBeenCalled()
     })
   })
 })

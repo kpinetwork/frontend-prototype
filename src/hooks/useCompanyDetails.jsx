@@ -11,10 +11,10 @@ const useCompanyDetails = () => {
     getInvestments()
   }, [])
 
-  const getInvestments = () => {
+  const getInvestments = async () => {
     try {
       setLoading(true)
-      const response = getCompanyInvestments(selectedCompanyID)
+      const response = await getCompanyInvestments(selectedCompanyID)
       setInvestments(response)
       setLoading(false)
     } catch (_error) {
@@ -23,11 +23,11 @@ const useCompanyDetails = () => {
     }
   }
 
-  const addInvestment = (investment) => {
+  const addInvestment = async (investment) => {
     try {
       setLoading(true)
-      const response = addCompanyInvestment(selectedCompanyID, investment)
-      getInvestments()
+      const response = await addCompanyInvestment(selectedCompanyID, investment)
+      await getInvestments()
       return response.added
     } catch (_error) {
       setLoading(false)
