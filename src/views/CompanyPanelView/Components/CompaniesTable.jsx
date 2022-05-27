@@ -1,8 +1,10 @@
 /* eslint-disable camelcase */
-import React from 'react'
+import React, { useContext } from 'react'
 import { Box, Button, Typography, Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Paper, Checkbox, TableFooter, TablePagination } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Settings } from '@material-ui/icons'
+import { useLocation } from 'wouter'
+import Context from '../../../context/appContext'
 import LoadingProgress from './../../../components/Progress'
 import ButtonActions from './../../../components/Actions'
 import useCompaniesPanelTable from '../../../hooks/useCompaniesPanelTable'
@@ -43,8 +45,15 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export function CompaniesPanelTable () {
+  const { setSelectedCompanyID } = useContext(Context).company
   const classes = useStyles()
+  // eslint-disable-next-line no-unused-vars
+  const [__, setLocation] = useLocation()
   const { rowsPerPage, wantsChange, setChange, isLoading, companies, handleChange, isCompanyChecked, total, page, handleChangePage, handleChangeRowsPerPage, cleanCompaniesToChange, onSave } = useCompaniesPanelTable()
+
+  const changeRoute = () => {
+    setLocation('/admin/companies/detail/')
+  }
 
   return (
     <div className={classes.root}>
@@ -79,7 +88,11 @@ export function CompaniesPanelTable () {
             <TableBody>
             {companies.map((company) => (
               <TableRow key={company.id}>
-                <TableCell>{company.id}</TableCell>
+                <TableCell
+                onClick={(_) => {
+                  changeRoute()
+                  setSelectedCompanyID(company?.id)
+                }}>{company.id}</TableCell>
                 <TableCell>{company.name}</TableCell>
                 <TableCell>{company.sector}</TableCell>
                 <TableCell className={classes.hide}>{company.vertical}</TableCell>
