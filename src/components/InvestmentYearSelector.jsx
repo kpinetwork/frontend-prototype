@@ -42,6 +42,7 @@ export const InvestmentYearSelector = ({ nameOfSelect, year, onChange }) => {
       <FormControl sx={{ m: 1, minWidth: 150 }}>
       <InputLabel id="year-label">{nameOfSelect}</InputLabel>
       <Select
+          data-testid='investment-year-selector'
           value={year || ''}
           label="investYear"
           onChange={onChange}
