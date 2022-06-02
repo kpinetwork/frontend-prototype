@@ -27,7 +27,6 @@ describe('<ByYearReport />', () => {
     userEvent.click(getByRole(screen.getByTestId('calendar-year-selector'), 'button'))
     await waitFor(() => userEvent.click(screen.getByText('2021')))
     expect(screen.getByRole('button', { name: '2021' })).toHaveTextContent('2021')
-    screen.debug()
   })
 
   it('change investment year select', async () => {
@@ -36,6 +35,5 @@ describe('<ByYearReport />', () => {
     userEvent.click(getByRole(screen.getByTestId('investment-year-selector'), 'button'))
     await waitFor(() => userEvent.click(screen.getByText('Two years before investment')))
     expect(screen.getByRole('button', { name: 'Two years before investment' })).toHaveTextContent('Two years before investment')
-    screen.debug()
   })
 })
