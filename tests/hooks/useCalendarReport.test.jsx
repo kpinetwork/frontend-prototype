@@ -1,4 +1,3 @@
-// test useCalendarReport Hook
 import React from 'react'
 import { useCalendarReport } from '../../src/hooks/useCalendarReport'
 import { downloadComparisonPeers, getComparisonPeersFromQueryParams } from '../../src/service/comparisonPeers'
@@ -93,15 +92,6 @@ describe('<useCalendarReport/>', () => {
 
     expect(useCalendarReportResult.result.current.companyComparison).toEqual(getCalendarResponse.company_comparison_data)
     expect(useCalendarReportResult.result.current.year).toBe('2021')
-  })
-
-  it('getCalendarReport should not called', async () => {
-    mockComparisonService(getCalendarResponse)
-    let useCalendarReportResult
-    await act(async () => {
-      useCalendarReportResult = renderHook(() => useCalendarReport({ fromUniverseOverview: false, selectedYear: '2021' }), { wrapper })
-    })
-    console.log(useCalendarReportResult.result.current)
   })
 
   it('downloadComparisoncsv is called when fromUniverseOverview is false', async () => {

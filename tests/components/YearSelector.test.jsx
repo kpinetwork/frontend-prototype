@@ -1,4 +1,3 @@
-// test to YearSelector component
 import React from 'react'
 import { render } from '@testing-library/react'
 import { YearSelector } from '../../src/components/YearSelector'

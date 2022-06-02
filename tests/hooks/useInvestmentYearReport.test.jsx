@@ -1,4 +1,3 @@
-// test useInvestmentReport Hook
 import React from 'react'
 import { useInvestmentYearReport } from '../../src/hooks/useInvestmentYearReport'
 import { getInvestmentReport } from '../../src/service/investmentByYearReport'

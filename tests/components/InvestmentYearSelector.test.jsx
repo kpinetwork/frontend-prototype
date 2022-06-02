@@ -1,4 +1,3 @@
-// test the investmentYearSelector component
 import React from 'react'
 import { render } from '@testing-library/react'
 import { InvestmentYearSelector } from '../../src/components/InvestmentYearSelector'
