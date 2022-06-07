@@ -4,10 +4,7 @@ import { getComparisonPeersFromQueryParams, downloadComparisonPeers } from '../s
 
 export const useComparisonPeers = ({ fromUniverseOverview }) => {
   const { filters, year, companyID } = useContext(Context).filterFields
-  const [companyComparison, setCompanyComparison] = useState({})
-  const [rank, setRank] = useState({})
   const [ruleOf40, setRuleOf40] = useState([])
-  const [peersComparison, setPeersComparison] = useState([])
   const [peersIsLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -24,14 +21,8 @@ export const useComparisonPeers = ({ fromUniverseOverview }) => {
   const getComparisonPeers = async (options) => {
     const result = await getComparisonPeersFromQueryParams(options)
     const {
-      companyComparisonData,
-      rankData,
-      peersComparisonDataArray,
       ruleOf40Array
     } = destructuring(result)
-    setCompanyComparison(companyComparisonData)
-    setRank(rankData)
-    setPeersComparison(peersComparisonDataArray)
     setRuleOf40(ruleOf40Array)
     setIsLoading(false)
   }
@@ -50,11 +41,7 @@ export const useComparisonPeers = ({ fromUniverseOverview }) => {
   }
 
   return {
-    companyComparison,
-    peersComparison,
-    rank,
     ruleOf40,
-    setRank,
     peersIsLoading,
     downloadComparisonCsv
   }
@@ -62,15 +49,9 @@ export const useComparisonPeers = ({ fromUniverseOverview }) => {
 
 function destructuring (result) {
   const {
-    company_comparison_data: companyComparisonData,
-    rank: rankData,
-    peers_comparison_data: peersComparisonDataArray,
     rule_of_40: ruleOf40Array
   } = result
   return {
-    companyComparisonData,
-    rankData,
-    peersComparisonDataArray,
     ruleOf40Array
   }
 }

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { CardKPI } from '@components/Card/CardKPI'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Box } from '@material-ui/core'
 import { CloudDownload } from '@material-ui/icons'
 import HeadBodyGrid from '../../components/BodyGrid'
@@ -58,7 +57,7 @@ const ExportOption = ({ buttonClass, isLoading, downloading, saveComparisonRepor
   )
 }
 
-export function ComparisonView ({ companyComparison, peersComparison, isLoading, downloadComparisonCsv, fromUniverseOverview }) {
+export function ComparisonView ({ companyComparison, peersComparison, isLoading, downloadComparisonCsv, fromUniverseOverview, typeOfSelector }) {
   const [data, setData] = useState([])
   const [downloading, setDownloading] = useState(false)
   const classes = useStyles()
@@ -103,19 +102,19 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
   }
 
   return (
-    <>
-      <CardKPI title={'Peer Group Analysis'} actions={false} height={'80vh'} fullScreen={true}
-      topActions={
-        <ExportOption
-          buttonClass={classes.exportButton}
-          saveComparisonReport={saveComparisonReport}
-          isLoading={isLoading}
-          downloading={downloading}
-        />
-      }
-      >
+    <div style={{ overflow: 'none' }}>
+      {typeOfSelector === 'calendar'
+        ? <ExportOption
+      buttonClass={classes.exportButton}
+      saveComparisonReport={saveComparisonReport}
+      isLoading={isLoading}
+      downloading={downloading}
+      />
+        : <br></br>}
+
+      <div style={{ height: '50vh', display: 'grid', alignSelf: 'center', justifySelf: 'center' }}>
         {!isLoading
-          ? <TableContainer component={Paper}>
+          ? <TableContainer component={Paper} >
               <Table>
                 <TableHead>
                   <TableRow >
@@ -160,7 +159,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
               </Table>
             </TableContainer>
           : <HeadBodyGrid/>}
-      </CardKPI>
-    </>
+      </div>
+    </div>
   )
 }

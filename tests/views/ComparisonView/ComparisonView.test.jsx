@@ -23,7 +23,8 @@ const defaultProps = {
   peersComparison: [company],
   isLoading: false,
   downloadComparisonCsv: jest.fn(),
-  fromUniverseOverview: true
+  fromUniverseOverview: true,
+  typeOfSelector: 'calendar'
 
 }
 
@@ -40,7 +41,6 @@ describe('<CompanyCard />', () => {
 
       const companyRow = screen.getByRole('row', { name: 'Sample Company Online media Eduaction $ 70 55 % 90 % 109 % 108 % 80' })
 
-      expect(screen.getByText('Peer Group Analysis')).toBeInTheDocument()
       expect(screen.getByText('Export CSV')).toBeInTheDocument()
       expect(screen.getByRole('table')).toBeInTheDocument()
       expect(screen.getAllByRole('row')).toHaveLength(2)
@@ -50,7 +50,6 @@ describe('<CompanyCard />', () => {
     it('render when no peersComparison', () => {
       setUp({ peersComparison: null })
 
-      expect(screen.getByText('Peer Group Analysis')).toBeInTheDocument()
       expect(screen.getByText('Export CSV')).toBeInTheDocument()
       expect(screen.getByRole('table')).toBeInTheDocument()
       expect(screen.getAllByRole('row')).toHaveLength(1)
@@ -81,5 +80,11 @@ describe('<CompanyCard />', () => {
 
       expect(defaultProps.downloadComparisonCsv).toHaveBeenCalled()
     })
+  })
+
+  it('render when isLoading', () => {
+    setUp({ isLoading: true })
+
+    expect(screen.getByText('Loading...')).toBeInTheDocument()
   })
 })
