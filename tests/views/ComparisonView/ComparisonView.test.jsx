@@ -23,7 +23,8 @@ const defaultProps = {
   peersComparison: [company],
   isLoading: false,
   downloadComparisonCsv: jest.fn(),
-  fromUniverseOverview: true
+  fromUniverseOverview: true,
+  typeOfSelector: 'calendar'
 
 }
 

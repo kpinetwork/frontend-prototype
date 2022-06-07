@@ -57,7 +57,7 @@ const ExportOption = ({ buttonClass, isLoading, downloading, saveComparisonRepor
   )
 }
 
-export function ComparisonView ({ companyComparison, peersComparison, isLoading, downloadComparisonCsv, fromUniverseOverview }) {
+export function ComparisonView ({ companyComparison, peersComparison, isLoading, downloadComparisonCsv, fromUniverseOverview, typeOfSelector }) {
   const [data, setData] = useState([])
   const [downloading, setDownloading] = useState(false)
   const classes = useStyles()
@@ -103,12 +103,15 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
 
   return (
     <div style={{ overflow: 'none' }}>
-      <ExportOption
-        buttonClass={classes.exportButton}
-        saveComparisonReport={saveComparisonReport}
-        isLoading={isLoading}
-        downloading={downloading}
+      {typeOfSelector === 'calendar'
+        ? <ExportOption
+      buttonClass={classes.exportButton}
+      saveComparisonReport={saveComparisonReport}
+      isLoading={isLoading}
+      downloading={downloading}
       />
+        : <br></br>}
+
       <div style={{ height: '50vh', display: 'grid', alignSelf: 'center', justifySelf: 'center' }}>
         {!isLoading
           ? <TableContainer component={Paper} >

@@ -64,6 +64,7 @@ export const ByYearReport = ({ fromUniverseOverview }) => {
                 {...getData(type)}
                 downloadComparisonCsv={downloadComparisonCsv}
                 fromUniverseOverview={fromUniverseOverview}
+                typeOfSelector={type}
             />
         </Box>
     </Box>
