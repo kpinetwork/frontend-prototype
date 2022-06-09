@@ -4,26 +4,7 @@ import { getPublicCompanies } from '../../src/service/company'
 import { getCompanyReportFromQueryParams } from '../../src/service/companyReport'
 import { renderHook, act } from '@testing-library/react-hooks'
 import Context from '../../src/context/appContext'
-
-const sampleCompanies = [
-  {
-    id: '1',
-    name: 'Sample company abc',
-    sector: 'Application Software',
-    vertical: 'Media',
-    inves_profile_name: 'Private equity',
-    size_cohort: '$100 million+',
-    margin_group: 'High growth (30%-<50%)'
-  },
-  {
-    id: '2',
-    name: 'Sample company xyz',
-    sector: 'Semiconductors',
-    vertical: 'Logistics',
-    inves_profile_name: 'Family office',
-    is_public: false
-  }
-]
+import { SAMPLECOMPANIES } from '../data/companies'
 
 const getCompanyReportResponse = {
   description: {
@@ -47,7 +28,7 @@ const getCompanyReportResponse = {
 
 const getPublicCompaniesResponse = {
   total: 10,
-  companies: sampleCompanies
+  companies: SAMPLECOMPANIES
 }
 
 jest.mock('../../src/service/companyReport')

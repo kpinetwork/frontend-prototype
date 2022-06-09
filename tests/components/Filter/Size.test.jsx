@@ -1,59 +1,59 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { Growth } from '../../../src/components/Filter/Growth'
-import { GROWTH } from '../../data/filters'
+import { Size } from '../../../src/components/Filter/Size'
+import { SIZE } from '../../data/filters'
 
 const defaultProps = {
   setFilters: jest.fn(),
   fillFilters: false,
-  selectedList: 'Medium growth (10%-<30%)'
+  selectedList: '<$10 million'
 }
 
 const setUp = (props) => {
-  render(<Growth {...defaultProps} {...props}/>)
+  render(<Size {...defaultProps} {...props}/>)
 }
 
-describe('<Growth />', () => {
+describe('<Size />', () => {
   it('render correctly', () => {
     setUp()
 
-    expect(screen.getByText('Growth Profile')).toBeInTheDocument()
+    expect(screen.getByText('Size')).toBeInTheDocument()
     expect(screen.getAllByRole('checkbox')).toHaveLength(7)
-    expect(screen.getByRole('checkbox', { name: 'Medium (10%-<30%)' }).checked).toBeTruthy()
-    expect(screen.getByRole('checkbox', { name: 'Low (0-<10%)' }).checked).toBeFalsy()
+    expect(screen.getByRole('checkbox', { name: '<$10 million' }).checked).toBeTruthy()
+    expect(screen.getByRole('checkbox', { name: '$100 million+' }).checked).toBeFalsy()
   })
 
   it('render correctly when selectedList is empty', () => {
     setUp({ selectedList: '' })
 
-    expect(screen.getByRole('checkbox', { name: 'Medium (10%-<30%)' }).checked).toBeFalsy()
-    expect(screen.getByRole('checkbox', { name: 'Low (0-<10%)' }).checked).toBeFalsy()
+    expect(screen.getByRole('checkbox', { name: '<$10 million' }).checked).toBeFalsy()
+    expect(screen.getByRole('checkbox', { name: '$100 million+' }).checked).toBeFalsy()
   })
 
   it('click on option checkbox', () => {
     setUp({ selectedList: '' })
 
-    const growthFilter = screen.getByRole('checkbox', { name: 'Medium (10%-<30%)' })
-    fireEvent.click(growthFilter)
+    const sectorFilter = screen.getByRole('checkbox', { name: '$100 million+' })
+    fireEvent.click(sectorFilter)
 
     expect(defaultProps.setFilters).toHaveBeenCalled()
-    expect(growthFilter.checked).toBeTruthy()
+    expect(sectorFilter.checked).toBeTruthy()
   })
 
   it('click on option checkbox to get unchecked', () => {
     setUp()
 
-    const growthFilter = screen.getByRole('checkbox', { name: 'Medium (10%-<30%)' })
-    fireEvent.click(growthFilter)
+    const sectorFilter = screen.getByRole('checkbox', { name: '<$10 million' })
+    fireEvent.click(sectorFilter)
 
     expect(defaultProps.setFilters).toHaveBeenCalled()
-    expect(growthFilter.checked).toBeFalsy()
+    expect(sectorFilter.checked).toBeFalsy()
   })
 
   it('click on all checkbox when all options are selected', () => {
     setUp({ selectedList: '' })
-    GROWTH.map((option) => fireEvent.click(screen.getByRole('checkbox', { name: option })))
+    SIZE.map((option) => fireEvent.click(screen.getByRole('checkbox', { name: option })))
 
     const AllFilter = screen.getByRole('checkbox', { name: 'All' })
     fireEvent.click(AllFilter)

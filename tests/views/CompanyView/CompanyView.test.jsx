@@ -5,6 +5,7 @@ import { CompanyView } from '../../../src/views/CompanyView/CompanyView'
 import { useCompanyReport } from '../../../src/hooks/useCompanyReport'
 import { useComparisonPeers } from '../../../src/hooks/useComparisionPeers'
 import Context from '../../../src/context/appContext'
+import { SAMPLECOMPANIES } from '../../data/companies'
 
 jest.mock('../../../src/hooks/useCompanyReport')
 
@@ -25,29 +26,9 @@ const filters = {
   vertical: ''
 }
 
-const sampleCompanies = [
-  {
-    id: '1',
-    name: 'Sample company abc',
-    sector: 'Application Software',
-    vertical: 'Media',
-    inves_profile_name: 'Private equity',
-    size_cohort: '$100 million+',
-    margin_group: 'High growth (30%-<50%)'
-  },
-  {
-    id: '2',
-    name: 'Sample company xyz',
-    sector: 'Professional Services',
-    inves_profile_name: 'Growth stage VC',
-    size_cohort: '$100 million+',
-    margin_group: 'Medium growth (10%-<30%)'
-  }
-]
-
 const useCompanyReportResponse = {
-  description: sampleCompanies[0],
-  publicCompanies: sampleCompanies,
+  description: SAMPLECOMPANIES[0],
+  publicCompanies: SAMPLECOMPANIES,
   financialProfile: {
     annual_ebitda: -3,
     annual_revenue: 10,
