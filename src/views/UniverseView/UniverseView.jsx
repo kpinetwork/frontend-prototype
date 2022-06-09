@@ -38,15 +38,6 @@ export function UniverseView () {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12} lg={12}><Information year={year} setYear={setYear}/></Grid>
       </Grid>
-      <Grid>
-        <ComparisonView
-          fromUniverseOverview={true}
-          companyComparison={companyComparison}
-          peersComparison={peersComparison}
-          isLoading={peersIsLoading}
-          downloadComparisonCsv={downloadComparisonCsv}
-        />
-      </Grid>
       <Grid container>
           <Grid item xs={12} sm={8} lg={6}><RuleGraph ruleOf40={ruleOf40} /></Grid>
           <Grid item xs={12} sm={4} lg={6}><Filter setFilters={setFilters} fillFilters={fillFilters} filters={filters} xs={12} sm={10} md ={10} lg={6} xl={4}/></Grid>
