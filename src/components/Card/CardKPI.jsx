@@ -36,7 +36,7 @@ export function CardKPI ({ children, topActions, title, actions = true, overflow
   const classes = useStyles()
 
   return (
-    <Card className={classes.root} style={{ overflow: overflow, textAlign: textAlign }}variant="outlined">
+    <Card className={classes.root} style={{ overflow: overflow, textAlign: textAlign }} variant="outlined">
     <CardContent>
       <Typography className={classes.title} color="textSecondary" gutterBottom>
         {title}
@@ -44,7 +44,7 @@ export function CardKPI ({ children, topActions, title, actions = true, overflow
       <div>
         {topActions}
       </div>
-      <div className={classes.body} style={{ height: (!fullScreen && isPhone) ? '40vh' : height, width: '100%' }}>
+      <div className={classes.body} style={{ height: (!fullScreen && isPhone) ? '40vh' : height, width: '100%' }} data-testid="description-card">
           {children}
       </div>
     </CardContent>
