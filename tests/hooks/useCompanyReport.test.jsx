@@ -94,7 +94,7 @@ describe('useCompanyReport', () => {
     const wrapper = ({ children }) => (
         <Context.Provider value={{
           filterFields: {
-            filters: { f: 'f' },
+            filters: {},
             setFilters: jest.fn(),
             year: '2022',
             setYear: jest.fn(),

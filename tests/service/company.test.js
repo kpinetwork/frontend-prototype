@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Auth } from 'aws-amplify'
 import { getCompanies, getPublicCompanies } from '../../src/service/company'
+import { SAMPLECOMPANIES } from '../data/companies'
 
 const { VITE_HOST: baseUrl } = import.meta.env
 
@@ -14,29 +15,9 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
   })
 })
 
-const sampleCompanies = [
-  {
-    id: '1',
-    name: 'Sample company abc',
-    sector: 'Application Software',
-    vertical: 'Media',
-    inves_profile_name: 'Private equity',
-    size_cohort: '$100 million+',
-    margin_group: 'High growth (30%-<50%)'
-  },
-  {
-    id: '2',
-    name: 'Sample company xyz',
-    sector: 'Professional Services',
-    inves_profile_name: 'Growth stage VC',
-    size_cohort: '$100 million+',
-    margin_group: 'Medium growth (10%-<30%)'
-  }
-]
-
 const getCompaniesResponse = {
   total: 2,
-  companies: sampleCompanies
+  companies: SAMPLECOMPANIES
 }
 
 describe('company service', () => {
@@ -51,7 +32,7 @@ describe('company service', () => {
 
   describe('getPublicCompanies', () => {
     it('API call is successful', async () => {
-      axios.get.mockResolvedValueOnce({ ...getCompaniesResponse, companies: [sampleCompanies[0]] })
+      axios.get.mockResolvedValueOnce({ ...getCompaniesResponse, companies: [SAMPLECOMPANIES[0]] })
       await getPublicCompanies()
 
       expect(axios.get).toHaveBeenCalledWith(`${companiesUrl}/public`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
