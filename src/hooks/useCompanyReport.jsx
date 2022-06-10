@@ -4,7 +4,7 @@ import Context from '../context/appContext'
 import { getCompanyReportFromQueryParams } from '../service/companyReport'
 import { getPublicCompanies } from '../service/company'
 
-export const useCompanyReport = ({ companyId }) => {
+export const useCompanyReport = () => {
   // eslint-disable-next-line no-unused-vars
   const [__, setLocation] = useLocation()
   const { filters, setFilters, year, setYear, companyID, setCompanyID } = useContext(Context).filterFields

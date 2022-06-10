@@ -11,7 +11,7 @@ import { RuleGraph } from './Components/RuleGraph'
 import useUniverseOverview from '../../hooks/useUniverseOverview'
 import { useComparisonPeers } from '../../hooks/useComparisionPeers'
 import { Information } from '../../components/HeaderInformation'
-import { ComparisonView } from './../ComparisonView/ComparisonView'
+import { PeerGroupTabs } from '../../components/PeerGroupTabs'
 
 export function UniverseView () {
   const {
@@ -28,25 +28,15 @@ export function UniverseView () {
     filters
   } = useUniverseOverview()
   const {
-    companyComparison,
-    peersComparison,
-    ruleOf40,
-    peersIsLoading,
-    downloadComparisonCsv
+    ruleOf40
   } = useComparisonPeers({ fromUniverseOverview: true })
   return (
     <>
+      <Grid>
+        <PeerGroupTabs fromUniverseOverview={true}/>
+      </Grid>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12} md={12} lg={12}><Information year={year} setYear={setYear}/></Grid>
-      </Grid>
-      <Grid>
-        <ComparisonView
-          fromUniverseOverview={true}
-          companyComparison={companyComparison}
-          peersComparison={peersComparison}
-          isLoading={peersIsLoading}
-          downloadComparisonCsv={downloadComparisonCsv}
-        />
       </Grid>
       <Grid container>
           <Grid item xs={12} sm={8} lg={6}><RuleGraph ruleOf40={ruleOf40} /></Grid>

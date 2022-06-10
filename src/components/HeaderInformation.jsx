@@ -52,6 +52,7 @@ export function Information ({ year, setYear }) {
                     label="Age"
                     onChange={handleChange}
                     className={classes.select}
+                    data-testid='header-select'
                 >
                 {years.map((year) => (
                       <MenuItem key={year} value={year}>{year}</MenuItem>

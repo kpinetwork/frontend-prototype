@@ -13,7 +13,7 @@ const INITIAL_DATA = [
   { id: 7, key: 'margin_group', label: 'Growth Cohort', value: '' }
 ]
 
-export function DesciptionCard ({ description, isLoading }) {
+export function DescriptionCard ({ description, isLoading }) {
   const [data, setData] = useState([])
   useEffect(() => {
     if (description) {
