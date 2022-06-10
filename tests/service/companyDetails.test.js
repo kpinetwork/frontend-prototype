@@ -15,7 +15,7 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
 })
 
 describe('companyDetails service', () => {
-  describe('gert company investments', () => {
+  describe('get company investments', () => {
     it('API call successful should return company investments', async () => {
       const investment =
         {

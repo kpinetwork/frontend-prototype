@@ -53,6 +53,7 @@ export function SelectCompany ({ companyList, setCompanyID, year, companyID }) {
                     label="Company"
                     onChange={handleChange}
                     className={classes.select}
+                    data-testid="company-select"
                 >
                 {getValidList(companyList).map((row) => (
                       <MenuItem key={row?.id} value={row?.id}>{row?.name}</MenuItem>

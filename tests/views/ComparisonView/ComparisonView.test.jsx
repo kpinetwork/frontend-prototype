@@ -7,7 +7,7 @@ const company = {
   id: '123',
   name: 'Sample Company',
   sector: 'Online media',
-  vertical: 'Eduaction',
+  vertical: 'Education',
   size_cohort: '$50-$100 million',
   margin_group: 'Low growth (0-<10%)',
   revenue: 70,
@@ -39,7 +39,7 @@ describe('<CompanyCard />', () => {
     it('render correctly', () => {
       setUp()
 
-      const companyRow = screen.getByRole('row', { name: 'Sample Company Online media Eduaction $ 70 55 % 90 % 109 % 108 % 80' })
+      const companyRow = screen.getByRole('row', { name: 'Sample Company Online media Education $ 70 55 % 90 % 109 % 108 % 80' })
 
       expect(screen.getByText('Export CSV')).toBeInTheDocument()
       expect(screen.getByRole('table')).toBeInTheDocument()
@@ -67,6 +67,52 @@ describe('<CompanyCard />', () => {
 
       expect(screen.getByRole('table')).toBeInTheDocument()
       expect(screen.getAllByRole('cell', { name: 'NA' })).toHaveLength(2)
+    })
+
+    it('render company metric values with NA or null', () => {
+      setUp({
+        companyComparison: {
+          ...company,
+          growth: null,
+          revenue: 'NA'
+        },
+        fromUniverseOverview: false
+      })
+
+      expect(screen.getByRole('table')).toBeInTheDocument()
+    })
+
+    it('render when company comparison is null', () => {
+      setUp({
+        companyComparison: null,
+        fromUniverseOverview: false
+      })
+
+      expect(screen.getByRole('table')).toBeInTheDocument()
+    })
+
+    it('render metric value when is not numeric and not NA or null', () => {
+      setUp({
+        peersComparison: [{
+          ...company,
+          growth: null,
+          rule_of_40: null,
+          revenue: '$50-$100 million'
+        }],
+        fromUniverseOverview: false
+      })
+
+      expect(screen.getByRole('table')).toBeInTheDocument()
+      expect(screen.getByRole('cell', { name: '$50-$100 million' })).toBeInTheDocument()
+    })
+
+    it('render when typeOfSelector is investor', () => {
+      setUp({
+        typeOfSelector: 'investor'
+      })
+
+      expect(screen.getByRole('table')).toBeInTheDocument()
+      expect(screen.queryByText('Export CSV')).not.toBeInTheDocument()
     })
   })
 

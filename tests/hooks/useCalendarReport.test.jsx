@@ -3,29 +3,11 @@ import { useCalendarReport } from '../../src/hooks/useCalendarReport'
 import { downloadComparisonPeers, getComparisonPeersFromQueryParams } from '../../src/service/comparisonPeers'
 import { renderHook, act } from '@testing-library/react-hooks'
 import Context from '../../src/context/appContext'
-
-const companies = [
-  {
-    id: '1',
-    name: 'Sample company abc',
-    sector: 'Application Software',
-    vertical: 'Media',
-    inves_profile_name: 'Private equity',
-    is_public: false
-  },
-  {
-    id: '2',
-    name: 'Sample company xyz',
-    sector: 'Semiconductors',
-    vertical: 'Logistics',
-    inves_profile_name: 'Family office',
-    is_public: false
-  }
-]
+import { SAMPLECOMPANIES } from '../data/companies'
 
 const getCalendarResponse = {
-  company_comparison_data: companies[0],
-  peers_comparison_data: companies
+  company_comparison_data: SAMPLECOMPANIES[0],
+  peers_comparison_data: SAMPLECOMPANIES
 }
 
 jest.mock('../../src/service/comparisonPeers')

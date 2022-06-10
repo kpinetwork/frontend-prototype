@@ -25,7 +25,7 @@ export const METRICS = [
   },
   {
     name: 'growth',
-    label: 'Growth',
+    label: 'Growth rate',
     symbol: '%',
     position: 'right'
   },

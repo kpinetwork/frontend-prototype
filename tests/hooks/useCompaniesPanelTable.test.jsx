@@ -4,6 +4,7 @@ import useCompaniesPanelTable from '../../src/hooks/useCompaniesPanelTable'
 import useCompanyPanel from '../../src/hooks/useCompanyPanel'
 import useCompaniesToChange from '../../src/hooks/useCompaniesToChange'
 import { changeCompanyPublicly } from '../../src/service/changeCompanyPublicly'
+import { SAMPLECOMPANIES } from '../data/companies'
 
 jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
   getAccessToken: () => ({
@@ -24,34 +25,16 @@ const serviceResponse = {
   body: { modified: true }
 }
 
-const companies = [
-  {
-    id: '1',
-    name: 'Sample company abc',
-    sector: 'Application Software',
-    vertical: 'Media',
-    inves_profile_name: 'Private equity',
-    is_public: false
-  },
-  {
-    id: '2',
-    name: 'Sample company xyz',
-    sector: 'Semiconductors',
-    vertical: 'Logistics',
-    inves_profile_name: 'Family office',
-    is_public: false
-  }
-]
 const useCompanyPanelResponse = {
   total: 1,
-  companies: [companies[0]],
+  companies: [SAMPLECOMPANIES[0]],
   setCompanies: jest.fn(),
   isLoading: false,
-  getCompanyPanel: jest.fn().mockImplementation(() => [companies[1]])
+  getCompanyPanel: jest.fn().mockImplementation(() => [SAMPLECOMPANIES[1]])
 }
 
 const useCompaniesToChangeResponse = {
-  companiesToChange: { [companies[0].id]: companies[0] }
+  companiesToChange: { [SAMPLECOMPANIES[0].id]: SAMPLECOMPANIES[0] }
 }
 
 describe('useCompaniesPanelTable', () => {

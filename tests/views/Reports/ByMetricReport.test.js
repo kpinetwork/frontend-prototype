@@ -119,7 +119,7 @@ describe('<ByMetricReport />', () => {
       setUp()
 
       await userEvent.click(getByRole(screen.getByTestId('metric-selector'), 'button'))
-      await waitFor(() => userEvent.click(screen.getByText('Growth')))
+      await waitFor(() => userEvent.click(screen.getByText('Growth rate')))
 
       expect(useMetricReportResponse.setMetric).toHaveBeenCalledWith('growth')
     })

@@ -6,11 +6,10 @@ const companiesUrl = `${baseUrl}/companies`
 
 export const getCompanies = async () => {
   const headers = await getAuthorizationHeader()
-  const response = await fetch(companiesUrl, {
-    method: 'GET',
+  const response = await axios.get(`${companiesUrl}`, {
     headers: headers
   })
-  const data = await response.json()
+  const data = await response.data
   return data
 }
 
