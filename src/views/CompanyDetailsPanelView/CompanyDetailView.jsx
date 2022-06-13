@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import { Grid, Box } from '@material-ui/core'
 import { AdminPanelContainer } from '../AdminPanel/AdminPanelContainer'
 import { TitlePanel } from '../AdminPanel/Components/TitlePanel'
