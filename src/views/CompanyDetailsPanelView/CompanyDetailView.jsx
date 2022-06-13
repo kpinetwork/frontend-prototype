@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid, Box } from '@material-ui/core'
 import { AdminPanelContainer } from '../AdminPanel/AdminPanelContainer'
 import { TitlePanel } from '../AdminPanel/Components/TitlePanel'
+import { CompanyDetailsCard } from './Components/CompanyDetailsCard'
 import { CompanyTabs } from './Components/CompanyTabs'
 
 export function CompanyDetailView () {
@@ -10,6 +11,7 @@ export function CompanyDetailView () {
             <AdminPanelContainer initialTab={'companies'}>
                 <Box>
                     <TitlePanel title='Company Details - Summary'/>
+                    <CompanyDetailsCard></CompanyDetailsCard>
                     <CompanyTabs></CompanyTabs>
                 </Box>
             </AdminPanelContainer>

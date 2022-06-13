@@ -1,9 +1,11 @@
 import axios from 'axios'
 import { Auth } from 'aws-amplify'
-import { getCompanyInvestments, addCompanyInvestment } from '../../src/service/companyDetails'
+import { COMPANIESDETAILS } from '../data/companies'
+import { getCompanyDetails, getCompanyInvestments, addCompanyInvestment } from '../../src/service/companyDetails'
 
 const { VITE_HOST: baseUrl } = import.meta.env
 
+const companiesUrl = `${baseUrl}/companies`
 const investments = `${baseUrl}/investments`
 
 jest.mock('axios')
@@ -15,6 +17,15 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
 })
 
 describe('companyDetails service', () => {
+  describe('get company details', () => {
+    it('API call successful should return company details', async () => {
+      axios.get.mockResolvedValueOnce(COMPANIESDETAILS)
+      await getCompanyDetails(COMPANIESDETAILS.id)
+
+      expect(axios.get).toHaveBeenCalledWith(`${companiesUrl}/${COMPANIESDETAILS.id}`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
+    })
+  })
+
   describe('get company investments', () => {
     it('API call successful should return company investments', async () => {
       const investment =
