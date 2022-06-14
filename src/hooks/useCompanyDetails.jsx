@@ -6,23 +6,24 @@ const useCompanyDetails = () => {
   const { selectedCompanyID } = useContext(Context).company
   const [company, setCompany] = useState({})
   const [scenarios, setScenarios] = useState([])
-  const [totalScenarios, setTotalScenarios] = useState(0)
+  const [total, setTotalScenarios] = useState(0)
   const [investments, setInvestments] = useState([])
   const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
-    getCompany()
+    getCompanyData()
     getInvestments()
   }, [])
 
-  const getCompany = async () => {
+  const getCompanyData = async () => {
     try {
       setLoading(true)
-      const response = await getCompanyDetails(selectedCompanyID)
+      const response = await getCompanyDetails({ selectedCompanyID })
       const companyDetails = destructuringCompany(response)
       setCompany(companyDetails)
       setScenarios(response.scenarios.metrics)
       setTotalScenarios(response.scenarios.total)
+      return response.scenarios.metrics
     } catch (_error) {
       setCompany({})
       setScenarios([])
@@ -57,8 +58,10 @@ const useCompanyDetails = () => {
 
   return {
     company,
+    getCompanyData,
+    total,
     scenarios,
-    totalScenarios,
+    setScenarios,
     getInvestments,
     addInvestment,
     investments,

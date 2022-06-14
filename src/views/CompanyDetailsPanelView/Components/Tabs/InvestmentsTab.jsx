@@ -30,7 +30,7 @@ export function InvestmentsTab () {
   const [openAdd, setOpenAdd] = useState(false)
   const [investment, setInvestment] = useState({})
   const [error, setError] = useState(undefined)
-  const { addInvestment, investments, isLoading } = useCompanyDetails()
+  const { addInvestment, investments, isLoading } = useCompanyDetails({})
 
   const onChange = (event, type) => {
     setInvestment({ ...investment, [type]: event?.target?.value })

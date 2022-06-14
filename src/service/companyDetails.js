@@ -5,9 +5,10 @@ const { VITE_HOST: baseUrl } = import.meta.env
 const companiesUrl = `${baseUrl}/companies`
 const investmentsUrl = `${baseUrl}/investments`
 
-export const getCompanyDetails = async (companyID) => {
+export const getCompanyDetails = async (options) => {
+  const { selectedCompanyID: companyID, limit, offset } = options
   const headers = await getAuthorizationHeader()
-  const response = await axios.get(`${companiesUrl}/${companyID}?limit=50`, {
+  const response = await axios.get(`${companiesUrl}/${companyID}?limit=${limit}&offset=${offset}`, {
     headers: headers
   })
   const data = await response.data

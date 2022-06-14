@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Grid, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, TableFooter } from '@material-ui/core'
-import useCompanyDetails from '../../../../hooks/useCompanyDetails'
+import useScenariosTable from '../../../../hooks/useScenariosTable'
 import LoadingProgress from '../../../../components/Progress'
 import { makeStyles } from '@material-ui/core/styles'
 import { BASEMETRICS } from '../../../../utils/constants/Metrics'
@@ -26,7 +26,15 @@ const useStyles = makeStyles((theme) => ({
 
 export function ScenariosTab () {
   const classes = useStyles()
-  const { scenarios, totalScenarios, isLoading } = useCompanyDetails()
+  const {
+    rowsPerPage,
+    isLoading,
+    scenarios,
+    total,
+    page,
+    handleChangePage,
+    handleChangeRowsPerPage
+  } = useScenariosTable()
 
   const getValue = (name, value) => {
     if (value === 'NA' || isNaN(value)) {
@@ -67,6 +75,19 @@ export function ScenariosTab () {
                 })
               }
             </TableBody>
+            <TableFooter>
+              <TableRow>
+              <TablePagination
+                  colSpan={4}
+                  count={total}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+              >
+              </TablePagination>
+              </TableRow>
+            </TableFooter>
           </Table>
         }
         {isLoading &&
