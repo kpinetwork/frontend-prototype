@@ -28,7 +28,7 @@ export const COMPANIESDETAILS = {
   size_cohort: 'NA',
   margin_group: 'NA',
   scenarios: {
-    total: 14,
+    total: 2,
     metrics: [
       {
         scenario_id: '02b8fc45-204c-450b-b4aa-525b35ad2323',

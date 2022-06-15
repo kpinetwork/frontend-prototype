@@ -72,3 +72,7 @@ export const BASEMETRICS = [
     position: 'right'
   }
 ]
+
+export const BASE_SCENARIOS = [
+  'Actuals', 'Budget'
+]

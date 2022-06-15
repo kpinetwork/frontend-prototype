@@ -20,9 +20,9 @@ describe('companyDetails service', () => {
   describe('get company details', () => {
     it('API call successful should return company details', async () => {
       axios.get.mockResolvedValueOnce(COMPANIESDETAILS)
-      await getCompanyDetails(COMPANIESDETAILS.id)
+      await getCompanyDetails({ selectedCompanyID: COMPANIESDETAILS.id, limit: 10, offset: 0 })
 
-      expect(axios.get).toHaveBeenCalledWith(`${companiesUrl}/${COMPANIESDETAILS.id}`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
+      expect(axios.get).toHaveBeenCalledWith(`${companiesUrl}/${COMPANIESDETAILS.id}?limit=10&offset=0`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
     })
   })
 

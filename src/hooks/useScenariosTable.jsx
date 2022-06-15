@@ -12,7 +12,6 @@ const useScenariosTable = () => {
   const [scenarios, setScenarios] = useState([])
   const [total, setTotal] = useState(0)
   const [isLoading, setLoading] = useState(false)
-  // const { total, scenarios, isLoading, setScenarios, getCompanyData } = useCompanyDetails({ limit: rowsPerPage, offset })
 
   useEffect(() => {
     initScenarios(rowsPerPage, offset)

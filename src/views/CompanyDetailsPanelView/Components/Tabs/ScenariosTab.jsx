@@ -1,5 +1,7 @@
-import React from 'react'
-import { Box, Grid, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, TableFooter } from '@material-ui/core'
+import React, { useState } from 'react'
+import { Box, Grid, Button, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, TableFooter } from '@material-ui/core'
+import { ScenarioForm } from './ScenarioForm'
+import { Add } from '@material-ui/icons'
 import useScenariosTable from '../../../../hooks/useScenariosTable'
 import LoadingProgress from '../../../../components/Progress'
 import { makeStyles } from '@material-ui/core/styles'
@@ -26,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
 
 export function ScenariosTab () {
   const classes = useStyles()
+  const [openAdd, setOpenAdd] = useState(false)
+  const [scenario, setScenario] = useState({})
   const {
     rowsPerPage,
     isLoading,
@@ -47,8 +51,48 @@ export function ScenariosTab () {
     return value
   }
 
+  const validValue = (value) => {
+    return !isNaN(value) ? Number(value) : value
+  }
+
+  const onChange = (value, type) => {
+    setScenario({ ...scenario, [type]: validValue(value) })
+  }
+
   return (
     <Grid>
+      <Box>
+        {
+          openAdd &&
+            <Box>
+              <ScenarioForm
+                scenario = {scenario}
+                edit={false}
+                // error={error}
+                onChange={onChange}
+                onCancel={() => {
+                  setOpenAdd(false)
+                  setScenario({})
+                  // setError(undefined)
+                }}
+                // onSave={onSave}
+              />
+            </Box>
+        }
+      </Box>
+      <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>
+        {
+          !openAdd && !isLoading &&
+            <Button
+              startIcon={<Add />}
+              style={{ textTransform: 'none' }}
+              onClick={(_) => setOpenAdd(true)}
+              disabled={openAdd}
+            >
+              Add Scenario
+            </Button>
+        }
+      </Box>
       <Box>
         {
           !isLoading &&
