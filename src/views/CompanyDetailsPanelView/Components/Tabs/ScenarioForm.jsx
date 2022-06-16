@@ -161,6 +161,8 @@ export function ScenarioForm ({ onCancel, error, scenario, onChange, onSave }) {
                     placeholder={'metric value'}
                     InputProps={{
                       startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                      pattern: '^-?[0-9]+[.]?[0-9]*$',
+                      margin: 'none',
                       className: classes.inputText
                     }}
                   ></TextField>
