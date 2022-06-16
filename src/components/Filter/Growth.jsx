@@ -35,7 +35,6 @@ export function Growth ({ setFilters, fillFilters, selectedList }) {
       setSelected(all)
       return
     }
-    // added below code to update selected options
     const list = [...selected]
     const index = list.indexOf(value)
     index === -1 ? list.push(value) : list.splice(index, 1)
