@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import Context from '../context/appContext'
-import { getCompanyDetails } from '../service/companyDetails'
+import { addCompanyScenario, getCompanyDetails } from '../service/companyDetails'
 
 const useScenariosTable = () => {
   const { selectedCompanyID } = useContext(Context).company
@@ -34,6 +34,18 @@ const useScenariosTable = () => {
       setScenarios([])
       setTotal(0)
       setLoading(false)
+    }
+  }
+
+  const addScenario = async (scenario) => {
+    try {
+      setLoading(true)
+      const response = await addCompanyScenario(selectedCompanyID, scenario)
+      await getScenarios()
+      return response.added
+    } catch (_error) {
+      setLoading(false)
+      return false
     }
   }
 
@@ -79,7 +91,8 @@ const useScenariosTable = () => {
     total,
     page,
     handleChangePage,
-    handleChangeRowsPerPage
+    handleChangeRowsPerPage,
+    addScenario
   }
 }
 

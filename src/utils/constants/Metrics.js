@@ -65,11 +65,6 @@ export const BASEMETRICS = [
     name: 'Ebitda',
     symbol: '$',
     position: 'left'
-  },
-  {
-    name: 'Rule of 40',
-    symbol: '',
-    position: 'right'
   }
 ]
 

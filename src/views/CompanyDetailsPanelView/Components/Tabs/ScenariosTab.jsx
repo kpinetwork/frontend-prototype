@@ -30,6 +30,7 @@ export function ScenariosTab () {
   const classes = useStyles()
   const [openAdd, setOpenAdd] = useState(false)
   const [scenario, setScenario] = useState({})
+  const [error, setError] = useState(undefined)
   const {
     rowsPerPage,
     isLoading,
@@ -37,7 +38,8 @@ export function ScenariosTab () {
     total,
     page,
     handleChangePage,
-    handleChangeRowsPerPage
+    handleChangeRowsPerPage,
+    addScenario
   } = useScenariosTable()
 
   const getValue = (name, value) => {
@@ -59,6 +61,27 @@ export function ScenariosTab () {
     setScenario({ ...scenario, [type]: validValue(value) })
   }
 
+  const validScenario = () => {
+    const properties = ['scenario', 'metric', 'year', 'value']
+    const hasAllKeys = properties.every(item => Object.prototype.hasOwnProperty.call(scenario, item))
+    return hasAllKeys
+  }
+
+  const onSave = async () => {
+    if (validScenario()) {
+      const response = await addScenario(scenario)
+      if (!response) {
+        setError('Something went wrong, the scenario could not be added, please try again')
+      } else {
+        setScenario({})
+        setOpenAdd(false)
+        setError(undefined)
+      }
+    } else {
+      setError('Please fill in all the required fields')
+    }
+  }
+
   return (
     <Grid>
       <Box>
@@ -67,15 +90,14 @@ export function ScenariosTab () {
             <Box>
               <ScenarioForm
                 scenario = {scenario}
-                edit={false}
-                // error={error}
+                error={error}
                 onChange={onChange}
                 onCancel={() => {
                   setOpenAdd(false)
                   setScenario({})
-                  // setError(undefined)
+                  setError(undefined)
                 }}
-                // onSave={onSave}
+                onSave={onSave}
               />
             </Box>
         }

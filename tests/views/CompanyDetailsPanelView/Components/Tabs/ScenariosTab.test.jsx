@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { ScenariosTab } from '../../../../../src/views/CompanyDetailsPanelView/Components/Tabs/ScenariosTab'
 import useScenariosTable from '../../../../../src/hooks/useScenariosTable'
 
@@ -84,5 +84,26 @@ describe('<ScenariosTab/>', () => {
     const progressBar = screen.getByRole('progressbar')
 
     expect(progressBar).toBeInTheDocument()
+  })
+
+  it('click on add button should open form', () => {
+    useScenariosTable.mockImplementation(() => hookResponse)
+    setUp()
+    const button = screen.getByRole('button', { name: 'Add Scenario' })
+
+    fireEvent.click(button)
+
+    expect(screen.getByText('Add scenario')).toBeInTheDocument()
+  })
+
+  it('click on cancel should close form', () => {
+    useScenariosTable.mockImplementation(() => hookResponse)
+    setUp()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Add Scenario' }))
+    const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+    fireEvent.click(cancelButton)
+
+    expect(cancelButton).not.toBeInTheDocument()
   })
 })

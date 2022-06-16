@@ -32,3 +32,13 @@ export const addCompanyInvestment = async (companyID, investment) => {
   const data = await response.data
   return data
 }
+
+export const addCompanyScenario = async (companyID, scenario) => {
+  const requestBody = { ...scenario, company_id: companyID }
+  const headers = await getAuthorizationHeader()
+  const response = await axios.post(`${companiesUrl}/${companyID}/scenarios`, requestBody, {
+    headers: headers
+  })
+  const data = await response.data
+  return data
+}

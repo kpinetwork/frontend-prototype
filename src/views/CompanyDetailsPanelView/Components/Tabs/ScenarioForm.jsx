@@ -53,17 +53,24 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 50
   },
   inputText: {
+    fontSize: 13,
     '&:invalid': {
       border: 'red solid 1px',
-      borderRadius: 25
-    },
-    fontSize: 13
+      borderRadius: 25,
+      borderStyle: 'solid'
+    }
   }
 }))
 
-export function ScenarioForm ({ onCancel, edit, error, scenario, onChange, onSave }) {
+export function ScenarioForm ({ onCancel, error, scenario, onChange, onSave }) {
   const classes = useStyles()
-  const [dateValue, setDateValue] = useState((new Date()))
+  const [dateValue, setDateValue] = useState({})
+
+  const limitDate = (years) => {
+    const date = new Date()
+    date.setFullYear(date.getFullYear() + years)
+    return date
+  }
 
   return (
       <Card className={classes.form}>
@@ -77,7 +84,7 @@ export function ScenarioForm ({ onCancel, edit, error, scenario, onChange, onSav
             </Box>
           }
           <Box style={{ display: 'flex', marginBottom: 30, justifyContent: 'start', flexWrap: 'wrap' }} px={2} component='form'>
-              <FormControl className={classes.input}>
+              <FormControl required className={classes.input}>
                   <FormLabel className={classes.label}>Scenario</FormLabel>
                   <Select
                     onChange={(event) => onChange(event?.target?.value, 'scenario')}
@@ -94,7 +101,7 @@ export function ScenarioForm ({ onCancel, edit, error, scenario, onChange, onSav
                       }
                   </Select>
               </FormControl>
-              <FormControl className={classes.input}>
+              <FormControl required className={classes.input}>
                   <FormLabel className={classes.label}>Metric</FormLabel>
                   <Select
                     onChange={(event) => onChange(event?.target?.value, 'metric')}
@@ -111,32 +118,44 @@ export function ScenarioForm ({ onCancel, edit, error, scenario, onChange, onSav
                       }
                   </Select>
               </FormControl>
-              <FormControl className={classes.input}>
+              <FormControl required className={classes.input}>
                   <FormLabel className={classes.label}>Year</FormLabel>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     views={['year']}
                     value={dateValue}
                     className={classes.test}
-                    variant='outlined'
                     onChange={(event) => {
                       setDateValue(event)
                       onChange(event.getFullYear(), 'year')
                     }}
-                    renderInput={(params) => <TextField {...params} variant="outlined" className={classes.yearPicker} helperText={null} />}
+                    maxDate={limitDate(1)}
+                    minDate={limitDate(-15)}
+                    renderInput={(params) =>
+                    <TextField
+                    {...params}
+                    variant="outlined"
+                    error={false}
+                    className={classes.yearPicker}
+                    helperText={null}
+                    placeholder={'year'}
+                    />}
                   />
                   </LocalizationProvider>
               </FormControl>
-              <FormControl className={classes.input}>
+              <FormControl required className={classes.input}>
                   <FormLabel className={classes.label}>Value</FormLabel>
                   <TextField
-                    type="number"
+                    required
                     onChange={(event) => onChange(event?.target?.value, 'value')}
                     variant="outlined"
                     value={scenario.value || ''}
                     className={classes.inputBorder}
+                    placeholder={'metric value'}
                     InputProps={{
                       startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                      pattern: '^-?[0-9]+[.]?[0-9]*$',
+                      margin: 'none',
                       className: classes.inputText
                     }}
                   ></TextField>
