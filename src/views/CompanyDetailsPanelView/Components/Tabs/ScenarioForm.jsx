@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     backgroundColor: 'white',
     borderRadius: 25,
-    fontSize: 15
+    fontSize: 12
   },
   label: {
     marginLeft: 10,
@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 export function ScenarioForm ({ onCancel, error, scenario, onChange, onSave }) {
   const classes = useStyles()
   const [dateValue, setDateValue] = useState({})
+  const [valueError, setValueError] = useState(false)
 
   const limitDate = (years) => {
     const date = new Date()
@@ -91,6 +92,7 @@ export function ScenarioForm ({ onCancel, error, scenario, onChange, onSave }) {
                     variant='outlined'
                     className={classes.inputBorder}
                     value={scenario.scenario || ''}
+                    data-testid='scenario-selector'
                   >
                       {
                           BASE_SCENARIOS.map(scenario => (
@@ -108,6 +110,7 @@ export function ScenarioForm ({ onCancel, error, scenario, onChange, onSave }) {
                     variant='outlined'
                     className={classes.inputBorder}
                     value={scenario.metric || ''}
+                    data-testid='metric-name-selector'
                   >
                       {
                           BASEMETRICS.map(metric => (
@@ -125,6 +128,7 @@ export function ScenarioForm ({ onCancel, error, scenario, onChange, onSave }) {
                     views={['year']}
                     value={dateValue}
                     className={classes.test}
+                    id='year-picker-selector'
                     onChange={(event) => {
                       setDateValue(event)
                       onChange(event.getFullYear(), 'year')
@@ -146,16 +150,17 @@ export function ScenarioForm ({ onCancel, error, scenario, onChange, onSave }) {
               <FormControl required className={classes.input}>
                   <FormLabel className={classes.label}>Value</FormLabel>
                   <TextField
-                    required
-                    onChange={(event) => onChange(event?.target?.value, 'value')}
+                    error={valueError}
+                    onChange={(event) => {
+                      onChange(event?.target?.value, 'value')
+                      setValueError(isNaN(Number(event?.target?.value)))
+                    }}
                     variant="outlined"
                     value={scenario.value || ''}
                     className={classes.inputBorder}
                     placeholder={'metric value'}
                     InputProps={{
                       startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                      pattern: '^-?[0-9]+[.]?[0-9]*$',
-                      margin: 'none',
                       className: classes.inputText
                     }}
                   ></TextField>

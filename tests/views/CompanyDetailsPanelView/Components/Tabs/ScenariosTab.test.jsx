@@ -1,6 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen, fireEvent } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { render, screen, fireEvent, waitFor, getByRole } from '@testing-library/react'
 import { ScenariosTab } from '../../../../../src/views/CompanyDetailsPanelView/Components/Tabs/ScenariosTab'
 import useScenariosTable from '../../../../../src/hooks/useScenariosTable'
 
@@ -22,7 +23,8 @@ const hookResponse = {
   total: 1,
   page: 0,
   handleChangePage: jest.fn(),
-  handleChangeRowsPerPage: jest.fn()
+  handleChangeRowsPerPage: jest.fn(),
+  addScenario: () => true
 }
 
 const setUp = () => {
@@ -105,5 +107,55 @@ describe('<ScenariosTab/>', () => {
     fireEvent.click(cancelButton)
 
     expect(cancelButton).not.toBeInTheDocument()
+  })
+
+  it('click on save without valid data should display error', () => {
+    useScenariosTable.mockImplementation(() => hookResponse)
+    setUp()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Add Scenario' }))
+    const saveButton = screen.getByRole('button', { name: 'Save' })
+    fireEvent.click(saveButton)
+    const errorMessage = screen.getByText('Please fill in all the required fields')
+
+    expect(errorMessage).toBeInTheDocument()
+  })
+
+  it('click on save with valid data successful', async () => {
+    useScenariosTable.mockImplementation(() => hookResponse)
+    setUp()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Add Scenario' }))
+    await userEvent.click(getByRole(screen.getByTestId('scenario-selector'), 'button'))
+    await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Actuals' })))
+    await userEvent.click(getByRole(screen.getByTestId('metric-name-selector'), 'button'))
+    await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Revenue' })))
+    fireEvent.click(screen.getByPlaceholderText('year'))
+    fireEvent.click(screen.getByRole('button', { name: '2023' }))
+    fireEvent.change(screen.getByPlaceholderText('metric value'), { target: { value: '123' } })
+    await waitFor(() => fireEvent.click(screen.getByText('Save')))
+
+    const errorMessage = screen.queryByText('Something went wrong, the scenario could not be added, please try again')
+
+    expect(errorMessage).not.toBeInTheDocument()
+  })
+
+  it('click on save with valid data should display error', async () => {
+    useScenariosTable.mockImplementation(() => ({ ...hookResponse, addScenario: () => false }))
+    setUp()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Add Scenario' }))
+    await userEvent.click(getByRole(screen.getByTestId('scenario-selector'), 'button'))
+    await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Actuals' })))
+    await userEvent.click(getByRole(screen.getByTestId('metric-name-selector'), 'button'))
+    await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Revenue' })))
+    fireEvent.click(screen.getByPlaceholderText('year'))
+    fireEvent.click(screen.getByRole('button', { name: '2023' }))
+    fireEvent.change(screen.getByPlaceholderText('metric value'), { target: { value: '123' } })
+    await waitFor(() => fireEvent.click(screen.getByText('Save')))
+
+    const errorMessage = screen.getByText('Something went wrong, the scenario could not be added, please try again')
+
+    expect(errorMessage).toBeInTheDocument()
   })
 })

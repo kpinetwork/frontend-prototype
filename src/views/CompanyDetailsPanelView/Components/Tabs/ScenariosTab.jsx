@@ -48,17 +48,17 @@ export function ScenariosTab () {
     }
     const metric = BASEMETRICS.find(item => item.name === name)
     if (metric) {
-      return metric.position === 'left' ? `${metric.symbol} ${value}` : `${value} ${metric.symbol}`
+      return `${metric.symbol} ${value}`
     }
     return value
   }
 
-  const validValue = (value) => {
-    return !isNaN(value) ? Number(value) : value
+  const validateScenario = () => {
+    scenario.value = Number(scenario.value)
   }
 
   const onChange = (value, type) => {
-    setScenario({ ...scenario, [type]: validValue(value) })
+    setScenario({ ...scenario, [type]: value })
   }
 
   const validScenario = () => {
@@ -69,7 +69,8 @@ export function ScenariosTab () {
 
   const onSave = async () => {
     if (validScenario()) {
-      const response = await addScenario(scenario)
+      validateScenario()
+      const response = await addScenario(scenario, rowsPerPage, page * rowsPerPage)
       if (!response) {
         setError('Something went wrong, the scenario could not be added, please try again')
       } else {

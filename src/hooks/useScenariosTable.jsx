@@ -37,11 +37,11 @@ const useScenariosTable = () => {
     }
   }
 
-  const addScenario = async (scenario) => {
+  const addScenario = async (scenario, limit, offset) => {
     try {
       setLoading(true)
       const response = await addCompanyScenario(selectedCompanyID, scenario)
-      await getScenarios()
+      await getScenarios({ limit, offset })
       return response.added
     } catch (_error) {
       setLoading(false)

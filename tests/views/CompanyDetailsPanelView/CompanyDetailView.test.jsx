@@ -6,9 +6,9 @@ import useCompanyDetails from '../../../src/hooks/useCompanyDetails'
 import useScenariosTable from '../../../src/hooks/useScenariosTable'
 import Context from '../../../src/context/appContext'
 
-const setUp = () => {
+const setUp = (id) => {
   render(
-    <Context.Provider value={{ company: { selectedCompanyID: 'id' } }}>
+    <Context.Provider value={{ company: { selectedCompanyID: id } }}>
       <CompanyDetailView />
     </Context.Provider>
   )
@@ -64,7 +64,7 @@ describe('<CompanyDetailView />', () => {
   it('should render', () => {
     useCompanyDetails.mockImplementation(() => companyDetailshookResponse)
     useScenariosTable.mockImplementation(() => scenariosTablehookResponse)
-    setUp()
+    setUp('123')
 
     const companyCell = screen.getByText('Sample Company')
     const scenariosTab = screen.getByRole('tab', { name: 'Scenarios' })
@@ -73,5 +73,13 @@ describe('<CompanyDetailView />', () => {
     expect(companyCell).toBeInTheDocument()
     expect(scenariosTab).toBeInTheDocument()
     expect(investmentsTab).toBeInTheDocument()
+  })
+
+  it('should show error message if is loading', () => {
+    useCompanyDetails.mockImplementation(() => companyDetailshookResponse)
+    useScenariosTable.mockImplementation(() => scenariosTablehookResponse)
+    setUp(null)
+
+    expect(screen.getByText('No company selected'))
   })
 })

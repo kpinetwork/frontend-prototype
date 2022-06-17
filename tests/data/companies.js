@@ -49,3 +49,11 @@ export const COMPANIESDETAILS = {
     ]
   }
 }
+
+export const SCENARIO = {
+  company_id: 'bd5db452-308f-4850-a39f-7081545b4ea0',
+  scenario: 'Actuals',
+  year: 2021,
+  metric: 'Revenue',
+  value: 50
+}
