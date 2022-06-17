@@ -83,27 +83,6 @@ export function ScenariosTab () {
     }
   }
 
-  const validScenario = () => {
-    const properties = ['scenario', 'metric', 'year', 'value']
-    const hasAllKeys = properties.every(item => Object.prototype.hasOwnProperty.call(scenario, item))
-    return hasAllKeys
-  }
-
-  const onSave = async () => {
-    if (validScenario()) {
-      const response = await addScenario(scenario)
-      if (!response) {
-        setError('Something went wrong, the scenario could not be added, please try again')
-      } else {
-        setScenario({})
-        setOpenAdd(false)
-        setError(undefined)
-      }
-    } else {
-      setError('Please fill in all the required fields')
-    }
-  }
-
   return (
     <Grid>
       <Box>
