@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Box, Grid, Button, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, TableFooter } from '@material-ui/core'
+import { Box, Grid, Button, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, TableFooter, Checkbox } from '@material-ui/core'
 import { ScenarioForm } from './ScenarioForm'
-import { Add } from '@material-ui/icons'
+import { Add, DeleteOutlined } from '@material-ui/icons'
 import useScenariosTable from '../../../../hooks/useScenariosTable'
 import LoadingProgress from '../../../../components/Progress'
+import ButtonActions from '../../../../components/Actions'
 import { makeStyles } from '@material-ui/core/styles'
 import { BASEMETRICS } from '../../../../utils/constants/Metrics'
 
@@ -20,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: 'bold'
     }
   },
+  row: {
+    '&.Mui-selected, &.Mui-selected:hover': {
+      backgroundColor: '#DDE7FF'
+    }
+  },
   roleName: {
     marginRight: 10,
     textTransform: 'capitalize'
@@ -29,8 +35,12 @@ const useStyles = makeStyles((theme) => ({
 export function ScenariosTab () {
   const classes = useStyles()
   const [openAdd, setOpenAdd] = useState(false)
+  const [openDelete, setOpenDelete] = useState(false)
   const [scenario, setScenario] = useState({})
   const [error, setError] = useState(undefined)
+  const [selected, setSelected] = useState([])
+
+  console.log(selected)
   const {
     rowsPerPage,
     isLoading,
@@ -41,6 +51,8 @@ export function ScenariosTab () {
     handleChangeRowsPerPage,
     addScenario
   } = useScenariosTable()
+
+  const isSelected = (name) => (selected.indexOf(name) !== -1)
 
   const getValue = (name, value) => {
     if (value === 'NA' || isNaN(value)) {
@@ -83,6 +95,26 @@ export function ScenariosTab () {
     }
   }
 
+  const handleClick = (event, name) => {
+    const selectedIndex = selected.indexOf(name)
+    let newSelected = []
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name)
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1))
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1))
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      )
+    }
+
+    setSelected(newSelected)
+  }
+
   return (
     <Grid>
       <Box>
@@ -105,7 +137,18 @@ export function ScenariosTab () {
       </Box>
       <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>
         {
-          !openAdd && !isLoading &&
+          !openDelete && !openAdd && !isLoading &&
+            <Button
+              startIcon={<DeleteOutlined />}
+              style={{ textTransform: 'none' }}
+              onClick={(_) => setOpenDelete(true)}
+              disabled={openDelete}
+            >
+              Delete Scenarios
+            </Button>
+        }
+        {
+          !openAdd && !openDelete && !isLoading &&
             <Button
               startIcon={<Add />}
               style={{ textTransform: 'none' }}
@@ -115,6 +158,19 @@ export function ScenariosTab () {
               Add Scenario
             </Button>
         }
+        { openDelete &&
+          <Box sx={{ margin: 10 }}>
+            <ButtonActions
+            onOk={() => { console.log('delete') }}
+            onCancel={() => {
+              setOpenDelete(false)
+              setSelected([])
+            }}
+            okName="Delete"
+            cancelName="Cancel"
+            />
+          </Box>
+      }
       </Box>
       <Box>
         {
@@ -122,6 +178,9 @@ export function ScenariosTab () {
           <Table className={classes.root}>
             <TableHead>
               <TableRow className={classes.head}>
+                { openDelete &&
+                  <TableCell className={classes.head}></TableCell>
+                }
                 <TableCell className={classes.head}>Scenario</TableCell>
                 <TableCell className={classes.head}>Metric</TableCell>
                 <TableCell className={classes.head}>Year</TableCell>
@@ -131,8 +190,27 @@ export function ScenariosTab () {
             <TableBody>
               { scenarios && scenarios.length > 0 &&
                 scenarios.map((scenario) => {
+                  const isItemSelected = isSelected(scenario.metric_id)
                   return (
-                    <TableRow key={scenario.metric_id}>
+                    <TableRow
+                    key={scenario.metric_id}
+                    selected={isItemSelected}
+                    tabIndex={-1}
+                    className={classes.row}>
+                        {
+                          openDelete &&
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              color="primary"
+                              checked={isItemSelected}
+                              // indeterminate={numSelected > 0 && numSelected < rowCount}
+                              onChange={(event) => handleClick(event, scenario.metric_id)}
+                              inputProps={{
+                                'aria-label': 'select all desserts'
+                              }}
+                          />
+                          </TableCell>
+                        }
                       <TableCell>{scenario.scenario}</TableCell>
                       <TableCell>{scenario.metric || 'NA'}</TableCell>
                       <TableCell>{scenario.year || 'NA'}</TableCell>
