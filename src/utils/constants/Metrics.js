@@ -54,3 +54,20 @@ export const METRICS = [
     position: ''
   }
 ]
+
+export const BASEMETRICS = [
+  {
+    name: 'Revenue',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Ebitda',
+    symbol: '$',
+    position: 'left'
+  }
+]
+
+export const BASE_SCENARIOS = [
+  'Actuals', 'Budget'
+]

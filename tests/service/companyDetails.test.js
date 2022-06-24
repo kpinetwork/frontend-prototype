@@ -1,9 +1,11 @@
 import axios from 'axios'
 import { Auth } from 'aws-amplify'
-import { getCompanyInvestments, addCompanyInvestment } from '../../src/service/companyDetails'
+import { COMPANIESDETAILS, SCENARIO } from '../data/companies'
+import { getCompanyDetails, getCompanyInvestments, addCompanyInvestment, addCompanyScenario } from '../../src/service/companyDetails'
 
 const { VITE_HOST: baseUrl } = import.meta.env
 
+const companiesUrl = `${baseUrl}/companies`
 const investments = `${baseUrl}/investments`
 
 jest.mock('axios')
@@ -15,6 +17,15 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
 })
 
 describe('companyDetails service', () => {
+  describe('get company details', () => {
+    it('API call successful should return company details', async () => {
+      axios.get.mockResolvedValueOnce(COMPANIESDETAILS)
+      await getCompanyDetails({ selectedCompanyID: COMPANIESDETAILS.id, limit: 10, offset: 0 })
+
+      expect(axios.get).toHaveBeenCalledWith(`${companiesUrl}/${COMPANIESDETAILS.id}?limit=10&offset=0`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
+    })
+  })
+
   describe('get company investments', () => {
     it('API call successful should return company investments', async () => {
       const investment =
@@ -32,6 +43,25 @@ describe('companyDetails service', () => {
       await getCompanyInvestments(investment.company_id)
 
       expect(axios.get).toHaveBeenCalledWith(`${investments}/${investment.company_id}`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
+    })
+  })
+
+  describe('add scenario', () => {
+    it('API call successful should add company scenario', async () => {
+      axios.post.mockResolvedValueOnce({
+        data: {
+          company_id: SCENARIO.company_id,
+          scenario: {
+            id: 'scenario_id',
+            name: 'Actuals-2020',
+            metric_id: 'metric_id'
+          },
+          added: true
+        }
+      })
+      await addCompanyScenario(SCENARIO.company_id, SCENARIO)
+
+      expect(axios.post).toHaveBeenCalledWith(`${companiesUrl}/${SCENARIO.company_id}/scenarios`, SCENARIO, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
     })
   })
 

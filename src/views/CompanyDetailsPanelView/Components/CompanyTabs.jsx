@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/styles'
 import { InvestmentsTab } from './Tabs/InvestmentsTab'
 import Context from '../../../context/appContext'
 import CardMessage from '../../../components/CardMessage'
+import { ScenariosTab } from './Tabs/ScenariosTab'
 
 const useStyles = makeStyles(theme => ({
   tabs: {
@@ -58,9 +59,7 @@ export function CompanyTabs () {
           </Box>
           <Box>
             <TabPanel value={tab} index={'scenarios'}>
-              <Box>
-                <div>Company Scenarios</div>
-              </Box>
+              <ScenariosTab />
             </TabPanel>
             <TabPanel value={tab} index={'investments'}>
               <InvestmentsTab />

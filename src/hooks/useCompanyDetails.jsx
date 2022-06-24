@@ -1,15 +1,30 @@
 import { useContext, useState, useEffect } from 'react'
-import { getCompanyInvestments, addCompanyInvestment } from '../service/companyDetails'
+import { getCompanyDetails, getCompanyInvestments, addCompanyInvestment } from '../service/companyDetails'
 import Context from '../context/appContext'
 
 const useCompanyDetails = () => {
   const { selectedCompanyID } = useContext(Context).company
+  const [company, setCompany] = useState({})
   const [investments, setInvestments] = useState([])
   const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
+    getCompanyData()
     getInvestments()
   }, [])
+
+  const getCompanyData = async () => {
+    try {
+      setLoading(true)
+      const response = await getCompanyDetails({ selectedCompanyID })
+      const companyDetails = destructuringCompany(response)
+      setCompany(companyDetails)
+      return response.scenarios.metrics
+    } catch (_error) {
+      setCompany({})
+      setLoading(false)
+    }
+  }
 
   const getInvestments = async () => {
     try {
@@ -36,6 +51,7 @@ const useCompanyDetails = () => {
   }
 
   return {
+    company,
     getInvestments,
     addInvestment,
     investments,
@@ -44,3 +60,20 @@ const useCompanyDetails = () => {
 }
 
 export default useCompanyDetails
+
+function destructuringCompany (result) {
+  const {
+    id,
+    name,
+    sector,
+    vertical,
+    inves_profile_name: investorProfile
+  } = result
+  return {
+    id,
+    name,
+    sector,
+    vertical,
+    investorProfile
+  }
+}
