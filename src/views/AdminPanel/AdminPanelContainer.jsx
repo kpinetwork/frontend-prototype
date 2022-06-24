@@ -55,6 +55,12 @@ export function AdminPanelContainer ({ initialTab, children }) {
                 value="import_data"
                 href="/admin/import_data"
               />
+              <Tab
+                className={classes.tabs}
+                label="Edit Modify"
+                value="edit_modify"
+                href="/admin/edit_modify"
+              />
             </Tabs>
           </Box>
           <Box style={{ padding: 20, width: isPhone || isTablet ? '100%' : 'calc(100% - 160px)' }}>{children}</Box>

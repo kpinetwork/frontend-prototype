@@ -2,7 +2,7 @@ import React from 'react'
 import { makeStyles, Dialog, DialogTitle, DialogContent, DialogActions, Box, Button, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles({
-  mainButton: {
+  dialogMainButton: {
     textTransform: 'none',
     marginRight: 10,
     backgroundColor: '#364b8a',
@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default function InvalidFormatModal ({ open, onClose, errorObject }) {
+export default function InvalidFormatModal ({ open, onClose, errorObject, body, fromModify = false }) {
   const classes = useStyles()
 
   const getErrorRows = () => {
@@ -20,13 +20,15 @@ export default function InvalidFormatModal ({ open, onClose, errorObject }) {
 
   const getRowsNumbers = () => {
     const rows = getErrorRows()
-    return rows.map(row => Number(row) + 4)
+    return rows.map(row => {
+      const index = Number(row) + 4
+      return fromModify ? `${index} ${body[row].name}` : index
+    })
   }
 
   const getInvalidRowsDetails = () => {
-    const rows = getErrorRows()
     return <Box>
-      <Typography variant="subtitle2" >{getRowsNumbers(rows).join(', ')}</Typography>
+      <Typography variant="subtitle2" >{getRowsNumbers().join(', ')}</Typography>
     </Box>
   }
 
@@ -58,7 +60,7 @@ export default function InvalidFormatModal ({ open, onClose, errorObject }) {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} className={classes.mainButton}>
+        <Button onClick={onClose} className={classes.dialogMainButton}>
           Close
         </Button>
       </DialogActions>
