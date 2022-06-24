@@ -157,16 +157,17 @@ describe('useScenariosTable', () => {
 
   it('delete scenarios success', async () => {
     mockService(getCompanyDetails, COMPANIESDETAILS)
-    mockService(deleteCompanyScenarios, true)
+    mockService(deleteCompanyScenarios, () => true)
     let hookResponse
-    let deleteScenario
 
     await act(async () => {
       hookResponse = renderHook(() => useScenariosTable(), { wrapper })
     })
     await act(async () => {
-      deleteScenario = hookResponse.result.current.deleteScenarios(SCENARIO)
+      hookResponse.result.current.deleteScenarios(SCENARIO)
     })
+
+    expect(deleteCompanyScenarios).toHaveBeenCalled()
   })
 
   it('delete scenarios catch error', async () => {

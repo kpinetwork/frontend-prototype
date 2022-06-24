@@ -97,32 +97,24 @@ describe('companyDetails service', () => {
     })
   })
 
-  // describe('delete scenarios', () => {
-  //   it('API call successful should delete company scenario', async () => {
-  //     const scenarios = [
-  //       {
-  //         scenario_id: 'zec4b0212-m385-4828-814c-0e6b21d98f87',
-  //         metric_id: 'afq4b0212-m385-4828-814c-0e6b21d98f87'
-  //       },
-  //       {
-  //         scenario_id: 'jhy4b0212-m385-4828-814c-0e6b21d98f87',
-  //         metric_id: 'vpr4b0212-m385-4828-814c-0e6b21d98f87'
-  //       }
-  //     ]
-  //     axios.delete.mockResolvedValueOnce({
-  //       data: {
-  //         company_id: SCENARIO.company_id,
-  //         scenario: {
-  //           id: 'scenario_id',
-  //           name: 'Actuals-2020',
-  //           metric_id: 'metric_id'
-  //         },
-  //         added: true
-  //       }
-  //     })
-  //     await deleteCompanyScenarios(SCENARIO.company_id, scenarios)
+  describe('delete scenarios', () => {
+    it('API call successful should delete company scenario', async () => {
+      const scenarios = [
+        {
+          scenario_id: 'zec4b0212-m385-4828-814c-0e6b21d98f87',
+          metric_id: 'afq4b0212-m385-4828-814c-0e6b21d98f87'
+        },
+        {
+          scenario_id: 'jhy4b0212-m385-4828-814c-0e6b21d98f87',
+          metric_id: 'vpr4b0212-m385-4828-814c-0e6b21d98f87'
+        }
+      ]
+      axios.delete.mockResolvedValueOnce({
+        deleted: 2
+      })
+      await deleteCompanyScenarios(SCENARIO.company_id, scenarios)
 
-  //     expect(axios.post).toHaveBeenCalledWith(`${companiesUrl}/${SCENARIO.company_id}/scenarios`, scenarios, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
-  //   })
-  // })
+      expect(axios.delete).toHaveBeenCalledWith(`${companiesUrl}/${SCENARIO.company_id}/scenarios`, { data: { scenarios: scenarios }, headers: { Authorization: null, 'Content-Type': 'application/json' }  })
+    })
+  })
 })

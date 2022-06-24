@@ -48,7 +48,6 @@ const useScenariosTable = () => {
       setMaxPage(0)
       setScenarios([])
       initScenarios(limit, offset)
-      // await getScenarios({ limit, offset })
       return response.added
     } catch (_error) {
       setLoading(false)
@@ -65,7 +64,6 @@ const useScenariosTable = () => {
       setMaxPage(0)
       setScenarios([])
       initScenarios(limit, offset)
-      // await getScenarios({ limit, offset })
       return response.scenarios_deleted
     } catch (_error) {
       setLoading(false)
