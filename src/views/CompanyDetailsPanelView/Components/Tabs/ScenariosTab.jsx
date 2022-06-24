@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Box, Grid, Button, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, TableFooter, Checkbox } from '@material-ui/core'
 import { ScenarioForm } from './ScenarioForm'
+import { ScenariosModal } from './ScenariosModal'
 import { Add, DeleteOutlined } from '@material-ui/icons'
 import useScenariosTable from '../../../../hooks/useScenariosTable'
 import LoadingProgress from '../../../../components/Progress'
@@ -38,21 +39,22 @@ export function ScenariosTab () {
   const [openDelete, setOpenDelete] = useState(false)
   const [scenario, setScenario] = useState({})
   const [error, setError] = useState(undefined)
-  const [selected, setSelected] = useState([])
-
-  console.log(selected)
+  const [selectedScenarios, setSelectedScenarios] = useState([])
+  const [openModal, setOpenModal] = useState(false)
   const {
     rowsPerPage,
     isLoading,
     scenarios,
+    company,
     total,
     page,
     handleChangePage,
     handleChangeRowsPerPage,
-    addScenario
+    addScenario,
+    deleteScenarios
   } = useScenariosTable()
 
-  const isSelected = (name) => (selected.indexOf(name) !== -1)
+  const isSelected = (metricId) => (selectedScenarios.map(scenario => scenario.metric_id).indexOf(metricId) !== -1)
 
   const getValue = (name, value) => {
     if (value === 'NA' || isNaN(value)) {
@@ -82,7 +84,7 @@ export function ScenariosTab () {
   const onSave = async () => {
     if (validScenario()) {
       validateScenario()
-      const response = await addScenario(scenario, rowsPerPage, page * rowsPerPage)
+      const response = await addScenario(scenario, 10, 0)
       if (!response) {
         setError('Something went wrong, the scenario could not be added, please try again')
       } else {
@@ -95,24 +97,31 @@ export function ScenariosTab () {
     }
   }
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name)
+  const onDeleteModal = async () => {
+    setOpenModal(false)
+    await deleteScenarios(selectedScenarios, 10, 0)
+    setSelectedScenarios([])
+    setOpenDelete(false)
+  }
+
+  const handleClick = (metricScenario) => {
+    const selectedIndex = selectedScenarios.map(scenario => scenario.metric_id).indexOf(metricScenario.metric_id)
     let newSelected = []
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name)
+      newSelected = newSelected.concat(selectedScenarios, metricScenario)
     } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1))
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1))
+      newSelected = newSelected.concat(selectedScenarios.slice(1))
+    } else if (selectedIndex === selectedScenarios.length - 1) {
+      newSelected = newSelected.concat(selectedScenarios.slice(0, -1))
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+        selectedScenarios.slice(0, selectedIndex),
+        selectedScenarios.slice(selectedIndex + 1)
       )
     }
 
-    setSelected(newSelected)
+    setSelectedScenarios(newSelected)
   }
 
   return (
@@ -161,10 +170,12 @@ export function ScenariosTab () {
         { openDelete &&
           <Box sx={{ margin: 10 }}>
             <ButtonActions
-            onOk={() => { console.log('delete') }}
+            onOk={() => {
+              setOpenModal(true)
+            }}
             onCancel={() => {
               setOpenDelete(false)
-              setSelected([])
+              setSelectedScenarios([])
             }}
             okName="Delete"
             cancelName="Cancel"
@@ -172,6 +183,16 @@ export function ScenariosTab () {
           </Box>
       }
       </Box>
+      { openModal &&
+        <ScenariosModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onOk={() => onDeleteModal()}
+          onCancel={() => setOpenModal(false)}
+          scenarios={selectedScenarios}
+          company={company}
+        />
+      }
       <Box>
         {
           !isLoading &&
@@ -203,10 +224,9 @@ export function ScenariosTab () {
                             <Checkbox
                               color="primary"
                               checked={isItemSelected}
-                              // indeterminate={numSelected > 0 && numSelected < rowCount}
-                              onChange={(event) => handleClick(event, scenario.metric_id)}
+                              onChange={(_) => handleClick(scenario)}
                               inputProps={{
-                                'aria-label': 'select all desserts'
+                                'aria-label': scenario.metric_id
                               }}
                           />
                           </TableCell>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles, Divider, Dialog, DialogTitle, DialogContent, DialogActions, Box, Button, Typography } from '@material-ui/core'
+import { makeStyles, Divider, Dialog, DialogTitle, DialogContent, DialogActions, Box, Typography } from '@material-ui/core'
 import ButtonActions from '../../../../components/Actions'
 
 const useStyles = makeStyles({
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default function ScenariosModal ({ open, onClose, onOk, onCancel, scenarios }) {
+export function ScenariosModal ({ open, onClose, onOk, onCancel, scenarios }) {
   const classes = useStyles()
 
   return (
@@ -30,40 +30,46 @@ export default function ScenariosModal ({ open, onClose, onOk, onCancel, scenari
     >
       <DialogTitle>
         <Box sx={{ paddingLeft: 10, paddingTop: 10 }}>
-          <Typography variant='h5' style={{ fontWeight: 600 }}>{'DELETE SCENARIOS'}</Typography>
-
+          <Typography variant='h6' style={{ fontWeight: 600 }}>{'DELETE SCENARIOS'}</Typography>
         </Box>
       </DialogTitle>
-      <DialogContent>
-      <Box sx={{ marginBottom: 20 }}>
-        <Typography variant='body1'>The following scenario will be deleted</Typography>
-        <Divider className={classes.border} />
-        <Box sx={{ borderRadius: '16px', backgroundColor: 'white', py: 2, px: 2, marginTop: 5 }}>
-          {scenarios.map((scenario) => (
-            <Box key={`scenarios-${scenario.name}`}>
-              <Typography variant="body2">
-                {scenario.name}
-              </Typography>
-              <Box sx={{ px: 5, pb: 2 }}>
-                {scenario.scenarios.map((metric) => (
-                  <Typography key={`existing-metric-${metric}`} variant="subtitle2">
-                    {metric}
+      {scenarios.length > 0 &&
+      <Box>
+        <DialogContent>
+          <Box sx={{ marginBottom: 20 }}>
+            <Typography variant='body1'>The following scenarios will be deleted</Typography>
+            <Divider className={classes.border} />
+            <Box sx={{ borderRadius: '16px', backgroundColor: 'white', py: 2, px: 2, marginTop: 5 }}>
+              {scenarios.map((scenario) => (
+                <Box key={`scenarios-${scenario.metric_id}`}>
+                  <Typography variant="body2">
+                    {scenario.scenario}-{scenario.year}: {scenario.metric} ${scenario.value}
                   </Typography>
-                ))}
-              </Box>
+                </Box>
+              ))}
             </Box>
-          ))}
-        </Box>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ py: 10 }}>
+          <ButtonActions
+          okName={'Ok'}
+          cancelName={'Cancel'}
+          onOk={onOk}
+          onCancel={onCancel}
+          />
+        </DialogActions>
       </Box>
-      </DialogContent>
-      <DialogActions sx={{ py: 10 }}>
-        <ButtonActions
-        okName={'Upload file'}
-        cancelName={'Edit data'}
-        onOk={onOk}
-        onCancel={onCancel}
-        />
-      </DialogActions>
+      }
+      {scenarios.length === 0 &&
+        <Box>
+          <DialogContent>
+          <Divider className={classes.border} />
+          <Box sx={{ marginBottom: 20 }}>
+            <Typography variant='body1'>There are not scenarios to be deleted</Typography>
+          </Box>
+          </DialogContent>
+        </Box>
+      }
     </Dialog>
   )
 }

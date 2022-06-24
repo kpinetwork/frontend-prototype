@@ -1,6 +1,6 @@
 import React from 'react'
 import { renderHook, act } from '@testing-library/react-hooks'
-import { getCompanyDetails, addCompanyScenario } from '../../src/service/companyDetails'
+import { getCompanyDetails, addCompanyScenario, deleteCompanyScenarios } from '../../src/service/companyDetails'
 import useScenariosTable from '../../src/hooks/useScenariosTable'
 import { COMPANIESDETAILS, SCENARIO } from '../data/companies'
 import Context from '../../src/context/appContext'
@@ -150,6 +150,35 @@ describe('useScenariosTable', () => {
     })
     await act(async () => {
       hookResponse.result.current.addScenario(SCENARIO)
+    })
+
+    expect(hookResponse.result.current.loading).toBeFalsy()
+  })
+
+  it('delete scenarios success', async () => {
+    mockService(getCompanyDetails, COMPANIESDETAILS)
+    mockService(deleteCompanyScenarios, true)
+    let hookResponse
+    let deleteScenario
+
+    await act(async () => {
+      hookResponse = renderHook(() => useScenariosTable(), { wrapper })
+    })
+    await act(async () => {
+      deleteScenario = hookResponse.result.current.deleteScenarios(SCENARIO)
+    })
+  })
+
+  it('delete scenarios catch error', async () => {
+    mockService(getCompanyDetails, COMPANIESDETAILS)
+    mockService(deleteCompanyScenarios, 'error')
+    let hookResponse
+
+    await act(async () => {
+      hookResponse = renderHook(() => useScenariosTable(), { wrapper })
+    })
+    await act(async () => {
+      hookResponse.result.current.deleteScenarios(SCENARIO)
     })
 
     expect(hookResponse.result.current.loading).toBeFalsy()
