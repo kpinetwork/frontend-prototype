@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { COMPANY_REPORT } from './uowData'
 import { getAuthorizationHeader } from './session'
 const { VITE_HOST: baseUrl } = import.meta.env
 
@@ -15,10 +14,5 @@ export const getCompanyReportFromQueryParams = async (options) => {
     headers: headers
   })
   const data = await response.data
-  return data
-}
-
-export const getCompanyReportFromObject = async (year) => {
-  const data = await COMPANY_REPORT
   return data
 }

@@ -1,7 +1,8 @@
 import React from 'react'
 import { renderHook, act } from '@testing-library/react-hooks'
-import { getCompanyInvestments, addCompanyInvestment } from '../../src/service/companyDetails'
+import { getCompanyDetails, getCompanyInvestments, addCompanyInvestment } from '../../src/service/companyDetails'
 import useCompanyDetails from '../../src/hooks/useCompanyDetails'
+import { COMPANIESDETAILS } from '../data/companies'
 import Context from '../../src/context/appContext'
 
 const serviceGetResponse = [
@@ -33,17 +34,8 @@ const servicePostResponse = {
 
 jest.mock('../../src/service/companyDetails')
 
-const mockGetService = (response) => {
-  getCompanyInvestments.mockImplementation(() => {
-    if (response === 'error') {
-      throw new Error()
-    }
-    return response
-  })
-}
-
-const mockPostService = (response) => {
-  addCompanyInvestment.mockImplementation(() => {
+const mockService = (service, response) => {
+  service.mockImplementation(() => {
     if (response === 'error') {
       throw new Error()
     }
@@ -58,8 +50,37 @@ const wrapper = ({ children }) => (
 )
 
 describe('useCompanyDetails', () => {
+  it('company panel hook should return company details', async () => {
+    const expectedResponse = {
+      id: COMPANIESDETAILS.id,
+      name: COMPANIESDETAILS.name,
+      sector: COMPANIESDETAILS.sector,
+      vertical: COMPANIESDETAILS.vertical,
+      investorProfile: COMPANIESDETAILS.inves_profile_name
+    }
+    mockService(getCompanyDetails, COMPANIESDETAILS)
+    let hookResponse
+
+    await act(async () => {
+      hookResponse = renderHook(() => useCompanyDetails(), { wrapper })
+    })
+
+    expect(hookResponse.result.current.company).toEqual(expectedResponse)
+  })
+
+  it('company panel hook getCompanyDetails should return error', async () => {
+    mockService(getCompanyDetails, 'error')
+    let hookResponse
+
+    await act(async () => {
+      hookResponse = renderHook(() => useCompanyDetails(), { wrapper })
+    })
+
+    expect(hookResponse.result.current.company).toEqual({})
+  })
+
   it('company panel hook should return investments', async () => {
-    mockGetService(serviceGetResponse)
+    mockService(getCompanyInvestments, serviceGetResponse)
     let hookResponse
 
     await act(async () => {
@@ -70,7 +91,7 @@ describe('useCompanyDetails', () => {
   })
 
   it('company panel hook should return error when fetching investments', async () => {
-    mockGetService('error')
+    mockService(getCompanyInvestments, 'error')
     let hookResponse
 
     await act(async () => {
@@ -91,8 +112,8 @@ describe('useCompanyDetails', () => {
       ownership: 'Majority',
       investor_type: 'Private equity'
     }
-    mockGetService([...serviceGetResponse, investment])
-    mockPostService(servicePostResponse)
+    mockService(getCompanyInvestments, [...serviceGetResponse, investment])
+    mockService(addCompanyInvestment, servicePostResponse)
 
     let hookResponse
 
@@ -108,8 +129,8 @@ describe('useCompanyDetails', () => {
   })
 
   it('company panel hook addInvestment should catch error and return false', async () => {
-    mockGetService(serviceGetResponse)
-    mockPostService('error')
+    mockService(getCompanyInvestments, serviceGetResponse)
+    mockService(addCompanyInvestment, 'error')
     let hookResponse
 
     await act(async () => {
