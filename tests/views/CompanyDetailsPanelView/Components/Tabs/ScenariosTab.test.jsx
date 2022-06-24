@@ -25,7 +25,7 @@ const hookResponse = {
   handleChangePage: jest.fn(),
   handleChangeRowsPerPage: jest.fn(),
   addScenario: () => true,
-  deleteScenario: jest.fn()
+  deleteScenarios: jest.fn()
 }
 
 const setUp = () => {

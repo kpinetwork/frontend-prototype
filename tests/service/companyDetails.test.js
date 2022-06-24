@@ -114,7 +114,7 @@ describe('companyDetails service', () => {
       })
       await deleteCompanyScenarios(SCENARIO.company_id, scenarios)
 
-      expect(axios.delete).toHaveBeenCalledWith(`${companiesUrl}/${SCENARIO.company_id}/scenarios`, { data: { scenarios: scenarios }, headers: { Authorization: null, 'Content-Type': 'application/json' }  })
+      expect(axios.delete).toHaveBeenCalledWith(`${companiesUrl}/${SCENARIO.company_id}/scenarios`, { data: { scenarios: scenarios }, headers: { Authorization: null, 'Content-Type': 'application/json' } })
     })
   })
 })
