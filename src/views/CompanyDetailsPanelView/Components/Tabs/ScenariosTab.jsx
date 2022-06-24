@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { Box, Grid, Button, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, TableFooter } from '@material-ui/core'
+import { Box, Grid, Button, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, TableFooter, Checkbox } from '@material-ui/core'
 import { ScenarioForm } from './ScenarioForm'
-import { Add } from '@material-ui/icons'
+import { ScenariosModal } from './ScenariosModal'
+import { Add, DeleteOutlined } from '@material-ui/icons'
 import useScenariosTable from '../../../../hooks/useScenariosTable'
 import LoadingProgress from '../../../../components/Progress'
+import ButtonActions from '../../../../components/Actions'
 import { makeStyles } from '@material-ui/core/styles'
 import { BASEMETRICS } from '../../../../utils/constants/Metrics'
 
@@ -20,6 +22,11 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: 'bold'
     }
   },
+  row: {
+    '&.Mui-selected, &.Mui-selected:hover': {
+      backgroundColor: '#DDE7FF'
+    }
+  },
   roleName: {
     marginRight: 10,
     textTransform: 'capitalize'
@@ -29,18 +36,25 @@ const useStyles = makeStyles((theme) => ({
 export function ScenariosTab () {
   const classes = useStyles()
   const [openAdd, setOpenAdd] = useState(false)
+  const [openDelete, setOpenDelete] = useState(false)
   const [scenario, setScenario] = useState({})
   const [error, setError] = useState(undefined)
+  const [selectedScenarios, setSelectedScenarios] = useState([])
+  const [openModal, setOpenModal] = useState(false)
   const {
     rowsPerPage,
     isLoading,
     scenarios,
+    company,
     total,
     page,
     handleChangePage,
     handleChangeRowsPerPage,
-    addScenario
+    addScenario,
+    deleteScenarios
   } = useScenariosTable()
+
+  const isSelected = (metricId) => (selectedScenarios.map(scenario => scenario.metric_id).indexOf(metricId) !== -1)
 
   const getValue = (name, value) => {
     if (value === 'NA' || isNaN(value)) {
@@ -70,7 +84,7 @@ export function ScenariosTab () {
   const onSave = async () => {
     if (validScenario()) {
       validateScenario()
-      const response = await addScenario(scenario, rowsPerPage, page * rowsPerPage)
+      const response = await addScenario(scenario, 10, 0)
       if (!response) {
         setError('Something went wrong, the scenario could not be added, please try again')
       } else {
@@ -81,6 +95,33 @@ export function ScenariosTab () {
     } else {
       setError('Please fill in all the required fields')
     }
+  }
+
+  const onDeleteModal = async () => {
+    setOpenModal(false)
+    await deleteScenarios(selectedScenarios, 10, 0)
+    setSelectedScenarios([])
+    setOpenDelete(false)
+  }
+
+  const handleClick = (metricScenario) => {
+    const selectedIndex = selectedScenarios.map(scenario => scenario.metric_id).indexOf(metricScenario.metric_id)
+    let newSelected = []
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selectedScenarios, metricScenario)
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selectedScenarios.slice(1))
+    } else if (selectedIndex === selectedScenarios.length - 1) {
+      newSelected = newSelected.concat(selectedScenarios.slice(0, -1))
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selectedScenarios.slice(0, selectedIndex),
+        selectedScenarios.slice(selectedIndex + 1)
+      )
+    }
+
+    setSelectedScenarios(newSelected)
   }
 
   return (
@@ -105,7 +146,18 @@ export function ScenariosTab () {
       </Box>
       <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>
         {
-          !openAdd && !isLoading &&
+          !openDelete && !openAdd && !isLoading &&
+            <Button
+              startIcon={<DeleteOutlined />}
+              style={{ textTransform: 'none' }}
+              onClick={(_) => setOpenDelete(true)}
+              disabled={openDelete}
+            >
+              Delete Scenarios
+            </Button>
+        }
+        {
+          !openAdd && !openDelete && !isLoading &&
             <Button
               startIcon={<Add />}
               style={{ textTransform: 'none' }}
@@ -115,13 +167,41 @@ export function ScenariosTab () {
               Add Scenario
             </Button>
         }
+        { openDelete &&
+          <Box sx={{ margin: 10 }}>
+            <ButtonActions
+            onOk={() => {
+              setOpenModal(true)
+            }}
+            onCancel={() => {
+              setOpenDelete(false)
+              setSelectedScenarios([])
+            }}
+            okName="Delete"
+            cancelName="Cancel"
+            />
+          </Box>
+      }
       </Box>
+      { openModal &&
+        <ScenariosModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onOk={() => onDeleteModal()}
+          onCancel={() => setOpenModal(false)}
+          scenarios={selectedScenarios}
+          company={company}
+        />
+      }
       <Box>
         {
           !isLoading &&
           <Table className={classes.root}>
             <TableHead>
               <TableRow className={classes.head}>
+                { openDelete &&
+                  <TableCell className={classes.head}></TableCell>
+                }
                 <TableCell className={classes.head}>Scenario</TableCell>
                 <TableCell className={classes.head}>Metric</TableCell>
                 <TableCell className={classes.head}>Year</TableCell>
@@ -131,8 +211,26 @@ export function ScenariosTab () {
             <TableBody>
               { scenarios && scenarios.length > 0 &&
                 scenarios.map((scenario) => {
+                  const isItemSelected = isSelected(scenario.metric_id)
                   return (
-                    <TableRow key={scenario.metric_id}>
+                    <TableRow
+                    key={scenario.metric_id}
+                    selected={isItemSelected}
+                    tabIndex={-1}
+                    className={classes.row}>
+                        {
+                          openDelete &&
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              color="primary"
+                              checked={isItemSelected}
+                              onChange={(_) => handleClick(scenario)}
+                              inputProps={{
+                                'aria-label': scenario.metric_id
+                              }}
+                          />
+                          </TableCell>
+                        }
                       <TableCell>{scenario.scenario}</TableCell>
                       <TableCell>{scenario.metric || 'NA'}</TableCell>
                       <TableCell>{scenario.year || 'NA'}</TableCell>

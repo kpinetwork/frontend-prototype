@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Auth } from 'aws-amplify'
 import { COMPANIESDETAILS, SCENARIO } from '../data/companies'
-import { getCompanyDetails, getCompanyInvestments, addCompanyInvestment, addCompanyScenario } from '../../src/service/companyDetails'
+import { getCompanyDetails, getCompanyInvestments, addCompanyInvestment, addCompanyScenario, deleteCompanyScenarios } from '../../src/service/companyDetails'
 
 const { VITE_HOST: baseUrl } = import.meta.env
 
@@ -94,6 +94,27 @@ describe('companyDetails service', () => {
 
       expect(axios.post).toHaveBeenCalledWith(`${investments}/${response.company_id}`, request,
         { headers: { Authorization: null, 'Content-Type': 'application/json' } })
+    })
+  })
+
+  describe('delete scenarios', () => {
+    it('API call successful should delete company scenario', async () => {
+      const scenarios = [
+        {
+          scenario_id: 'zec4b0212-m385-4828-814c-0e6b21d98f87',
+          metric_id: 'afq4b0212-m385-4828-814c-0e6b21d98f87'
+        },
+        {
+          scenario_id: 'jhy4b0212-m385-4828-814c-0e6b21d98f87',
+          metric_id: 'vpr4b0212-m385-4828-814c-0e6b21d98f87'
+        }
+      ]
+      axios.delete.mockResolvedValueOnce({
+        deleted: 2
+      })
+      await deleteCompanyScenarios(SCENARIO.company_id, scenarios)
+
+      expect(axios.delete).toHaveBeenCalledWith(`${companiesUrl}/${SCENARIO.company_id}/scenarios`, { data: { scenarios: scenarios }, headers: { Authorization: null, 'Content-Type': 'application/json' }  })
     })
   })
 })
