@@ -4,7 +4,7 @@ import { getEditModifyData, updateEditModifyData, deleteScenarios } from '../../
 const { VITE_HOST: baseUrl } = import.meta.env
 
 const editModifyPath = `${baseUrl}/edit_modify`
-const deleteScenarioPath = `${baseUrl}/companies/{}/scenarios?from_details=${false}`
+const deleteScenarioPath = `${baseUrl}/companies/na/scenarios?from_details=${false}`
 
 jest.mock('axios')
 
