@@ -10,6 +10,7 @@ import { CompanyView } from './views/CompanyView/CompanyView'
 import { UserPanelView } from './views/UserPanelView/UserPanelView'
 import { CompanyPanelView } from './views/CompanyPanelView/CompanyPanelView'
 import { UploadFileView } from './views/UploadFileView/UploadFileView'
+import { EditModifyView } from './views/EditModify/EditModifyView'
 import { UserDetailView } from './views/UserPanelView/UserDetailView'
 import { CompanyDetailView } from './views/CompanyDetailsPanelView/CompanyDetailView'
 import { ErrorView } from './views/DefaultView/ErrorView'
@@ -140,6 +141,11 @@ function AppRoutes ({ signOut }) {
           exact
           path="/admin/import_data"
           component={(props) => renderIfAdmin(UploadFileView, { ...props, onConnectETL, onDisconnectETL, onSendRegister })}
+        />
+        <Route
+          exact
+          path="/admin/edit_modify"
+          component={(props) => renderIfAdmin(EditModifyView, { ...props })}
         />
         <Route
           exact
