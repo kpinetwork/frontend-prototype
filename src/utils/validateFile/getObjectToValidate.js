@@ -2,7 +2,7 @@ const isValidValue = (value) => {
   return value && value !== ''
 }
 
-const getIndexArray = (values, validateName = false) => {
+export const getIndexArray = (values, validateName = false) => {
   return values.map((elem, index) => {
     const isNotEmpty = elem && elem !== ''
     const condition = validateName ? isNotEmpty && elem.startsWith(':') : isNotEmpty
@@ -11,7 +11,7 @@ const getIndexArray = (values, validateName = false) => {
   }).filter(elem => elem != null)
 }
 
-const getValueFromRow = (row, indexColumn, arrayValues) => {
+export const getValueFromRow = (row, indexColumn, arrayValues) => {
   const _index = arrayValues.filter(index => index <= indexColumn).pop()
   return row[_index]
 }
