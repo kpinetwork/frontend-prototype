@@ -225,7 +225,9 @@ describe('<ScenariosTab/>', () => {
       fireEvent.click(checkbox[1])
       fireEvent.click(screen.getByText('Delete'))
       const modal = screen.getByRole('dialog')
-      fireEvent.click(screen.getByText('Ok'))
+      waitFor(() => {
+        fireEvent.click(screen.getByText('Ok'))
+      })
 
       expect(modal).not.toBeInTheDocument()
     })
