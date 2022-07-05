@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Box } from '@material-ui/core'
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Box, TableSortLabel } from '@material-ui/core'
 import { CloudDownload } from '@material-ui/icons'
 import HeadBodyGrid from '../../components/BodyGrid'
 import { saveAs } from 'file-saver'
@@ -12,6 +12,14 @@ const useStyles = makeStyles(theme => ({
   exportButton: {
     textTransform: 'none',
     margin: 10
+  },
+  icon: {
+    color: '#3f51b5',
+    fill: '#3f51b5',
+    '&:hover': {
+      color: '#3f51b5',
+      fill: '#3f51b5'
+    }
   }
 }))
 
@@ -61,6 +69,10 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
   const [data, setData] = useState([])
   const [downloading, setDownloading] = useState(false)
   const classes = useStyles()
+  const [order, setOrder] = useState()
+  const [orderBy, setorderBy] = useState()
+  const [orderDirection, setorderDirection] = useState('asc')
+  const [valueToOrderBy, setvalueToOrderBy] = useState('name')
 
   const validPeersComparison = () => {
     if (peersComparison == null) {
@@ -77,9 +89,9 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
   const getValue = (item) => {
     if (item.value == null || item.value === 'NA') return 'NA'
     if (item.key === 'revenue') {
-      return item.position === 'left' ? item.sign + ' ' + Math.round(item.value) : Math.round(item.value) + ' ' + item.sign
+      return item.sign + ' ' + Math.round(item.value)
     }
-    return item.position === 'left' ? item.sign + ' ' + item.value : item.value + ' ' + item.sign
+    return item.value + ' ' + item.sign
   }
 
   const getPercentageValues = (value) => {
@@ -99,6 +111,32 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
     setDownloading(false)
     const blob = new Blob([data], { type: 'text/csv;charset=utf-8' })
     saveAs(blob, 'ComparisonPeers.csv')
+  }
+
+  function descendingComparator (a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+      return -1
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1
+    }
+    return 0
+  }
+
+  function getComparator (order, orderBy) {
+    return order === 'desc'
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy)
+  }
+
+  function createSortHandle (property) {
+    return (event) => {
+      const isDesc = orderBy === property && orderDirection === 'desc'
+      setOrder(isDesc ? 'asc' : 'desc')
+      setorderDirection(isDesc ? 'asc' : 'desc')
+      setorderBy(property)
+      setvalueToOrderBy(property)
+    }
   }
 
   return (
@@ -127,6 +165,13 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                               title={tooltipTitles[column.field]}
                             />
                             : column.headerName}
+                          <TableSortLabel
+                            name={column.headerName}
+                            classes={{ icon: classes.icon }}
+                            active={valueToOrderBy === column.field}
+                            direction={valueToOrderBy === column.field ? orderDirection : 'asc'}
+                            onClick={createSortHandle(column.field)}
+                          />
                         </TableCell>
                       )
                     })}
@@ -135,19 +180,19 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                       <TableRow
                         key={companyComparison?.name}
                         style={{ backgroundColor: '#cececeb9' }}>
-                          {data.map((item, index) => (<TableCell key={`${index}-${item.key}-comparison-peers`} align={item.align}>{getValue(item)}</TableCell>))}
+                          {data.map((item, index) => (<TableCell data-testid={'companyPeers'} key={`${index}-${item.key}-comparison-peers`} align={item.align}>{getValue(item)}</TableCell>))}
                       </TableRow>
                     }
                 </TableHead>
                 <TableBody>
-                  {validPeersComparison().map((row) => (
+                  {validPeersComparison().slice().sort(getComparator(order, orderBy)).map((row) => (
                     <TableRow
                       key={row?.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left" data-testid={'name'}>{row.name}</TableCell>
                       <TableCell align="left">{row.sector}</TableCell>
                       <TableCell align="left">{row.vertical}</TableCell>
-                      <TableCell align="center">{getRevenueValue(row.revenue)}</TableCell>
+                      <TableCell align="center" data-testid={'revenue'}>{getRevenueValue(row.revenue)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.growth)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.ebitda_margin)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.revenue_vs_budget)}</TableCell>
