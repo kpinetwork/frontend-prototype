@@ -180,7 +180,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                       <TableRow
                         key={companyComparison?.name}
                         style={{ backgroundColor: '#cececeb9' }}>
-                          {data.map((item, index) => (<TableCell data-testid={'companyPeers'} key={`${index}-${item.key}-comparison-peers`} align={item.align}>{getValue(item)}</TableCell>))}
+                          {data.map((item, index) => (<TableCell key={`${index}-${item.key}-comparison-peers`} align={item.align}>{getValue(item)}</TableCell>))}
                       </TableRow>
                     }
                 </TableHead>
