@@ -70,9 +70,9 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
   const [downloading, setDownloading] = useState(false)
   const classes = useStyles()
   const [order, setOrder] = useState()
-  const [orderBy, setorderBy] = useState()
-  const [orderDirection, setorderDirection] = useState('asc')
-  const [valueToOrderBy, setvalueToOrderBy] = useState('name')
+  const [orderBy, setOrderBy] = useState()
+  const [orderDirection, setOrderDirection] = useState('asc')
+  const [valueToOrderBy, setValueToOrderBy] = useState('name')
 
   const validPeersComparison = () => {
     if (peersComparison == null) {
@@ -133,9 +133,9 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
     return (event) => {
       const isDesc = orderBy === property && orderDirection === 'desc'
       setOrder(isDesc ? 'asc' : 'desc')
-      setorderDirection(isDesc ? 'asc' : 'desc')
-      setorderBy(property)
-      setvalueToOrderBy(property)
+      setOrderDirection(isDesc ? 'asc' : 'desc')
+      setOrderBy(property)
+      setValueToOrderBy(property)
     }
   }
 
