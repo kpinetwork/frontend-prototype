@@ -1,12 +1,15 @@
 import { useContext, useState, useEffect } from 'react'
-import { getCompanyDetails, getCompanyInvestments, addCompanyInvestment } from '../service/companyDetails'
+import { getCompanyDetails, getCompanyInvestments, addCompanyInvestment, deleteCompany } from '../service/companyDetails'
 import Context from '../context/appContext'
 
 const useCompanyDetails = () => {
-  const { selectedCompanyID } = useContext(Context).company
+  const { selectedCompanyID, setSelectedCompanyID } = useContext(Context).company
   const [company, setCompany] = useState({})
   const [investments, setInvestments] = useState([])
   const [isLoading, setLoading] = useState(false)
+  const [openDeleted, setOpenDeleted] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [deleteInProgress, setDeleteInProgress] = useState(false)
 
   useEffect(() => {
     getCompanyData()
@@ -50,12 +53,36 @@ const useCompanyDetails = () => {
     }
   }
 
+  const deleteCompanyInformation = async () => {
+    setDeleteInProgress(true)
+    try {
+      const response = await deleteCompany(selectedCompanyID)
+      setOpenDeleted(false)
+      setDeleteInProgress(false)
+      if (response.deleted) {
+        setSelectedCompanyID(undefined)
+      } else {
+        throw new Error('Fail to delete company')
+      }
+    } catch (_error) {
+      setDeleteInProgress(false)
+      setOpenDeleted(false)
+      setErrorMessage('Can not delete company, try again.')
+    }
+  }
+
   return {
     company,
-    getInvestments,
-    addInvestment,
+    openDeleted,
+    errorMessage,
     investments,
-    isLoading
+    isLoading,
+    deleteInProgress,
+    deleteCompanyInformation,
+    setErrorMessage,
+    setOpenDeleted,
+    getInvestments,
+    addInvestment
   }
 }
 

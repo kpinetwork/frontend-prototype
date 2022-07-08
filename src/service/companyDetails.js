@@ -53,3 +53,10 @@ export const deleteCompanyScenarios = async (companyID, scenarios) => {
   const data = await response.data
   return data
 }
+
+export const deleteCompany = async (companyID) => {
+  const headers = await getAuthorizationHeader()
+  const response = await axios.delete(`${companiesUrl}/${companyID}`, { headers })
+  const data = await response.data
+  return data
+}

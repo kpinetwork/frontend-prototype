@@ -1,6 +1,6 @@
 import React from 'react'
 import { renderHook, act } from '@testing-library/react-hooks'
-import { getCompanyDetails, getCompanyInvestments, addCompanyInvestment } from '../../src/service/companyDetails'
+import { getCompanyDetails, getCompanyInvestments, addCompanyInvestment, deleteCompany } from '../../src/service/companyDetails'
 import useCompanyDetails from '../../src/hooks/useCompanyDetails'
 import { COMPANIESDETAILS } from '../data/companies'
 import Context from '../../src/context/appContext'
@@ -143,5 +143,39 @@ describe('useCompanyDetails', () => {
 
     expect(hookResponse.result.current.isLoading).toBeFalsy()
     expect(hookResponse.result.current.investments).toEqual(serviceGetResponse)
+  })
+
+  it('company panel hook deleteCompany should setSelectedCompany to undefined', async () => {
+    mockService(deleteCompany, { deleted: true })
+    let hookResponse
+
+    await act(async () => {
+      hookResponse = renderHook(() => useCompanyDetails(), { wrapper })
+    })
+
+    await act(async () => {
+      hookResponse.result.current.deleteCompanyInformation()
+    })
+
+    expect(hookResponse.result.current.deleteInProgress).toBeFalsy()
+    expect(hookResponse.result.current.openDeleted).toBeFalsy()
+    expect(hookResponse.result.current.selectedCompanyID).toBeUndefined()
+  })
+
+  it('company panel hook deleteCompany when company wasnt deleted should have the same company id', async () => {
+    mockService(deleteCompany, { deleted: false })
+    let hookResponse
+
+    await act(async () => {
+      hookResponse = renderHook(() => useCompanyDetails(), { wrapper })
+    })
+
+    await act(async () => {
+      hookResponse.result.current.deleteCompanyInformation()
+    })
+
+    expect(hookResponse.result.current.deleteInProgress).toBeFalsy()
+    expect(hookResponse.result.current.openDeleted).toBeFalsy()
+    expect(hookResponse.result.current.errorMessage).toBe('Can not delete company, try again.')
   })
 })

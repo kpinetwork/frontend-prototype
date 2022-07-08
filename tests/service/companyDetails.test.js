@@ -1,7 +1,14 @@
 import axios from 'axios'
 import { Auth } from 'aws-amplify'
 import { COMPANIESDETAILS, SCENARIO } from '../data/companies'
-import { getCompanyDetails, getCompanyInvestments, addCompanyInvestment, addCompanyScenario, deleteCompanyScenarios } from '../../src/service/companyDetails'
+import {
+  getCompanyDetails,
+  getCompanyInvestments,
+  addCompanyInvestment,
+  addCompanyScenario,
+  deleteCompanyScenarios,
+  deleteCompany
+} from '../../src/service/companyDetails'
 
 const { VITE_HOST: baseUrl } = import.meta.env
 
@@ -115,6 +122,21 @@ describe('companyDetails service', () => {
       await deleteCompanyScenarios(SCENARIO.company_id, scenarios)
 
       expect(axios.delete).toHaveBeenCalledWith(`${companiesUrl}/${SCENARIO.company_id}/scenarios`, { data: { scenarios: scenarios }, headers: { Authorization: null, 'Content-Type': 'application/json' } })
+    })
+  })
+
+  describe('delete company', () => {
+    it('API call successful should delete company', async () => {
+      axios.delete.mockResolvedValueOnce({
+        deleted: true
+      })
+      await deleteCompany(COMPANIESDETAILS.company_id)
+
+      expect(axios.delete).toHaveBeenCalledWith(
+        `${companiesUrl}/${COMPANIESDETAILS.company_id}`,
+        {
+          headers: { Authorization: null, 'Content-Type': 'application/json' }
+        })
     })
   })
 })
