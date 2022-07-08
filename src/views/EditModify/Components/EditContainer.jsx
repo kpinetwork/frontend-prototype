@@ -7,11 +7,14 @@ import { useTrackChanges } from './tracker'
 import { EditModifyButtons } from './EditOptions'
 import ResetModal from '../../UploadFileView/Components/ResetModal'
 import LoadingProgress from '../../../components/Progress'
+import { FilterSelectors } from './Filters/Selectors'
 
 export default function EditPreviewContainer () {
   const {
     modifying,
     isLoading,
+    companies,
+    filters,
     body,
     head,
     initialData,
@@ -23,6 +26,7 @@ export default function EditPreviewContainer () {
     errorObject,
     errorMessage,
     openResetModal,
+    setFilters,
     setEdit,
     resetData,
     setErrorMessage,
@@ -53,6 +57,11 @@ export default function EditPreviewContainer () {
 
   return (
     <Box data-testid='edit-modify-container'>
+      <FilterSelectors
+        companies = {companies}
+        filters={filters}
+        setFilters={setFilters}
+      />
       {
         !isLoading &&
         <EditModifyButtons
