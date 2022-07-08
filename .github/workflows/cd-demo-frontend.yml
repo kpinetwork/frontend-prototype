@@ -47,6 +47,7 @@ jobs:
           VITE_HOST: ${{ secrets.VITE_HOST_DEMO }}
           VITE_APP: ${{ secrets.VITE_APP_DEMO }}
           VITE_ENV: demo
+          NODE_OPTIONS: "--max-old-space-size=8192"
         run: npm run build-demo
 
       - name: Setup Terraform
