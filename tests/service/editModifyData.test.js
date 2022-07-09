@@ -53,9 +53,9 @@ describe('editModify service', () => {
   describe('getEditModifyData', () => {
     it('API call successful should return edit modify data', async () => {
       axios.get.mockResolvedValueOnce(editModifyData)
-      await getEditModifyData()
+      await getEditModifyData({})
 
-      expect(axios.get).toHaveBeenCalledWith(editModifyPath, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
+      expect(axios.get).toHaveBeenCalledWith(editModifyPath, { headers: { Authorization: null, 'Content-Type': 'application/json' }, params: {} })
     })
   })
 

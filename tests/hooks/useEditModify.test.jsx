@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 import { getEditModifyData, updateEditModifyData, deleteScenarios } from '../../src/service/editModifyData'
 import { useEditModify } from '../../src/hooks/useEditModify'
+import { getCompanies } from '../../src/service/company'
 
 const serviceGetResponse = {
   headers: ['Unique ID', 'Name', 'Sector', 'Vertical', 'Investor Profile', 'Actuals'],
@@ -19,6 +20,10 @@ const serviceGetResponse = {
     }
   }
 }
+
+const serviceCompanies = [
+  { name: 'Sample Company' }
+]
 
 const servicePostResponse = {
   edited: true,
@@ -49,6 +54,7 @@ const mockHook = {
 }
 
 jest.mock('../../src/service/editModifyData')
+jest.mock('../../src/service/company')
 
 const mockService = (service, response) => {
   service.mockImplementation(() => {
@@ -62,6 +68,7 @@ const mockService = (service, response) => {
 describe('useEditModify', () => {
   it('edit modify hook should return data', async () => {
     const expectedResponse = JSON.parse(JSON.stringify(serviceGetResponse))
+    mockService(getCompanies, JSON.parse(JSON.stringify(serviceCompanies)))
     mockService(getEditModifyData, expectedResponse)
 
     let hookResponse
@@ -73,7 +80,21 @@ describe('useEditModify', () => {
     expect(hookResponse.result.current.body).toEqual(mockHook.body)
   })
 
-  it('edit modify hook should return error', async () => {
+  it('edit modify hook should return error when get companies fails', async () => {
+    mockService(getCompanies, 'error')
+    const expectedResponse = JSON.parse(JSON.stringify(serviceGetResponse))
+    mockService(getEditModifyData, expectedResponse)
+
+    let hookResponse
+    await act(async () => {
+      hookResponse = renderHook(() => useEditModify())
+    })
+
+    expect(hookResponse.result.current.companies).toEqual([])
+  })
+
+  it('edit modify hook should return error when get edit modify fails', async () => {
+    mockService(getCompanies, JSON.parse(JSON.stringify(serviceCompanies)))
     mockService(getEditModifyData, 'error')
 
     let hookResponse
@@ -87,6 +108,7 @@ describe('useEditModify', () => {
 
   it('edit modify hook when call reset should return init data', async () => {
     const expectedResponse = JSON.parse(JSON.stringify(serviceGetResponse))
+    mockService(getCompanies, JSON.parse(JSON.stringify(serviceCompanies)))
     mockService(getEditModifyData, expectedResponse)
 
     let hookResponse
@@ -111,6 +133,32 @@ describe('useEditModify', () => {
     })
     act(() => {
       hookResponse.result.current.setChangeObject({ 123: { id: 123, description: { name: 'Sample Company 2' }, scenarios: [] } })
+    })
+    await act(async () => {
+      await hookResponse.result.current.updateEditData()
+    })
+
+    expect(hookResponse.result.current.updated).toBeTruthy()
+    expect(hookResponse.result.current.recordsAdded).toEqual([])
+  })
+
+  it('edit modify hook should call edit and find name when change object added', async () => {
+    const expectedResponse = JSON.parse(JSON.stringify(servicePostResponse))
+    mockService(updateEditModifyData, expectedResponse)
+
+    let hookResponse
+    await act(async () => {
+      hookResponse = renderHook(() => useEditModify())
+    })
+    act(() => {
+      hookResponse.result.current.setChangeObject({
+        123:
+        {
+          id: 123,
+          description: { sector: 'semiconductors', vertical: 'law', inves_profile_name: 'public' },
+          scenarios: []
+        }
+      })
     })
     await act(async () => {
       await hookResponse.result.current.updateEditData()
@@ -171,10 +219,39 @@ describe('useEditModify', () => {
     expect(hookResponse.result.current.deleted).toEqual(1)
   })
 
+  it('edit modify hook should remove from deleted when value is restored', async () => {
+    const deleteObject = {
+      123: { scenarios: [{ scenario: 'Actuals', year: 2020, metric: 'Revenue', value: '47' }] }
+    }
+    const expectedResponse = {}
+    expectedResponse['scenarios deleted'] = 1
+    mockService(deleteScenarios, expectedResponse)
+
+    let hookResponse
+    await act(async () => {
+      hookResponse = renderHook(() => useEditModify())
+    })
+    act(() => {
+      hookResponse.result.current.setDeleteObject(deleteObject)
+    })
+    act(() => {
+      hookResponse.result.current.setDeleteObject({ 124: { scenarios: [] } })
+    })
+    await act(async () => {
+      await hookResponse.result.current.updateEditData()
+    })
+
+    expect(hookResponse.result.current.deleted).toEqual(0)
+  })
+
   it('edit modify hook should update message error when modify fails', async () => {
     const deleteObject = {
       123: { scenarios: [{ scenario: 'Actuals', year: 2020, metric: 'Revenue', value: '47' }] },
       124: { scenarios: [] }
+    }
+    const addObject = {
+      123: [{ scenario: 'Actuals', year: 2020, metric: 'Revenue', value: '47' }],
+      124: []
     }
     const expectedResponse = {}
     expectedResponse['scenarios deleted'] = 1
@@ -187,6 +264,9 @@ describe('useEditModify', () => {
     })
     act(() => {
       hookResponse.result.current.setDeleteObject(deleteObject)
+    })
+    act(() => {
+      hookResponse.result.current.setAddObject(addObject)
     })
     await act(async () => {
       await hookResponse.result.current.updateEditData()

@@ -133,4 +133,40 @@ describe('<CompanyCard />', () => {
 
     expect(screen.getByText('Loading...')).toBeInTheDocument()
   })
+
+  it('sort table content ascending ', async () => {
+    const company2 = { ...company, id: '456', name: 'Company' }
+    setUp({ peersComparison: [company, company2] })
+
+    const sortCompany = screen.getByRole('columnheader', { name: 'Company' })
+    await waitFor(() => { fireEvent.click(sortCompany) })
+    await waitFor(() => { fireEvent.click(sortCompany.querySelector('span')) })
+    await waitFor(() => { fireEvent.click(sortCompany.querySelector('span')) }, { timeout: 1000 })
+    const tableContent = screen.getAllByTestId('name')
+
+    expect(tableContent.length).toBe(2)
+    expect(tableContent[0].textContent).toBe('Company')
+    expect(tableContent[1].textContent).toBe('Sample Company')
+  })
+
+  it('sort table content descending by revenue', async () => {
+    const company2 = { ...company, id: '456', name: 'Company', revenue: 60 }
+    const company3 = { ...company, id: '789', name: 'Company Two', revenue: 'NA' }
+    setUp({ peersComparison: [company, company2, company3], fromUniverseOverview: false })
+
+    const sortCompany = screen.getByRole('columnheader', { name: 'Company' })
+    await waitFor(() => { fireEvent.click(sortCompany) })
+    const companyArrow = sortCompany.querySelector('span')
+    await waitFor(() => { fireEvent.click(companyArrow) })
+    const sortRevenue = screen.getByRole('columnheader', { name: 'Revenue' })
+    await waitFor(() => { fireEvent.click(sortRevenue) })
+    const sectorArrow = sortRevenue.querySelector('span')
+    await waitFor(() => { fireEvent.click(sectorArrow) })
+    const tableContent = screen.getAllByTestId('revenue')
+
+    expect(tableContent.length).toBe(3)
+    expect(tableContent[0].textContent).toBe('$ 70')
+    expect(tableContent[1].textContent).toBe('$ 60')
+    expect(tableContent[2].textContent).toBe('NA')
+  })
 })

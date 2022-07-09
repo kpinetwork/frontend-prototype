@@ -4,9 +4,14 @@ const { VITE_HOST: baseUrl } = import.meta.env
 
 const modifyUrl = `${baseUrl}/edit_modify`
 
-export const getEditModifyData = async () => {
+export const getEditModifyData = async ({ filters }) => {
   const headers = await getAuthorizationHeader()
-  const response = await axios.get(modifyUrl, { headers })
+  const response = await axios.get(modifyUrl, {
+    headers,
+    params: {
+      ...filters
+    }
+  })
   const data = await response.data
   return data
 }

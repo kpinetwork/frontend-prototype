@@ -21,13 +21,22 @@ const editModifyHookResponse = {
   errorObject: {
     0: [], 1: []
   },
+  companies: [{ name: 'Company A' }, { name: 'Company B' }],
+  filters: {
+    names: [],
+    sectors: [],
+    verticals: [],
+    investor_profiles: [],
+    scenarios: []
+  },
   errorMessage: null,
   setEdit: jest.fn(),
   resetData: jest.fn(),
   setErrorMessage: jest.fn(),
   setOpenResetModal: jest.fn(),
   setOpenErrorFormat: jest.fn(),
-  updateEditData: jest.fn()
+  updateEditData: jest.fn(),
+  setFilters: jest.fn()
 }
 
 const trackHookResponse = {
