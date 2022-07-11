@@ -46,6 +46,7 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
               nameOfSelect="Metric"
               metric={metric}
               onChange={(event) => onChangeMetric(event.target.value)}
+              needEmptyValue={false}
             />
         </Box>
         <Box>

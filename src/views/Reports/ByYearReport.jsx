@@ -52,11 +52,13 @@ export const ByYearReport = ({ fromUniverseOverview }) => {
               nameOfSelect="Calendar Year"
               year={year}
               onChange={(event) => onYearChange(event.target.value, 'calendar')}
+              needEmptyValue={false}
             />
             <InvestmentYearSelector
               nameOfSelect="Investment Year"
               year={investYear}
               onChange={(event) => onYearChange(event.target.value, 'investment')}
+              needEmptyValue={false}
             />
         </Box>
         <Box>
