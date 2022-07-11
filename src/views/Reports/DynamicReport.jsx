@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead, makeStyles } from '@material-ui/core'
+import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead } from '@material-ui/core'
 import { YearSelector } from '../../components/YearSelector'
 import { InvestmentYearSelector } from '../../components/InvestmentYearSelector'
 import { MetricSelector } from '../../components/MetricSelector'
@@ -9,29 +9,9 @@ import { isEmptyObject } from '../../utils/userFunctions'
 import { useDynamicReport } from '../../hooks/useDynamicReport'
 import HeadBodyGrid from '../../components/BodyGrid'
 
-const useStyles = makeStyles((theme) => ({
-  head: {
-    '&.MuiTableRow-head, ': {
-      backgroundColor: '#2f5487'
-    },
-    '&.MuiTableRow-head': {
-      backgroundColor: '#2f5487'
-    },
-    '&.MuiTableCell-head, &.MuiTable-stickyHeader': {
-      color: 'white',
-      fontWeight: 'bold'
-    },
-    '&.MuiTableCell-head': {
-      color: 'white',
-      fontWeight: 'bold'
-    }
-  }
-}))
-
 export const DynamicReport = ({ fromUniverseOverview }) => {
   // eslint-disable-next-line no-unused-vars
   const [__, setType] = useState('calendar')
-  const classes = useStyles()
   const {
     metric,
     calendarYear,

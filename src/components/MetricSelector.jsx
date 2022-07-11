@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select, makeStyles, MenuItem, InputLabel, FormLabel, FormControl, Box } from '@material-ui/core'
+import { Select, makeStyles, MenuItem, InputLabel, FormControl, Box } from '@material-ui/core'
 import { METRICS } from './../utils/constants/Metrics'
 
 const useStyles = makeStyles({

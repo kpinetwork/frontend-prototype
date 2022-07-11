@@ -15,7 +15,7 @@ export const PeerGroupTabs = ({ fromUniverseOverview }) => {
 
   return (
     <>
-    <CardKPI title={'Peer Group Analysis'} actions={false} height={'80'} fullScreen={true}>
+    <CardKPI title={'Peer Group Analysis'} actions={false} height={'80vh'} fullScreen={true}>
       <TabContext value={value}>
       <Box>
           <TabList onChange={handleChange} indicatorColor='primary'>
