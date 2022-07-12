@@ -159,19 +159,21 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                     {columns.map(column => {
                       return (
                         <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}>
-                          {column.needsTooltip
-                            ? <CustomTooltipTitle
+                          <Box style={{ display: 'flex' }}>
+                            {column.needsTooltip
+                              ? <CustomTooltipTitle
+                                name={column.headerName}
+                                title={tooltipTitles[column.field]}
+                              />
+                              : column.headerName}
+                            <TableSortLabel
                               name={column.headerName}
-                              title={tooltipTitles[column.field]}
+                              classes={{ icon: classes.icon }}
+                              active={valueToOrderBy === column.field}
+                              direction={valueToOrderBy === column.field ? orderDirection : 'asc'}
+                              onClick={createSortHandle(column.field)}
                             />
-                            : column.headerName}
-                          <TableSortLabel
-                            name={column.headerName}
-                            classes={{ icon: classes.icon }}
-                            active={valueToOrderBy === column.field}
-                            direction={valueToOrderBy === column.field ? orderDirection : 'asc'}
-                            onClick={createSortHandle(column.field)}
-                          />
+                          </Box>
                         </TableCell>
                       )
                     })}
