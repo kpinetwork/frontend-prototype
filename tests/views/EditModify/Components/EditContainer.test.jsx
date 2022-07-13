@@ -36,7 +36,8 @@ const editModifyHookResponse = {
   setOpenResetModal: jest.fn(),
   setOpenErrorFormat: jest.fn(),
   updateEditData: jest.fn(),
-  setFilters: jest.fn()
+  setFilters: jest.fn(),
+  clear: jest.fn()
 }
 
 const trackHookResponse = {
