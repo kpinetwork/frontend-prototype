@@ -55,6 +55,21 @@ export const METRICS = [
   }
 ]
 
+export const BY_YEAR_METRICS = [
+  {
+    name: 'revenue',
+    label: 'Revenue',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'growth',
+    label: 'Growth',
+    symbol: '%',
+    position: 'right'
+  }
+]
+
 export const BASEMETRICS = [
   {
     name: 'Revenue',

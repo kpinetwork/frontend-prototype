@@ -3,6 +3,7 @@ import { Box, Tab } from '@material-ui/core'
 import { TabContext, TabList, TabPanel } from '@material-ui/lab'
 import { ByYearReport } from '../views/Reports/ByYearReport'
 import { ByMetricReport } from '../views/Reports/ByMetricReport'
+import { DynamicReport } from '../views/Reports/DynamicReport'
 import { CardKPI } from './Card/CardKPI'
 
 export const PeerGroupTabs = ({ fromUniverseOverview }) => {
@@ -20,6 +21,7 @@ export const PeerGroupTabs = ({ fromUniverseOverview }) => {
           <TabList onChange={handleChange} indicatorColor='primary'>
             <Tab label="By Year" value="1" />
             <Tab label="By Metric" value="2" />
+            <Tab label="Dynamic" value="3" />
           </TabList>
       </Box>
       <TabPanel value="1" >
@@ -32,6 +34,13 @@ export const PeerGroupTabs = ({ fromUniverseOverview }) => {
       <TabPanel value="2" >
         <Box>
           <ByMetricReport
+            fromUniverseOverview={fromUniverseOverview}
+          />
+        </Box>
+      </TabPanel>
+      <TabPanel value="3" >
+        <Box>
+          <DynamicReport
             fromUniverseOverview={fromUniverseOverview}
           />
         </Box>

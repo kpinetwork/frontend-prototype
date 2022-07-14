@@ -48,3 +48,18 @@ export const INVESTOR_PROFILES = [
   'Family office',
   'Public'
 ]
+
+export const COMPANY_DESCRIPTION = [
+  {
+    name: 'name',
+    label: 'Name'
+  },
+  {
+    name: 'vertical',
+    label: 'Vertical'
+  },
+  {
+    name: 'sector',
+    label: 'Sector'
+  }
+]
