@@ -2,13 +2,15 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { ScenarioForm } from '../../../../../src/views/CompanyDetailsPanelView/Components/Tabs/ScenarioForm'
+import { BASEMETRICS } from '../../../../../src/utils/constants/Metrics'
 
 const defaultProps = {
   onCancel: jest.fn(),
   error: undefined,
   onChange: jest.fn(),
   scenario: {},
-  onSave: jest.fn()
+  onSave: jest.fn(),
+  metrics: BASEMETRICS.map(metric => metric.name)
 }
 
 const setUp = (props) => {
