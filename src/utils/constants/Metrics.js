@@ -6,6 +6,36 @@ export const METRICS = [
     position: 'left'
   },
   {
+    name: 'actuals_cost_of_goods',
+    label: 'Cost of goods - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'actuals_gross_profit',
+    label: 'Gross profit - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'actuals_sales_marketing',
+    label: 'Sales & marketing expenses - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'actuals_research_development',
+    label: 'Research & development expenses - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'actuals_general_admin',
+    label: 'General & administration expenses - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
     name: 'actuals_ebitda',
     label: 'Ebitda - actual',
     symbol: '$',
@@ -18,6 +48,30 @@ export const METRICS = [
     position: 'left'
   },
   {
+    name: 'budget_gross_profit',
+    label: 'Gross profit - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'budget_sales_marketing',
+    label: 'Sales & marketing expenses - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'budget_research_development',
+    label: 'Research & development expenses - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'budget_general_admin',
+    label: 'General & administration expenses - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
     name: 'budget_ebitda',
     label: 'Ebitda - budget',
     symbol: '$',
@@ -26,6 +80,36 @@ export const METRICS = [
   {
     name: 'growth',
     label: 'Growth rate',
+    symbol: '%',
+    position: 'right'
+  },
+  {
+    name: 'gross_margin',
+    label: 'Gross margin',
+    symbol: '%',
+    position: 'right'
+  },
+  {
+    name: 'sales_and_marketing',
+    label: 'Sales & marketing as percentage of revenue',
+    symbol: '%',
+    position: 'right'
+  },
+  {
+    name: 'sales_and_marketing',
+    label: 'Sales & marketing as percentage of revenue',
+    symbol: '%',
+    position: 'right'
+  },
+  {
+    name: 'research_and_development',
+    label: 'Research & development as a percentage of revenue',
+    symbol: '%',
+    position: 'right'
+  },
+  {
+    name: 'general_and_admin',
+    label: 'General & administration as a percentage of revenue',
     symbol: '%',
     position: 'right'
   },
