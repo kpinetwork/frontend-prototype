@@ -96,12 +96,6 @@ export const METRICS = [
     position: 'right'
   },
   {
-    name: 'sales_and_marketing',
-    label: 'Sales & marketing as percentage of revenue',
-    symbol: '%',
-    position: 'right'
-  },
-  {
     name: 'research_and_development',
     label: 'Research & development as a percentage of revenue',
     symbol: '%',
