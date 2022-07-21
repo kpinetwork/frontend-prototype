@@ -184,9 +184,17 @@ export const useEditModify = () => {
     setOpenResponse(true)
     setReload(!reload)
     setEdit(false)
+    clear()
+  }
+
+  const clear = () => {
+    setChangeObject({})
+    setAddObject({})
+    setDeleteObject({})
   }
 
   return {
+    clear,
     modifying,
     isLoading,
     companies,
