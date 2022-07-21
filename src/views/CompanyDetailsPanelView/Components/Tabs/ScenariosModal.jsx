@@ -16,11 +16,11 @@ const useStyles = makeStyles({
   }
 })
 
-export function ScenariosModal ({ open, onClose, onOk, onCancel, scenarios }) {
+export function ScenariosModal ({ open, onOk, onCancel, scenarios }) {
   const classes = useStyles()
 
   return (
-    <Dialog open={open} onClose={onClose}
+    <Dialog open={open} onClose={onCancel}
       PaperProps={{
         style: {
           backgroundColor: '#f3f4f8',
@@ -50,14 +50,6 @@ export function ScenariosModal ({ open, onClose, onOk, onCancel, scenarios }) {
             </Box>
           </Box>
         </DialogContent>
-        <DialogActions sx={{ py: 10 }}>
-          <ButtonActions
-          okName={'Ok'}
-          cancelName={'Cancel'}
-          onOk={onOk}
-          onCancel={onCancel}
-          />
-        </DialogActions>
       </Box>
       }
       {scenarios.length === 0 &&
@@ -70,6 +62,14 @@ export function ScenariosModal ({ open, onClose, onOk, onCancel, scenarios }) {
           </DialogContent>
         </Box>
       }
+      <DialogActions sx={{ py: 10 }}>
+          <ButtonActions
+          okName={'Ok'}
+          cancelName={'Cancel'}
+          onOk={onOk}
+          onCancel={onCancel}
+          />
+        </DialogActions>
     </Dialog>
   )
 }
