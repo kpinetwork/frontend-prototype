@@ -1,11 +1,14 @@
 import React from 'react'
 import { renderHook, act } from '@testing-library/react-hooks'
 import { getCompanyDetails, addCompanyScenario, deleteCompanyScenarios } from '../../src/service/companyDetails'
+import { getMetricsType } from '../../src/service/metrics'
 import useScenariosTable from '../../src/hooks/useScenariosTable'
 import { COMPANIESDETAILS, SCENARIO } from '../data/companies'
 import Context from '../../src/context/appContext'
+import { BASEMETRICS } from '../../src/utils/constants/Metrics'
 
 jest.mock('../../src/service/companyDetails')
+jest.mock('../../src/service/metrics')
 
 const mockService = (service, response) => {
   service.mockImplementation(() => {
@@ -16,6 +19,8 @@ const mockService = (service, response) => {
   })
 }
 
+const metrics = BASEMETRICS.map(metric => metric.name)
+
 const wrapper = ({ children }) => (
   <Context.Provider value={{ company: { selectedCompanyID: '123' } }}>
     {children}
@@ -25,6 +30,7 @@ const wrapper = ({ children }) => (
 describe('useScenariosTable', () => {
   it('scenarios table should return scenarios', async () => {
     mockService(getCompanyDetails, COMPANIESDETAILS)
+    mockService(getMetricsType, metrics)
     let hookResponse
 
     await act(async () => {
@@ -39,6 +45,7 @@ describe('useScenariosTable', () => {
 
   it('scenarios table should catch errors', async () => {
     mockService(getCompanyDetails, 'error')
+    mockService(getMetricsType, 'error')
     let hookResponse
 
     await act(async () => {
@@ -49,6 +56,7 @@ describe('useScenariosTable', () => {
     expect(hookResponse.result.current.page).toEqual(0)
     expect(hookResponse.result.current.scenarios).toEqual([])
     expect(hookResponse.result.current.total).toEqual(0)
+    expect(hookResponse.result.current.metricNames).toEqual([])
   })
 
   it('scenarios table should handleChangePage when first time in page', async () => {

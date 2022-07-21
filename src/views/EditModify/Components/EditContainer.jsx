@@ -32,7 +32,8 @@ export default function EditPreviewContainer () {
     setErrorMessage,
     setOpenResetModal,
     setOpenErrorFormat,
-    updateEditData
+    updateEditData,
+    clear
   } = useEditModify()
   const { trackChange } = useTrackChanges({ changeObject, addObject, deleteObject, initialData, head })
 
@@ -47,6 +48,7 @@ export default function EditPreviewContainer () {
     setOpenErrorFormat(false)
     setOpenResetModal(true)
     setEdit(false)
+    clear()
   }
 
   const validateFormatErrorRows = () => {

@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import Context from '../context/appContext'
 import { addCompanyScenario, getCompanyDetails, deleteCompanyScenarios } from '../service/companyDetails'
+import { getMetricsType } from '../service/metrics'
 
 const useScenariosTable = () => {
   const { selectedCompanyID } = useContext(Context).company
@@ -13,6 +14,7 @@ const useScenariosTable = () => {
   const [scenarios, setScenarios] = useState([])
   const [total, setTotal] = useState(0)
   const [isLoading, setLoading] = useState(false)
+  const [metricNames, setMetricNames] = useState([])
 
   useEffect(() => {
     initScenarios(rowsPerPage, offset)
@@ -23,10 +25,20 @@ const useScenariosTable = () => {
     setTotalScenarios(response)
   }
 
+  const getMetricNames = async () => {
+    try {
+      const response = await getMetricsType()
+      setMetricNames(response)
+    } catch (_error) {
+      setMetricNames([])
+    }
+  }
+
   const getScenarios = async (options) => {
     try {
       setLoading(true)
       const response = await getCompanyDetails({ selectedCompanyID, ...options })
+      await getMetricNames()
       setCompany({ id: response.id, name: response.name })
       setScenarios(response.scenarios.metrics)
       setTotal(response.scenarios.total)
@@ -108,6 +120,7 @@ const useScenariosTable = () => {
 
   return {
     rowsPerPage,
+    metricNames,
     isLoading,
     company,
     scenarios,
