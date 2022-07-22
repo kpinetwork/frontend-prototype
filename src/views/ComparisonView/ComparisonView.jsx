@@ -24,15 +24,20 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const columns = [
-  { field: 'name', headerName: 'Company', width: 200, align: 'left', needsTooltip: false },
-  { field: 'sector', headerName: 'Sector', width: 150, align: 'left', needsTooltip: false },
-  { field: 'vertical', headerName: 'Vertical', width: 150, align: 'left', needsTooltip: false },
-  { field: 'revenue', headerName: 'Revenue', width: 150, align: 'center', needsTooltip: true },
-  { field: 'growth', headerName: 'Growth', width: 150, align: 'center', needsTooltip: true },
-  { field: 'ebitda_margin', headerName: 'Ebitda Margin', width: 150, align: 'center', needsTooltip: true },
-  { field: 'revenue_vs_budget', headerName: 'Revenue vs budget', width: 200, align: 'center', needsTooltip: true },
-  { field: 'ebitda_vs_budget', headerName: 'Ebitda vs budget', width: 200, align: 'center', needsTooltip: true },
-  { field: 'rule_of_40', headerName: 'Rule of 40', width: 200, align: 'center', needsTooltip: true }
+  { field: 'name', headerName: 'Company', width: 260, align: 'left', needsTooltip: false },
+  { field: 'sector', headerName: 'Sector', width: 160, align: 'left', needsTooltip: false },
+  { field: 'vertical', headerName: 'Vertical', width: 160, align: 'left', needsTooltip: false },
+  { field: 'revenue', headerName: 'Revenue', width: 110, align: 'center', needsTooltip: true },
+  { field: 'growth', headerName: 'Growth', width: 110, align: 'center', needsTooltip: true },
+  { field: 'ebitda_margin', headerName: 'Ebitda Margin', width: 130, align: 'center', needsTooltip: true },
+  { field: 'revenue_vs_budget', headerName: 'Revenue vs budget', width: 150, align: 'center', needsTooltip: true },
+  { field: 'ebitda_vs_budget', headerName: 'Ebitda vs budget', width: 150, align: 'center', needsTooltip: true },
+  { field: 'rule_of_40', headerName: 'Rule of 40', width: 110, align: 'center', needsTooltip: true },
+  { field: 'gross_profit', headerName: 'Gross profit', width: 120, align: 'center', needsTooltip: false },
+  { field: 'gross_margin', headerName: 'Gross margin', width: 120, align: 'center', needsTooltip: false },
+  { field: 'sales_and_marketing', headerName: 'Sales & marketing as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
+  { field: 'research_and_development', headerName: 'Research & development as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
+  { field: 'general_and_admin', headerName: 'General & administration as percentage of revenue', width: 180, align: 'center', needsTooltip: false }
 ]
 
 const INITIAL_DATA = [
@@ -44,7 +49,12 @@ const INITIAL_DATA = [
   { id: 6, key: 'ebitda_margin', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 7, key: 'revenue_vs_budget', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 8, key: 'ebitda_vs_budget', value: '', sign: '%', position: 'right', align: 'center' },
-  { id: 9, key: 'rule_of_40', value: '', sign: '', position: 'right', align: 'center' }
+  { id: 9, key: 'rule_of_40', value: '', sign: '', position: 'right', align: 'center' },
+  { id: 10, key: 'gross_profit', value: '', sign: '$', position: 'left', align: 'center' },
+  { id: 11, key: 'gross_margin', value: '', sign: '%', position: 'right', align: 'center' },
+  { id: 12, key: 'sales_and_marketing', value: '', sign: '%', position: 'right', align: 'center' },
+  { id: 12, key: 'research_and_development', value: '', sign: '%', position: 'right', align: 'center' },
+  { id: 12, key: 'general_and_admin', value: '', sign: '%', position: 'right', align: 'center' }
 ]
 
 const ExportOption = ({ buttonClass, isLoading, downloading, saveComparisonReport }) => {
@@ -159,7 +169,10 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                     {columns.map(column => {
                       return (
                         <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}>
-                          <Box style={{ display: 'flex' }}>
+                          <Box style={{
+                            display: 'flex',
+                            minWidth: column.width
+                          }}>
                             {column.needsTooltip
                               ? <CustomTooltipTitle
                                 name={column.headerName}
@@ -200,6 +213,11 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                       <TableCell align="center">{getPercentageValues(row.revenue_vs_budget)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.ebitda_vs_budget)}</TableCell>
                       <TableCell align="center">{row.rule_of_40 !== null ? row.rule_of_40 : 'NA'}</TableCell>
+                      <TableCell align="center">{getRevenueValue(row.gross_profit)}</TableCell>
+                      <TableCell align="center">{getPercentageValues(row.gross_margin)}</TableCell>
+                      <TableCell align="center">{getPercentageValues(row.sales_and_marketing)}</TableCell>
+                      <TableCell align="center">{getPercentageValues(row.research_and_development)}</TableCell>
+                      <TableCell align="center">{getPercentageValues(row.general_and_admin)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
