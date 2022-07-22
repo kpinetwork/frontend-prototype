@@ -22,7 +22,7 @@ export default function InvalidFormatModal ({ open, onClose, errorObject, body, 
     const rows = getErrorRows()
     return rows.map(row => {
       const index = Number(row) + 4
-      return fromModify ? `${index} ${body[row].name}` : index
+      return fromModify ? `${index} ${body[row]?.name || ''}` : index
     })
   }
 

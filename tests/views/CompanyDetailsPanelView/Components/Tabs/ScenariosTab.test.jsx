@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { render, screen, fireEvent, waitFor, getByRole } from '@testing-library/react'
 import { ScenariosTab } from '../../../../../src/views/CompanyDetailsPanelView/Components/Tabs/ScenariosTab'
 import useScenariosTable from '../../../../../src/hooks/useScenariosTable'
+import { BASEMETRICS } from '../../../../../src/utils/constants/Metrics'
 
 jest.mock('../../../../../src/hooks/useScenariosTable')
 
@@ -16,6 +17,8 @@ const metric = {
   value: 124.844
 }
 
+const metrics = BASEMETRICS.map(metric => metric.name)
+
 const hookResponse = {
   rowsPerPage: 10,
   isLoading: false,
@@ -25,7 +28,8 @@ const hookResponse = {
   handleChangePage: jest.fn(),
   handleChangeRowsPerPage: jest.fn(),
   addScenario: () => true,
-  deleteScenarios: jest.fn()
+  deleteScenarios: jest.fn(),
+  metricNames: metrics
 }
 
 const setUp = () => {

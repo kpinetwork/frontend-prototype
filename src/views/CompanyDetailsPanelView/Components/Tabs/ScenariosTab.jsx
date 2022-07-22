@@ -43,6 +43,7 @@ export function ScenariosTab () {
   const [openModal, setOpenModal] = useState(false)
   const {
     rowsPerPage,
+    metricNames,
     isLoading,
     scenarios,
     company,
@@ -132,6 +133,7 @@ export function ScenariosTab () {
             <Box>
               <ScenarioForm
                 scenario = {scenario}
+                metrics={metricNames}
                 error={error}
                 onChange={onChange}
                 onCancel={() => {
@@ -186,7 +188,6 @@ export function ScenariosTab () {
       { openModal &&
         <ScenariosModal
           open={openModal}
-          onClose={() => setOpenModal(false)}
           onOk={() => onDeleteModal()}
           onCancel={() => setOpenModal(false)}
           scenarios={selectedScenarios}

@@ -15,7 +15,12 @@ const company = {
   rule_of_40: 80,
   growth: 55,
   ebitda_margin: 90,
-  ebitda_vs_budget: 108
+  ebitda_vs_budget: 108,
+  gross_profit: 34,
+  gross_margin: 48,
+  sales_and_marketing: 14,
+  research_and_development: 3,
+  general_and_admin: 21
 }
 
 const defaultProps = {
@@ -39,7 +44,7 @@ describe('<CompanyCard />', () => {
     it('render correctly', () => {
       setUp()
 
-      const companyRow = screen.getByRole('row', { name: 'Sample Company Online media Education $ 70 55 % 90 % 109 % 108 % 80' })
+      const companyRow = screen.getByRole('row', { name: /Sample Company Online media Education/ })
 
       expect(screen.getByText('Export CSV')).toBeInTheDocument()
       expect(screen.getByRole('table')).toBeInTheDocument()

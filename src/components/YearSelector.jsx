@@ -8,10 +8,30 @@ const useStyles = makeStyles({
     '&:after': {
       borderColor: '#008b9a'
     }
+  },
+  inputBorder: {
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderRadius: 10
+      }
+    },
+    '& .MuiSelect-root': {
+      '&:focus': {
+        borderRadius: 10
+      }
+    },
+    marginTop: 10,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    fontSize: 13
+  },
+  label: {
+    marginLeft: 10,
+    fontSize: 14
   }
 })
 
-export const YearSelector = ({ nameOfSelect, year, onChange }) => {
+export const YearSelector = ({ nameOfSelect, year, onChange, needEmptyValue }) => {
   const actualYear = new Date().getFullYear()
   const [years] = useState(() => {
     const years = []
@@ -22,10 +42,11 @@ export const YearSelector = ({ nameOfSelect, year, onChange }) => {
   })
 
   const classes = useStyles()
+  const yearOptions = needEmptyValue ? years.concat('None') : years
 
   return (
     <Box style={{ marginRight: 10 }}>
-      <FormControl sx={{ m: 1, minWidth: 150 }} >
+      <FormControl sx={{ m: 1, minWidth: 150 }}>
       <InputLabel id="year-label">{nameOfSelect}</InputLabel>
       <Select
           data-testid='calendar-year-selector'
@@ -35,7 +56,7 @@ export const YearSelector = ({ nameOfSelect, year, onChange }) => {
           className={classes.select}
           style={{ width: 150 }}
       >
-          {years.map((year) => (
+          {yearOptions.map((year) => (
               <MenuItem key={year} value={year}>{year}</MenuItem>
           ))}
       </Select>

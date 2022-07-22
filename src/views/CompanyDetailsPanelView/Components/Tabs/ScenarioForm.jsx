@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Box, FormControl, Select, MenuItem, FormLabel, makeStyles, TextField, Card, CardHeader, Typography, InputAdornment } from '@material-ui/core'
 import ButtonActions from '../../../../components/Actions'
-import { BASEMETRICS, BASE_SCENARIOS } from '../../../../utils/constants/Metrics'
+import { BASE_SCENARIOS } from '../../../../utils/constants/Metrics'
 import { CardActions } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export function ScenarioForm ({ onCancel, error, scenario, onChange, onSave }) {
+export function ScenarioForm ({ onCancel, error, scenario, onChange, onSave, metrics }) {
   const classes = useStyles()
   const [dateValue, setDateValue] = useState({})
   const [valueError, setValueError] = useState(false)
@@ -113,9 +113,9 @@ export function ScenarioForm ({ onCancel, error, scenario, onChange, onSave }) {
                     data-testid='metric-name-selector'
                   >
                       {
-                          BASEMETRICS.map(metric => (
-                              <MenuItem key={metric.name} value={metric.name} className={classes.inputText}>
-                                  {metric.name}
+                          metrics.map(metric => (
+                              <MenuItem key={metric} value={metric} className={classes.inputText}>
+                                  {metric}
                               </MenuItem>
                           ))
                       }

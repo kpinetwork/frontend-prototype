@@ -8,7 +8,7 @@ export const useTrackChanges = (
   }
 
   const removeFromObject = (arrayObject, scenarios) => {
-    if (!arrayObject || arrayObject.length <= 0) return []
+    if (!arrayObject || arrayObject.length <= 0) return scenarios
     return scenarios.filter(item => item !== arrayObject[0])
   }
 
@@ -24,7 +24,8 @@ export const useTrackChanges = (
   const modifyObject = (scenarioFiltered, scenarios, initialScenario, value, toModify = false) => {
     const shouldBeAdded = scenarioFiltered == null || scenarioFiltered.length === 0
     if (shouldBeAdded) {
-      scenarios.push(getScenario(initialScenario, value, toModify))
+      const scenarioToAdd = getScenario(initialScenario, value, toModify)
+      scenarios.push(scenarioToAdd)
     }
     if (!shouldBeAdded && toModify) {
       scenarioFiltered[0].value = value
@@ -33,7 +34,6 @@ export const useTrackChanges = (
 
   const addScenariosToDelete = (data, initialScenario, dataDelete, initialCompany) => {
     const added = getScenarioFromValues(data.scenarios, initialScenario, 'metric_id')
-
     const alreadyAdded = getScenarioFromValues(dataDelete.scenarios, initialScenario, 'metric_id')
 
     data.scenarios = removeFromObject(added, data.scenarios)
@@ -48,8 +48,8 @@ export const useTrackChanges = (
       const yearsIndex = getIndexArray(head[2])
       valuesIndex = getIndexArray([...head[0]].splice(yearsIndex[0]))
       header = [...header].splice(yearsIndex[0])
+      index = index - yearsIndex[0]
     }
-
     return getValueFromRow(header, index, valuesIndex)
   }
 
@@ -85,6 +85,7 @@ export const useTrackChanges = (
   }
 
   const addScenariosToModify = (data, dataDelete, initialScenario, initialCompany, value) => {
+    data = JSON.parse(JSON.stringify(data))
     const alreadyAdded = getScenarioFromValues(data.scenarios, initialScenario, 'metric_id')
     const deleted = getScenarioFromValues(dataDelete.scenarios, initialScenario, 'metric_id')
 
