@@ -65,10 +65,10 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
     }
     if (metric !== 'None') {
       const selectedMetric = getSelectedMetric(metric)
-      return selectedMetric.position === 'left' ? `${selectedMetric.symbol} ${value}` : `${value} ${selectedMetric.symbol}`
+      return selectedMetric?.position === 'left' ? `${selectedMetric?.symbol} ${value}` : `${value} ${selectedMetric?.symbol}`
     }
     const selectedMetric = getSelectedMetric(header)
-    return selectedMetric.position === 'left' ? `${selectedMetric.symbol} ${value}` : `${value} ${selectedMetric.symbol}`
+    return selectedMetric?.position === 'left' ? `${selectedMetric?.symbol} ${value}` : `${value} ${selectedMetric?.symbol}`
   }
 
   return (
