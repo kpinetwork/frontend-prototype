@@ -11,12 +11,12 @@ export const METRICS = [
     symbol: '$',
     position: 'left'
   },
-  {
-    name: 'actuals_gross_profit',
-    label: 'Gross profit - actual',
-    symbol: '$',
-    position: 'left'
-  },
+  // {
+  //   name: 'actuals_gross_profit',
+  //   label: 'Gross profit - actual',
+  //   symbol: '$',
+  //   position: 'left'
+  // },
   {
     name: 'actuals_sales_marketing',
     label: 'Sales & marketing expenses - actual',
@@ -47,12 +47,12 @@ export const METRICS = [
     symbol: '$',
     position: 'left'
   },
-  {
-    name: 'budget_gross_profit',
-    label: 'Gross profit - budget',
-    symbol: '$',
-    position: 'left'
-  },
+  // {
+  //   name: 'budget_gross_profit',
+  //   label: 'Gross profit - budget',
+  //   symbol: '$',
+  //   position: 'left'
+  // },
   {
     name: 'budget_sales_marketing',
     label: 'Sales & marketing expenses - budget',
