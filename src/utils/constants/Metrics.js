@@ -145,6 +145,12 @@ export const BY_YEAR_METRICS = [
     label: 'Growth',
     symbol: '%',
     position: 'right'
+  },
+  {
+    name: 'gross_profit',
+    label: 'Gross Profit',
+    symbol: '$',
+    position: 'left'
   }
 ]
 
