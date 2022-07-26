@@ -33,7 +33,7 @@ describe('<KPIAveragesCard />', () => {
 
   it('render empty grid if countBySize is empty', () => {
     setUp({ kpiAverage: null })
-    screen.debug()
+
     const cardTitle = screen.getByText('KPI Averages')
 
     expect(cardTitle).toBeInTheDocument()
