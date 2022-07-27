@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import { YearSelector } from '../../components/YearSelector'
 import { InvestmentYearSelector } from '../../components/InvestmentYearSelector'
 import { MetricSelector } from '../../components/MetricSelector'
@@ -8,6 +9,30 @@ import { COMPANY_DESCRIPTION } from '../../utils/constants/CompanyDescription'
 import { isEmptyObject } from '../../utils/userFunctions'
 import { useDynamicReport } from '../../hooks/useDynamicReport'
 import HeadBodyGrid from '../../components/BodyGrid'
+
+const useStyles = makeStyles(theme => ({
+  header: {
+    background: 'white'
+  },
+  stickyHeader: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 900
+  },
+  stickyCompany: {
+    position: 'sticky',
+    left: 0,
+    background: '#dbdbdb',
+    zIndex: 800
+  },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
+  }
+}))
 
 export const DynamicReport = ({ fromUniverseOverview }) => {
   // eslint-disable-next-line no-unused-vars
@@ -24,6 +49,7 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
     setCalendarYear,
     setInvestYear
   } = useDynamicReport({ fromUniverseOverview, selectedMetric: 'None', selectedCalendarYear: 'None', selectedInvestYear: 'None' })
+  const classes = useStyles()
 
   const onYearChange = (value, type) => {
     if (type === 'calendar') {
@@ -104,7 +130,9 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
                       <TableRow>
                         {dynamicHeader.map(column => {
                           return (
-                            <TableCell key={column} align={'left'} style={{ fontWeight: 'bold' }}>
+                            <TableCell key={column} align={'left'} style={{ fontWeight: 'bold' }}
+                              className={column === 'name' ? classes.stickyHeader : classes.header}
+                            >
                               {getColumnValue(column)}
                             </TableCell>
                           )
@@ -112,11 +140,15 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
                       </TableRow>
                         { !fromUniverseOverview && !isEmptyObject(dynamicCompanyComparison) &&
                           <TableRow
-                          key={dynamicCompanyComparison?.id}
+                            key={dynamicCompanyComparison?.id}
                             style={{ backgroundColor: '#cececeb9' }}
                           >
                           {dynamicHeader.map((header, index) => (
-                            <TableCell key={index} align="left">{getCellValue(dynamicCompanyComparison, header, index)}</TableCell>
+                            <TableCell key={index} align="left"
+                            className={header === 'name' ? classes.stickyCompany : ''}
+                            >
+                              {getCellValue(dynamicCompanyComparison, header, index)}
+                            </TableCell>
                           ))}
                           </TableRow>
                         }
@@ -127,7 +159,11 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
                           key={row?.id}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                           {dynamicHeader.map((column, index) => (
-                            <TableCell key={index} align="left">{getCellValue(row, column, index)}</TableCell>
+                            <TableCell key={index} align="left"
+                              className={column === 'name' ? classes.sticky : ''}
+                            >
+                              {getCellValue(row, column, index)}
+                            </TableCell>
                           ))}
                         </TableRow>
                       ))}

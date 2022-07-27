@@ -44,6 +44,18 @@ const useStyles = makeStyles(theme => ({
       border: 'red solid 1px',
       borderRadius: '5px'
     }
+  },
+  stickyHeader: {
+    position: 'sticky',
+    left: 0,
+    background: '#F1F1F1',
+    zIndex: 900
+  },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
   }
 }))
 
@@ -161,6 +173,10 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
     )
   }
 
+  const getStickyClassName = (index, stickyNameClass) => {
+    return index === 1 ? stickyNameClass : ''
+  }
+
   return (
     <TableContainer component={Paper}>
       {
@@ -171,7 +187,9 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
             head.length > 0 &&
             <TableRow>
               {head.slice(0, 1)[0].map((item, index) => (
-                <TableCell key={index} align="center" className={classes.primaryHead}>
+                <TableCell key={index} align="center"
+                  className={`${classes.primaryHead} ${getStickyClassName(index, classes.stickyHeader)}`}
+                >
                   {item}
                 </TableCell>
               )
@@ -182,7 +200,9 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
             return (
               <TableRow key={index} className={classes.head}>
                 {row.map((item, index) => {
-                  return <TableCell key={index} align="center" className={classes.head}>
+                  return <TableCell key={index} align="center"
+                    className={`${classes.head} ${getStickyClassName(index, classes.sticky)}`}
+                  >
                     {item}
                   </TableCell>
                 }
@@ -197,7 +217,9 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
             return (
               <TableRow key={rowIndex} className={classes.customCell}>
                 {row.map((item, index) => {
-                  return <TableCell key={index} align="center" className={classes.body}>
+                  return <TableCell key={index} align="center"
+                    className={`${classes.body} ${getStickyClassName(index, classes.sticky)}`}
+                  >
                     {edit && index !== 0
                       ? <Box minWidth={100} padding={0} component='form'>
                         {

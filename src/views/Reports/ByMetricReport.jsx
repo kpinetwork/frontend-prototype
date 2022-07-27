@@ -1,10 +1,32 @@
 import React from 'react'
 import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import { MetricSelector } from '../../components/MetricSelector'
 import { useMetricReport } from '../../hooks/useMetricReport'
 import HeadBodyGrid from '../../components/BodyGrid'
 import { isEmptyObject } from '../../utils/userFunctions'
 import { METRICS } from '../../utils/constants/Metrics'
+
+const useStyles = makeStyles(theme => ({
+  stickyHeader: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 900
+  },
+  stickyCompany: {
+    position: 'sticky',
+    left: 0,
+    background: '#dbdbdb',
+    zIndex: 800
+  },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
+  }
+}))
 
 export const ByMetricReport = ({ fromUniverseOverview }) => {
   const {
@@ -15,6 +37,7 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
     metricIsLoading,
     setMetric
   } = useMetricReport({ fromUniverseOverview, selectedMetric: 'actuals_revenue' })
+  const classes = useStyles()
 
   const getColumns = () => {
     const columns = [{ field: 'name', headerName: 'Company', aling: 'left' }]
@@ -58,7 +81,9 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
                       <TableRow >
                         {getColumns().map(column => {
                           return (
-                            <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}>
+                            <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}
+                              className={column?.field === 'name' ? classes.stickyHeader : ''}
+                            >
                               {column.headerName}
                             </TableCell>
                           )
@@ -69,7 +94,9 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
                           key={metricCompanyComparison?.id}
                             style={{ backgroundColor: '#cececeb9' }}
                           >
-                            <TableCell align="left">{metricCompanyComparison.name}</TableCell>
+                            <TableCell align="left" className={classes.stickyCompany}>
+                              {metricCompanyComparison.name}
+                            </TableCell>
                           {years.map((year, index) => (
                             <TableCell key={index} align="center">{getValue(metricCompanyComparison.metrics[year])}</TableCell>
                           ))}
@@ -81,7 +108,7 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
                         <TableRow
                           key={row?.id}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                          <TableCell align="left">{row.name}</TableCell>
+                          <TableCell align="left" className={classes.sticky}>{row.name}</TableCell>
                           {years.map((year, index) => (
                             <TableCell key={index} align="center">{getValue(row.metrics[year])}</TableCell>
                           ))}
