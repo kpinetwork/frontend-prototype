@@ -18,7 +18,10 @@ const useStyles = makeStyles(theme => ({
   primaryHead: {
     backgroundColor: '#F1F1F1',
     color: 'black',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    zIndex: 900,
+    top: 0,
+    position: 'sticky'
   },
   body: {
     '&.MuiTableCell-body': {
@@ -44,6 +47,20 @@ const useStyles = makeStyles(theme => ({
       border: 'red solid 1px',
       borderRadius: '5px'
     }
+  },
+  stickyMetricHeader: {
+    borderBottomColor: '#DEDEDE',
+    backgroundColor: '#FCFCFC',
+    zIndex: 800,
+    position: 'sticky',
+    top: '79.9px'
+  },
+  stickyYearHeader: {
+    borderBottomColor: '#DEDEDE',
+    backgroundColor: '#FCFCFC',
+    zIndex: 800,
+    position: 'sticky',
+    top: '132px'
   }
 }))
 
@@ -162,7 +179,7 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
   }
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} style={{ height: '50vh' }}>
       {
         !isLoading &&
         <Table>
@@ -178,11 +195,24 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
               )}
             </TableRow>
           }
-          {head.slice(1).map((row, index) => {
+          {head.slice(1, 2).map((row, index) => {
             return (
               <TableRow key={index} className={classes.head}>
                 {row.map((item, index) => {
-                  return <TableCell key={index} align="center" className={classes.head}>
+                  return <TableCell key={index} align="center" className={`${classes.head} ${classes.stickyMetricHeader}`}>
+                    {item}
+                  </TableCell>
+                }
+                )}
+              </TableRow>
+            )
+          })
+          }
+          {head.slice(2).map((row, index) => {
+            return (
+              <TableRow key={index} className={classes.head}>
+                {row.map((item, index) => {
+                  return <TableCell key={index} align="center" className={`${classes.head} ${classes.stickyYearHeader}`} >
                     {item}
                   </TableCell>
                 }

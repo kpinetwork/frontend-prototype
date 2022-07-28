@@ -18,7 +18,10 @@ const useStyles = makeStyles(theme => ({
   primaryHead: {
     backgroundColor: '#F1F1F1',
     color: 'black',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    zIndex: 900,
+    top: 0,
+    position: 'sticky'
   },
   body: {
     '&.MuiTableCell-body': {
@@ -44,6 +47,20 @@ const useStyles = makeStyles(theme => ({
       border: 'red solid 1px',
       borderRadius: '5px'
     }
+  },
+  stickyMetricHeader: {
+    borderBottomColor: '#DEDEDE',
+    backgroundColor: '#FCFCFC',
+    zIndex: 800,
+    position: 'sticky',
+    top: '79.9px'
+  },
+  stickyYearHeader: {
+    borderBottomColor: '#DEDEDE',
+    backgroundColor: '#FCFCFC',
+    zIndex: 800,
+    position: 'sticky',
+    top: '183.9px'
   }
 }))
 
@@ -230,14 +247,14 @@ export default function EditPreviewTable ({ head, body, edit, errorObject, isLoa
     </TableCell>
   }
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} style={{ height: '100vh' }}>
       {
         !isLoading &&
         <Table>
         <TableHead>
           {
             head.length > 0 &&
-            <TableRow key={'0-scanrios'}>
+            <TableRow key={'0-scanrios'} >
               {head.slice(0, 1)[0].map((item, index) => (
                 <TableCell key={`${index}-names`} align="center" className={classes.primaryHead}>
                   {item}
@@ -246,11 +263,24 @@ export default function EditPreviewTable ({ head, body, edit, errorObject, isLoa
               )}
             </TableRow>
           }
-          {head.slice(1).map((row, index) => {
+          {head.slice(1, 2).map((row, index) => {
             return (
-              <TableRow key={`${index}-header`} className={classes.head}>
+              <TableRow key={`${index}-scenario-header`}>
                 {row.map((item, columnIndex) => {
-                  return <TableCell key={columnIndex} align="center" className={classes.head}>
+                  return <TableCell key={columnIndex} align="center" className={`${classes.head} ${classes.stickyMetricHeader}`}>
+                    {item}
+                  </TableCell>
+                }
+                )}
+              </TableRow>
+            )
+          })
+          }
+          {head.slice(2).map((row, index) => {
+            return (
+              <TableRow key={`${index}-year-header`}>
+                {row.map((item, columnIndex) => {
+                  return <TableCell key={columnIndex} align="center" className={`${classes.head} ${classes.stickyYearHeader}`}>
                     {item}
                   </TableCell>
                 }

@@ -99,12 +99,12 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
           <Box style={{ height: '50vh', display: 'grid', alignSelf: 'left', justifySelf: 'center' }}>
             {!isLoading
               ? <TableContainer component={Paper} >
-                  <Table stickyHeader={fromUniverseOverview}>
+                  <Table stickyHeader>
                     <TableHead>
                       <TableRow>
                         {dynamicHeader.map(column => {
                           return (
-                            <TableCell key={column} align={'left'} style={{ fontWeight: 'bold' }}>
+                            <TableCell key={column} align={'left'} style={{ fontWeight: 'bold', zIndex: 2 }}>
                               {getColumnValue(column)}
                             </TableCell>
                           )
@@ -116,7 +116,7 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
                             style={{ backgroundColor: '#cececeb9' }}
                           >
                           {dynamicHeader.map((header, index) => (
-                            <TableCell key={index} align="left">{getCellValue(dynamicCompanyComparison, header, index)}</TableCell>
+                            <TableCell key={index} align="left" style={ calendarYear !== 'None' || investYear !== 'None' ? { zIndex: 2, position: '-webkit-sticky', top: '105px' } : { zIndex: 2, position: '-webkit-sticky', top: '56.5px' }} >{getCellValue(dynamicCompanyComparison, header, index)}</TableCell>
                           ))}
                           </TableRow>
                         }

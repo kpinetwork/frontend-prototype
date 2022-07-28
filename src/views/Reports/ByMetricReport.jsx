@@ -53,12 +53,12 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
           <Box style={{ height: '50vh', display: 'grid', alignSelf: 'left', justifySelf: 'center' }}>
             {!metricIsLoading
               ? <TableContainer component={Paper} >
-                  <Table>
+                  <Table stickyHeader>
                     <TableHead>
                       <TableRow >
                         {getColumns().map(column => {
                           return (
-                            <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}>
+                            <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold', zIndex: 2 }}>
                               {column.headerName}
                             </TableCell>
                           )
@@ -69,9 +69,9 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
                           key={metricCompanyComparison?.id}
                             style={{ backgroundColor: '#cececeb9' }}
                           >
-                            <TableCell align="left">{metricCompanyComparison.name}</TableCell>
+                            <TableCell align="left" style={{ zIndex: 2, position: '-webkit-sticky', top: '56.5px' }}>{metricCompanyComparison.name}</TableCell>
                           {years.map((year, index) => (
-                            <TableCell key={index} align="center">{getValue(metricCompanyComparison.metrics[year])}</TableCell>
+                            <TableCell key={index} align="center" style={{ zIndex: 2, position: '-webkit-sticky', top: '56.5px' }}>{getValue(metricCompanyComparison.metrics[year])}</TableCell>
                           ))}
                           </TableRow>
                         }

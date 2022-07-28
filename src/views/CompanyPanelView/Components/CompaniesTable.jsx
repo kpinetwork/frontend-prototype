@@ -31,7 +31,10 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: '#2f5487'
     },
     color: 'white',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    position: 'sticky',
+    top: 0,
+    zIndex: 1
   },
   textButton: {
     textTransform: 'none',
@@ -73,7 +76,7 @@ export function CompaniesPanelTable () {
           <Typography variant="body2">Select all the companies that will be shared over KPI.</Typography>
         </Box>
       }
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ height: '90.7vh' }}>
         <Table>
           <TableHead>
             <TableRow className={classes.head}>

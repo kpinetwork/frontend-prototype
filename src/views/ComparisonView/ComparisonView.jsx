@@ -163,7 +163,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
       <div style={{ height: '50vh', display: 'grid', alignSelf: 'center', justifySelf: 'center' }}>
         {!isLoading
           ? <TableContainer component={Paper} >
-              <Table>
+              <Table stickyHeader>
                 <TableHead>
                   <TableRow >
                     {columns.map(column => {
@@ -195,7 +195,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                       <TableRow
                         key={companyComparison?.name}
                         style={{ backgroundColor: '#cececeb9' }}>
-                          {data.map((item, index) => (<TableCell key={`${index}-${item.key}-comparison-peers`} align={item.align}>{getValue(item)}</TableCell>))}
+                          {data.map((item, index) => (<TableCell style={{ zIndex: 2, position: '-webkit-sticky', top: '105px' }} key={`${index}-${item.key}-comparison-peers`} align={item.align}>{getValue(item)}</TableCell>))}
                       </TableRow>
                     }
                 </TableHead>
