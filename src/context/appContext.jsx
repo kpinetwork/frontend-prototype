@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 import { useIsAdmin } from '../hooks/useIsAdmin'
 
 const INITIAL_FILTER_STATE = {
@@ -21,6 +21,22 @@ export const AppContextProvider = ({ children }) => {
     return year
   })
   const { isAdmin, isRoleLoading } = useIsAdmin()
+
+  useEffect(() => {
+    const storedYear = JSON.parse(localStorage.getItem('year'))
+    const storedFilters = JSON.parse(localStorage.getItem('filters'))
+    if (storedYear) {
+      setYear(storedYear)
+    }
+    if (storedFilters) {
+      setFilters(storedFilters)
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('year', JSON.stringify(year))
+    localStorage.setItem('filters', JSON.stringify(filters))
+  }, [filters, year])
 
   return (
     <Context.Provider value={ {
