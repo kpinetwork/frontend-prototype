@@ -87,6 +87,12 @@ const PageMenu = ({ onClose }) => {
 }
 
 const ProfileMenu = ({ signOut, visible, onProfileClose }) => {
+  const onSignOut = () => {
+    localStorage.removeItem('year')
+    localStorage.removeItem('filters')
+    signOut()
+  }
+
   return (
     <Menu
         id="menu-appbar"
@@ -103,7 +109,7 @@ const ProfileMenu = ({ signOut, visible, onProfileClose }) => {
         anchorEl={visible}
         onClose={onProfileClose}
     >
-      <MenuItem onClick={signOut}>Sign Out</MenuItem>
+      <MenuItem onClick={() => onSignOut()}>Sign Out</MenuItem>
     </Menu>
   )
 }
