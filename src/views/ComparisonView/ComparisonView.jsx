@@ -20,6 +20,37 @@ const useStyles = makeStyles(theme => ({
       color: '#3f51b5',
       fill: '#3f51b5'
     }
+  },
+  stickyHeaderName: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 900
+  },
+  stickyHeader: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
+  },
+  stickyCompany: {
+    position: 'sticky',
+    left: 0,
+    background: '#dbdbdb',
+    top: '105px',
+    zIndex: 900
+  },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
+  },
+  stickyFirstRow: {
+    zIndex: 800,
+    position: 'sticky',
+    top: '105px',
+    background: '#dbdbdb'
   }
 }))
 
@@ -168,7 +199,9 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                   <TableRow >
                     {columns.map(column => {
                       return (
-                        <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}>
+                        <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}
+                          className={column?.field === 'name' ? classes.stickyHeaderName : classes.stickyHeader}
+                        >
                           <Box style={{
                             display: 'flex',
                             minWidth: column.width
@@ -195,7 +228,13 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                       <TableRow
                         key={companyComparison?.name}
                         style={{ backgroundColor: '#cececeb9' }}>
-                          {data.map((item, index) => (<TableCell style={{ zIndex: 2, position: '-webkit-sticky', top: '105px' }} key={`${index}-${item.key}-comparison-peers`} align={item.align}>{getValue(item)}</TableCell>))}
+                          {data.map((item, index) => (
+                            <TableCell key={`${index}-${item.key}-comparison-peers`} align={item.align}
+                              className={item?.key === 'name' ? classes.stickyCompany : classes.stickyFirstRow}
+                            >
+                              {getValue(item)}
+                            </TableCell>
+                          ))}
                       </TableRow>
                     }
                 </TableHead>
@@ -204,7 +243,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                     <TableRow
                       key={row?.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                      <TableCell align="left" data-testid={'name'}>{row.name}</TableCell>
+                      <TableCell align="left" data-testid={'name'} className={classes.sticky}>{row.name}</TableCell>
                       <TableCell align="left">{row.sector}</TableCell>
                       <TableCell align="left">{row.vertical}</TableCell>
                       <TableCell align="center" data-testid={'revenue'}>{getRevenueValue(row.revenue)}</TableCell>

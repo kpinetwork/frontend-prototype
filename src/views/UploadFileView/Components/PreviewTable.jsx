@@ -48,6 +48,23 @@ const useStyles = makeStyles(theme => ({
       borderRadius: '5px'
     }
   },
+  stickyHeader: {
+    position: 'sticky',
+    left: 0,
+    background: '#F1F1F1'
+  },
+  stickyHeaderName: {
+    position: 'sticky',
+    left: 0,
+    background: '#F1F1F1',
+    zIndex: 1000
+  },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
+  },
   stickyMetricHeader: {
     borderBottomColor: '#DEDEDE',
     backgroundColor: '#FCFCFC',
@@ -55,12 +72,34 @@ const useStyles = makeStyles(theme => ({
     position: 'sticky',
     top: '79.9px'
   },
+  stickyMetricNameHeader: {
+    borderBottomColor: '#DEDEDE',
+    backgroundColor: '#FCFCFC',
+    zIndex: 1000,
+    position: 'sticky',
+    top: '79.9px',
+    left: 0
+  },
   stickyYearHeader: {
     borderBottomColor: '#DEDEDE',
     backgroundColor: '#FCFCFC',
     zIndex: 800,
     position: 'sticky',
-    top: '132px'
+    top: '135px'
+  },
+  stickyYearNameHeader: {
+    borderBottomColor: '#DEDEDE',
+    backgroundColor: '#FCFCFC',
+    zIndex: 1000,
+    position: 'sticky',
+    top: '135px',
+    left: 0
+  },
+  stickyCompany: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 700
   }
 }))
 
@@ -178,6 +217,10 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
     )
   }
 
+  const getStickyClassName = (index, stickyNameClass, stickyClass) => {
+    return index === 1 ? stickyNameClass : stickyClass
+  }
+
   return (
     <TableContainer component={Paper} style={{ height: '50vh' }}>
       {
@@ -188,7 +231,9 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
             head.length > 0 &&
             <TableRow>
               {head.slice(0, 1)[0].map((item, index) => (
-                <TableCell key={index} align="center" className={classes.primaryHead}>
+                <TableCell key={index} align="center"
+                  className={`${classes.primaryHead} ${getStickyClassName(index, classes.stickyHeaderName, classes.primaryHead)}`}
+                >
                   {item}
                 </TableCell>
               )
@@ -199,7 +244,7 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
             return (
               <TableRow key={index} className={classes.head}>
                 {row.map((item, index) => {
-                  return <TableCell key={index} align="center" className={`${classes.head} ${classes.stickyMetricHeader}`}>
+                  return <TableCell key={index} align="center" className={`${classes.head} ${getStickyClassName(index, classes.stickyMetricNameHeader, classes.stickyMetricHeader)}`}>
                     {item}
                   </TableCell>
                 }
@@ -212,7 +257,9 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
             return (
               <TableRow key={index} className={classes.head}>
                 {row.map((item, index) => {
-                  return <TableCell key={index} align="center" className={`${classes.head} ${classes.stickyYearHeader}`} >
+                  return <TableCell key={index} align="center"
+                    className={`${classes.head} ${getStickyClassName(index, classes.stickyYearNameHeader, classes.stickyYearHeader)}`}
+                  >
                     {item}
                   </TableCell>
                 }
@@ -227,7 +274,9 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
             return (
               <TableRow key={rowIndex} className={classes.customCell}>
                 {row.map((item, index) => {
-                  return <TableCell key={index} align="center" className={classes.body}>
+                  return <TableCell key={index} align="center"
+                    className={`${classes.body} ${getStickyClassName(index, classes.sticky)}`}
+                  >
                     {edit && index !== 0
                       ? <Box minWidth={100} padding={0} component='form'>
                         {
