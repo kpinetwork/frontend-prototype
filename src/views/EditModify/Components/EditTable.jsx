@@ -44,6 +44,18 @@ const useStyles = makeStyles(theme => ({
       border: 'red solid 1px',
       borderRadius: '5px'
     }
+  },
+  stickyHeader: {
+    position: 'sticky',
+    left: 0,
+    background: '#F1F1F1',
+    zIndex: 900
+  },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
   }
 }))
 
@@ -184,8 +196,14 @@ export default function EditPreviewTable ({ head, body, edit, errorObject, isLoa
     )
   }
 
+  const getStickyClassName = (index, stickyClass) => {
+    return index === 1 ? stickyClass : ''
+  }
+
   const TableCellContainer = ({ cellKey, condition, rowIndex, columnIndex, item, field }) => {
-    return <TableCell key={cellKey} align="center" className={classes.body}>
+    return <TableCell key={cellKey} align="center"
+      className={`${classes.body} ${getStickyClassName(columnIndex, classes.sticky)}`}
+    >
       { condition
         ? <Box minWidth={100} padding={0} component='form'>
           {
@@ -239,7 +257,11 @@ export default function EditPreviewTable ({ head, body, edit, errorObject, isLoa
             head.length > 0 &&
             <TableRow key={'0-scanrios'}>
               {head.slice(0, 1)[0].map((item, index) => (
-                <TableCell key={`${index}-names`} align="center" className={classes.primaryHead}>
+                <TableCell
+                  key={`${index}-names`}
+                  align="center"
+                  className={`${classes.primaryHead} ${getStickyClassName(index, classes.stickyHeader)}`}
+                >
                   {item}
                 </TableCell>
               )
@@ -250,7 +272,11 @@ export default function EditPreviewTable ({ head, body, edit, errorObject, isLoa
             return (
               <TableRow key={`${index}-header`} className={classes.head}>
                 {row.map((item, columnIndex) => {
-                  return <TableCell key={columnIndex} align="center" className={classes.head}>
+                  return <TableCell
+                    key={columnIndex}
+                    align="center"
+                    className={`${classes.head} ${getStickyClassName(columnIndex, classes.sticky)}`}
+                  >
                     {item}
                   </TableCell>
                 }
