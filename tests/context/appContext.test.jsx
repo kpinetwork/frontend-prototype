@@ -13,6 +13,17 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
   }
 })
 
+const localStorageMock = (store) => {
+  return {
+    getItem (key) {
+      return store[key]
+    },
+    setItem (key, value) {
+      store[key] = value.toString()
+    }
+  }
+}
+
 const TestingComponent = () => {
   const { filterFields, isAdmin, isRoleLoading } = useContext(Context)
 
@@ -33,6 +44,9 @@ const setUp = () => {
   )
 }
 
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock({ year: '"2021"', filters: '{}' })
+})
 describe('<AppContextProvider />', () => {
   it('provides expected Context to child elements', () => {
     waitFor(() => {

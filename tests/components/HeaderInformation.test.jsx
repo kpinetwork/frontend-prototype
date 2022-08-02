@@ -24,9 +24,8 @@ describe('<Information />', () => {
     setUp({ year, setYear })
 
     await userEvent.click(getByRole(screen.getByTestId('header-select'), 'button'))
-    await waitFor(() => userEvent.click(screen.getByText('2019')))
+    await waitFor(() => userEvent.click(screen.getByRole('option', { name: '2019' })))
 
-    expect(screen.getByRole('button', { name: '2019' })).toBeInTheDocument()
     expect(setYear).toBeCalled()
   })
 })

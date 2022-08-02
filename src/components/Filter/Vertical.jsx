@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
 
 const options = [
@@ -42,6 +42,12 @@ export function Vertical ({ setFilters, fillFilters, selectedList }) {
     }
     return []
   })
+
+  useEffect(() => {
+    if (selectedList !== '') {
+      setSelected(selectedList.split(','))
+    }
+  }, [selectedList])
 
   const isAllSelected = options.length > 0 && selected.length === options.length
 

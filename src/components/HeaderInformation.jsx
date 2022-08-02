@@ -25,7 +25,6 @@ const useStyles = makeStyles({
 })
 
 export function Information ({ year, setYear }) {
-  const [age, setAge] = useState(year)
   const [years] = useState(() => {
     const years = []
     for (let i = 0; i < 10; i++) {
@@ -37,7 +36,6 @@ export function Information ({ year, setYear }) {
 
   const handleChange = (event) => {
     const { value } = event.target
-    setAge(value)
     setYear(value)
   }
 
@@ -48,7 +46,7 @@ export function Information ({ year, setYear }) {
             <FormControl fullWidth style={{ padding: '10' }} >
                 <InputLabel id="year-label">Year</InputLabel>
                 <Select
-                    value={age}
+                    value={year}
                     label="Age"
                     onChange={handleChange}
                     className={classes.select}
