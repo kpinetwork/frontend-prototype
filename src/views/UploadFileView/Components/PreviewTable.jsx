@@ -18,7 +18,10 @@ const useStyles = makeStyles(theme => ({
   primaryHead: {
     backgroundColor: '#F1F1F1',
     color: 'black',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    zIndex: 900,
+    top: 0,
+    position: 'sticky'
   },
   body: {
     '&.MuiTableCell-body': {
@@ -48,14 +51,55 @@ const useStyles = makeStyles(theme => ({
   stickyHeader: {
     position: 'sticky',
     left: 0,
+    background: '#F1F1F1'
+  },
+  stickyHeaderName: {
+    position: 'sticky',
+    left: 0,
     background: '#F1F1F1',
-    zIndex: 900
+    zIndex: 1000
   },
   sticky: {
     position: 'sticky',
     left: 0,
     background: 'white',
     zIndex: 800
+  },
+  stickyMetricHeader: {
+    borderBottomColor: '#DEDEDE',
+    backgroundColor: '#FCFCFC',
+    zIndex: 800,
+    position: 'sticky',
+    top: '79.9px'
+  },
+  stickyMetricNameHeader: {
+    borderBottomColor: '#DEDEDE',
+    backgroundColor: '#FCFCFC',
+    zIndex: 1000,
+    position: 'sticky',
+    top: '79.9px',
+    left: 0
+  },
+  stickyYearHeader: {
+    borderBottomColor: '#DEDEDE',
+    backgroundColor: '#FCFCFC',
+    zIndex: 800,
+    position: 'sticky',
+    top: '135px'
+  },
+  stickyYearNameHeader: {
+    borderBottomColor: '#DEDEDE',
+    backgroundColor: '#FCFCFC',
+    zIndex: 1000,
+    position: 'sticky',
+    top: '135px',
+    left: 0
+  },
+  stickyCompany: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 700
   }
 }))
 
@@ -173,12 +217,12 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
     )
   }
 
-  const getStickyClassName = (index, stickyNameClass) => {
-    return index === 1 ? stickyNameClass : ''
+  const getStickyClassName = (index, stickyNameClass, stickyClass) => {
+    return index === 1 ? stickyNameClass : stickyClass
   }
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} style={{ height: '50vh' }}>
       {
         !isLoading &&
         <Table>
@@ -188,7 +232,7 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
             <TableRow>
               {head.slice(0, 1)[0].map((item, index) => (
                 <TableCell key={index} align="center"
-                  className={`${classes.primaryHead} ${getStickyClassName(index, classes.stickyHeader)}`}
+                  className={`${classes.primaryHead} ${getStickyClassName(index, classes.stickyHeaderName, classes.primaryHead)}`}
                 >
                   {item}
                 </TableCell>
@@ -196,12 +240,25 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
               )}
             </TableRow>
           }
-          {head.slice(1).map((row, index) => {
+          {head.slice(1, 2).map((row, index) => {
+            return (
+              <TableRow key={index} className={classes.head}>
+                {row.map((item, index) => {
+                  return <TableCell key={index} align="center" className={`${classes.head} ${getStickyClassName(index, classes.stickyMetricNameHeader, classes.stickyMetricHeader)}`}>
+                    {item}
+                  </TableCell>
+                }
+                )}
+              </TableRow>
+            )
+          })
+          }
+          {head.slice(2).map((row, index) => {
             return (
               <TableRow key={index} className={classes.head}>
                 {row.map((item, index) => {
                   return <TableCell key={index} align="center"
-                    className={`${classes.head} ${getStickyClassName(index, classes.sticky)}`}
+                    className={`${classes.head} ${getStickyClassName(index, classes.stickyYearNameHeader, classes.stickyYearHeader)}`}
                   >
                     {item}
                   </TableCell>

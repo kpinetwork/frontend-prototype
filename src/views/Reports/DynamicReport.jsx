@@ -14,23 +14,36 @@ const useStyles = makeStyles(theme => ({
   header: {
     background: 'white'
   },
-  stickyHeader: {
+  stickyHeaderName: {
     position: 'sticky',
     left: 0,
     background: 'white',
     zIndex: 900
   },
+  stickyHeader: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
+  },
   stickyCompany: {
     position: 'sticky',
     left: 0,
     background: '#dbdbdb',
-    zIndex: 800
+    top: '105px',
+    zIndex: 900
   },
   sticky: {
     position: 'sticky',
     left: 0,
     background: 'white',
     zIndex: 800
+  },
+  stickyFirstRow: {
+    zIndex: 800,
+    position: 'sticky',
+    top: '105px',
+    background: '#dbdbdb'
   }
 }))
 
@@ -125,13 +138,13 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
           <Box style={{ height: '50vh', display: 'grid', alignSelf: 'left', justifySelf: 'center' }}>
             {!isLoading
               ? <TableContainer component={Paper} >
-                  <Table stickyHeader={fromUniverseOverview}>
+                  <Table stickyHeader>
                     <TableHead>
                       <TableRow>
                         {dynamicHeader.map(column => {
                           return (
                             <TableCell key={column} align={'left'} style={{ fontWeight: 'bold' }}
-                              className={column === 'name' ? classes.stickyHeader : classes.header}
+                              className={column === 'name' ? classes.stickyHeaderName : classes.stickyHeader}
                             >
                               {getColumnValue(column)}
                             </TableCell>
@@ -145,7 +158,8 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
                           >
                           {dynamicHeader.map((header, index) => (
                             <TableCell key={index} align="left"
-                            className={header === 'name' ? classes.stickyCompany : ''}
+                            className={header === 'name' ? classes.stickyCompany : classes.stickyFirstRow}
+                            style={(calendarYear !== 'None' && metric === 'None') || (investYear !== 'None' && metric === 'None') ? { top: '105px' } : { top: '56.5px' }}
                             >
                               {getCellValue(dynamicCompanyComparison, header, index)}
                             </TableCell>

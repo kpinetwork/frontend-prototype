@@ -8,23 +8,36 @@ import { isEmptyObject } from '../../utils/userFunctions'
 import { METRICS } from '../../utils/constants/Metrics'
 
 const useStyles = makeStyles(theme => ({
-  stickyHeader: {
+  stickyHeaderName: {
     position: 'sticky',
     left: 0,
     background: 'white',
     zIndex: 900
   },
+  stickyHeader: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
+  },
   stickyCompany: {
     position: 'sticky',
     left: 0,
     background: '#dbdbdb',
-    zIndex: 800
+    top: '57px',
+    zIndex: 900
   },
   sticky: {
     position: 'sticky',
     left: 0,
     background: 'white',
     zIndex: 800
+  },
+  stickyFirstRow: {
+    zIndex: 800,
+    position: 'sticky',
+    top: '57px',
+    background: '#dbdbdb'
   }
 }))
 
@@ -76,13 +89,13 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
           <Box style={{ height: '50vh', display: 'grid', alignSelf: 'left', justifySelf: 'center' }}>
             {!metricIsLoading
               ? <TableContainer component={Paper} >
-                  <Table>
+                  <Table stickyHeader>
                     <TableHead>
                       <TableRow >
                         {getColumns().map(column => {
                           return (
                             <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}
-                              className={column?.field === 'name' ? classes.stickyHeader : ''}
+                              className={column?.field === 'name' ? classes.stickyHeaderName : classes.stickyHeader}
                             >
                               {column.headerName}
                             </TableCell>
@@ -98,7 +111,7 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
                               {metricCompanyComparison.name}
                             </TableCell>
                           {years.map((year, index) => (
-                            <TableCell key={index} align="center">{getValue(metricCompanyComparison.metrics[year])}</TableCell>
+                            <TableCell key={index} align="center" className={classes.stickyFirstRow}>{getValue(metricCompanyComparison.metrics[year])}</TableCell>
                           ))}
                           </TableRow>
                         }

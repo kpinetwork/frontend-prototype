@@ -21,23 +21,36 @@ const useStyles = makeStyles(theme => ({
       fill: '#3f51b5'
     }
   },
-  stickyHeader: {
+  stickyHeaderName: {
     position: 'sticky',
     left: 0,
     background: 'white',
     zIndex: 900
   },
+  stickyHeader: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
+  },
   stickyCompany: {
     position: 'sticky',
     left: 0,
     background: '#dbdbdb',
-    zIndex: 800
+    top: '105px',
+    zIndex: 900
   },
   sticky: {
     position: 'sticky',
     left: 0,
     background: 'white',
     zIndex: 800
+  },
+  stickyFirstRow: {
+    zIndex: 800,
+    position: 'sticky',
+    top: '105px',
+    background: '#dbdbdb'
   }
 }))
 
@@ -181,13 +194,13 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
       <div style={{ height: '50vh', display: 'grid', alignSelf: 'center', justifySelf: 'center' }}>
         {!isLoading
           ? <TableContainer component={Paper} >
-              <Table>
+              <Table stickyHeader>
                 <TableHead>
                   <TableRow >
                     {columns.map(column => {
                       return (
                         <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}
-                          className={column?.field === 'name' ? classes.stickyHeader : ''}
+                          className={column?.field === 'name' ? classes.stickyHeaderName : classes.stickyHeader}
                         >
                           <Box style={{
                             display: 'flex',
@@ -217,7 +230,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                         style={{ backgroundColor: '#cececeb9' }}>
                           {data.map((item, index) => (
                             <TableCell key={`${index}-${item.key}-comparison-peers`} align={item.align}
-                              className={item?.key === 'name' ? classes.stickyCompany : ''}
+                              className={item?.key === 'name' ? classes.stickyCompany : classes.stickyFirstRow}
                             >
                               {getValue(item)}
                             </TableCell>
