@@ -222,7 +222,7 @@ export default function PreviewTable ({ head, body, edit, errorObject, isLoading
   }
 
   return (
-    <TableContainer component={Paper} style={{ height: '50vh' }}>
+    <TableContainer component={Paper} style={{ maxHeight: '100vh' }}>
       {
         !isLoading &&
         <Table>
