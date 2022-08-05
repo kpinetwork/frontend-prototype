@@ -5,7 +5,7 @@ import { changeCompanyPublicly } from '../service/changeCompanyPublicly'
 
 const useCompaniesPanelTable = () => {
   const [offset, setOffset] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [rowsPerPage, setRowsPerPage] = useState(100)
   const { total, companies, setCompanies, isLoading, getCompanyPanel } = useCompanyPanel({ limit: rowsPerPage, offset })
   const [wantsChange, setChange] = useState(false)
   const [page, setPage] = useState(0)

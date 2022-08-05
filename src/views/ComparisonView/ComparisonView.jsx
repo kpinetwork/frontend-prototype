@@ -20,6 +20,37 @@ const useStyles = makeStyles(theme => ({
       color: '#3f51b5',
       fill: '#3f51b5'
     }
+  },
+  stickyHeaderName: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 900
+  },
+  stickyHeader: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
+  },
+  stickyCompany: {
+    position: 'sticky',
+    left: 0,
+    background: '#dbdbdb',
+    top: '105px',
+    zIndex: 900
+  },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
+  },
+  stickyFirstRow: {
+    zIndex: 800,
+    position: 'sticky',
+    top: '105px',
+    background: '#dbdbdb'
   }
 }))
 
@@ -33,7 +64,7 @@ const columns = [
   { field: 'revenue_vs_budget', headerName: 'Revenue vs budget', width: 150, align: 'center', needsTooltip: true },
   { field: 'ebitda_vs_budget', headerName: 'Ebitda vs budget', width: 150, align: 'center', needsTooltip: true },
   { field: 'rule_of_40', headerName: 'Rule of 40', width: 110, align: 'center', needsTooltip: true },
-  // { field: 'gross_profit', headerName: 'Gross profit', width: 120, align: 'center', needsTooltip: false },
+  { field: 'gross_profit', headerName: 'Gross profit', width: 120, align: 'center', needsTooltip: false },
   { field: 'gross_margin', headerName: 'Gross margin', width: 120, align: 'center', needsTooltip: false },
   { field: 'sales_and_marketing', headerName: 'Sales & marketing as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
   { field: 'research_and_development', headerName: 'Research & development as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
@@ -50,7 +81,7 @@ const INITIAL_DATA = [
   { id: 7, key: 'revenue_vs_budget', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 8, key: 'ebitda_vs_budget', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 9, key: 'rule_of_40', value: '', sign: '', position: 'right', align: 'center' },
-  // { id: 10, key: 'gross_profit', value: '', sign: '$', position: 'left', align: 'center' },
+  { id: 10, key: 'gross_profit', value: '', sign: '$', position: 'left', align: 'center' },
   { id: 11, key: 'gross_margin', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 12, key: 'sales_and_marketing', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 12, key: 'research_and_development', value: '', sign: '%', position: 'right', align: 'center' },
@@ -140,7 +171,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
   }
 
   function createSortHandle (property) {
-    return (event) => {
+    return (_event) => {
       const isDesc = orderBy === property && orderDirection === 'desc'
       setOrder(isDesc ? 'asc' : 'desc')
       setOrderDirection(isDesc ? 'asc' : 'desc')
@@ -163,12 +194,14 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
       <div style={{ height: '50vh', display: 'grid', alignSelf: 'center', justifySelf: 'center' }}>
         {!isLoading
           ? <TableContainer component={Paper} >
-              <Table>
+              <Table stickyHeader>
                 <TableHead>
                   <TableRow >
                     {columns.map(column => {
                       return (
-                        <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}>
+                        <TableCell key={column.field} align={column.align} style={{ fontWeight: 'bold' }}
+                          className={column?.field === 'name' ? classes.stickyHeaderName : classes.stickyHeader}
+                        >
                           <Box style={{
                             display: 'flex',
                             minWidth: column.width
@@ -195,7 +228,13 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                       <TableRow
                         key={companyComparison?.name}
                         style={{ backgroundColor: '#cececeb9' }}>
-                          {data.map((item, index) => (<TableCell key={`${index}-${item.key}-comparison-peers`} align={item.align}>{getValue(item)}</TableCell>))}
+                          {data.map((item, index) => (
+                            <TableCell key={`${index}-${item.key}-comparison-peers`} align={item.align}
+                              className={item?.key === 'name' ? classes.stickyCompany : classes.stickyFirstRow}
+                            >
+                              {getValue(item)}
+                            </TableCell>
+                          ))}
                       </TableRow>
                     }
                 </TableHead>
@@ -204,7 +243,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                     <TableRow
                       key={row?.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                      <TableCell align="left" data-testid={'name'}>{row.name}</TableCell>
+                      <TableCell align="left" data-testid={'name'} className={classes.sticky}>{row.name}</TableCell>
                       <TableCell align="left">{row.sector}</TableCell>
                       <TableCell align="left">{row.vertical}</TableCell>
                       <TableCell align="center" data-testid={'revenue'}>{getRevenueValue(row.revenue)}</TableCell>
@@ -213,7 +252,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                       <TableCell align="center">{getPercentageValues(row.revenue_vs_budget)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.ebitda_vs_budget)}</TableCell>
                       <TableCell align="center">{row.rule_of_40 !== null ? row.rule_of_40 : 'NA'}</TableCell>
-                      {/* <TableCell align="center">{getRevenueValue(row.gross_profit)}</TableCell> */}
+                      <TableCell align="center">{getRevenueValue(row.gross_profit)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.gross_margin)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.sales_and_marketing)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.research_and_development)}</TableCell>

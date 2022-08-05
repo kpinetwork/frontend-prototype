@@ -72,11 +72,9 @@ function destructuring (result) {
     peers_comparison_data: peersComparisonDataArray,
     header
   } = result
-  let headerTmp = header || []
-  headerTmp = headerTmp.filter(headName => headName !== 'gross_profit')
   return {
     companyComparisonData,
     peersComparisonDataArray,
-    header: headerTmp
+    header: header
   }
 }

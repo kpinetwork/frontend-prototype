@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import { YearSelector } from '../../components/YearSelector'
 import { InvestmentYearSelector } from '../../components/InvestmentYearSelector'
 import { MetricSelector } from '../../components/MetricSelector'
@@ -8,6 +9,43 @@ import { COMPANY_DESCRIPTION } from '../../utils/constants/CompanyDescription'
 import { isEmptyObject } from '../../utils/userFunctions'
 import { useDynamicReport } from '../../hooks/useDynamicReport'
 import HeadBodyGrid from '../../components/BodyGrid'
+
+const useStyles = makeStyles(theme => ({
+  header: {
+    background: 'white'
+  },
+  stickyHeaderName: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 900
+  },
+  stickyHeader: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
+  },
+  stickyCompany: {
+    position: 'sticky',
+    left: 0,
+    background: '#dbdbdb',
+    top: '105px',
+    zIndex: 900
+  },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 800
+  },
+  stickyFirstRow: {
+    zIndex: 800,
+    position: 'sticky',
+    top: '105px',
+    background: '#dbdbdb'
+  }
+}))
 
 export const DynamicReport = ({ fromUniverseOverview }) => {
   // eslint-disable-next-line no-unused-vars
@@ -24,6 +62,7 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
     setCalendarYear,
     setInvestYear
   } = useDynamicReport({ fromUniverseOverview, selectedMetric: 'None', selectedCalendarYear: 'None', selectedInvestYear: 'None' })
+  const classes = useStyles()
 
   const onYearChange = (value, type) => {
     if (type === 'calendar') {
@@ -99,12 +138,14 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
           <Box style={{ height: '50vh', display: 'grid', alignSelf: 'left', justifySelf: 'center' }}>
             {!isLoading
               ? <TableContainer component={Paper} >
-                  <Table stickyHeader={fromUniverseOverview}>
+                  <Table stickyHeader>
                     <TableHead>
                       <TableRow>
                         {dynamicHeader.map(column => {
                           return (
-                            <TableCell key={column} align={'left'} style={{ fontWeight: 'bold' }}>
+                            <TableCell key={column} align={'left'} style={{ fontWeight: 'bold' }}
+                              className={column === 'name' ? classes.stickyHeaderName : classes.stickyHeader}
+                            >
                               {getColumnValue(column)}
                             </TableCell>
                           )
@@ -112,11 +153,16 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
                       </TableRow>
                         { !fromUniverseOverview && !isEmptyObject(dynamicCompanyComparison) &&
                           <TableRow
-                          key={dynamicCompanyComparison?.id}
+                            key={dynamicCompanyComparison?.id}
                             style={{ backgroundColor: '#cececeb9' }}
                           >
                           {dynamicHeader.map((header, index) => (
-                            <TableCell key={index} align="left">{getCellValue(dynamicCompanyComparison, header, index)}</TableCell>
+                            <TableCell key={index} align="left"
+                            className={header === 'name' ? classes.stickyCompany : classes.stickyFirstRow}
+                            style={(calendarYear !== 'None' && metric === 'None') || (investYear !== 'None' && metric === 'None') ? { top: '105px' } : { top: '56.5px' }}
+                            >
+                              {getCellValue(dynamicCompanyComparison, header, index)}
+                            </TableCell>
                           ))}
                           </TableRow>
                         }
@@ -127,7 +173,11 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
                           key={row?.id}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                           {dynamicHeader.map((column, index) => (
-                            <TableCell key={index} align="left">{getCellValue(row, column, index)}</TableCell>
+                            <TableCell key={index} align="left"
+                              className={column === 'name' ? classes.sticky : ''}
+                            >
+                              {getCellValue(row, column, index)}
+                            </TableCell>
                           ))}
                         </TableRow>
                       ))}
