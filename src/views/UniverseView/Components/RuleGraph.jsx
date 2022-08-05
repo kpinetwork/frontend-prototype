@@ -8,7 +8,7 @@ export function RuleGraph ({ ruleOf40 }) {
     datasets: []
   })
   useEffect(() => {
-    if (ruleOf40) {
+    if (ruleOf40 && ruleOf40.length > 0) {
       const datasets = ruleOf40.map((row) => {
         const { name: label, revenue_growth_rate: x, ebitda_margin: y, revenue: r, company_id: id } = row
         const radio = r / 10
