@@ -64,7 +64,7 @@ const columns = [
   { field: 'revenue_vs_budget', headerName: 'Revenue vs budget', width: 150, align: 'center', needsTooltip: true },
   { field: 'ebitda_vs_budget', headerName: 'Ebitda vs budget', width: 150, align: 'center', needsTooltip: true },
   { field: 'rule_of_40', headerName: 'Rule of 40', width: 110, align: 'center', needsTooltip: true },
-  // { field: 'gross_profit', headerName: 'Gross profit', width: 120, align: 'center', needsTooltip: false },
+  { field: 'gross_profit', headerName: 'Gross profit', width: 120, align: 'center', needsTooltip: false },
   { field: 'gross_margin', headerName: 'Gross margin', width: 120, align: 'center', needsTooltip: false },
   { field: 'sales_and_marketing', headerName: 'Sales & marketing as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
   { field: 'research_and_development', headerName: 'Research & development as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
@@ -81,7 +81,7 @@ const INITIAL_DATA = [
   { id: 7, key: 'revenue_vs_budget', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 8, key: 'ebitda_vs_budget', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 9, key: 'rule_of_40', value: '', sign: '', position: 'right', align: 'center' },
-  // { id: 10, key: 'gross_profit', value: '', sign: '$', position: 'left', align: 'center' },
+  { id: 10, key: 'gross_profit', value: '', sign: '$', position: 'left', align: 'center' },
   { id: 11, key: 'gross_margin', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 12, key: 'sales_and_marketing', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 12, key: 'research_and_development', value: '', sign: '%', position: 'right', align: 'center' },
@@ -171,7 +171,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
   }
 
   function createSortHandle (property) {
-    return (event) => {
+    return (_event) => {
       const isDesc = orderBy === property && orderDirection === 'desc'
       setOrder(isDesc ? 'asc' : 'desc')
       setOrderDirection(isDesc ? 'asc' : 'desc')
@@ -252,7 +252,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                       <TableCell align="center">{getPercentageValues(row.revenue_vs_budget)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.ebitda_vs_budget)}</TableCell>
                       <TableCell align="center">{row.rule_of_40 !== null ? row.rule_of_40 : 'NA'}</TableCell>
-                      {/* <TableCell align="center">{getRevenueValue(row.gross_profit)}</TableCell> */}
+                      <TableCell align="center">{getRevenueValue(row.gross_profit)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.gross_margin)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.sales_and_marketing)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.research_and_development)}</TableCell>
