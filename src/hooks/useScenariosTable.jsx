@@ -13,6 +13,8 @@ const useScenariosTable = () => {
   const [company, setCompany] = useState({})
   const [scenarios, setScenarios] = useState([])
   const [total, setTotal] = useState(0)
+  const [orderDirection, setOrderDirection] = useState('asc')
+  const [isOrdered, setIsOrdered] = useState(true)
   const [isLoading, setLoading] = useState(false)
   const [metricNames, setMetricNames] = useState([])
 
@@ -21,7 +23,7 @@ const useScenariosTable = () => {
   }, [])
 
   const initScenarios = async (limit, offset) => {
-    const response = await getScenarios({ limit, offset })
+    const response = await getScenarios({ limit, offset, ordered: isOrdered })
     setTotalScenarios(response)
   }
 
@@ -88,7 +90,7 @@ const useScenariosTable = () => {
     setOffset(nextOffset)
     setPage(newPage)
     setMaxPage(newPage)
-    const response = await getScenarios({ limit: rowsPerPage, offset: nextOffset })
+    const response = await getScenarios({ limit: rowsPerPage, offset: nextOffset, ordered: isOrdered })
     setTotalScenarios([...totalScenarios, ...response])
   }
 
@@ -118,6 +120,31 @@ const useScenariosTable = () => {
     initScenarios(nextRowPerPage, newOffset)
   }
 
+  const callSortedScenarios = async () => {
+    const isDesc = orderDirection === 'desc'
+    const newDirection = isDesc ? 'asc' : 'desc'
+    const ordered = newDirection === 'asc'
+    setOffset(0)
+    setMaxPage(0)
+    setIsOrdered(ordered)
+    setOrderDirection(newDirection)
+    const response = await getScenarios({ limit: rowsPerPage, offset: 0, ordered })
+    setTotalScenarios(response)
+  }
+
+  const handleSortScenarios = () => {
+    if (page === 0) {
+      callSortedScenarios()
+    } else {
+      const sortByList = ['Actuals', 'Budget']
+      const scenariosToSort = totalScenarios.filter(scenario => sortByList.includes(scenario.scenario))
+      const notScenariosToSort = totalScenarios.filter(scenario => !sortByList.includes(scenario.scenario))
+      const sortedTotalScenarios = scenariosToSort.reverse().concat(notScenariosToSort)
+      setTotalScenarios(sortedTotalScenarios)
+      setScenarios(sortedTotalScenarios.slice(offset, offset + rowsPerPage))
+    }
+  }
+
   return {
     rowsPerPage,
     metricNames,
@@ -126,8 +153,10 @@ const useScenariosTable = () => {
     scenarios,
     total,
     page,
+    orderDirection,
     handleChangePage,
     handleChangeRowsPerPage,
+    handleSortScenarios,
     addScenario,
     deleteScenarios
   }

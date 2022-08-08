@@ -6,9 +6,9 @@ const companiesUrl = `${baseUrl}/companies`
 const investmentsUrl = `${baseUrl}/investments`
 
 export const getCompanyDetails = async (options) => {
-  const { selectedCompanyID: companyID, limit, offset } = options
+  const { selectedCompanyID: companyID, limit, offset, ordered } = options
   const headers = await getAuthorizationHeader()
-  const response = await axios.get(`${companiesUrl}/${companyID}?limit=${limit}&offset=${offset}`, {
+  const response = await axios.get(`${companiesUrl}/${companyID}?limit=${limit || ''}&offset=${offset || ''}&ordered=${ordered || ''}`, {
     headers: headers
   })
   const data = await response.data
