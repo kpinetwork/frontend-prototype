@@ -261,7 +261,7 @@ export function ScenariosTab () {
             <TableFooter>
               <TableRow>
               <TablePagination
-                  colSpan={4}
+                  colSpan={openDelete ? 5 : 4}
                   count={total}
                   rowsPerPage={rowsPerPage}
                   page={page}

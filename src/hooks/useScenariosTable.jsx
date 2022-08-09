@@ -120,28 +120,22 @@ const useScenariosTable = () => {
     initScenarios(nextRowPerPage, newOffset)
   }
 
-  const callSortedScenarios = async () => {
+  const handleSortScenarios = async () => {
     const isDesc = orderDirection === 'desc'
     const newDirection = isDesc ? 'asc' : 'desc'
     const ordered = newDirection === 'asc'
-    setOffset(0)
-    setMaxPage(0)
     setIsOrdered(ordered)
     setOrderDirection(newDirection)
-    const response = await getScenarios({ limit: rowsPerPage, offset: 0, ordered })
-    setTotalScenarios(response)
-  }
-
-  const handleSortScenarios = () => {
     if (page === 0) {
-      callSortedScenarios()
+      setMaxPage(0)
+      const response = await getScenarios({ limit: rowsPerPage, offset: 0, ordered })
+      setTotalScenarios(response)
     } else {
-      const sortByList = ['Actuals', 'Budget']
-      const scenariosToSort = totalScenarios.filter(scenario => sortByList.includes(scenario.scenario))
-      const notScenariosToSort = totalScenarios.filter(scenario => !sortByList.includes(scenario.scenario))
-      const sortedTotalScenarios = scenariosToSort.reverse().concat(notScenariosToSort)
-      setTotalScenarios(sortedTotalScenarios)
-      setScenarios(sortedTotalScenarios.slice(offset, offset + rowsPerPage))
+      const newLimit = rowsPerPage * (page + 1)
+      const response = await getScenarios({ limit: newLimit, offset: 0, ordered })
+      setMaxPage(page)
+      setTotalScenarios(response)
+      setScenarios(response.slice(rowsPerPage * page, newLimit))
     }
   }
 
