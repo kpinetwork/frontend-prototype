@@ -2,9 +2,9 @@ import { useContext, useEffect, useState } from 'react'
 import Context from '../context/appContext'
 import { getDynamicReport } from '../service/dynamicReport'
 
-export const useDynamicReport = ({ fromUniverseOverview, selectedMetric, selectedCalendarYear, selectedInvestYear }) => {
+export const useDynamicReport = ({ fromUniverseOverview, selectedMetrics, selectedCalendarYear, selectedInvestYear }) => {
   const { filters, companyID } = useContext(Context).filterFields
-  const [metric, setMetric] = useState(selectedMetric)
+  const [metrics, setMetrics] = useState(selectedMetrics)
   const [calendarYear, setCalendarYear] = useState(selectedCalendarYear)
   const [investYear, setInvestYear] = useState(selectedInvestYear)
   const [dynamicHeader, setDynamicHeader] = useState([])
@@ -15,20 +15,27 @@ export const useDynamicReport = ({ fromUniverseOverview, selectedMetric, selecte
   useEffect(() => {
     const newCalendarYear = calendarYear !== 'None' ? calendarYear : ''
     const newInvestYear = investYear !== 'None' ? investYear : ''
-    const newMetric = metric !== 'None' ? metric : ''
+    const newMetrics = metrics && !metrics.includes('None') ? metrics.join(',') : ''
 
-    if (metric === 'None' && calendarYear === 'None' && investYear === 'None') {
+    if ((metrics == null || metrics.includes('None') || metrics.length === 0) || (calendarYear === 'None' && investYear === 'None')) {
+      setDefaultValues()
       return
     }
     if (fromUniverseOverview) {
-      getReport({ metric: newMetric, calendarYear: newCalendarYear, investYear: newInvestYear, from_main: fromUniverseOverview, ...filters })
+      getReport({ metrics: newMetrics, calendarYear: newCalendarYear, investYear: newInvestYear, from_main: fromUniverseOverview, ...filters })
     } else {
       if (companyID) {
         setIsLoading(true)
-        getReport({ company_id: companyID, metric: newMetric, calendarYear: newCalendarYear, investYear: newInvestYear, ...filters })
+        getReport({ company_id: companyID, metrics: newMetrics, calendarYear: newCalendarYear, investYear: newInvestYear, ...filters })
       }
     }
-  }, [filters, metric, calendarYear, investYear, companyID])
+  }, [filters, metrics, calendarYear, investYear, companyID])
+
+  const setDefaultValues = () => {
+    setDynamicCompanyComparison({})
+    setDynamicPeersComparison([])
+    setDynamicHeader([])
+  }
 
   const getReport = async (options) => {
     try {
@@ -36,31 +43,29 @@ export const useDynamicReport = ({ fromUniverseOverview, selectedMetric, selecte
       const result = await getDynamicReport(options)
 
       const {
-        header,
+        headers,
         companyComparisonData,
         peersComparisonDataArray
       } = destructuring(result)
       setDynamicCompanyComparison(companyComparisonData)
       setDynamicPeersComparison(peersComparisonDataArray)
-      setDynamicHeader(header)
+      setDynamicHeader(headers)
       setIsLoading(false)
     } catch (_error) {
-      setDynamicCompanyComparison({})
-      setDynamicPeersComparison([])
-      setDynamicHeader([])
+      setDefaultValues()
       setIsLoading(false)
     }
   }
 
   return {
-    metric,
+    metrics,
     calendarYear,
     investYear,
     dynamicHeader,
     dynamicCompanyComparison,
     dynamicPeersComparison,
     IsLoading,
-    setMetric,
+    setMetrics,
     setCalendarYear,
     setInvestYear
   }
@@ -70,11 +75,11 @@ function destructuring (result) {
   const {
     company_comparison_data: companyComparisonData,
     peers_comparison_data: peersComparisonDataArray,
-    header
+    headers
   } = result
   return {
     companyComparisonData,
     peersComparisonDataArray,
-    header: header
+    headers
   }
 }

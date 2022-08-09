@@ -51,17 +51,17 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
   // eslint-disable-next-line no-unused-vars
   const [__, setType] = useState('calendar')
   const {
-    metric,
+    metrics,
     calendarYear,
     investYear,
     dynamicHeader,
     dynamicCompanyComparison,
     dynamicPeersComparison,
     isLoading,
-    setMetric,
+    setMetrics,
     setCalendarYear,
     setInvestYear
-  } = useDynamicReport({ fromUniverseOverview, selectedMetric: 'None', selectedCalendarYear: 'None', selectedInvestYear: 'None' })
+  } = useDynamicReport({ fromUniverseOverview, selectedMetrics: ['None'], selectedCalendarYear: 'None', selectedInvestYear: 'None' })
   const classes = useStyles()
 
   const onYearChange = (value, type) => {
@@ -81,15 +81,20 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
   }
 
   const onMetricChange = (value) => {
-    if (value === 'None') {
-      return setMetric('None')
+    if (metrics.includes('None') && value.includes('None')) {
+      const newMetrics = value.filter(metric => metric !== 'None')
+      setMetrics(newMetrics)
+    } else if (!metrics.includes('None') && value.includes('None')) {
+      setMetrics(['None'])
+    } else {
+      setMetrics(value)
     }
-    const selectedMetric = getSelectedMetric(value)
-    return setMetric(selectedMetric.name)
   }
 
   const getCellValue = (row, header, index) => {
-    return row?.metrics && index >= 1 ? getFormatValue(row.metrics[header], header) : getFormatValue(row[header], header)
+    return row?.metrics && index >= 1
+      ? getFormatValue(row.metrics[header], header)
+      : getFormatValue(row[header], header)
   }
 
   const getColumnValue = (column) => {
@@ -99,15 +104,16 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
   }
 
   const getFormatValue = (value, header) => {
+    if (value == null) {
+      return 'NA'
+    }
     if (value === 'NA' || isNaN(value)) {
       return value
     }
-    if (metric !== 'None') {
-      const selectedMetric = getSelectedMetric(metric)
+    if (!metrics.includes('None') && metrics.length !== 0) {
+      const selectedMetric = getSelectedMetric(header)
       return selectedMetric?.position === 'left' ? `${selectedMetric?.symbol} ${value}` : `${value} ${selectedMetric?.symbol}`
     }
-    const selectedMetric = getSelectedMetric(header)
-    return selectedMetric?.position === 'left' ? `${selectedMetric?.symbol} ${value}` : `${value} ${selectedMetric?.symbol}`
   }
 
   return (
@@ -129,9 +135,10 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
         <Box sx={{ marginTop: 25 }}>
             <MetricSelector
               nameOfSelect="Metric"
-              metric={metric}
+              metric={metrics}
               onChange={(event) => onMetricChange(event.target.value)}
               needEmptyValue={true}
+              fromDynamicReport={true}
             />
         </Box>
         <Box>
@@ -159,7 +166,10 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
                           {dynamicHeader.map((header, index) => (
                             <TableCell key={index} align="left"
                             className={header === 'name' ? classes.stickyCompany : classes.stickyFirstRow}
-                            style={(calendarYear !== 'None' && metric === 'None') || (investYear !== 'None' && metric === 'None') ? { top: '105px' } : { top: '56.5px' }}
+                            style={
+                              (calendarYear !== 'None' && metrics.includes('None')) || (investYear !== 'None' && metrics.includes('None'))
+                                ? { top: '105px' }
+                                : { top: '56.5px' }}
                             >
                               {getCellValue(dynamicCompanyComparison, header, index)}
                             </TableCell>
