@@ -31,13 +31,6 @@ describe('companyDetails service', () => {
 
       expect(axios.get).toHaveBeenCalledWith(`${companiesUrl}/${COMPANIESDETAILS.id}?limit=10&offset=10&ordered=true`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
     })
-
-    it('API call successful should return company details when undefined props', async () => {
-      axios.get.mockResolvedValueOnce(COMPANIESDETAILS)
-      await getCompanyDetails({ selectedCompanyID: COMPANIESDETAILS.id })
-
-      expect(axios.get).toHaveBeenCalledWith(`${companiesUrl}/${COMPANIESDETAILS.id}?limit=&offset=&ordered=`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
-    })
   })
 
   describe('get company investments', () => {
