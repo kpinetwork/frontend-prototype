@@ -7,13 +7,16 @@ const dynamicReportUrl = `${baseUrl}/dynamic_report`
 
 export const getDynamicReport = async (options) => {
   const headers = await getAuthorizationHeader()
-  const { company_id: id, metric, calendarYear, investYear, ...filters } = options
-  const response = await axios.get(`${dynamicReportUrl}/${id}?metric=${metric}&calendar_year=${calendarYear}&investment_year=${investYear}`, {
-    params: {
-      ...filters
-    },
-    headers: headers
-  })
+  const { company_id: id, metrics, calendarYear, investYear, ...filters } = options
+  const response = await axios.get(
+    `${dynamicReportUrl}/${id}?metrics=${metrics}&calendar_year=${calendarYear}&investment_year=${investYear}&new=true`,
+    {
+      params: {
+        ...filters
+      },
+      headers: headers
+    }
+  )
   const data = await response.data
   return data
 }

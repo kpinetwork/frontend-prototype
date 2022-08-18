@@ -34,8 +34,8 @@ const useDynamicReportResponse = {
   dynamicPeersComparison: companies,
   investYear: 'None',
   calendarYear: 2020,
-  metric: 'actuals_revenue',
-  setMetric: jest.fn(),
+  metrics: ['actuals_revenue'],
+  setMetrics: jest.fn(),
   setCalendarYear: jest.fn(),
   setInvestYear: jest.fn()
 }
@@ -65,17 +65,17 @@ describe('<DynamicReport />', () => {
   })
 
   describe('actions', () => {
-    it('should change to calendar year report when click select none metric', async () => {
+    it('should change metrics to only none value when click select none metric', async () => {
       useDynamicReport.mockImplementation(() => useDynamicReportResponse)
       setUp()
 
       await userEvent.click(getByRole(screen.getByTestId('metric-selector'), 'button'))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'None' })))
 
-      expect(useDynamicReportResponse.setMetric).toHaveBeenCalledWith('None')
+      expect(useDynamicReportResponse.setMetrics).toHaveBeenCalledWith(['None'])
     })
 
-    it('should change investment year report when select invest year', async () => {
+    it('should change dynamic report when select invest year', async () => {
       useDynamicReport.mockImplementation(() => useDynamicReportResponse)
       setUp()
 
@@ -85,7 +85,7 @@ describe('<DynamicReport />', () => {
       expect(useDynamicReportResponse.setInvestYear).toHaveBeenCalledWith(0)
     })
 
-    it('should change calendar year report when select calendar year', async () => {
+    it('should change dynamic report report when select calendar year', async () => {
       useDynamicReport.mockImplementation(() => useDynamicReportResponse)
       setUp()
 
@@ -95,14 +95,26 @@ describe('<DynamicReport />', () => {
       expect(useDynamicReportResponse.setInvestYear).toHaveBeenCalled()
     })
 
-    it('should change metric report when select metric', async () => {
+    it('should change dynamic report when change metric selected from None to valid metrics', async () => {
+      useDynamicReport.mockImplementation(() => ({ ...useDynamicReportResponse, metrics: ['None'] }))
+      setUp()
+
+      await userEvent.click(getByRole(screen.getByTestId('metric-selector'), 'button'))
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Rule of 40' })))
+
+      expect(useDynamicReportResponse.setMetrics).toHaveBeenCalledWith(['rule_of_40'])
+    })
+
+    it('should change dynamic report when change metric selected with valid options', async () => {
       useDynamicReport.mockImplementation(() => useDynamicReportResponse)
       setUp()
 
       await userEvent.click(getByRole(screen.getByTestId('metric-selector'), 'button'))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Rule of 40' })))
 
-      expect(useDynamicReportResponse.setMetric).toHaveBeenCalledWith('rule_of_40')
+      expect(useDynamicReportResponse.setMetrics).toHaveBeenCalledWith(
+        [...useDynamicReportResponse.metrics, 'rule_of_40']
+      )
     })
 
     it('get value when is not metric report', async () => {
@@ -115,45 +127,12 @@ describe('<DynamicReport />', () => {
       expect(useDynamicReportResponse.setInvestYear).toHaveBeenCalled()
     })
 
-    it('should return metric report', async () => {
-      useDynamicReport.mockImplementation(() => (
-        {
-          ...useDynamicReportResponse,
-          metric: 'rule_of_40',
-          dynamicHeader: ['name', 2021, 2020],
-          dynamicCompanyComparison: {
-            id: '123',
-            name: 'Sample Company',
-            metrics: {
-              2021: 19,
-              2020: -6
-            }
-          },
-          dynamicPeersComparison: [{
-            id: '122',
-            name: 'Sample Company',
-            metrics: {
-              2021: 19,
-              2020: -6
-            }
-          }]
-        }))
-      setUp({ fromUniverseOverview: false })
-
-      await userEvent.click(getByRole(screen.getByTestId('calendar-year-selector'), 'button'))
-      await waitFor(() => userEvent.click(screen.getByRole('option', { name: '2022' })))
-
-      expect(useDynamicReportResponse.setInvestYear).toHaveBeenCalled()
-      expect(screen.getByText('2021')).toBeInTheDocument()
-      expect(screen.getByRole('columnheader', { name: '2020' })).toBeInTheDocument()
-    })
-
-    it('should return calendar year report', async () => {
+    it('should return dynamic report with correct metric', async () => {
       useDynamicReport.mockImplementation(() => (
         {
           ...useDynamicReportResponse,
           dynamicHeader: ['name', 'rule_of_40'],
-          metric: 'None',
+          metrics: ['rule_of_40'],
           dynamicCompanyComparison: {
             id: '123',
             name: 'ABC Company',
@@ -167,8 +146,30 @@ describe('<DynamicReport />', () => {
         }))
       setUp()
 
-      expect(screen.getAllByText('None')).toHaveLength(2)
+      expect(screen.getAllByText('Rule of 40')).toHaveLength(2)
+      expect(screen.getAllByText('None')).toHaveLength(1)
       expect(screen.getAllByText('90')).toHaveLength(2)
+    })
+
+    it('should return dynamic report with NA metric value when there is no data', async () => {
+      useDynamicReport.mockImplementation(() => (
+        {
+          ...useDynamicReportResponse,
+          dynamicHeader: ['name', 'rule_of_40'],
+          metrics: ['rule_of_40'],
+          dynamicCompanyComparison: {
+            id: '123',
+            name: 'ABC Company',
+            rule_of_40: 90
+          },
+          dynamicPeersComparison: [{
+            id: '122',
+            name: 'Sample Company'
+          }]
+        }))
+      setUp()
+
+      expect(screen.getAllByText('NA')).toHaveLength(1)
     })
   })
 })
