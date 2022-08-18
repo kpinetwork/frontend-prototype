@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Grid, Button, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, TableFooter, Checkbox } from '@material-ui/core'
+import { Box, Grid, Button, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, TableFooter, TableSortLabel, Checkbox } from '@material-ui/core'
 import { ScenarioForm } from './ScenarioForm'
 import { ScenariosModal } from './ScenariosModal'
 import { Add, DeleteOutlined } from '@material-ui/icons'
@@ -30,6 +30,14 @@ const useStyles = makeStyles((theme) => ({
   roleName: {
     marginRight: 10,
     textTransform: 'capitalize'
+  },
+  icon: {
+    color: '#3f51b5',
+    fill: '#3f51b5',
+    '&:hover': {
+      color: 'white',
+      fill: 'white'
+    }
   }
 }))
 
@@ -49,8 +57,10 @@ export function ScenariosTab () {
     company,
     total,
     page,
+    orderDirection,
     handleChangePage,
     handleChangeRowsPerPage,
+    handleSortScenarios,
     addScenario,
     deleteScenarios
   } = useScenariosTable()
@@ -203,7 +213,14 @@ export function ScenariosTab () {
                 { openDelete &&
                   <TableCell className={classes.head}></TableCell>
                 }
-                <TableCell className={classes.head}>Scenario</TableCell>
+                <TableCell className={classes.head}>Scenario
+                  <TableSortLabel
+                      classes={{ icon: classes.icon }}
+                      active={true}
+                      direction={orderDirection}
+                      onClick={handleSortScenarios}
+                  />
+                </TableCell>
                 <TableCell className={classes.head}>Metric</TableCell>
                 <TableCell className={classes.head}>Year</TableCell>
                 <TableCell className={classes.head}>Value</TableCell>
@@ -244,7 +261,7 @@ export function ScenariosTab () {
             <TableFooter>
               <TableRow>
               <TablePagination
-                  colSpan={4}
+                  colSpan={openDelete ? 5 : 4}
                   count={total}
                   rowsPerPage={rowsPerPage}
                   page={page}
