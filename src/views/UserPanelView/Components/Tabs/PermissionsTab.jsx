@@ -6,8 +6,7 @@ import { Alert } from '@aws-amplify/ui-react'
 export function PermissionsTab ({ rootClass, permissionClass, permissions, setOpenPermissions, roles }) {
   const verifyAdminRole = () => {
     if (roles) {
-      const _roles = roles || []
-      return _roles && _roles.includes('admin')
+      return roles && roles.includes('admin')
     }
     return false
   }
