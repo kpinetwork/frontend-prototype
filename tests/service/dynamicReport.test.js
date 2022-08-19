@@ -32,7 +32,7 @@ const companies = [
 ]
 
 const getDynamicReportResponse = {
-  header: ['name', 'actuals-revenue'],
+  header: ['name', 'actuals_revenue'],
   company_comparison_data: companies[0],
   peers_comparison_data: companies
 }
@@ -41,9 +41,9 @@ describe('fetchMetricReport', () => {
   describe('when API call is successful', () => {
     it('should return metric report', async () => {
       axios.get.mockResolvedValueOnce(getDynamicReportResponse)
-      await getDynamicReport({ metric: 'revenue-actuals', company_id: '123', calendarYear: '2020' })
+      await getDynamicReport({ metrics: 'actuals_revenue', company_id: '123', calendarYear: '2020' })
 
-      expect(axios.get).toHaveBeenCalledWith(`${dynamicReportUrl}/123?metric=revenue-actuals&calendar_year=2020&investment_year=undefined`,
+      expect(axios.get).toHaveBeenCalledWith(`${dynamicReportUrl}/123?metrics=actuals_revenue&calendar_year=2020&investment_year=undefined&new=true`,
         { headers: { Authorization: null, 'Content-Type': 'application/json' }, params: { } })
     })
   })

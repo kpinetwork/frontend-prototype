@@ -34,7 +34,7 @@ export const useCalendarReport = ({ fromUniverseOverview, selectedYear }) => {
     setIsLoading(false)
   }
 
-  const downloadComparisonCsv = async (year) => {
+  const downloadComparisonCsv = async () => {
     let options = { year, from_main: fromUniverseOverview, ...filters }
     if (!fromUniverseOverview && companyID) {
       options = { company_id: companyID, ...options }

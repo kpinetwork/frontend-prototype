@@ -17,7 +17,7 @@ module.exports = {
     '^@components(.*)$': '<rootDir>/src/components$1'
   },
 
-  // modulePaths: ['src'],
+  setupFilesAfterEnv: ['<rootDir>/setup-jest.js'],
 
   transform: {
     '\\.[jt]sx?$': 'babel-jest'

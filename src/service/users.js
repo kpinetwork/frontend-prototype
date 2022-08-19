@@ -28,11 +28,8 @@ export const getUserDetails = async (email) => {
 
 export const getRoles = async () => {
   const headers = await getAuthorizationHeader()
-  const response = await fetch(rolesUrl, {
-    method: 'GET',
-    headers: headers
-  })
-  const data = await response.json()
+  const response = await axios.get(rolesUrl, { headers })
+  const data = await response.data
   return data
 }
 
