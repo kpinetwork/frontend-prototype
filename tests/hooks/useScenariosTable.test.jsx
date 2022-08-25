@@ -37,7 +37,7 @@ describe('useScenariosTable', () => {
       hookResponse = renderHook(() => useScenariosTable(), { wrapper })
     })
 
-    expect(hookResponse.result.current.rowsPerPage).toEqual(10)
+    expect(hookResponse.result.current.rowsPerPage).toEqual(100)
     expect(hookResponse.result.current.page).toEqual(0)
     expect(hookResponse.result.current.scenarios).toEqual(COMPANIESDETAILS.scenarios.metrics)
     expect(hookResponse.result.current.total).toEqual(COMPANIESDETAILS.scenarios.metrics.length)
@@ -52,7 +52,7 @@ describe('useScenariosTable', () => {
       hookResponse = renderHook(() => useScenariosTable(), { wrapper })
     })
 
-    expect(hookResponse.result.current.rowsPerPage).toEqual(10)
+    expect(hookResponse.result.current.rowsPerPage).toEqual(100)
     expect(hookResponse.result.current.page).toEqual(0)
     expect(hookResponse.result.current.scenarios).toEqual([])
     expect(hookResponse.result.current.total).toEqual(0)
@@ -71,7 +71,7 @@ describe('useScenariosTable', () => {
       hookResponse.result.current.handleChangePage({}, 1)
     })
 
-    expect(hookResponse.result.current.rowsPerPage).toEqual(10)
+    expect(hookResponse.result.current.rowsPerPage).toEqual(100)
     expect(hookResponse.result.current.page).toEqual(1)
   })
 
@@ -91,7 +91,7 @@ describe('useScenariosTable', () => {
       hookResponse.result.current.handleChangePage({}, 0)
     })
 
-    expect(hookResponse.result.current.rowsPerPage).toEqual(10)
+    expect(hookResponse.result.current.rowsPerPage).toEqual(100)
     expect(hookResponse.result.current.page).toEqual(0)
   })
 
@@ -112,7 +112,7 @@ describe('useScenariosTable', () => {
       hookResponse.result.current.handleChangePage({}, 1)
     })
 
-    expect(hookResponse.result.current.rowsPerPage).toEqual(10)
+    expect(hookResponse.result.current.rowsPerPage).toEqual(100)
     expect(hookResponse.result.current.page).toEqual(1)
   })
 

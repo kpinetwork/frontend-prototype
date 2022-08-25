@@ -112,7 +112,7 @@ export function CompaniesPanelTable () {
           {isLoading &&
             <TableBody>
               <TableRow>
-                <TableCell colSpan={4}>
+                <TableCell colSpan={5}>
                   <LoadingProgress />
                 </TableCell>
             </TableRow>

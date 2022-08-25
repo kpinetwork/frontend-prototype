@@ -68,7 +68,14 @@ const columns = [
   { field: 'gross_margin', headerName: 'Gross margin', width: 120, align: 'center', needsTooltip: false },
   { field: 'sales_and_marketing', headerName: 'Sales & marketing as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
   { field: 'research_and_development', headerName: 'Research & development as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
-  { field: 'general_and_admin', headerName: 'General & administration as percentage of revenue', width: 180, align: 'center', needsTooltip: false }
+  { field: 'general_and_admin', headerName: 'General & administration as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
+  { field: 'clv_cac_ratio', headerName: 'CLV/CAC ratio', width: 120, align: 'center', needsTooltip: false },
+  { field: 'cac_ratio', headerName: 'CAC ratio', width: 120, align: 'center', needsTooltip: false },
+  { field: 'opex_of_revenue', headerName: 'Opex as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
+  { field: 'revenue_per_employee', headerName: 'Revenue per employee', width: 180, align: 'center', needsTooltip: false },
+  { field: 'gross_retention', headerName: 'Gross retention', width: 120, align: 'center', needsTooltip: false },
+  { field: 'net_retention', headerName: 'Net retention', width: 120, align: 'center', needsTooltip: false },
+  { field: 'new_bookings_growth', headerName: 'New bookings growth', width: 120, align: 'center', needsTooltip: false }
 ]
 
 const INITIAL_DATA = [
@@ -85,7 +92,14 @@ const INITIAL_DATA = [
   { id: 11, key: 'gross_margin', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 12, key: 'sales_and_marketing', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 12, key: 'research_and_development', value: '', sign: '%', position: 'right', align: 'center' },
-  { id: 12, key: 'general_and_admin', value: '', sign: '%', position: 'right', align: 'center' }
+  { id: 12, key: 'general_and_admin', value: '', sign: '%', position: 'right', align: 'center' },
+  { id: 13, key: 'clv_cac_ratio', value: '', sign: '', position: 'right', align: 'center' },
+  { id: 14, key: 'cac_ratio', value: '', sign: '', position: 'right', align: 'center' },
+  { id: 16, key: 'opex_of_revenue', value: '', sign: '%', position: 'right', align: 'center' },
+  { id: 17, key: 'revenue_per_employee', value: '', sign: '$', position: 'left', align: 'center' },
+  { id: 18, key: 'gross_retention', value: '', sign: '%', position: 'right', align: 'center' },
+  { id: 19, key: 'net_retention', value: '', sign: '%', position: 'right', align: 'center' },
+  { id: 20, key: 'new_bookings_growth', value: '', sign: '%', position: 'right', align: 'center' }
 ]
 
 const ExportOption = ({ buttonClass, isLoading, downloading, saveComparisonReport }) => {
@@ -257,6 +271,13 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                       <TableCell align="center">{getPercentageValues(row.sales_and_marketing)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.research_and_development)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.general_and_admin)}</TableCell>
+                      <TableCell align="center">{row.clv_cac_ratio !== null ? row.clv_cac_ratio : 'NA'}</TableCell>
+                      <TableCell align="center">{row.cac_ratio !== null ? row.cac_ratio : 'NA'}</TableCell>
+                      <TableCell align="center">{getPercentageValues(row.opex_of_revenue)}</TableCell>
+                      <TableCell align="center">{getRevenueValue(row.revenue_per_employee)}</TableCell>
+                      <TableCell align="center">{getPercentageValues(row.gross_retention)}</TableCell>
+                      <TableCell align="center">{getPercentageValues(row.net_retention)}</TableCell>
+                      <TableCell align="center">{getPercentageValues(row.new_bookings_growth)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
