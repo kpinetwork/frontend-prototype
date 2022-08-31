@@ -49,7 +49,6 @@ describe('<DynamicReport />', () => {
       const header = screen.getByRole('row', { name: 'Name Revenue - actual' })
 
       expect(screen.getByText('Metric')).toBeInTheDocument()
-      expect(screen.getByText('Investment Year')).toBeInTheDocument()
       expect(screen.getByText('Calendar Year')).toBeInTheDocument()
       expect(screen.getAllByRole('row')).toHaveLength(2 + companies.length)
       expect(header).toBeInTheDocument()
@@ -75,16 +74,6 @@ describe('<DynamicReport />', () => {
       expect(useDynamicReportResponse.setMetrics).toHaveBeenCalledWith(['None'])
     })
 
-    it('should change dynamic report when select invest year', async () => {
-      useDynamicReport.mockImplementation(() => useDynamicReportResponse)
-      setUp()
-
-      await userEvent.click(getByRole(screen.getByTestId('investment-year-selector'), 'button'))
-      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Year of investment' })))
-
-      expect(useDynamicReportResponse.setInvestYear).toHaveBeenCalledWith(0)
-    })
-
     it('should change dynamic report report when select calendar year', async () => {
       useDynamicReport.mockImplementation(() => useDynamicReportResponse)
       setUp()
@@ -92,7 +81,7 @@ describe('<DynamicReport />', () => {
       await userEvent.click(getByRole(screen.getByTestId('calendar-year-selector'), 'button'))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: '2022' })))
 
-      expect(useDynamicReportResponse.setInvestYear).toHaveBeenCalled()
+      expect(useDynamicReportResponse.setCalendarYear).toHaveBeenCalled()
     })
 
     it('should change dynamic report when change metric selected from None to valid metrics', async () => {
@@ -124,7 +113,7 @@ describe('<DynamicReport />', () => {
       await userEvent.click(getByRole(screen.getByTestId('calendar-year-selector'), 'button'))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: '2022' })))
 
-      expect(useDynamicReportResponse.setInvestYear).toHaveBeenCalled()
+      expect(useDynamicReportResponse.setCalendarYear).toHaveBeenCalled()
     })
 
     it('should return dynamic report with correct metric', async () => {
@@ -147,7 +136,6 @@ describe('<DynamicReport />', () => {
       setUp()
 
       expect(screen.getAllByText('Rule of 40')).toHaveLength(2)
-      expect(screen.getAllByText('None')).toHaveLength(1)
       expect(screen.getAllByText('90')).toHaveLength(2)
     })
 
