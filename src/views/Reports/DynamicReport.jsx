@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { YearSelector } from '../../components/YearSelector'
-import { InvestmentYearSelector } from '../../components/InvestmentYearSelector'
 import { MetricSelector } from '../../components/MetricSelector'
 import { METRICS, BY_YEAR_METRICS } from '../../utils/constants/Metrics'
 import { COMPANY_DESCRIPTION } from '../../utils/constants/CompanyDescription'
@@ -53,25 +52,17 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
   const {
     metrics,
     calendarYear,
-    investYear,
     dynamicHeader,
     dynamicCompanyComparison,
     dynamicPeersComparison,
     isLoading,
     setMetrics,
-    setCalendarYear,
-    setInvestYear
-  } = useDynamicReport({ fromUniverseOverview, selectedMetrics: ['None'], selectedCalendarYear: 'None', selectedInvestYear: 'None' })
+    setCalendarYear
+  } = useDynamicReport({ fromUniverseOverview, selectedMetrics: ['None'], selectedCalendarYear: 'None' })
   const classes = useStyles()
 
   const onYearChange = (value, type) => {
-    if (type === 'calendar') {
-      setCalendarYear(value)
-      setInvestYear('None')
-    } else {
-      setInvestYear(value)
-      setCalendarYear('None')
-    }
+    setCalendarYear(value)
     setType(type)
   }
 
@@ -125,12 +116,6 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
               onChange={(event) => onYearChange(event.target.value, 'calendar')}
               needEmptyValue={true}
             />
-            <InvestmentYearSelector
-              nameOfSelect="Investment Year"
-              year={investYear}
-              onChange={(event) => onYearChange(event.target.value, 'investment')}
-              needEmptyValue={true}
-            />
         </Box>
         <Box sx={{ marginTop: 25 }}>
             <MetricSelector
@@ -167,7 +152,7 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
                             <TableCell key={index} align="left"
                             className={header === 'name' ? classes.stickyCompany : classes.stickyFirstRow}
                             style={
-                              (calendarYear !== 'None' && metrics.includes('None')) || (investYear !== 'None' && metrics.includes('None'))
+                              (calendarYear !== 'None' && metrics.includes('None'))
                                 ? { top: '105px' }
                                 : { top: '56.5px' }}
                             >
