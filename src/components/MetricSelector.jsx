@@ -1,6 +1,7 @@
 import React from 'react'
 import { Select, makeStyles, MenuItem, InputLabel, FormControl, Box } from '@material-ui/core'
 import { METRICS } from './../utils/constants/Metrics'
+import { isEmptyObject } from '../utils/userFunctions'
 
 const useStyles = makeStyles({
   select: {
@@ -48,7 +49,9 @@ const grossProfitOption = {
   position: 'left'
 }
 
-export const MetricSelector = ({ nameOfSelect, metric, onChange, needEmptyValue, fromDynamicReport = false }) => {
+export const MetricSelector = (
+  { nameOfSelect, metric, onChange, needEmptyValue, customStyle = null, fromDynamicReport = false }
+) => {
   const classes = useStyles()
 
   const getMetricsOptions = () => {
@@ -67,7 +70,10 @@ export const MetricSelector = ({ nameOfSelect, metric, onChange, needEmptyValue,
   }
 
   return (
-    <Box style={{ marginBottom: 60, marginLeft: 10 }}>
+    <Box style={ customStyle && !isEmptyObject(customStyle)
+      ? customStyle
+      : { marginBottom: 60, marginLeft: 10 }}
+    >
       <FormControl sx={{ m: 1, minWidth: 220 }}>
       <InputLabel id='metric-label'>{nameOfSelect}</InputLabel>
       <Select
