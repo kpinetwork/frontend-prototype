@@ -61,5 +61,9 @@ export const COMPANY_DESCRIPTION = [
   {
     name: 'sector',
     label: 'Sector'
+  },
+  {
+    name: 'metric name',
+    label: 'Metric'
   }
 ]
