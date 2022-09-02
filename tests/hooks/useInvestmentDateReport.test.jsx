@@ -99,7 +99,7 @@ describe('useInvestmentDateReport', () => {
     expect(hookResponse.result.current.investPeersComparison).toEqual([])
   })
 
-  it('metric report hook should return empty values when first metric is invalid', async () => {
+  it('invest report hook should return empty values when first metric is invalid', async () => {
     mockService({ ...getInvestDateReportResponse, company_comparison_data: {} })
     let hookResponse
 
