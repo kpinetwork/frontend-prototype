@@ -2,11 +2,10 @@ import { useContext, useEffect, useState } from 'react'
 import Context from '../context/appContext'
 import { getDynamicReport } from '../service/dynamicReport'
 
-export const useDynamicReport = ({ fromUniverseOverview, selectedMetrics, selectedCalendarYear, selectedInvestYear }) => {
+export const useDynamicReport = ({ fromUniverseOverview, selectedMetrics, selectedCalendarYear }) => {
   const { filters, companyID } = useContext(Context).filterFields
   const [metrics, setMetrics] = useState(selectedMetrics)
   const [calendarYear, setCalendarYear] = useState(selectedCalendarYear)
-  const [investYear, setInvestYear] = useState(selectedInvestYear)
   const [dynamicHeader, setDynamicHeader] = useState([])
   const [dynamicCompanyComparison, setDynamicCompanyComparison] = useState({})
   const [dynamicPeersComparison, setDynamicPeersComparison] = useState([])
@@ -14,22 +13,21 @@ export const useDynamicReport = ({ fromUniverseOverview, selectedMetrics, select
 
   useEffect(() => {
     const newCalendarYear = calendarYear !== 'None' ? calendarYear : ''
-    const newInvestYear = investYear !== 'None' ? investYear : ''
     const newMetrics = metrics && !metrics.includes('None') ? metrics.join(',') : ''
 
-    if ((metrics == null || metrics.includes('None') || metrics.length === 0) || (calendarYear === 'None' && investYear === 'None')) {
+    if ((metrics == null || metrics.includes('None') || metrics.length === 0) || (calendarYear === 'None')) {
       setDefaultValues()
       return
     }
     if (fromUniverseOverview) {
-      getReport({ metrics: newMetrics, calendarYear: newCalendarYear, investYear: newInvestYear, from_main: fromUniverseOverview, ...filters })
+      getReport({ metrics: newMetrics, calendarYear: newCalendarYear, investYear: '', from_main: fromUniverseOverview, ...filters })
     } else {
       if (companyID) {
         setIsLoading(true)
-        getReport({ company_id: companyID, metrics: newMetrics, calendarYear: newCalendarYear, investYear: newInvestYear, ...filters })
+        getReport({ company_id: companyID, metrics: newMetrics, calendarYear: newCalendarYear, investYear: '', ...filters })
       }
     }
-  }, [filters, metrics, calendarYear, investYear, companyID])
+  }, [filters, metrics, calendarYear, companyID])
 
   const setDefaultValues = () => {
     setDynamicCompanyComparison({})
@@ -60,14 +58,12 @@ export const useDynamicReport = ({ fromUniverseOverview, selectedMetrics, select
   return {
     metrics,
     calendarYear,
-    investYear,
     dynamicHeader,
     dynamicCompanyComparison,
     dynamicPeersComparison,
     IsLoading,
     setMetrics,
-    setCalendarYear,
-    setInvestYear
+    setCalendarYear
   }
 }
 
