@@ -6,7 +6,7 @@ import { getMetricsType } from '../service/metrics'
 const useScenariosTable = () => {
   const { selectedCompanyID } = useContext(Context).company
   const [offset, setOffset] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [rowsPerPage, setRowsPerPage] = useState(100)
   const [page, setPage] = useState(0)
   const [maxPage, setMaxPage] = useState(0)
   const [totalScenarios, setTotalScenarios] = useState([])
@@ -58,7 +58,7 @@ const useScenariosTable = () => {
       setLoading(true)
       const response = await addCompanyScenario(selectedCompanyID, scenario)
       setPage(0)
-      setRowsPerPage(10)
+      setRowsPerPage(100)
       setMaxPage(0)
       setScenarios([])
       initScenarios(limit, offset)
@@ -74,7 +74,7 @@ const useScenariosTable = () => {
       setLoading(true)
       const response = await deleteCompanyScenarios(selectedCompanyID, scenarios)
       setPage(0)
-      setRowsPerPage(10)
+      setRowsPerPage(100)
       setMaxPage(0)
       setScenarios([])
       initScenarios(limit, offset)

@@ -95,7 +95,7 @@ export function ScenariosTab () {
   const onSave = async () => {
     if (validScenario()) {
       validateScenario()
-      const response = await addScenario(scenario, 10, 0)
+      const response = await addScenario(scenario, 100, 0)
       if (!response) {
         setError('Something went wrong, the scenario could not be added, please try again')
       } else {
@@ -110,7 +110,7 @@ export function ScenariosTab () {
 
   const onDeleteModal = async () => {
     setOpenModal(false)
-    await deleteScenarios(selectedScenarios, 10, 0)
+    await deleteScenarios(selectedScenarios, 100, 0)
     setSelectedScenarios([])
     setOpenDelete(false)
   }

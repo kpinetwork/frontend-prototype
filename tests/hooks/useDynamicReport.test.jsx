@@ -74,12 +74,11 @@ describe('useMetricReport', () => {
     let hookResponse
 
     await act(async () => {
-      hookResponse = renderHook(() => useDynamicReport({ fromUniverseOverview: true, selectedMetrics: ['None'], selectedCalendarYear: 'None', selectedInvestYear: 'None' }), { wrapper })
+      hookResponse = renderHook(() => useDynamicReport({ fromUniverseOverview: true, selectedMetrics: ['None'], selectedCalendarYear: 'None' }), { wrapper })
     })
 
     expect(hookResponse.result.current.metrics).toEqual(['None'])
     expect(hookResponse.result.current.calendarYear).toEqual('None')
-    expect(hookResponse.result.current.investYear).toEqual('None')
     expect(hookResponse.result.current.dynamicHeader).toEqual([])
     expect(hookResponse.result.current.dynamicCompanyComparison).toEqual({})
     expect(hookResponse.result.current.dynamicPeersComparison).toEqual([])
@@ -90,12 +89,11 @@ describe('useMetricReport', () => {
     let hookResponse
 
     await act(async () => {
-      hookResponse = renderHook(() => useDynamicReport({ fromUniverseOverview: true, selectedMetrics: [], selectedCalendarYear: 2020, selectedInvestYear: 'None' }), { wrapper })
+      hookResponse = renderHook(() => useDynamicReport({ fromUniverseOverview: true, selectedMetrics: [], selectedCalendarYear: 2020 }), { wrapper })
     })
 
     expect(hookResponse.result.current.metrics).toEqual([])
     expect(hookResponse.result.current.calendarYear).toEqual(2020)
-    expect(hookResponse.result.current.investYear).toEqual('None')
     expect(hookResponse.result.current.dynamicHeader).toEqual([])
     expect(hookResponse.result.current.dynamicCompanyComparison).toEqual({})
     expect(hookResponse.result.current.dynamicPeersComparison).toEqual([])
