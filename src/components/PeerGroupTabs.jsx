@@ -50,6 +50,7 @@ export const PeerGroupTabs = ({ fromUniverseOverview }) => {
       <TabPanel value="4" >
         <Box>
           <InvestmentReport
+            fromUniverseOverview={fromUniverseOverview}
           />
         </Box>
       </TabPanel>

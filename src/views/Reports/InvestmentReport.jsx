@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import { METRICS, BY_YEAR_METRICS } from '../../utils/constants/Metrics'
 import { COMPANY_DESCRIPTION } from '../../utils/constants/CompanyDescription'
 import { isEmptyObject } from '../../utils/userFunctions'
+import { TwoMetricSelector } from '../../components/TwoMetricSelectors'
+import { useInvestmentDateReport } from '../../hooks/useInvestmentDateReport'
 import HeadBodyGrid from '../../components/BodyGrid'
 
 const useStyles = makeStyles(theme => ({
@@ -27,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     position: 'sticky',
     left: 0,
     background: '#dbdbdb',
-    top: '105px',
+    top: '57px',
     zIndex: 900
   },
   sticky: {
@@ -39,100 +41,39 @@ const useStyles = makeStyles(theme => ({
   stickyFirstRow: {
     zIndex: 800,
     position: 'sticky',
-    top: '105px',
+    top: '57px',
+    background: '#dbdbdb'
+  },
+  stickySecondRow: {
+    zIndex: 800,
+    position: 'sticky',
+    top: '114px',
     background: '#dbdbdb'
   }
 }))
 
-const fakeData = {
-  headers: ['id', 'name', 'metric name', 'Investment - 2', 'Investment - 1', 'Year of investment', 'Investment + 1', 'Investment + 2', 'Investment + 3'],
-  company_comparison_data: {
-    id: '221603b7-0263-4c47-83b3-00b41665faaa',
-    name: 'Apple',
-    metrics: [
-      {
-        metric_name: 'ebitda_margin',
-        2019: 'NA',
-        2020: '+$10k',
-        2021: 145,
-        2022: 'NA',
-        2023: 'NA',
-        2024: 'NA'
-      },
-      {
-        metric_name: 'rule_of_40',
-        2019: 37,
-        2020: 34,
-        2021: 83,
-        2022: 'NA',
-        2023: 'NA',
-        2024: 'NA'
-      }
-    ]
-  },
-  peers_comparison_data: [
-    {
-      id: '821603b7-0263-4c47-83b3-00b41665faaa',
-      name: 'Boxlight Corp',
-      metrics: [
-        {
-          metric_name: 'growth',
-          2019: 'NA',
-          2020: -8,
-          2021: 145,
-          2022: 'NA',
-          2023: 'NA',
-          2024: 'NA'
-        },
-        {
-          metric_name: 'actuals_revenue',
-          2019: 37,
-          2020: 34,
-          2021: 83,
-          2022: 'NA',
-          2023: 'NA',
-          2024: 'NA'
-        }
-      ]
-    },
-    {
-      id: '121603b7-0263-4c47-83b3-00b41665faaa',
-      name: 'Test company',
-      metrics: [
-        {
-          metric_name: 'actuals_customer_acquition_costs',
-          2019: 'NA',
-          2020: -8,
-          2021: 145,
-          2022: 'NA',
-          2023: 'NA',
-          2024: 'NA'
-        },
-        {
-          metric_name: 'actuals_ebitda',
-          2019: 37,
-          2020: 34,
-          2021: 83,
-          2022: 'NA',
-          2023: 'NA',
-          2024: 'NA'
-        }
-      ]
-    }
-  ]
-}
-export const InvestmentReport = () => {
+export const InvestmentReport = ({ fromUniverseOverview }) => {
+  const {
+    isLoading,
+    firstMetric,
+    secondMetric,
+    investHeaders,
+    investPeersComparison,
+    investCompanyComparison,
+    setFirstMetric,
+    setSecondMetric
+  } = useInvestmentDateReport({ fromUniverseOverview, selectedMetric: 'growth', secondSelectedMetric: 'ebitda_margin' })
   const classes = useStyles()
-  const isLoading = false
-  const fromUniverseOverview = false
-  const investmentHeader = fakeData.headers.splice(1)
-  const investmentCompanyComparison = fakeData.company_comparison_data
-  const investmentPeersComparison = fakeData.peers_comparison_data
 
   const getColumnValue = (column) => {
     const headers = [...COMPANY_DESCRIPTION, ...METRICS, ...BY_YEAR_METRICS]
     const header = headers.find(item => item.name === column)
     return header?.label || column
+  }
+
+  const getHeader = (headers) => {
+    const investmentHeader = [...headers]
+    return investmentHeader.splice(1)
   }
 
   const getMetricName = (cell) => {
@@ -142,8 +83,10 @@ export const InvestmentReport = () => {
   }
 
   const getMetricValues = (metric) => {
-    const { metric_name, ...metricValues } = metric
-    return Object.values(metricValues)
+    const values = { ...metric }
+    delete values.metric_name
+
+    return Object.values(values).splice(0, 6)
   }
 
   const getFormatValue = (value, name) => {
@@ -158,70 +101,110 @@ export const InvestmentReport = () => {
     return metric?.position === 'left' ? `${metric?.symbol} ${value}` : `${value} ${metric?.symbol}`
   }
 
+  const onMetricSelector = (value, selector) => {
+    if (value === secondMetric || value === firstMetric) {
+      setFirstMetric(value)
+      setSecondMetric('None')
+    } else if (selector === 'first') {
+      setFirstMetric(value)
+    } else if (selector === 'second') {
+      setSecondMetric(value)
+    }
+  }
+
+  const getValidPeer = (peer) => {
+    const defaultValues = Object.assign(...getHeader(investHeaders).splice(2).map(key => ({ [key]: 'NA' })))
+    const validPeer = { ...peer }
+    validPeer.metrics.map((metricObject, index) => {
+      if (Object.entries(metricObject).length === 0) {
+        const updatedMetrics = validPeer.metrics.filter((item) => Object.entries(item).length > 0)
+        validPeer.metrics = [...updatedMetrics, { metric_name: index === 0 ? firstMetric : secondMetric, ...defaultValues }]
+      }
+    })
+    return validPeer
+  }
+
+  const getTableRowsFromCompany = (peer, isPeerGroup) => {
+    if (Object.prototype.hasOwnProperty.call(peer, 'id')) {
+      const metricsLength = peer.metrics.length
+      const validPeer = getValidPeer(peer)
+      const tableRows = [
+      <TableRow
+        key={`${peer.id}-1`}
+        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+          <TableCell
+            rowSpan={metricsLength > 1 ? 2 : 1}
+            className={!isPeerGroup ? classes.stickyCompany : classes.sticky }
+          >{peer.name}</TableCell>
+          <TableCell
+            className={!isPeerGroup ? classes.stickyFirstRow : ''}
+          >{getMetricName(validPeer.metrics[0].metric_name)}</TableCell>
+          {getMetricValues(validPeer.metrics[0]).map((value, index) =>
+            <TableCell
+            key={index}
+            className={!isPeerGroup ? classes.stickyFirstRow : ''}
+            >{getFormatValue(value, validPeer.metrics[0].metric_name)}</TableCell>
+          )}
+      </TableRow>
+      ]
+      if (metricsLength > 1) {
+        tableRows.push(
+        <TableRow key={`${peer.id}-2`}>
+        <TableCell
+        className={!isPeerGroup ? classes.stickySecondRow : ''}
+        >
+          {getMetricName(validPeer.metrics[1].metric_name)}</TableCell>
+        {getMetricValues(validPeer.metrics[1]).map((value, index) =>
+          <TableCell
+          key={index}
+          className={!isPeerGroup ? classes.stickySecondRow : ''}
+          >{getFormatValue(value || 'NA', validPeer.metrics[1].metric_name)}</TableCell>
+        )}
+      </TableRow>
+        )
+      }
+
+      return tableRows
+    }
+  }
+
   return (
     <Box>
+        <Box>
+          <TwoMetricSelector
+            firstMetric={firstMetric}
+            secondMetric={secondMetric}
+            onMetricChange={(event, select) => onMetricSelector(event, select)}
+          />
+        </Box>
         <Box>
           <Box style={{ height: '50vh', display: 'grid', alignSelf: 'left', justifySelf: 'center' }}>
             {!isLoading
               ? <TableContainer component={Paper} >
-                  <Table>
+                  <Table stickyHeader>
                     <TableHead>
                       <TableRow>
-                        {investmentHeader.map((column, index) => {
+                        {getHeader(investHeaders).map((column, index) => {
                           return (
-                            <TableCell key={index} align={'left'} style={{ fontWeight: 'bold' }}
-                              // className={column === 'name' ? classes.stickyHeaderName : classes.stickyHeader}
+                            <TableCell
+                              key={index}
+                              align={'left'}
+                              style={{ fontWeight: 'bold' }}
+                              className={column === 'name' ? classes.stickyHeaderName : classes.stickyHeader}
                             >
                               {getColumnValue(column)}
                             </TableCell>
                           )
                         })}
                       </TableRow>
-                        { !fromUniverseOverview && !isEmptyObject(investmentCompanyComparison) &&
-                          <>
-                          <TableRow
-                            key={`${investmentCompanyComparison?.id}-1`}
-                            style={{ backgroundColor: '#cececeb9' }}
-                          >
-                            <TableCell key={`${investmentCompanyComparison?.id}-1-id`} rowSpan={2}>{investmentCompanyComparison.name}</TableCell>
-                            <TableCell key={`${investmentCompanyComparison?.id}-1-metric`} >{getMetricName(investmentCompanyComparison.metrics[0].metric_name)}</TableCell>
-                            {getMetricValues(investmentCompanyComparison.metrics[0]).map((value, index) =>
-                              <TableCell key={`${investmentCompanyComparison?.id}-${index}`}>{getFormatValue(value, investmentCompanyComparison.metrics[0].metric_name)}</TableCell>
-                            )}
-                          </TableRow>
-                          <TableRow
-                            key={`${investmentCompanyComparison?.id}-2`}
-                            style={{ backgroundColor: '#cececeb9' }}
-                          >
-                            <TableCell key={'metric'}>{getMetricName(investmentCompanyComparison.metrics[1].metric_name)}</TableCell>
-                            {getMetricValues(investmentCompanyComparison.metrics[1]).map((value, index) =>
-                              <TableCell key={index}>{getFormatValue(value, investmentCompanyComparison.metrics[0].metric_name)}</TableCell>
-                            )}
-                          </TableRow></>
-                        }
+                      { !fromUniverseOverview && !isEmptyObject(investCompanyComparison) &&
+                        getTableRowsFromCompany(investCompanyComparison, false)
+                      }
                     </TableHead>
                     <TableBody>
-                      {investmentPeersComparison.map((peer) => {
-                        console.log(peer)
-                        return (
-                          <>
-                          <TableRow
-                          key={`${peer.id}-1`}
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                            <TableCell key={`${peer.id}-id-1`} rowSpan={2}>{peer.name}</TableCell>
-                            <TableCell key={`${peer.id}-metric-1`}>{getMetricName(peer.metrics[0].metric_name)}</TableCell>
-                            {getMetricValues(peer.metrics[0]).map((value, index) =>
-                              <TableCell key={`${index}-${peer.id}-1`}>{getFormatValue(value, peer.metrics[0].metric_name)}</TableCell>
-                            )}
-                          </TableRow>
-                          <TableRow key={`${peer.id}-2`}>
-                              <TableCell key={`${peer.id}-metric-2`} >{getMetricName(peer.metrics[1].metric_name)}</TableCell>
-                            {getMetricValues(peer.metrics[1]).map((value, index) =>
-                              <TableCell key={`${index}-${peer.id}-2`}>{getFormatValue(value, peer.metrics[1].metric_name)}</TableCell>
-                            )}
-                            </TableRow></>
-                        )
-                      }
+                      {investPeersComparison.map(peer => (
+                        getTableRowsFromCompany(peer, true)
+                      )
                       )}
                     </TableBody>
                   </Table>
