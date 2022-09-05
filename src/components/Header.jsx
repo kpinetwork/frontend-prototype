@@ -88,8 +88,10 @@ const PageMenu = ({ onClose }) => {
 
 const ProfileMenu = ({ signOut, visible, onProfileClose }) => {
   const onSignOut = () => {
-    localStorage.removeItem('year')
-    localStorage.removeItem('filters')
+    const localItems = ['year', 'filters', 'calendarYear', 'metrics', 'metric', 'firstMetric', 'secondMetric']
+    localItems.map((item) =>
+      localStorage.removeItem(item)
+    )
     signOut()
   }
 

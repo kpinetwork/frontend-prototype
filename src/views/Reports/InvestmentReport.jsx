@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { METRICS, BY_YEAR_METRICS } from '../../utils/constants/Metrics'
@@ -7,6 +7,7 @@ import { COMPANY_DESCRIPTION } from '../../utils/constants/CompanyDescription'
 import { isEmptyObject } from '../../utils/userFunctions'
 import { TwoMetricSelector } from '../../components/TwoMetricSelectors'
 import { useInvestmentDateReport } from '../../hooks/useInvestmentDateReport'
+import { getLocalStorage, setLocalStorage } from '../../utils/useLocalStorage'
 import HeadBodyGrid from '../../components/BodyGrid'
 
 const useStyles = makeStyles(theme => ({
@@ -62,8 +63,26 @@ export const InvestmentReport = ({ fromUniverseOverview }) => {
     investCompanyComparison,
     setFirstMetric,
     setSecondMetric
-  } = useInvestmentDateReport({ fromUniverseOverview, selectedMetric: 'growth', secondSelectedMetric: 'ebitda_margin' })
+  } = useInvestmentDateReport({ fromUniverseOverview, selectedMetric: getLocalStorage('firstMetric') || 'growth', secondSelectedMetric: getLocalStorage('secondMetric') || 'ebitda_margin' })
   const classes = useStyles()
+
+  useEffect(() => {
+    const storeFirstMetric = getLocalStorage('firstMetric')
+    const storeSecondMetric = getLocalStorage('secondMetric')
+
+    if (storeFirstMetric) {
+      setFirstMetric(storeFirstMetric)
+    }
+
+    if (storeSecondMetric) {
+      setSecondMetric(storeSecondMetric)
+    }
+  }, [])
+
+  useEffect(() => {
+    setLocalStorage('firstMetric', firstMetric)
+    setLocalStorage('secondMetric', secondMetric)
+  }, [firstMetric, secondMetric])
 
   const getColumnValue = (column) => {
     const headers = [...COMPANY_DESCRIPTION, ...METRICS, ...BY_YEAR_METRICS]
