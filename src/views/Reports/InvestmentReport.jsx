@@ -29,8 +29,13 @@ const useStyles = makeStyles(theme => ({
     position: 'sticky',
     left: 0,
     background: '#dbdbdb',
-    top: '57px',
-    zIndex: 900
+    zIndex: 900,
+    [theme.breakpoints.down('md')]: {
+      top: '80px'
+    },
+    [theme.breakpoints.up('md')]: {
+      top: '57px'
+    }
   },
   sticky: {
     position: 'sticky',
@@ -41,14 +46,24 @@ const useStyles = makeStyles(theme => ({
   stickyFirstRow: {
     zIndex: 800,
     position: 'sticky',
-    top: '57px',
-    background: '#dbdbdb'
+    background: '#dbdbdb',
+    [theme.breakpoints.down('md')]: {
+      top: '80px'
+    },
+    [theme.breakpoints.up('md')]: {
+      top: '57px'
+    }
   },
   stickySecondRow: {
     zIndex: 800,
     position: 'sticky',
-    top: '114px',
-    background: '#dbdbdb'
+    background: '#dbdbdb',
+    [theme.breakpoints.down('md')]: {
+      top: '161px'
+    },
+    [theme.breakpoints.up('md')]: {
+      top: '114px'
+    }
   }
 }))
 
