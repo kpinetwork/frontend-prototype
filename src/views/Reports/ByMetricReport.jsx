@@ -6,7 +6,7 @@ import { useMetricReport } from '../../hooks/useMetricReport'
 import HeadBodyGrid from '../../components/BodyGrid'
 import { isEmptyObject } from '../../utils/userFunctions'
 import { METRICS } from '../../utils/constants/Metrics'
-import { getLocalStorage, setLocalStorage } from '../../utils/useLocalStorage'
+import { getFromLocalStorage, addToLocalStorage } from '../../utils/useLocalStorage'
 
 const useStyles = makeStyles(theme => ({
   stickyHeaderName: {
@@ -50,11 +50,11 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
     metricPeersComparison,
     metricIsLoading,
     setMetric
-  } = useMetricReport({ fromUniverseOverview, selectedMetric: JSON.parse(localStorage.getItem('metric')) || 'actuals_revenue' })
+  } = useMetricReport({ fromUniverseOverview, selectedMetric: getFromLocalStorage('metric') || 'actuals_revenue' })
   const classes = useStyles()
 
   useEffect(() => {
-    const storedMetric = getLocalStorage('metric')
+    const storedMetric = getFromLocalStorage('metric')
 
     if (storedMetric) {
       setMetric(storedMetric)
@@ -62,7 +62,7 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
   }, [])
 
   useEffect(() => {
-    setLocalStorage('metric', metric)
+    addToLocalStorage('metric', metric)
   }, [metric])
 
   const getColumns = () => {

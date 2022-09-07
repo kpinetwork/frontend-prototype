@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react'
 import { useIsAdmin } from '../hooks/useIsAdmin'
-import { getLocalStorage, setLocalStorage } from '../utils/useLocalStorage'
+import { getFromLocalStorage, addToLocalStorage } from '../utils/useLocalStorage'
 
 const INITIAL_FILTER_STATE = {
   sector: '',
@@ -24,8 +24,8 @@ export const AppContextProvider = ({ children }) => {
   const { isAdmin, isRoleLoading } = useIsAdmin()
 
   useEffect(() => {
-    const storedYear = getLocalStorage('year')
-    const storedFilters = getLocalStorage('filters')
+    const storedYear = getFromLocalStorage('year')
+    const storedFilters = getFromLocalStorage('filters')
     if (storedYear) {
       setYear(storedYear)
     }
@@ -35,8 +35,8 @@ export const AppContextProvider = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    setLocalStorage('year', year)
-    setLocalStorage('filters', filters)
+    addToLocalStorage('year', year)
+    addToLocalStorage('filters', filters)
   }, [filters, year])
 
   return (

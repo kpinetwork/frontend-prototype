@@ -3,7 +3,7 @@ import { Box } from '@material-ui/core'
 import { YearSelector } from '../../components/YearSelector'
 import { ComparisonView } from './../ComparisonView/ComparisonView'
 import { useCalendarReport } from '../../hooks/useCalendarReport'
-import { getLocalStorage, setLocalStorage } from '../../utils/useLocalStorage'
+import { getFromLocalStorage, addToLocalStorage } from '../../utils/useLocalStorage'
 
 export const ByYearReport = ({ fromUniverseOverview }) => {
   const [type, setType] = useState('calendar')
@@ -15,10 +15,10 @@ export const ByYearReport = ({ fromUniverseOverview }) => {
     calendarPeersLoading,
     setCalendarYear,
     downloadComparisonCsv
-  } = useCalendarReport({ fromUniverseOverview, selectedYear: JSON.parse(localStorage.getItem('year')) || new Date().getFullYear() })
+  } = useCalendarReport({ fromUniverseOverview, selectedYear: getFromLocalStorage('year') || new Date().getFullYear() })
 
   useEffect(() => {
-    const storedYear = getLocalStorage('year')
+    const storedYear = getFromLocalStorage('year')
 
     if (storedYear) {
       setCalendarYear(storedYear)
@@ -26,7 +26,7 @@ export const ByYearReport = ({ fromUniverseOverview }) => {
   }, [])
 
   useEffect(() => {
-    setLocalStorage('year', year)
+    addToLocalStorage('year', year)
   }, [year])
 
   const data = {

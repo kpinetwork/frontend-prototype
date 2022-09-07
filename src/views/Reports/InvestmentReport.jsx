@@ -7,7 +7,7 @@ import { COMPANY_DESCRIPTION } from '../../utils/constants/CompanyDescription'
 import { isEmptyObject } from '../../utils/userFunctions'
 import { TwoMetricSelector } from '../../components/TwoMetricSelectors'
 import { useInvestmentDateReport } from '../../hooks/useInvestmentDateReport'
-import { getLocalStorage, setLocalStorage } from '../../utils/useLocalStorage'
+import { getFromLocalStorage, addToLocalStorage } from '../../utils/useLocalStorage'
 import HeadBodyGrid from '../../components/BodyGrid'
 
 const useStyles = makeStyles(theme => ({
@@ -63,12 +63,12 @@ export const InvestmentReport = ({ fromUniverseOverview }) => {
     investCompanyComparison,
     setFirstMetric,
     setSecondMetric
-  } = useInvestmentDateReport({ fromUniverseOverview, selectedMetric: getLocalStorage('firstMetric') || 'growth', secondSelectedMetric: getLocalStorage('secondMetric') || 'ebitda_margin' })
+  } = useInvestmentDateReport({ fromUniverseOverview, selectedMetric: getFromLocalStorage('firstMetric') || 'growth', secondSelectedMetric: getFromLocalStorage('secondMetric') || 'ebitda_margin' })
   const classes = useStyles()
 
   useEffect(() => {
-    const storeFirstMetric = getLocalStorage('firstMetric')
-    const storeSecondMetric = getLocalStorage('secondMetric')
+    const storeFirstMetric = getFromLocalStorage('firstMetric')
+    const storeSecondMetric = getFromLocalStorage('secondMetric')
 
     if (storeFirstMetric) {
       setFirstMetric(storeFirstMetric)
@@ -80,8 +80,8 @@ export const InvestmentReport = ({ fromUniverseOverview }) => {
   }, [])
 
   useEffect(() => {
-    setLocalStorage('firstMetric', firstMetric)
-    setLocalStorage('secondMetric', secondMetric)
+    addToLocalStorage('firstMetric', firstMetric)
+    addToLocalStorage('secondMetric', secondMetric)
   }, [firstMetric, secondMetric])
 
   const getColumnValue = (column) => {

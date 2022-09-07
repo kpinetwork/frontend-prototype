@@ -7,7 +7,7 @@ import { METRICS, BY_YEAR_METRICS } from '../../utils/constants/Metrics'
 import { COMPANY_DESCRIPTION } from '../../utils/constants/CompanyDescription'
 import { isEmptyObject } from '../../utils/userFunctions'
 import { useDynamicReport } from '../../hooks/useDynamicReport'
-import { getLocalStorage, setLocalStorage } from '../../utils/useLocalStorage'
+import { getFromLocalStorage, addToLocalStorage } from '../../utils/useLocalStorage'
 import HeadBodyGrid from '../../components/BodyGrid'
 
 const useStyles = makeStyles(theme => ({
@@ -63,8 +63,8 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
   const classes = useStyles()
 
   useEffect(() => {
-    const storedMetrics = getLocalStorage('metrics')
-    const storedCalendarYear = getLocalStorage('calendarYear')
+    const storedMetrics = getFromLocalStorage('metrics')
+    const storedCalendarYear = getFromLocalStorage('calendarYear')
 
     if (storedMetrics) {
       setMetrics(storedMetrics)
@@ -76,8 +76,8 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
   }, [])
 
   useEffect(() => {
-    setLocalStorage('metrics', metrics)
-    setLocalStorage('calendarYear', calendarYear)
+    addToLocalStorage('metrics', metrics)
+    addToLocalStorage('calendarYear', calendarYear)
   }, [metrics, calendarYear])
 
   const onYearChange = (value, type) => {
