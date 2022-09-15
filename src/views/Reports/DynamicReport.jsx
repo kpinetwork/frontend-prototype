@@ -9,6 +9,7 @@ import { isEmptyObject } from '../../utils/userFunctions'
 import { useDynamicReport } from '../../hooks/useDynamicReport'
 import { getFromLocalStorage, addToLocalStorage } from '../../utils/useLocalStorage'
 import HeadBodyGrid from '../../components/BodyGrid'
+import CustomTooltipTitle from '../../components/CustomTooltip'
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -107,10 +108,23 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
       : getFormatValue(row[header], header)
   }
 
-  const getColumnValue = (column) => {
-    const headers = [...COMPANY_DESCRIPTION, ...METRICS, ...BY_YEAR_METRICS]
-    const header = headers.find(item => item.name === column)
-    return header?.label || column
+  const getColumnHeader = (column) => {
+    const header = [...COMPANY_DESCRIPTION, ...METRICS, ...BY_YEAR_METRICS].find(item => item.name === column)
+    if (isEmptyObject(header)) {
+      return { label: column, hoverText: null }
+    }
+    return header
+  }
+
+  const getColumnComponentValue = (column) => {
+    const header = getColumnHeader(column)
+    return header.hoverText == null
+      ? header.label
+      : <CustomTooltipTitle
+        name={header.label}
+        title={header.hoverText}
+        justifyContent={'flex-start'}
+      />
   }
 
   const getFormatValue = (value, header) => {
@@ -157,7 +171,7 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
                             <TableCell key={column} align={'left'} style={{ fontWeight: 'bold' }}
                               className={column === 'name' ? classes.stickyHeaderName : classes.stickyHeader}
                             >
-                              {getColumnValue(column)}
+                              {getColumnComponentValue(column)}
                             </TableCell>
                           )
                         })}
