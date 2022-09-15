@@ -107,6 +107,54 @@ export const METRICS = [
     hoverText: `${tooltipTitles.new_bookings} - actuals`
   },
   {
+    name: 'actuals_customer_lifetime_value',
+    label: 'CLV - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'actuals_customer_acquition_costs',
+    label: 'CAC - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'actuals_customer_annual_value',
+    label: 'CAV - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'actuals_run_rate_revenue',
+    label: 'Run rate revenue - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'actuals_headcount',
+    label: 'Headcount - actual',
+    symbol: '',
+    position: 'left'
+  },
+  {
+    name: 'actuals_losses_and_downgrades',
+    label: 'Losses and downgrades - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'actuals_upsells',
+    label: 'Upsells - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'actuals_new_bookings',
+    label: 'New bookings - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
     name: 'budget_revenue',
     label: 'Revenue - budget',
     symbol: '$',
@@ -203,6 +251,54 @@ export const METRICS = [
     symbol: '$',
     position: 'left',
     hoverText: `${tooltipTitles.new_bookings} - budget`
+  },
+  {
+    name: 'budget_customer_lifetime_value',
+    label: 'CLV - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'budget_customer_acquition_costs',
+    label: 'CAC - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'budget_customer_annual_value',
+    label: 'CAV - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'budget_run_rate_revenue',
+    label: 'Run rate revenue - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'budget_headcount',
+    label: 'Headcount - budget',
+    symbol: '',
+    position: 'left'
+  },
+  {
+    name: 'budget_losses_and_downgrades',
+    label: 'Losses and downgrades - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'budget_upsells',
+    label: 'Upsells - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'budget_new_bookings',
+    label: 'New bookings - budget',
+    symbol: '$',
+    position: 'left'
   },
   {
     name: 'growth',
