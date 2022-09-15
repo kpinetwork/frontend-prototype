@@ -43,6 +43,44 @@ describe('useScenariosTable', () => {
     expect(hookResponse.result.current.total).toEqual(COMPANIESDETAILS.scenarios.metrics.length)
   })
 
+  it('scenarios table should order scenarios when page is 0', async () => {
+    mockService(getCompanyDetails, COMPANIESDETAILS)
+    mockService(getMetricsType, metrics)
+    let hookResponse
+
+    await act(async () => {
+      hookResponse = renderHook(() => useScenariosTable(), { wrapper })
+    })
+
+    await act(async () => {
+      hookResponse.result.current.handleSortScenarios()
+    })
+
+    expect(hookResponse.result.current.orderDirection).toEqual('desc')
+    expect(hookResponse.result.current.page).toEqual(0)
+    expect(hookResponse.result.current.total).toEqual(2)
+  })
+
+  it('scenarios table should order scenarios when page is greater than 0', async () => {
+    mockService(getCompanyDetails, COMPANIESDETAILS)
+    mockService(getMetricsType, metrics)
+    let hookResponse
+
+    await act(async () => {
+      hookResponse = renderHook(() => useScenariosTable(), { wrapper })
+    })
+    await act(async () => {
+      hookResponse.result.current.handleChangePage({}, 1)
+    })
+    await act(async () => {
+      hookResponse.result.current.handleSortScenarios()
+    })
+
+    expect(hookResponse.result.current.orderDirection).toEqual('desc')
+    expect(hookResponse.result.current.page).toEqual(1)
+    expect(hookResponse.result.current.total).toEqual(2)
+  })
+
   it('scenarios table should catch errors', async () => {
     mockService(getCompanyDetails, 'error')
     mockService(getMetricsType, 'error')

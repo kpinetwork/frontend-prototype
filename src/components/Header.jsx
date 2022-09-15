@@ -88,8 +88,7 @@ const PageMenu = ({ onClose }) => {
 
 const ProfileMenu = ({ signOut, visible, onProfileClose }) => {
   const onSignOut = () => {
-    localStorage.removeItem('year')
-    localStorage.removeItem('filters')
+    localStorage.clear()
     signOut()
   }
 
