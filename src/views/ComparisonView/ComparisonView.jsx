@@ -69,13 +69,13 @@ const columns = [
   { field: 'sales_and_marketing', headerName: 'Sales & marketing as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
   { field: 'research_and_development', headerName: 'Research & development as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
   { field: 'general_and_admin', headerName: 'General & administration as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
-  { field: 'clv_cac_ratio', headerName: 'CLV/CAC ratio', width: 120, align: 'center', needsTooltip: false },
-  { field: 'cac_ratio', headerName: 'CAC ratio', width: 120, align: 'center', needsTooltip: false },
+  { field: 'clv_cac_ratio', headerName: 'CLV/CAC ratio', width: 120, align: 'center', needsTooltip: true },
+  { field: 'cac_ratio', headerName: 'CAC ratio', width: 120, align: 'center', needsTooltip: true },
   { field: 'opex_of_revenue', headerName: 'Opex as percentage of revenue', width: 180, align: 'center', needsTooltip: false },
-  { field: 'revenue_per_employee', headerName: 'Revenue per employee', width: 180, align: 'center', needsTooltip: false },
-  { field: 'gross_retention', headerName: 'Gross retention', width: 120, align: 'center', needsTooltip: false },
-  { field: 'net_retention', headerName: 'Net retention', width: 120, align: 'center', needsTooltip: false },
-  { field: 'new_bookings_growth', headerName: 'New bookings growth', width: 120, align: 'center', needsTooltip: false }
+  { field: 'revenue_per_employee', headerName: 'Revenue per employee', width: 180, align: 'center', needsTooltip: true },
+  { field: 'gross_retention', headerName: 'Gross retention', width: 120, align: 'center', needsTooltip: true },
+  { field: 'net_retention', headerName: 'Net retention', width: 120, align: 'center', needsTooltip: true },
+  { field: 'new_bookings_growth', headerName: 'New bookings growth', width: 120, align: 'center', needsTooltip: true }
 ]
 
 const INITIAL_DATA = [
