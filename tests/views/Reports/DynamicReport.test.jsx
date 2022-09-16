@@ -69,7 +69,7 @@ describe('<DynamicReport />', () => {
       setUp()
 
       await userEvent.click(getByRole(screen.getByTestId('metric-selector'), 'button'))
-      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'None' })))
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'None' })), { timeout: 3000 })
 
       expect(useDynamicReportResponse.setMetrics).toHaveBeenCalledWith(['None'])
     })
@@ -89,7 +89,7 @@ describe('<DynamicReport />', () => {
       setUp()
 
       await userEvent.click(getByRole(screen.getByTestId('metric-selector'), 'button'))
-      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Rule of 40' })))
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Rule of 40' })), { timeout: 3000 })
 
       expect(useDynamicReportResponse.setMetrics).toHaveBeenCalledWith(['rule_of_40'])
     })
@@ -99,7 +99,7 @@ describe('<DynamicReport />', () => {
       setUp()
 
       await userEvent.click(getByRole(screen.getByTestId('metric-selector'), 'button'))
-      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Rule of 40' })))
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Rule of 40' })), { timeout: 3000 })
 
       expect(useDynamicReportResponse.setMetrics).toHaveBeenCalledWith(
         [...useDynamicReportResponse.metrics, 'rule_of_40']
