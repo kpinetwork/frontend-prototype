@@ -1,4 +1,5 @@
 import React from 'react'
+import { Auth } from 'aws-amplify'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { UserGroupTabs } from '../../../../src/views/UserPanelView/Components/UserGroupTabs'
 import Context from '../../../../src/context/appContext'
@@ -9,6 +10,12 @@ const mockSetSelectedEmail = jest.fn()
 const props = {
   classes: {}
 }
+
+jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
+  getAccessToken: () => ({
+    getJwtToken: () => ('Secret-Token')
+  })
+})
 
 const setup = () => {
   render(<Context.Provider value={ { user: { selectedEmail, setSelectedEmail: mockSetSelectedEmail } }}>
