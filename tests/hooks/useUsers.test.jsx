@@ -13,10 +13,16 @@ jest.mock('./../../src/service/users')
 
 const usersResponse = {
   users: [
-    { email: 'user@test.com', roles: ['Admin'] }
+    { username: '01', email: 'user@test.com', roles: [] }
   ],
   token: null
 }
+
+const defaultProps = 'demo_admin_group'
+
+afterEach(() => {
+  jest.clearAllMocks()
+})
 
 const mockService = (response) => {
   getUsers.mockImplementation(() => {
@@ -34,7 +40,7 @@ describe('useUsers', () => {
     let hookResponse
 
     await act(async () => {
-      hookResponse = renderHook(() => useUsers())
+      hookResponse = renderHook(() => useUsers(defaultProps))
     })
 
     expect(hookResponse.result.current.users).toEqual(response.users)
@@ -46,7 +52,7 @@ describe('useUsers', () => {
     let hookResponse
 
     await act(async () => {
-      hookResponse = renderHook(() => useUsers())
+      hookResponse = renderHook(() => useUsers(defaultProps))
     })
 
     expect(hookResponse.result.current.users).toEqual([])
@@ -59,7 +65,7 @@ describe('useUsers', () => {
     let hookResponse
 
     await act(async () => {
-      hookResponse = renderHook(() => useUsers())
+      hookResponse = renderHook(() => useUsers(defaultProps))
     })
     await act(async () => {
       hookResponse.result.current.handleChangePage('', 1)
@@ -74,7 +80,7 @@ describe('useUsers', () => {
     let hookResponse
 
     await act(async () => {
-      hookResponse = renderHook(() => useUsers())
+      hookResponse = renderHook(() => useUsers(defaultProps))
     })
     await act(async () => {
       hookResponse.result.current.handleChangePage('', 1)
@@ -92,7 +98,7 @@ describe('useUsers', () => {
     let hookResponse
 
     await act(async () => {
-      hookResponse = renderHook(() => useUsers())
+      hookResponse = renderHook(() => useUsers(defaultProps))
     })
     await act(async () => {
       hookResponse.result.current.handleChangePage('', 1)
@@ -113,7 +119,7 @@ describe('useUsers', () => {
     let hookResponse
 
     await act(async () => {
-      hookResponse = renderHook(() => useUsers())
+      hookResponse = renderHook(() => useUsers(defaultProps))
     })
     await act(async () => {
       hookResponse.result.current.handleChangePage('', 1)
