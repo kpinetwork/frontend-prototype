@@ -3,12 +3,12 @@ import { Box, Tab } from '@material-ui/core'
 import { TabContext, TabList, TabPanel } from '@material-ui/lab'
 import { UsersPanelTable } from './UsersTable'
 
-export const GROUPROLES = {
+const GROUPROLES = {
   admins: { value: 'admin', label: 'Administrators' },
   customers: { value: 'customer', label: 'Customers' }
 }
 
-export function UserGroupsTabs ({ classes }) {
+export const UserGroupTabs = ({ classes }) => {
   const [value, setValue] = React.useState(GROUPROLES.admins.value)
 
   const handleChange = (event, newValue) => {

@@ -3,7 +3,7 @@ import { Grid, Box } from '@material-ui/core'
 import { AdminPanelContainer } from './../AdminPanel/AdminPanelContainer'
 import { TitlePanel } from './../AdminPanel/Components/TitlePanel'
 import { makeStyles } from '@material-ui/core/styles'
-import { UserGroupsTabs } from './Components/UserGroupTabs'
+import { UserGroupTabs } from './Components/UserGroupTabs'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +41,7 @@ export function UserPanelView () {
         <Box>
           <TitlePanel title="Users"/>
           <div>
-            <UserGroupsTabs classes={classes}/>
+            <UserGroupTabs classes={classes}/>
           </div>
         </Box>
       </AdminPanelContainer>
