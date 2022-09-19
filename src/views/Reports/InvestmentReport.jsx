@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { METRICS, BY_YEAR_METRICS } from '../../utils/constants/Metrics'
@@ -7,6 +7,7 @@ import { COMPANY_DESCRIPTION } from '../../utils/constants/CompanyDescription'
 import { isEmptyObject } from '../../utils/userFunctions'
 import { TwoMetricSelector } from '../../components/TwoMetricSelectors'
 import { useInvestmentDateReport } from '../../hooks/useInvestmentDateReport'
+import { getFromLocalStorage, addToLocalStorage } from '../../utils/useLocalStorage'
 import HeadBodyGrid from '../../components/BodyGrid'
 
 const useStyles = makeStyles(theme => ({
@@ -29,8 +30,13 @@ const useStyles = makeStyles(theme => ({
     position: 'sticky',
     left: 0,
     background: '#dbdbdb',
-    top: '57px',
-    zIndex: 900
+    zIndex: 900,
+    [theme.breakpoints.down('md')]: {
+      top: '80px'
+    },
+    [theme.breakpoints.up('md')]: {
+      top: '57px'
+    }
   },
   sticky: {
     position: 'sticky',
@@ -41,14 +47,24 @@ const useStyles = makeStyles(theme => ({
   stickyFirstRow: {
     zIndex: 800,
     position: 'sticky',
-    top: '57px',
-    background: '#dbdbdb'
+    background: '#dbdbdb',
+    [theme.breakpoints.down('md')]: {
+      top: '80px'
+    },
+    [theme.breakpoints.up('md')]: {
+      top: '57px'
+    }
   },
   stickySecondRow: {
     zIndex: 800,
     position: 'sticky',
-    top: '114px',
-    background: '#dbdbdb'
+    background: '#dbdbdb',
+    [theme.breakpoints.down('md')]: {
+      top: '161px'
+    },
+    [theme.breakpoints.up('md')]: {
+      top: '114px'
+    }
   }
 }))
 
@@ -62,8 +78,26 @@ export const InvestmentReport = ({ fromUniverseOverview }) => {
     investCompanyComparison,
     setFirstMetric,
     setSecondMetric
-  } = useInvestmentDateReport({ fromUniverseOverview, selectedMetric: 'growth', secondSelectedMetric: 'ebitda_margin' })
+  } = useInvestmentDateReport({ fromUniverseOverview, selectedMetric: getFromLocalStorage('firstMetric') || 'growth', secondSelectedMetric: getFromLocalStorage('secondMetric') || 'ebitda_margin' })
   const classes = useStyles()
+
+  useEffect(() => {
+    const storeFirstMetric = getFromLocalStorage('firstMetric')
+    const storeSecondMetric = getFromLocalStorage('secondMetric')
+
+    if (storeFirstMetric) {
+      setFirstMetric(storeFirstMetric)
+    }
+
+    if (storeSecondMetric) {
+      setSecondMetric(storeSecondMetric)
+    }
+  }, [])
+
+  useEffect(() => {
+    addToLocalStorage('firstMetric', firstMetric)
+    addToLocalStorage('secondMetric', secondMetric)
+  }, [firstMetric, secondMetric])
 
   const getColumnValue = (column) => {
     const headers = [...COMPANY_DESCRIPTION, ...METRICS, ...BY_YEAR_METRICS]

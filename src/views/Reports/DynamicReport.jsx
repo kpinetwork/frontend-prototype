@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { YearSelector } from '../../components/YearSelector'
@@ -7,7 +7,9 @@ import { METRICS, BY_YEAR_METRICS } from '../../utils/constants/Metrics'
 import { COMPANY_DESCRIPTION } from '../../utils/constants/CompanyDescription'
 import { isEmptyObject } from '../../utils/userFunctions'
 import { useDynamicReport } from '../../hooks/useDynamicReport'
+import { getFromLocalStorage, addToLocalStorage } from '../../utils/useLocalStorage'
 import HeadBodyGrid from '../../components/BodyGrid'
+import CustomTooltipTitle from '../../components/CustomTooltip'
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -61,6 +63,24 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
   } = useDynamicReport({ fromUniverseOverview, selectedMetrics: ['None'], selectedCalendarYear: 'None' })
   const classes = useStyles()
 
+  useEffect(() => {
+    const storedMetrics = getFromLocalStorage('metrics')
+    const storedCalendarYear = getFromLocalStorage('calendarYear')
+
+    if (storedMetrics) {
+      setMetrics(storedMetrics)
+    }
+
+    if (storedCalendarYear) {
+      setCalendarYear(storedCalendarYear)
+    }
+  }, [])
+
+  useEffect(() => {
+    addToLocalStorage('metrics', metrics)
+    addToLocalStorage('calendarYear', calendarYear)
+  }, [metrics, calendarYear])
+
   const onYearChange = (value, type) => {
     setCalendarYear(value)
     setType(type)
@@ -88,10 +108,23 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
       : getFormatValue(row[header], header)
   }
 
-  const getColumnValue = (column) => {
-    const headers = [...COMPANY_DESCRIPTION, ...METRICS, ...BY_YEAR_METRICS]
-    const header = headers.find(item => item.name === column)
-    return header?.label || column
+  const getColumnHeader = (column) => {
+    const header = [...COMPANY_DESCRIPTION, ...METRICS, ...BY_YEAR_METRICS].find(item => item.name === column)
+    if (isEmptyObject(header)) {
+      return { label: column, hoverText: null }
+    }
+    return header
+  }
+
+  const getColumnComponentValue = (column) => {
+    const header = getColumnHeader(column)
+    return header.hoverText == null
+      ? header.label
+      : <CustomTooltipTitle
+        name={header.label}
+        title={header.hoverText}
+        justifyContent={'flex-start'}
+      />
   }
 
   const getFormatValue = (value, header) => {
@@ -138,7 +171,7 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
                             <TableCell key={column} align={'left'} style={{ fontWeight: 'bold' }}
                               className={column === 'name' ? classes.stickyHeaderName : classes.stickyHeader}
                             >
-                              {getColumnValue(column)}
+                              {getColumnComponentValue(column)}
                             </TableCell>
                           )
                         })}
