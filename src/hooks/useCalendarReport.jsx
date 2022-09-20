@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import Context from '../context/appContext'
 import { getComparisonPeersFromQueryParams, downloadComparisonPeers } from '../service/comparisonPeers'
+import { addToLocalStorage } from '../utils/useLocalStorage'
 
 export const useCalendarReport = ({ fromUniverseOverview, selectedYear }) => {
   const [year, setCalendarYear] = useState(selectedYear)
@@ -21,7 +22,18 @@ export const useCalendarReport = ({ fromUniverseOverview, selectedYear }) => {
         getCalendarReport({ company_id: companyID, year, ...filters })
       }
     }
+    return () => setDefaultValues()
   }, [filters, year, companyID])
+
+  useEffect(() => {
+    addToLocalStorage('year', year)
+  }, [year])
+
+  const setDefaultValues = () => {
+    setCompanyComparison({})
+    setPeersComparison([])
+    setIsLoading(false)
+  }
 
   const getCalendarReport = async (options) => {
     const result = await getComparisonPeersFromQueryParams(options)

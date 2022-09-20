@@ -20,7 +20,16 @@ export const useCompanyReport = () => {
       getCompanyReport({ company_id: companyID, year, ...filters })
       setLocation(`/company-report/${companyID}`)
     }
+
+    return () => setDefaultValues()
   }, [filters, year, companyID])
+
+  const setDefaultValues = () => {
+    setDescription(null)
+    setFinancialProfile(null)
+    setPublicCompanies([])
+    setIsLoading(false)
+  }
 
   const getCompanies = async () => {
     try {

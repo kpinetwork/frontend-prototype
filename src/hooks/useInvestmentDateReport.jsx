@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import Context from '../context/appContext'
 import { getInvestmentDateReport } from '../service/investmentDateReport'
+import { addToLocalStorage } from '../utils/useLocalStorage'
 
 export const useInvestmentDateReport = ({ fromUniverseOverview, selectedMetric, secondSelectedMetric }) => {
   const { filters, companyID } = useContext(Context).filterFields
@@ -25,12 +26,20 @@ export const useInvestmentDateReport = ({ fromUniverseOverview, selectedMetric, 
         getInvestmentReport({ company_id: companyID, metrics: metrics, ...filters })
       }
     }
+
+    return () => setDefaultValues()
   }, [filters, firstMetric, secondMetric, companyID])
+
+  useEffect(() => {
+    addToLocalStorage('firstMetric', firstMetric)
+    addToLocalStorage('secondMetric', secondMetric)
+  }, [firstMetric, secondMetric])
 
   const setDefaultValues = () => {
     setInvestCompanyComparison({})
     setInvestPeersComparison([])
     setInvestHeaders([])
+    setIsLoading(false)
   }
 
   const getInvestmentReport = async (options) => {
@@ -49,7 +58,6 @@ export const useInvestmentDateReport = ({ fromUniverseOverview, selectedMetric, 
       setIsLoading(false)
     } catch (_error) {
       setDefaultValues()
-      setIsLoading(false)
     }
   }
 

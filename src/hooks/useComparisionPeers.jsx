@@ -16,7 +16,14 @@ export const useComparisonPeers = ({ fromUniverseOverview }) => {
         getComparisonPeers({ company_id: companyID, year, ...filters })
       }
     }
+
+    return () => setDefaultValues()
   }, [filters, year, companyID])
+
+  const setDefaultValues = () => {
+    setRuleOf40([])
+    setIsLoading(false)
+  }
 
   const getComparisonPeers = async (options) => {
     const result = await getComparisonPeersFromQueryParams(options)

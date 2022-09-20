@@ -20,7 +20,17 @@ const useUniverseOverview = () => {
     }
     setIsLoading(true)
     getUniverseOverview({ year, ...filters })
+
+    return () => setDefaultValues()
   }, [filters, year])
+
+  const setDefaultValues = () => {
+    setKpiAverage(null)
+    setCountBySize(null)
+    setGrowthAndMargin(null)
+    setExpectedGrowthAndMargin(null)
+    setIsLoading(false)
+  }
 
   const getUniverseOverview = async (options) => {
     const result = await getUniverseOverviewFromQueryParams(options)

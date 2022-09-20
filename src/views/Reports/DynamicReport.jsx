@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { YearSelector } from '../../components/YearSelector'
@@ -7,7 +7,7 @@ import { METRICS, BY_YEAR_METRICS } from '../../utils/constants/Metrics'
 import { COMPANY_DESCRIPTION } from '../../utils/constants/CompanyDescription'
 import { isEmptyObject } from '../../utils/userFunctions'
 import { useDynamicReport } from '../../hooks/useDynamicReport'
-import { getFromLocalStorage, addToLocalStorage } from '../../utils/useLocalStorage'
+import { getFromLocalStorage } from '../../utils/useLocalStorage'
 import HeadBodyGrid from '../../components/BodyGrid'
 import CustomTooltipTitle from '../../components/CustomTooltip'
 
@@ -49,8 +49,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const DynamicReport = ({ fromUniverseOverview }) => {
-  // eslint-disable-next-line no-unused-vars
-  const [__, setType] = useState('calendar')
   const {
     metrics,
     calendarYear,
@@ -60,30 +58,15 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
     isLoading,
     setMetrics,
     setCalendarYear
-  } = useDynamicReport({ fromUniverseOverview, selectedMetrics: ['None'], selectedCalendarYear: 'None' })
+  } = useDynamicReport({
+    fromUniverseOverview,
+    selectedMetrics: getFromLocalStorage('metrics') || ['None'],
+    selectedCalendarYear: getFromLocalStorage('calendarYear') || 'None'
+  })
   const classes = useStyles()
 
-  useEffect(() => {
-    const storedMetrics = getFromLocalStorage('metrics')
-    const storedCalendarYear = getFromLocalStorage('calendarYear')
-
-    if (storedMetrics) {
-      setMetrics(storedMetrics)
-    }
-
-    if (storedCalendarYear) {
-      setCalendarYear(storedCalendarYear)
-    }
-  }, [])
-
-  useEffect(() => {
-    addToLocalStorage('metrics', metrics)
-    addToLocalStorage('calendarYear', calendarYear)
-  }, [metrics, calendarYear])
-
-  const onYearChange = (value, type) => {
+  const onYearChange = (value, _type) => {
     setCalendarYear(value)
-    setType(type)
   }
 
   const getSelectedMetric = (metric) => {

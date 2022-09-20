@@ -1,5 +1,5 @@
-/* eslint-disable react/jsx-key */
-import React, { useEffect } from 'react'
+/* eslint-disable array-callback-return */
+import React from 'react'
 import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { METRICS, BY_YEAR_METRICS } from '../../utils/constants/Metrics'
@@ -7,7 +7,7 @@ import { COMPANY_DESCRIPTION } from '../../utils/constants/CompanyDescription'
 import { isEmptyObject } from '../../utils/userFunctions'
 import { TwoMetricSelector } from '../../components/TwoMetricSelectors'
 import { useInvestmentDateReport } from '../../hooks/useInvestmentDateReport'
-import { getFromLocalStorage, addToLocalStorage } from '../../utils/useLocalStorage'
+import { getFromLocalStorage } from '../../utils/useLocalStorage'
 import HeadBodyGrid from '../../components/BodyGrid'
 
 const useStyles = makeStyles(theme => ({
@@ -78,26 +78,12 @@ export const InvestmentReport = ({ fromUniverseOverview }) => {
     investCompanyComparison,
     setFirstMetric,
     setSecondMetric
-  } = useInvestmentDateReport({ fromUniverseOverview, selectedMetric: getFromLocalStorage('firstMetric') || 'growth', secondSelectedMetric: getFromLocalStorage('secondMetric') || 'ebitda_margin' })
+  } = useInvestmentDateReport({
+    fromUniverseOverview,
+    selectedMetric: getFromLocalStorage('firstMetric') || 'growth',
+    secondSelectedMetric: getFromLocalStorage('secondMetric') || 'ebitda_margin'
+  })
   const classes = useStyles()
-
-  useEffect(() => {
-    const storeFirstMetric = getFromLocalStorage('firstMetric')
-    const storeSecondMetric = getFromLocalStorage('secondMetric')
-
-    if (storeFirstMetric) {
-      setFirstMetric(storeFirstMetric)
-    }
-
-    if (storeSecondMetric) {
-      setSecondMetric(storeSecondMetric)
-    }
-  }, [])
-
-  useEffect(() => {
-    addToLocalStorage('firstMetric', firstMetric)
-    addToLocalStorage('secondMetric', secondMetric)
-  }, [firstMetric, secondMetric])
 
   const getColumnValue = (column) => {
     const headers = [...COMPANY_DESCRIPTION, ...METRICS, ...BY_YEAR_METRICS]
