@@ -11,7 +11,15 @@ const useCompanyPermissions = (username) => {
   useEffect(() => {
     setIsLoading(true)
     getCompanyPermissions(username)
+
+    return () => setDefaultValues()
   }, [changed])
+
+  const setDefaultValues = () => {
+    setPermissions([])
+    setIsLoading(false)
+    setUpdatingPermissions(false)
+  }
 
   const getCompanyPermissions = async (username) => {
     try {

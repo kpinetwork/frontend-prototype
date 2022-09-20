@@ -34,7 +34,21 @@ export const useEditModify = () => {
 
   useEffect(() => {
     getData()
+
+    return () => {
+      setCompanies([])
+      setDefaultValues()
+    }
   }, [reload, filters])
+
+  const setDefaultValues = () => {
+    setBody([])
+    setHead([])
+    setInitialData([])
+    setChangeObject({})
+    setAddObject({})
+    setDeleteObject({})
+  }
 
   const getBody = (bodyData) => {
     const values = Object.values(bodyData)
@@ -88,12 +102,7 @@ export const useEditModify = () => {
       setInitialData(getBody(bodyArray))
       buildErrorObject(getBody(bodyArray))
     } catch (_error) {
-      setBody([])
-      setHead([])
-      setInitialData([])
-      setChangeObject({})
-      setAddObject({})
-      setDeleteObject({})
+      setDefaultValues()
       setErrorMessage('Cannot get edit/modify data')
     }
     setLoading(false)

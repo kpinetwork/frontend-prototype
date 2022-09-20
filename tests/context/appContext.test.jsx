@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { Auth } from 'aws-amplify'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, cleanup } from '@testing-library/react'
 import Context, { AppContextProvider } from '../../src/context/appContext'
 
 jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
@@ -12,6 +12,8 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
     idToken: { payload: { 'cognito:groups': ['admin'] } }
   }
 })
+
+afterEach(cleanup)
 
 const localStorageMock = (store) => {
   return {
@@ -48,13 +50,13 @@ Object.defineProperty(window, 'localStorage', {
   value: localStorageMock({ year: '"2021"', filters: '{}' })
 })
 describe('<AppContextProvider />', () => {
-  it('provides expected Context to child elements', () => {
-    waitFor(() => {
+  it('provides expected Context to child elements', async () => {
+    await waitFor(() => {
       setUp()
     })
 
-    expect(screen.getByText('2022')).toBeInTheDocument()
-    expect(screen.getByText('is admin: false')).toBeInTheDocument()
-    expect(screen.getByText('is role loading: true')).toBeInTheDocument()
+    expect(screen.getByText('2021')).toBeInTheDocument()
+    expect(screen.getByText('is admin: true')).toBeInTheDocument()
+    expect(screen.getByText('is role loading: false')).toBeInTheDocument()
   })
 })
