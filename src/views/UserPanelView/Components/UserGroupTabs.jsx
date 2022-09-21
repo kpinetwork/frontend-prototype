@@ -23,7 +23,12 @@ export const UserGroupTabs = ({ classes }) => {
             <Tab label={GROUPROLES.customers.label} value={GROUPROLES.customers.value} />
           </TabList>
       </Box>
-      <TabPanel value={value} >
+      <TabPanel value={GROUPROLES.admins.value} >
+        <Box style={{ width: '100%' }}>
+          <UsersPanelTable classes={classes} roleValue={value}/>
+        </Box>
+      </TabPanel>
+      <TabPanel value={GROUPROLES.customers.value} >
         <Box style={{ width: '100%' }}>
           <UsersPanelTable classes={classes} roleValue={value}/>
         </Box>
