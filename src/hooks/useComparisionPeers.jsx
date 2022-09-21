@@ -26,12 +26,16 @@ export const useComparisonPeers = ({ fromUniverseOverview }) => {
   }
 
   const getComparisonPeers = async (options) => {
-    const result = await getComparisonPeersFromQueryParams(options)
-    const {
-      ruleOf40Array
-    } = destructuring(result)
-    setRuleOf40(ruleOf40Array)
-    setIsLoading(false)
+    try {
+      const result = await getComparisonPeersFromQueryParams(options)
+      const {
+        ruleOf40Array
+      } = destructuring(result)
+      setRuleOf40(ruleOf40Array)
+      setIsLoading(false)
+    } catch (_error) {
+      setDefaultValues()
+    }
   }
 
   const downloadComparisonCsv = async () => {

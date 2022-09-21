@@ -46,6 +46,18 @@ describe('<useCalendarReport/>', () => {
     expect(useCalendarReportResult.result.current.year).toBe('2021')
   })
 
+  it('useCalendarReport Hook render with empty values when api call fails', async () => {
+    mockComparisonService('error')
+    let useCalendarReportResult
+    await act(async () => {
+      useCalendarReportResult = renderHook(() => useCalendarReport({ fromUniverseOverview: false, selectedYear: '2021' }), { wrapper })
+    })
+
+    expect(useCalendarReportResult.result.current.companyComparison).toEqual({})
+    expect(useCalendarReportResult.result.current.peersComparison).toEqual([])
+    expect(useCalendarReportResult.result.current.calendarPeersLoading).toBeFalsy()
+  })
+
   it('return when year is null', async () => {
     let useCalendarReportResult
     await act(async () => {
@@ -55,7 +67,7 @@ describe('<useCalendarReport/>', () => {
     expect(useCalendarReportResult.result.current.year).toBe(null)
   })
 
-  it('getCalendarReport should be called when fromUniverseOverview is true', async () => {
+  it('getCalendarReport should be called when comes from UniverseOverview', async () => {
     mockComparisonService({ ...getCalendarResponse, company_comparison_data: {} })
     let useCalendarReportResult
     await act(async () => {
@@ -76,6 +88,22 @@ describe('<useCalendarReport/>', () => {
     expect(useCalendarReportResult.result.current.year).toBe('2021')
   })
 
+  it('hook should have empty values when there is no company id and comes from company report', async () => {
+    mockComparisonService(getCalendarResponse)
+    const wrapper = ({ children }) => (
+      <Context.Provider value={{ filterFields: { filters: {}, companyID: null } }}>
+          {children}
+      </Context.Provider>
+    )
+    let useCalendarReportResult
+    await act(async () => {
+      useCalendarReportResult = renderHook(() => useCalendarReport({ fromUniverseOverview: false, selectedYear: '2021' }), { wrapper })
+    })
+
+    expect(useCalendarReportResult.result.current.companyComparison).toEqual({})
+    expect(useCalendarReportResult.result.current.year).toBe('2021')
+  })
+
   it('downloadComparisoncsv is called when fromUniverseOverview is false', async () => {
     mockDownloadService('')
     let useCalendarReportResult
@@ -89,7 +117,7 @@ describe('<useCalendarReport/>', () => {
     expect(downloadComparisonPeers).toHaveBeenCalled()
   })
 
-  it('downloadComparisoncsv change options when fromUniverseOverview is true', async () => {
+  it('downloadComparisoncsv change options when comes from UniverseOverview', async () => {
     mockDownloadService('')
     let useCalendarReportResult
     await act(async () => {

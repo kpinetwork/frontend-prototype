@@ -33,20 +33,24 @@ const useUniverseOverview = () => {
   }
 
   const getUniverseOverview = async (options) => {
-    const result = await getUniverseOverviewFromQueryParams(options)
-    const {
-      kpiAverageArray,
-      countBySizeArray,
-      growthAndMarginObject,
-      expectedGrowthAndMarginObject,
-      revenueAndEbitdaObject
-    } = destructuring(result)
-    setKpiAverage(kpiAverageArray)
-    setCountBySize(countBySizeArray)
-    setGrowthAndMargin(growthAndMarginObject)
-    setExpectedGrowthAndMargin(expectedGrowthAndMarginObject)
-    setRevenueAndEbitda(revenueAndEbitdaObject)
-    setIsLoading(false)
+    try {
+      const result = await getUniverseOverviewFromQueryParams(options)
+      const {
+        kpiAverageArray,
+        countBySizeArray,
+        growthAndMarginObject,
+        expectedGrowthAndMarginObject,
+        revenueAndEbitdaObject
+      } = destructuring(result)
+      setKpiAverage(kpiAverageArray)
+      setCountBySize(countBySizeArray)
+      setGrowthAndMargin(growthAndMarginObject)
+      setExpectedGrowthAndMargin(expectedGrowthAndMarginObject)
+      setRevenueAndEbitda(revenueAndEbitdaObject)
+      setIsLoading(false)
+    } catch (_error) {
+      setDefaultValues()
+    }
   }
 
   return {

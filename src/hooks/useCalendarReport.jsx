@@ -18,7 +18,6 @@ export const useCalendarReport = ({ fromUniverseOverview, selectedYear }) => {
       getCalendarReport({ year, from_main: fromUniverseOverview, ...filters })
     } else {
       if (companyID) {
-        setIsLoading(true)
         getCalendarReport({ company_id: companyID, year, ...filters })
       }
     }
@@ -36,14 +35,19 @@ export const useCalendarReport = ({ fromUniverseOverview, selectedYear }) => {
   }
 
   const getCalendarReport = async (options) => {
-    const result = await getComparisonPeersFromQueryParams(options)
-    const {
-      companyComparisonData,
-      peersComparisonDataArray
-    } = destructuring(result)
-    setCompanyComparison(companyComparisonData)
-    setPeersComparison(peersComparisonDataArray)
-    setIsLoading(false)
+    try {
+      setIsLoading(true)
+      const result = await getComparisonPeersFromQueryParams(options)
+      const {
+        companyComparisonData,
+        peersComparisonDataArray
+      } = destructuring(result)
+      setCompanyComparison(companyComparisonData)
+      setPeersComparison(peersComparisonDataArray)
+      setIsLoading(false)
+    } catch (_error) {
+      setDefaultValues()
+    }
   }
 
   const downloadComparisonCsv = async () => {
