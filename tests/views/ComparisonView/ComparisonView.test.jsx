@@ -71,7 +71,7 @@ describe('<CompanyCard />', () => {
       })
 
       expect(screen.getByRole('table')).toBeInTheDocument()
-      expect(screen.getAllByRole('cell', { name: 'NA' })).toHaveLength(7)
+      expect(screen.getAllByRole('cell', { name: 'NA' })).toHaveLength(8)
     })
 
     it('render company metric values with NA or null', () => {
