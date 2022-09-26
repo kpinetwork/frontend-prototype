@@ -380,7 +380,7 @@ export const METRICS = [
   {
     name: 'debt_ebitda',
     label: 'Debt/ebitda ',
-    symbol: '$',
+    symbol: '%',
     position: 'right'
   }
 ]
