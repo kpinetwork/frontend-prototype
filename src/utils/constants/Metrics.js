@@ -145,6 +145,13 @@ export const METRICS = [
     hoverText: `${tooltipTitles.revenue} - budget`
   },
   {
+    name: 'budget_cost_of_goods',
+    label: 'Cost of goods - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: null
+  },
+  {
     name: 'budget_gross_profit',
     label: 'Gross profit - budget',
     symbol: '$',
