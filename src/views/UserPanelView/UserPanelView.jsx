@@ -40,9 +40,9 @@ export function UserPanelView () {
       <AdminPanelContainer initialTab="users">
         <Box>
           <TitlePanel title="Users"/>
-          <div>
+          <Box>
             <UserGroupTabs classes={classes}/>
-          </div>
+          </Box>
         </Box>
       </AdminPanelContainer>
     </Grid>

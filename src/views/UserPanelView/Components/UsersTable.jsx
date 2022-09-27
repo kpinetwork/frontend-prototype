@@ -9,7 +9,8 @@ import {
   Paper,
   Chip,
   TableFooter,
-  TablePagination
+  TablePagination,
+  Box
 } from '@material-ui/core'
 import LoadingProgress from './../../../components/Progress'
 import Context from '../../../context/appContext'
@@ -26,7 +27,7 @@ export function UsersPanelTable ({ classes, roleValue }) {
   }
 
   return (
-    <div className={classes.root}>
+    <Box className={classes.root}>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -86,6 +87,6 @@ export function UsersPanelTable ({ classes, roleValue }) {
           }
         </Table>
       </TableContainer>
-    </div>
+    </Box>
   )
 }

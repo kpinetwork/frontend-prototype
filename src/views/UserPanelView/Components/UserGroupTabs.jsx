@@ -15,7 +15,7 @@ export const UserGroupTabs = ({ classes }) => {
     setValue(newValue)
   }
   return (
-    <div>
+    <>
     <TabContext value={value}>
       <Box>
           <TabList onChange={handleChange} indicatorColor='primary'>
@@ -35,6 +35,6 @@ export const UserGroupTabs = ({ classes }) => {
       </TabPanel>
 
       </TabContext>
-    </div>
+    </>
   )
 }
