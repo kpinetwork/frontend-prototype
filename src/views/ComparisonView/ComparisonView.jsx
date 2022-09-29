@@ -75,7 +75,8 @@ const columns = [
   { field: 'revenue_per_employee', headerName: 'Revenue per employee', width: 180, align: 'center', needsTooltip: true },
   { field: 'gross_retention', headerName: 'Gross retention', width: 120, align: 'center', needsTooltip: true },
   { field: 'net_retention', headerName: 'Net retention', width: 120, align: 'center', needsTooltip: true },
-  { field: 'new_bookings_growth', headerName: 'New bookings growth', width: 120, align: 'center', needsTooltip: true }
+  { field: 'new_bookings_growth', headerName: 'New bookings growth', width: 120, align: 'center', needsTooltip: true },
+  { field: 'debt_ebitda', headerName: 'Debt/Ebitda', width: 120, align: 'center', needsTooltip: false }
 ]
 
 const INITIAL_DATA = [
@@ -99,7 +100,8 @@ const INITIAL_DATA = [
   { id: 17, key: 'revenue_per_employee', value: '', sign: '$', position: 'left', align: 'center' },
   { id: 18, key: 'gross_retention', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 19, key: 'net_retention', value: '', sign: '%', position: 'right', align: 'center' },
-  { id: 20, key: 'new_bookings_growth', value: '', sign: '%', position: 'right', align: 'center' }
+  { id: 20, key: 'new_bookings_growth', value: '', sign: '%', position: 'right', align: 'center' },
+  { id: 20, key: 'debt_ebitda', value: '', sign: '%', position: 'right', align: 'center' }
 ]
 
 const ExportOption = ({ buttonClass, isLoading, downloading, saveComparisonReport }) => {
@@ -278,6 +280,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                       <TableCell align="center">{getPercentageValues(row.gross_retention)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.net_retention)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.new_bookings_growth)}</TableCell>
+                      <TableCell align="center">{getPercentageValues(row.debt_ebitda)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
