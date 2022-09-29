@@ -12,7 +12,16 @@ export const useUserDetails = ({ email }) => {
     setIsLoading(true)
     getUserData(email)
     setDataChanged(false)
+
+    return () => setDefaultValues()
   }, [dataChanged])
+
+  const setDefaultValues = () => {
+    setUser({})
+    setRoles([])
+    setPermissions([])
+    setIsLoading(false)
+  }
 
   const getUserData = async (email) => {
     try {
@@ -28,10 +37,7 @@ export const useUserDetails = ({ email }) => {
       setPermissions(permissionsArray)
       setIsLoading(false)
     } catch (_error) {
-      setUser({})
-      setRoles([])
-      setPermissions([])
-      setIsLoading(false)
+      setDefaultValues()
     }
   }
 

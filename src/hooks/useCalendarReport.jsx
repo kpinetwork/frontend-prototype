@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import Context from '../context/appContext'
 import { getComparisonPeersFromQueryParams, downloadComparisonPeers } from '../service/comparisonPeers'
+import { addToLocalStorage } from '../utils/useLocalStorage'
 
 export const useCalendarReport = ({ fromUniverseOverview, selectedYear }) => {
   const [year, setCalendarYear] = useState(selectedYear)
@@ -17,21 +18,36 @@ export const useCalendarReport = ({ fromUniverseOverview, selectedYear }) => {
       getCalendarReport({ year, from_main: fromUniverseOverview, ...filters })
     } else {
       if (companyID) {
-        setIsLoading(true)
         getCalendarReport({ company_id: companyID, year, ...filters })
       }
     }
+    return () => setDefaultValues()
   }, [filters, year, companyID])
 
-  const getCalendarReport = async (options) => {
-    const result = await getComparisonPeersFromQueryParams(options)
-    const {
-      companyComparisonData,
-      peersComparisonDataArray
-    } = destructuring(result)
-    setCompanyComparison(companyComparisonData)
-    setPeersComparison(peersComparisonDataArray)
+  useEffect(() => {
+    addToLocalStorage('year', year)
+  }, [year])
+
+  const setDefaultValues = () => {
+    setCompanyComparison({})
+    setPeersComparison([])
     setIsLoading(false)
+  }
+
+  const getCalendarReport = async (options) => {
+    try {
+      setIsLoading(true)
+      const result = await getComparisonPeersFromQueryParams(options)
+      const {
+        companyComparisonData,
+        peersComparisonDataArray
+      } = destructuring(result)
+      setCompanyComparison(companyComparisonData)
+      setPeersComparison(peersComparisonDataArray)
+      setIsLoading(false)
+    } catch (_error) {
+      setDefaultValues()
+    }
   }
 
   const downloadComparisonCsv = async () => {

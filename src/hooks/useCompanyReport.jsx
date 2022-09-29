@@ -20,7 +20,18 @@ export const useCompanyReport = () => {
       getCompanyReport({ company_id: companyID, year, ...filters })
       setLocation(`/company-report/${companyID}`)
     }
+
+    return () => {
+      setPublicCompanies([])
+      setDefaultValues()
+    }
   }, [filters, year, companyID])
+
+  const setDefaultValues = () => {
+    setDescription(null)
+    setFinancialProfile(null)
+    setIsLoading(false)
+  }
 
   const getCompanies = async () => {
     try {
@@ -32,14 +43,18 @@ export const useCompanyReport = () => {
   }
 
   const getCompanyReport = async (options) => {
-    const result = await getCompanyReportFromQueryParams(options)
-    const {
-      descriptionArray,
-      financialProfileArray
-    } = destructuring(result)
-    setDescription(descriptionArray)
-    setFinancialProfile(financialProfileArray)
-    setIsLoading(false)
+    try {
+      const result = await getCompanyReportFromQueryParams(options)
+      const {
+        descriptionArray,
+        financialProfileArray
+      } = destructuring(result)
+      setDescription(descriptionArray)
+      setFinancialProfile(financialProfileArray)
+      setIsLoading(false)
+    } catch (_error) {
+      setDefaultValues()
+    }
   }
 
   return {
