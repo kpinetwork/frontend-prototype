@@ -9,38 +9,25 @@ import {
   Paper,
   Chip,
   TableFooter,
-  TablePagination
+  TablePagination,
+  Box
 } from '@material-ui/core'
 import LoadingProgress from './../../../components/Progress'
 import Context from '../../../context/appContext'
 import useUsers from './../../../hooks/useUsers'
 
-export function UsersPanelTable ({ classes }) {
-  const { users, isLoading, page, handleChangePage, rowsPerPage, setLocation } = useUsers()
+export function UsersPanelTable ({ classes, roleValue }) {
+  const { VITE_ENV: env } = import.meta.env
+  const groupRole = `${env}_${roleValue}_group`
+  const { users, isLoading, page, handleChangePage, rowsPerPage, setLocation } = useUsers({ groupRole })
   const { setSelectedEmail } = useContext(Context).user
 
   const changeRoute = () => {
     setLocation('/admin/users/detail/')
   }
 
-  const getRoles = (groups) => {
-    const roles = groups || []
-    return (
-      <div key={`roles-${groups}`} style={{ display: 'flex' }}>
-        {roles.map((role) => (
-          <Chip
-            key={role}
-            label={role}
-            variant="outlined"
-            className={classes.roleName}
-          />
-        ))}
-      </div>
-    )
-  }
-
   return (
-    <div className={classes.root}>
+    <Box className={classes.root}>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -62,7 +49,12 @@ export function UsersPanelTable ({ classes }) {
                   >
                     {user?.email}
                   </TableCell>
-                  <TableCell>{getRoles(user?.roles)}</TableCell>
+                  <TableCell>
+                    <Chip
+                    label={roleValue}
+                    variant="outlined"
+                    className={classes.roleName}
+                  /></TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -95,6 +87,6 @@ export function UsersPanelTable ({ classes }) {
           }
         </Table>
       </TableContainer>
-    </div>
+    </Box>
   )
 }

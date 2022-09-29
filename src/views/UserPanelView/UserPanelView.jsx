@@ -1,9 +1,9 @@
 import React from 'react'
 import { Grid, Box } from '@material-ui/core'
-import { UsersPanelTable } from './Components/UsersTable'
 import { AdminPanelContainer } from './../AdminPanel/AdminPanelContainer'
 import { TitlePanel } from './../AdminPanel/Components/TitlePanel'
 import { makeStyles } from '@material-ui/core/styles'
+import { UserGroupTabs } from './Components/UserGroupTabs'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +40,9 @@ export function UserPanelView () {
       <AdminPanelContainer initialTab="users">
         <Box>
           <TitlePanel title="Users"/>
-          <UsersPanelTable classes={classes}/>
+          <Box>
+            <UserGroupTabs classes={classes}/>
+          </Box>
         </Box>
       </AdminPanelContainer>
     </Grid>

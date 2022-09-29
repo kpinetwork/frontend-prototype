@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useLocation } from 'wouter'
 import { getUsers } from '../service/users'
 
-export const useUsers = () => {
+export const useUsers = ({ groupRole }) => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [users, setUsers] = useState([])
   const [token, setToken] = useState(null)
@@ -17,7 +17,7 @@ export const useUsers = () => {
     initUsers()
 
     return () => setDefaultValues()
-  }, [])
+  }, [groupRole])
 
   const setDefaultValues = () => {
     setUsers([])
@@ -45,14 +45,14 @@ export const useUsers = () => {
   }
 
   const initUsers = async () => {
-    const response = await getUsersData({ limit: rowsPerPage, tokens: token })
+    const response = await getUsersData({ limit: rowsPerPage, tokens: token, group: groupRole })
     setTotalUsers(response)
   }
 
   const callNextUsers = async (newPage) => {
     setPage(newPage)
     setMaxPage(newPage)
-    const response = await getUsersData({ limit: rowsPerPage, token })
+    const response = await getUsersData({ limit: rowsPerPage, token, group: groupRole })
     setTotalUsers([...totalUsers, ...response])
   }
 
