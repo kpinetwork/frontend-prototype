@@ -8,7 +8,14 @@ const useCompanyPanel = (options) => {
 
   useEffect(() => {
     getCompanyPanel(options)
+
+    return () => setDefaultValues()
   }, [])
+
+  const setDefaultValues = () => {
+    setCompanies([])
+    setIsLoading(false)
+  }
 
   const getCompanyPanel = async (options) => {
     setIsLoading(true)
@@ -23,8 +30,7 @@ const useCompanyPanel = (options) => {
       setIsLoading(false)
       return companiesArray
     } catch (_error) {
-      setCompanies([])
-      setIsLoading(false)
+      setDefaultValues()
       return []
     }
   }

@@ -15,7 +15,16 @@ export const useUsers = ({ groupRole }) => {
 
   useEffect(() => {
     initUsers()
+
+    return () => setDefaultValues()
   }, [groupRole])
+
+  const setDefaultValues = () => {
+    setUsers([])
+    setToken(null)
+    setIsLoading(false)
+    setTotalUsers([])
+  }
 
   const getUsersData = async (options) => {
     setIsLoading(true)
@@ -30,8 +39,7 @@ export const useUsers = ({ groupRole }) => {
       setIsLoading(false)
       return usersArray
     } catch (_error) {
-      setUsers([])
-      setIsLoading(false)
+      setDefaultValues()
       return []
     }
   }

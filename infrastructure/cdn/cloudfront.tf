@@ -50,6 +50,10 @@ resource "aws_cloudfront_distribution" "distribution" {
     min_ttl = 0
     default_ttl = 3600
     max_ttl = 86400
+    function_association {
+      event_type   = "viewer-response"
+      function_arn = aws_cloudfront_function.http_headers_cloudfront_function.arn
+    }
   }
 
   ordered_cache_behavior {
@@ -100,4 +104,12 @@ resource "aws_cloudfront_distribution" "distribution" {
 
 resource "aws_cloudfront_origin_access_identity" "web_distribution" {
   comment = "Managed by Terraform"
+}
+
+resource "aws_cloudfront_function" "http_headers_cloudfront_function" {
+  name    =  "${var.environment}_http_headers_cloudfront_function"
+  runtime = var.runtime
+  comment = "http headers function"
+  publish = true
+  code    = file("${path.module}/../../cloudfrontFunctions/httpHeaders.js")
 }

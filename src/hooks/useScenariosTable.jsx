@@ -20,7 +20,15 @@ const useScenariosTable = () => {
 
   useEffect(() => {
     initScenarios(rowsPerPage, offset)
+
+    return () => setDefaultValues()
   }, [])
+
+  const setDefaultValues = () => {
+    setScenarios([])
+    setTotal(0)
+    setLoading(false)
+  }
 
   const initScenarios = async (limit, offset) => {
     const response = await getScenarios({ limit, offset, ordered: isOrdered })
@@ -47,9 +55,8 @@ const useScenariosTable = () => {
       setLoading(false)
       return response.scenarios.metrics
     } catch (_error) {
-      setScenarios([])
-      setTotal(0)
-      setLoading(false)
+      setDefaultValues()
+      return []
     }
   }
 

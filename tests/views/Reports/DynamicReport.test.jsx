@@ -111,7 +111,7 @@ describe('<DynamicReport />', () => {
       setUp()
 
       await userEvent.click(getByRole(screen.getByTestId('calendar-year-selector'), 'button'))
-      await waitFor(() => userEvent.click(screen.getByRole('option', { name: '2022' })))
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: '2022' })), { timeout: 3000 })
 
       expect(useDynamicReportResponse.setCalendarYear).toHaveBeenCalled()
     })

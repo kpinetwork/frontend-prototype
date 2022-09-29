@@ -14,7 +14,15 @@ const useCompanyDetails = () => {
   useEffect(() => {
     getCompanyData()
     getInvestments()
+
+    return () => setDefaultValues()
   }, [])
+
+  const setDefaultValues = () => {
+    setCompany({})
+    setInvestments([])
+    setLoading(false)
+  }
 
   const getCompanyData = async () => {
     try {

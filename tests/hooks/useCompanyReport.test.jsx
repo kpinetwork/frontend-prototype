@@ -75,6 +75,22 @@ describe('useCompanyReport', () => {
     expect(useCompanyReportResult.result.current.year).toEqual('2022')
   })
 
+  it('useCompanyReport Hook should render with empty values when api call fails', async () => {
+    mockService(getPublicCompanies, getPublicCompaniesResponse)
+    mockService(getCompanyReportFromQueryParams, 'error')
+    let useCompanyReportResult
+    await act(async () => {
+      useCompanyReportResult = renderHook(() => useCompanyReport(), { wrapper })
+    })
+
+    expect(useCompanyReportResult.result.current.description).toEqual(null)
+    expect(useCompanyReportResult.result.current.publicCompanies).toEqual(getPublicCompaniesResponse.companies)
+    expect(useCompanyReportResult.result.current.financialProfile).toEqual(null)
+    expect(useCompanyReportResult.result.current.isLoading).toBeFalsy()
+    expect(useCompanyReportResult.result.current.companyID).toEqual('123')
+    expect(useCompanyReportResult.result.current.year).toEqual('2022')
+  })
+
   it('useCompanyReport Hook should catch getPublicCompanies error', async () => {
     mockService(getPublicCompanies, 'error')
     let useCompanyReportResult
@@ -82,9 +98,9 @@ describe('useCompanyReport', () => {
       useCompanyReportResult = renderHook(() => useCompanyReport(), { wrapper })
     })
 
-    expect(useCompanyReportResult.result.current.description).toEqual(getCompanyReportResponse.description)
+    expect(useCompanyReportResult.result.current.description).toEqual(null)
     expect(useCompanyReportResult.result.current.publicCompanies).toEqual([])
-    expect(useCompanyReportResult.result.current.financialProfile).toEqual(getCompanyReportResponse.financial_profile)
+    expect(useCompanyReportResult.result.current.financialProfile).toEqual(null)
     expect(useCompanyReportResult.result.current.isLoading).toBeFalsy()
     expect(useCompanyReportResult.result.current.companyID).toEqual('123')
     expect(useCompanyReportResult.result.current.year).toEqual('2022')
