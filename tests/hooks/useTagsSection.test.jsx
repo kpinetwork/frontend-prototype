@@ -1,7 +1,7 @@
 import { getPublicCompanies } from '../../src/service/company'
 import { renderHook, act } from '@testing-library/react-hooks'
 import { SAMPLECOMPANIES } from '../data/companies'
-import useTagsTable from '../../src/hooks/useTagsTable'
+import useTagsSection from '../../src/hooks/useTagsSections'
 
 const getPublicCompaniesResponse = {
   total: 10,
@@ -19,13 +19,13 @@ const mockService = (service, response) => {
   })
 }
 
-describe('useTagsTable', () => {
-  it('useTagsTable Hook should render', async () => {
+describe('useTagsForm', () => {
+  it('useTagsForm Hook should render', async () => {
     mockService(getPublicCompanies, getPublicCompaniesResponse)
     let hookResponse
 
     await act(async () => {
-      hookResponse = renderHook(() => useTagsTable())
+      hookResponse = renderHook(() => useTagsSection())
     })
     expect(hookResponse.result.current.companies).toEqual(getPublicCompaniesResponse.companies)
   })
@@ -34,7 +34,7 @@ describe('useTagsTable', () => {
     let hookResponse
 
     await act(async () => {
-      hookResponse = renderHook(() => useTagsTable())
+      hookResponse = renderHook(() => useTagsSection())
     })
 
     expect(hookResponse.result.current.companies).toEqual([])

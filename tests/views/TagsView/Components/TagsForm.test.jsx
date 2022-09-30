@@ -3,9 +3,6 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { TagsForm } from '../../../../src/views/TagsView/Components/TagsForm'
-import useTagsForm from '../../../../src/hooks/useTagsForm'
-
-jest.mock('../../../../src/hooks/useTagsForm')
 
 jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
   getAccessToken: () => ({
@@ -13,7 +10,7 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
   })
 })
 
-const hookResponse = {
+const defaultProps = {
   companies: [
     {
       id: '1',
@@ -23,19 +20,20 @@ const hookResponse = {
       id: '2',
       name: 'Sample Company'
     }
-  ]
+  ],
+  onCancel: jest.fn(),
+  onChange: jest.fn(),
+  onSave: jest.fn(),
+  tag: {}
 }
 
-const setUp = () => {
-  render(
-      <TagsForm />
-  )
+const setUp = (props) => {
+  render(<TagsForm {...defaultProps} {...props}/>)
 }
 
 describe('<TagsForm />', () => {
   describe('render', () => {
     it('Should render tags form', () => {
-      useTagsForm.mockImplementation(() => hookResponse)
       setUp()
 
       const addButton = screen.getByText('Add Tag')
@@ -58,8 +56,7 @@ describe('<TagsForm />', () => {
       const textfield = screen.getByRole('textbox')
 
       fireEvent.change(textfield, { target: { value: 'Education' } })
-
-      expect(screen.getByDisplayValue('Education')).toBeInTheDocument()
+      expect(defaultProps.onChange).toHaveBeenCalled()
     })
 
     it('should call onChange with autocomplete', () => {
@@ -70,7 +67,7 @@ describe('<TagsForm />', () => {
       fireEvent.keyDown(autocomplete, { key: 'ArrowDown' })
       fireEvent.keyDown(autocomplete, { key: 'Enter' })
 
-      expect(screen.getByText('Test Company')).toBeInTheDocument()
+      expect(defaultProps.onChange).toHaveBeenCalled()
     })
   })
 })

@@ -3,9 +3,9 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { TagsSectionView } from '../../../../src/views/TagsView/Components/TagsSectionView'
-import useTagsForm from '../../../../src/hooks/useTagsForm'
+import useTagsSections from '../../../../src/hooks/useTagsSections'
 
-jest.mock('../../../../src/hooks/useTagsForm')
+jest.mock('../../../../src/hooks/useTagsSections')
 
 jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
   getAccessToken: () => ({
@@ -31,6 +31,7 @@ const setUp = () => {
 describe('<TagsSectionView />', () => {
   describe('render', () => {
     it('Should render tags section view ', () => {
+      useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
       const addButton = screen.getByText('Add Tag')
@@ -45,7 +46,7 @@ describe('<TagsSectionView />', () => {
 
   describe('actions', () => {
     it('Should open form when click on Add Tag button', () => {
-      useTagsForm.mockImplementation(() => hookResponse)
+      useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
       fireEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
@@ -56,6 +57,7 @@ describe('<TagsSectionView />', () => {
     })
 
     it('Should close form when click on Cancel', async () => {
+      useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
       fireEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
@@ -66,6 +68,7 @@ describe('<TagsSectionView />', () => {
     })
 
     it('Should enable edition when click on Edit Tags button', () => {
+      useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
       fireEvent.click(screen.getByRole('button', { name: 'Edit Tags' }))
@@ -74,6 +77,7 @@ describe('<TagsSectionView />', () => {
     })
 
     it('Should disable edition when click on cancel', () => {
+      useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
       fireEvent.click(screen.getByRole('button', { name: 'Edit Tags' }))
@@ -84,6 +88,7 @@ describe('<TagsSectionView />', () => {
     })
 
     it('Should edit data when click on save before click on Edit tags', () => {
+      useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
       fireEvent.click(screen.getByRole('button', { name: 'Edit Tags' }))
@@ -94,6 +99,7 @@ describe('<TagsSectionView />', () => {
     })
 
     it('Should enable deletion when click on Delete Tags button', () => {
+      useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
       fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))
@@ -105,6 +111,7 @@ describe('<TagsSectionView />', () => {
     })
 
     it('Should disable deletion when click on Cancel', () => {
+      useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
       fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))
@@ -115,6 +122,7 @@ describe('<TagsSectionView />', () => {
     })
 
     it('Should delete tags when click on Save', () => {
+      useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
       fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))

@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Box, FormControl, FormLabel, makeStyles, TextField, Card, CardHeader, Typography } from '@material-ui/core'
 import Autocomplete from '@mui/material/Autocomplete'
 import { CardActions } from '@mui/material'
 import ButtonActions from '../../../components/Actions'
-import useTagsForm from '../../../hooks/useTagsForm'
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -44,14 +43,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export function TagsForm ({ onCancel, error, onSave }) {
+export function TagsForm ({ onCancel, onSave, onChange, companies, tag }) {
   const classes = useStyles()
-  const [tag, setTag] = useState({})
-  const { companies } = useTagsForm()
-
-  const onChange = (event, type) => {
-    setTag({ ...tag, [type]: event?.target?.value })
-  }
 
   return (
         <Card className={classes.form}>

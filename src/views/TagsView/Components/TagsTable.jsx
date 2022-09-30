@@ -3,7 +3,6 @@ import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { DataGrid, useGridApiContext } from '@mui/x-data-grid'
 import { Select, MenuItem } from '@mui/material'
-import useTagsTable from '../../../hooks/useTagsTable'
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -23,8 +22,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const CustomCompaniesEditCell = (params) => <CustomEditComponent {...params} />
-
 const rows = [
   {
     id: 1,
@@ -43,7 +40,7 @@ const rows = [
   }
 ]
 
-const getColumns = (isEditable) => {
+const getColumns = (isEditable, companies) => {
   return [
     {
       field: 'tag',
@@ -59,14 +56,13 @@ const getColumns = (isEditable) => {
       sortable: false,
       flex: 1,
       editable: isEditable,
-      renderEditCell: CustomCompaniesEditCell
+      renderEditCell: (params) => <CustomEditComponent {...params} companies={companies}/>
     }
   ]
 }
 
 function CustomEditComponent (props) {
-  const { id, value, field } = props
-  const { companies } = useTagsTable()
+  const { id, value, field, companies } = props
   const apiRef = useGridApiContext()
 
   const handleChange = async (event) => {
@@ -96,14 +92,15 @@ function CustomEditComponent (props) {
   )
 }
 
-export function TagsTable ({ isEditable }) {
+export function TagsTable ({ isEditable, companies }) {
   const classes = useStyles()
   return (
       <Box className={classes.box}>
         <DataGrid
           disableColumnMenu
+          disableSelectionOnClick={!isEditable}
           autoHeight
-          columns={getColumns(isEditable)}
+          columns={getColumns(isEditable, companies)}
           rows={rows}
         />
         </Box>

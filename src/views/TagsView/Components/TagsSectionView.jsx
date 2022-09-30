@@ -5,6 +5,7 @@ import { Add, DeleteOutlined, EditOutlined } from '@material-ui/icons'
 import { TagsForm } from './TagsForm'
 import { TagsTable } from './TagsTable'
 import ButtonActions from '../../../components/Actions'
+import useTagsSection from '../../../hooks/useTagsSections'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,11 +27,20 @@ export function TagsSectionView () {
   const [openAdd, setOpenAdd] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
+  const [tag, setTag] = useState({})
+  const { companies } = useTagsSection()
+
+  const onChange = (event, type) => {
+    setTag({ ...tag, [type]: event?.target?.value })
+  }
 
   return (
         <Box className={classes.root}>
             {openAdd &&
               <TagsForm
+                tag={tag}
+                onChange={onChange}
+                companies={companies}
                 onCancel={() => {
                   setOpenAdd(false)
                 }}
@@ -95,7 +105,7 @@ export function TagsSectionView () {
                 />
                 </Box>
             }
-            <TagsTable isEditable={openEdit}/>
+            <TagsTable isEditable={openEdit} companies={companies}/>
         </Box>
   )
 }

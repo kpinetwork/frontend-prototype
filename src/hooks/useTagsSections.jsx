@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getPublicCompanies } from '../service/company'
 
-const useTagsForm = () => {
+const useTagsSection = () => {
   const [companies, setCompanies] = useState([])
 
   useEffect(() => {
@@ -23,4 +23,4 @@ const useTagsForm = () => {
   }
 }
 
-export default useTagsForm
+export default useTagsSection
