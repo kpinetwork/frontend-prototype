@@ -58,6 +58,62 @@ export const METRICS = [
     hoverText: `${tooltipTitles.ebitda} - actuals`
   },
   {
+    name: 'growth',
+    label: 'Growth rate',
+    symbol: '%',
+    position: 'right',
+    hoverText: tooltipTitles.growth
+  },
+  {
+    name: 'gross_margin',
+    label: 'Gross margin',
+    symbol: '%',
+    position: 'right',
+    hoverText: null
+  },
+  {
+    name: 'sales_and_marketing',
+    label: 'Sales & marketing as percentage of revenue',
+    symbol: '%',
+    position: 'right',
+    hoverText: null
+  },
+  {
+    name: 'research_and_development',
+    label: 'Research & development as a percentage of revenue',
+    symbol: '%',
+    position: 'right',
+    hoverText: null
+  },
+  {
+    name: 'general_and_admin',
+    label: 'General & administration as a percentage of revenue',
+    symbol: '%',
+    position: 'right',
+    hoverText: null
+  },
+  {
+    name: 'opex_as_revenue',
+    label: 'Opex as a percentage of revenue',
+    symbol: '%',
+    position: 'right',
+    hoverText: null
+  },
+  {
+    name: 'ebitda_margin',
+    label: 'Ebitda margin',
+    symbol: '%',
+    position: 'right',
+    hoverText: tooltipTitles.ebitda_margin
+  },
+  {
+    name: 'rule_of_40',
+    label: 'Rule of 40',
+    symbol: '',
+    position: '',
+    hoverText: tooltipTitles.rule_of_40
+  },
+  {
     name: 'actuals_run_rate_revenue',
     label: 'Run rate revenue - actual',
     symbol: '$',
@@ -65,11 +121,32 @@ export const METRICS = [
     hoverText: null
   },
   {
+    name: 'revenue_per_employee',
+    label: 'Revenue per employee',
+    symbol: '$',
+    position: 'left',
+    hoverText: tooltipTitles.revenue_per_employee
+  },
+  {
+    name: 'clv_cac_ratio',
+    label: 'CLV/CAC ratio',
+    symbol: '',
+    position: 'right',
+    hoverText: tooltipTitles.clv_cac_ratio
+  },
+  {
     name: 'actuals_customer_lifetime_value',
     label: 'CLV - actual',
     symbol: '$',
     position: 'left',
     hoverText: `${tooltipTitles.customer_lifetime_value} - actuals`
+  },
+  {
+    name: 'cac_ratio',
+    label: 'CAC ratio',
+    symbol: '',
+    position: 'right',
+    hoverText: tooltipTitles.cac_ratio
   },
   {
     name: 'actuals_customer_acquition_costs',
@@ -86,6 +163,13 @@ export const METRICS = [
     hoverText: `${tooltipTitles.customer_annual_value} - actuals`
   },
   {
+    name: 'gross_retention',
+    label: 'Gross retention',
+    symbol: '%',
+    position: 'right',
+    hoverText: tooltipTitles.gross_retention
+  },
+  {
     name: 'actuals_losses_and_downgrades',
     label: 'Losses and downgrades - actual',
     symbol: '$',
@@ -93,11 +177,25 @@ export const METRICS = [
     hoverText: null
   },
   {
+    name: 'net_retention',
+    label: 'Net retention',
+    symbol: '%',
+    position: 'right',
+    hoverText: tooltipTitles.net_retention
+  },
+  {
     name: 'actuals_upsells',
     label: 'Upsells - actual',
     symbol: '$',
     position: 'left',
     hoverText: null
+  },
+  {
+    name: 'new_bookings_growth',
+    label: 'New bookings growth',
+    symbol: '%',
+    position: 'right',
+    hoverText: tooltipTitles.new_bookings_growth
   },
   {
     name: 'actuals_new_bookings',
@@ -136,6 +234,12 @@ export const METRICS = [
     label: 'Cash flow operations - actual',
     symbol: '$',
     position: 'left'
+  },
+  {
+    name: 'debt_ebitda',
+    label: 'Debt/ebitda ',
+    symbol: '%',
+    position: 'right'
   },
   {
     name: 'budget_revenue',
@@ -273,41 +377,6 @@ export const METRICS = [
     position: 'left'
   },
   {
-    name: 'growth',
-    label: 'Growth rate',
-    symbol: '%',
-    position: 'right',
-    hoverText: tooltipTitles.growth
-  },
-  {
-    name: 'gross_margin',
-    label: 'Gross margin',
-    symbol: '%',
-    position: 'right',
-    hoverText: null
-  },
-  {
-    name: 'sales_and_marketing',
-    label: 'Sales & marketing as percentage of revenue',
-    symbol: '%',
-    position: 'right',
-    hoverText: null
-  },
-  {
-    name: 'research_and_development',
-    label: 'Research & development as a percentage of revenue',
-    symbol: '%',
-    position: 'right',
-    hoverText: null
-  },
-  {
-    name: 'general_and_admin',
-    label: 'General & administration as a percentage of revenue',
-    symbol: '%',
-    position: 'right',
-    hoverText: null
-  },
-  {
     name: 'revenue_vs_budget',
     label: 'Revenue vs budget',
     symbol: '%',
@@ -320,75 +389,6 @@ export const METRICS = [
     symbol: '%',
     position: 'right',
     hoverText: tooltipTitles.ebitda_vs_budget
-  },
-  {
-    name: 'ebitda_margin',
-    label: 'Ebitda margin',
-    symbol: '%',
-    position: 'right',
-    hoverText: tooltipTitles.ebitda_margin
-  },
-  {
-    name: 'rule_of_40',
-    label: 'Rule of 40',
-    symbol: '',
-    position: '',
-    hoverText: tooltipTitles.rule_of_40
-  },
-  {
-    name: 'clv_cac_ratio',
-    label: 'CLV/CAC ratio',
-    symbol: '',
-    position: 'right',
-    hoverText: tooltipTitles.clv_cac_ratio
-  },
-  {
-    name: 'cac_ratio',
-    label: 'CAC ratio',
-    symbol: '',
-    position: 'right',
-    hoverText: tooltipTitles.cac_ratio
-  },
-  {
-    name: 'opex_as_revenue',
-    label: 'Opex as a percentage of revenue',
-    symbol: '%',
-    position: 'right',
-    hoverText: null
-  },
-  {
-    name: 'revenue_per_employee',
-    label: 'Revenue per employee',
-    symbol: '$',
-    position: 'left',
-    hoverText: tooltipTitles.revenue_per_employee
-  },
-  {
-    name: 'gross_retention',
-    label: 'Gross retention',
-    symbol: '%',
-    position: 'right',
-    hoverText: tooltipTitles.gross_retention
-  },
-  {
-    name: 'net_retention',
-    label: 'Net retention',
-    symbol: '%',
-    position: 'right',
-    hoverText: tooltipTitles.net_retention
-  },
-  {
-    name: 'new_bookings_growth',
-    label: 'New bookings growth',
-    symbol: '%',
-    position: 'right',
-    hoverText: tooltipTitles.new_bookings_growth
-  },
-  {
-    name: 'debt_ebitda',
-    label: 'Debt/ebitda ',
-    symbol: '%',
-    position: 'right'
   }
 ]
 
