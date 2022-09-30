@@ -9,9 +9,9 @@ const GROUPROLES = {
 }
 
 export const UserGroupTabs = ({ classes }) => {
-  const [value, setValue] = React.useState(GROUPROLES.admins.value)
+  const [value, setValue] = React.useState(GROUPROLES.customers.value)
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (_event, newValue) => {
     setValue(newValue)
   }
   return (
@@ -19,16 +19,16 @@ export const UserGroupTabs = ({ classes }) => {
     <TabContext value={value}>
       <Box>
           <TabList onChange={handleChange} indicatorColor='primary'>
-            <Tab label={GROUPROLES.admins.label} value={GROUPROLES.admins.value} />
             <Tab label={GROUPROLES.customers.label} value={GROUPROLES.customers.value} />
+            <Tab label={GROUPROLES.admins.label} value={GROUPROLES.admins.value} />
           </TabList>
       </Box>
-      <TabPanel value={GROUPROLES.admins.value} >
+      <TabPanel value={GROUPROLES.customers.value} >
         <Box style={{ width: '100%' }}>
           <UsersPanelTable classes={classes} roleValue={value}/>
         </Box>
       </TabPanel>
-      <TabPanel value={GROUPROLES.customers.value} >
+      <TabPanel value={GROUPROLES.admins.value} >
         <Box style={{ width: '100%' }}>
           <UsersPanelTable classes={classes} roleValue={value}/>
         </Box>
