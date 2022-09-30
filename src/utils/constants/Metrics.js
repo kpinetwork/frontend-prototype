@@ -44,261 +44,18 @@ export const METRICS = [
     hoverText: null
   },
   {
+    name: 'actuals_other_operating_expenses',
+    label: 'Other operating expenses - actual',
+    symbol: '$',
+    position: 'left',
+    hoverText: null
+  },
+  {
     name: 'actuals_ebitda',
     label: 'Ebitda - actual',
     symbol: '$',
     position: 'left',
     hoverText: `${tooltipTitles.ebitda} - actuals`
-  },
-  {
-    name: 'actuals_customer_lifetime_value',
-    label: 'CLV - actual',
-    symbol: '$',
-    position: 'left',
-    hoverText: `${tooltipTitles.customer_lifetime_value} - actuals`
-  },
-  {
-    name: 'actuals_customer_acquition_costs',
-    label: 'CAC - actual',
-    symbol: '$',
-    position: 'left',
-    hoverText: `${tooltipTitles.customer_acquition_costs} - actuals`
-  },
-  {
-    name: 'actuals_customer_annual_value',
-    label: 'CAV - actual',
-    symbol: '$',
-    position: 'left',
-    hoverText: `${tooltipTitles.customer_annual_value} - actuals`
-  },
-  {
-    name: 'actuals_run_rate_revenue',
-    label: 'Run rate revenue - actual',
-    symbol: '$',
-    position: 'left',
-    hoverText: null
-  },
-  {
-    name: 'actuals_headcount',
-    label: 'Headcount - actual',
-    symbol: '',
-    position: 'left',
-    hoverText: null
-  },
-  {
-    name: 'actuals_losses_and_downgrades',
-    label: 'Losses and downgrades - actual',
-    symbol: '$',
-    position: 'left',
-    hoverText: null
-  },
-  {
-    name: 'actuals_upsells',
-    label: 'Upsells - actual',
-    symbol: '$',
-    position: 'left',
-    hoverText: null
-  },
-  {
-    name: 'actuals_new_bookings',
-    label: 'New bookings - actual',
-    symbol: '$',
-    position: 'left',
-    hoverText: `${tooltipTitles.new_bookings} - actuals`
-  },
-  {
-    name: 'actuals_customer_lifetime_value',
-    label: 'CLV - actual',
-    symbol: '$',
-    position: 'left'
-  },
-  {
-    name: 'actuals_customer_acquition_costs',
-    label: 'CAC - actual',
-    symbol: '$',
-    position: 'left'
-  },
-  {
-    name: 'actuals_customer_annual_value',
-    label: 'CAV - actual',
-    symbol: '$',
-    position: 'left'
-  },
-  {
-    name: 'actuals_run_rate_revenue',
-    label: 'Run rate revenue - actual',
-    symbol: '$',
-    position: 'left'
-  },
-  {
-    name: 'actuals_headcount',
-    label: 'Headcount - actual',
-    symbol: '',
-    position: 'left'
-  },
-  {
-    name: 'actuals_losses_and_downgrades',
-    label: 'Losses and downgrades - actual',
-    symbol: '$',
-    position: 'left'
-  },
-  {
-    name: 'actuals_upsells',
-    label: 'Upsells - actual',
-    symbol: '$',
-    position: 'left'
-  },
-  {
-    name: 'actuals_new_bookings',
-    label: 'New bookings - actual',
-    symbol: '$',
-    position: 'left'
-  },
-  {
-    name: 'budget_revenue',
-    label: 'Revenue - budget',
-    symbol: '$',
-    position: 'left',
-    hoverText: `${tooltipTitles.revenue} - budget`
-  },
-  {
-    name: 'budget_gross_profit',
-    label: 'Gross profit - budget',
-    symbol: '$',
-    position: 'left',
-    hoverText: null
-  },
-  {
-    name: 'budget_sales_marketing',
-    label: 'Sales & marketing expenses - budget',
-    symbol: '$',
-    position: 'left',
-    hoverText: null
-  },
-  {
-    name: 'budget_research_development',
-    label: 'Research & development expenses - budget',
-    symbol: '$',
-    position: 'left',
-    hoverText: null
-  },
-  {
-    name: 'budget_general_admin',
-    label: 'General & administration expenses - budget',
-    symbol: '$',
-    position: 'left',
-    hoverText: null
-  },
-  {
-    name: 'budget_ebitda',
-    label: 'Ebitda - budget',
-    symbol: '$',
-    position: 'left',
-    hoverText: `${tooltipTitles.ebitda} - budget`
-  },
-  {
-    name: 'budget_customer_lifetime_value',
-    label: 'CLV - budget',
-    symbol: '$',
-    position: 'left',
-    hoverText: `${tooltipTitles.customer_lifetime_value} - budget`
-  },
-  {
-    name: 'budget_customer_acquition_costs',
-    label: 'CAC - budget',
-    symbol: '$',
-    position: 'left',
-    hoverText: `${tooltipTitles.customer_acquition_costs} - budget`
-  },
-  {
-    name: 'budget_customer_annual_value',
-    label: 'CAV - budget',
-    symbol: '$',
-    position: 'left',
-    hoverText: `${tooltipTitles.customer_annual_value} - budget`
-  },
-  {
-    name: 'budget_run_rate_revenue',
-    label: 'Run rate revenue - budget',
-    symbol: '$',
-    position: 'left',
-    hoverText: null
-  },
-  {
-    name: 'budget_headcount',
-    label: 'Headcount - budget',
-    symbol: '',
-    position: 'left',
-    hoverText: null
-  },
-  {
-    name: 'budget_losses_and_downgrades',
-    label: 'Losses and downgrades - budget',
-    symbol: '$',
-    position: 'left',
-    hoverText: null
-  },
-  {
-    name: 'budget_upsells',
-    label: 'Upsells - budget',
-    symbol: '$',
-    position: 'left',
-    hoverText: null
-  },
-  {
-    name: 'budget_new_bookings',
-    label: 'New bookings - budget',
-    symbol: '$',
-    position: 'left',
-    hoverText: `${tooltipTitles.new_bookings} - budget`
-  },
-  {
-    name: 'budget_customer_lifetime_value',
-    label: 'CLV - budget',
-    symbol: '$',
-    position: 'left'
-  },
-  {
-    name: 'budget_customer_acquition_costs',
-    label: 'CAC - budget',
-    symbol: '$',
-    position: 'left'
-  },
-  {
-    name: 'budget_customer_annual_value',
-    label: 'CAV - budget',
-    symbol: '$',
-    position: 'left'
-  },
-  {
-    name: 'budget_run_rate_revenue',
-    label: 'Run rate revenue - budget',
-    symbol: '$',
-    position: 'left'
-  },
-  {
-    name: 'budget_headcount',
-    label: 'Headcount - budget',
-    symbol: '',
-    position: 'left'
-  },
-  {
-    name: 'budget_losses_and_downgrades',
-    label: 'Losses and downgrades - budget',
-    symbol: '$',
-    position: 'left'
-  },
-  {
-    name: 'budget_upsells',
-    label: 'Upsells - budget',
-    symbol: '$',
-    position: 'left'
-  },
-  {
-    name: 'budget_new_bookings',
-    label: 'New bookings - budget',
-    symbol: '$',
-    position: 'left'
   },
   {
     name: 'growth',
@@ -336,18 +93,11 @@ export const METRICS = [
     hoverText: null
   },
   {
-    name: 'revenue_vs_budget',
-    label: 'Revenue vs budget',
+    name: 'opex_as_revenue',
+    label: 'Opex as a percentage of revenue',
     symbol: '%',
     position: 'right',
-    hoverText: tooltipTitles.revenue_vs_budget
-  },
-  {
-    name: 'ebitda_vs_budget',
-    label: 'Ebitda vs budget',
-    symbol: '%',
-    position: 'right',
-    hoverText: tooltipTitles.ebitda_vs_budget
+    hoverText: null
   },
   {
     name: 'ebitda_margin',
@@ -364,24 +114,10 @@ export const METRICS = [
     hoverText: tooltipTitles.rule_of_40
   },
   {
-    name: 'clv_cac_ratio',
-    label: 'CLV/CAC ratio',
-    symbol: '',
-    position: 'right',
-    hoverText: tooltipTitles.clv_cac_ratio
-  },
-  {
-    name: 'cac_ratio',
-    label: 'CAC ratio',
-    symbol: '',
-    position: 'right',
-    hoverText: tooltipTitles.cac_ratio
-  },
-  {
-    name: 'opex_as_revenue',
-    label: 'Opex as a percentage of revenue',
-    symbol: '%',
-    position: 'right',
+    name: 'actuals_run_rate_revenue',
+    label: 'Run rate revenue - actual',
+    symbol: '$',
+    position: 'left',
     hoverText: null
   },
   {
@@ -392,11 +128,53 @@ export const METRICS = [
     hoverText: tooltipTitles.revenue_per_employee
   },
   {
+    name: 'clv_cac_ratio',
+    label: 'CLV/CAC ratio',
+    symbol: '',
+    position: 'right',
+    hoverText: tooltipTitles.clv_cac_ratio
+  },
+  {
+    name: 'actuals_customer_lifetime_value',
+    label: 'CLV - actual',
+    symbol: '$',
+    position: 'left',
+    hoverText: `${tooltipTitles.customer_lifetime_value} - actuals`
+  },
+  {
+    name: 'cac_ratio',
+    label: 'CAC ratio',
+    symbol: '',
+    position: 'right',
+    hoverText: tooltipTitles.cac_ratio
+  },
+  {
+    name: 'actuals_customer_acquition_costs',
+    label: 'CAC - actual',
+    symbol: '$',
+    position: 'left',
+    hoverText: `${tooltipTitles.customer_acquition_costs} - actuals`
+  },
+  {
+    name: 'actuals_customer_annual_value',
+    label: 'CAV - actual',
+    symbol: '$',
+    position: 'left',
+    hoverText: `${tooltipTitles.customer_annual_value} - actuals`
+  },
+  {
     name: 'gross_retention',
     label: 'Gross retention',
     symbol: '%',
     position: 'right',
     hoverText: tooltipTitles.gross_retention
+  },
+  {
+    name: 'actuals_losses_and_downgrades',
+    label: 'Losses and downgrades - actual',
+    symbol: '$',
+    position: 'left',
+    hoverText: null
   },
   {
     name: 'net_retention',
@@ -406,11 +184,211 @@ export const METRICS = [
     hoverText: tooltipTitles.net_retention
   },
   {
+    name: 'actuals_upsells',
+    label: 'Upsells - actual',
+    symbol: '$',
+    position: 'left',
+    hoverText: null
+  },
+  {
     name: 'new_bookings_growth',
     label: 'New bookings growth',
     symbol: '%',
     position: 'right',
     hoverText: tooltipTitles.new_bookings_growth
+  },
+  {
+    name: 'actuals_new_bookings',
+    label: 'New bookings - actual',
+    symbol: '$',
+    position: 'left',
+    hoverText: `${tooltipTitles.new_bookings} - actuals`
+  },
+  {
+    name: 'actuals_headcount',
+    label: 'Headcount - actual',
+    symbol: '',
+    position: 'left',
+    hoverText: null
+  },
+  {
+    name: 'actuals_cash_and_equivalents',
+    label: 'Cash & equivalents - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'actuals_long_term_debt',
+    label: 'Long term debt - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'actuals_equity_invested',
+    label: 'Equity invested - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'actuals_cash_flow_operations',
+    label: 'Cash flow operations - actual',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'debt_ebitda',
+    label: 'Debt/ebitda ',
+    symbol: '%',
+    position: 'right'
+  },
+  {
+    name: 'budget_revenue',
+    label: 'Revenue - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: `${tooltipTitles.revenue} - budget`
+  },
+  {
+    name: 'budget_cost_of_goods',
+    label: 'Cost of goods - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: null
+  },
+  {
+    name: 'budget_gross_profit',
+    label: 'Gross profit - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: null
+  },
+  {
+    name: 'budget_sales_marketing',
+    label: 'Sales & marketing expenses - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: null
+  },
+  {
+    name: 'budget_research_development',
+    label: 'Research & development expenses - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: null
+  },
+  {
+    name: 'budget_general_admin',
+    label: 'General & administration expenses - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: null
+  },
+  {
+    name: 'budget_other_operating_expenses',
+    label: 'Other operating expenses - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'budget_ebitda',
+    label: 'Ebitda - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: `${tooltipTitles.ebitda} - budget`
+  },
+  {
+    name: 'budget_run_rate_revenue',
+    label: 'Run rate revenue - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: null
+  },
+  {
+    name: 'budget_customer_lifetime_value',
+    label: 'CLV - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: `${tooltipTitles.customer_lifetime_value} - budget`
+  },
+  {
+    name: 'budget_customer_acquition_costs',
+    label: 'CAC - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: `${tooltipTitles.customer_acquition_costs} - budget`
+  },
+  {
+    name: 'budget_customer_annual_value',
+    label: 'CAV - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: `${tooltipTitles.customer_annual_value} - budget`
+  },
+  {
+    name: 'budget_losses_and_downgrades',
+    label: 'Losses and downgrades - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: null
+  },
+  {
+    name: 'budget_upsells',
+    label: 'Upsells - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: null
+  },
+  {
+    name: 'budget_new_bookings',
+    label: 'New bookings - budget',
+    symbol: '$',
+    position: 'left',
+    hoverText: `${tooltipTitles.new_bookings} - budget`
+  },
+  {
+    name: 'budget_headcount',
+    label: 'Headcount - budget',
+    symbol: '',
+    position: 'left',
+    hoverText: null
+  },
+  {
+    name: 'budget_cash_and_equivalents',
+    label: 'Cash & equivalents - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'budget_long_term_debt',
+    label: 'Long term debt - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'budget_equity_invested',
+    label: 'Equity invested - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'budget_cash_flow_operations',
+    label: 'Cash flow operations - budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'revenue_vs_budget',
+    label: 'Revenue vs budget',
+    symbol: '%',
+    position: 'right',
+    hoverText: tooltipTitles.revenue_vs_budget
+  },
+  {
+    name: 'ebitda_vs_budget',
+    label: 'Ebitda vs budget',
+    symbol: '%',
+    position: 'right',
+    hoverText: tooltipTitles.ebitda_vs_budget
   }
 ]
 
@@ -450,6 +428,91 @@ export const BASEMETRICS = [
     symbol: '$',
     position: 'left',
     hoverText: tooltipTitles.ebitda
+  },
+  {
+    name: 'General & administration',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Research & development',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Sales & marketing',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Cost of goods',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Headcount',
+    symbol: '',
+    position: 'left'
+  },
+  {
+    name: 'CLV',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'CAC',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'CAV',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Other operating expenses',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Run rate revenue',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Losses and downgrades',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Upsells',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'New bookings',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Cash & Equivalents',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Long term debt',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Equity invested',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Cash flow from operations',
+    symbol: '$',
+    position: 'left'
   }
 ]
 

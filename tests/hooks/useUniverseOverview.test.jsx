@@ -53,6 +53,22 @@ describe('useUniverseOverview', () => {
     expect(useUniverseOverviewResult.result.current.isLoading).toBeFalsy()
   })
 
+  it('useUniverseOverview Hook should have empty values when api request fails', async () => {
+    mockService(getUniverseOverviewFromQueryParams, 'error')
+
+    let useUniverseOverviewResult
+    await act(async () => {
+      useUniverseOverviewResult = renderHook(() => useUniverseOverview(), { wrapper })
+    })
+
+    expect(useUniverseOverviewResult.result.current.kpiAverage).toEqual(null)
+    expect(useUniverseOverviewResult.result.current.growthAndMargin).toEqual(null)
+    expect(useUniverseOverviewResult.result.current.expectedGrowthAndMargin).toEqual(null)
+    expect(useUniverseOverviewResult.result.current.revenueAndEbitda).toEqual(null)
+    expect(useUniverseOverviewResult.result.current.year).toEqual('2021')
+    expect(useUniverseOverviewResult.result.current.isLoading).toBeFalsy()
+  })
+
   it('useUniverseOverview Hook render correctly when filters ', async () => {
     mockService(getUniverseOverviewFromQueryParams, getUniverseOverviewResponse)
 

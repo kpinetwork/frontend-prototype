@@ -6,13 +6,13 @@ const usersUrl = `${baseUrl}/users`
 const rolesUrl = `${baseUrl}/roles`
 
 export const getUsers = async (options) => {
-  const { limit, token } = options
+  const { limit, token, group } = options
   const headers = await getAuthorizationHeader()
   let queryToken = ''
   if (token) {
     queryToken = `&token=${encodeURIComponent(token)}`
   }
-  const response = await axios.get(`${usersUrl}?limit=${limit}${queryToken}`,
+  const response = await axios.get(`${usersUrl}?limit=${limit}&group=${group}${queryToken}`,
     { headers }
   )
   const body = await response.data

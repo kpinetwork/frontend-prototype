@@ -12,6 +12,7 @@ const { VITE_HOST: baseUrl } = import.meta.env
 
 const usersPath = `${baseUrl}/users`
 const rolesPath = `${baseUrl}/roles`
+const username = '01'
 const email = 'user@test.com'
 
 jest.mock('axios')
@@ -23,7 +24,7 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
 })
 
 const usersResponse = {
-  users: [{ email, roles: ['Admin'] }],
+  users: [{ username, email, roles: [] }],
   token: null
 }
 
@@ -31,22 +32,22 @@ describe('users service', () => {
   describe('getEditModifyData', () => {
     it('API call successful should return users data', async () => {
       axios.get.mockResolvedValueOnce(usersResponse)
-      const options = { limit: 10, token: 'token' }
+      const options = { limit: 10, token: 'token', group: 'demo_admin_group' }
       await getUsers(options)
 
       expect(axios.get).toHaveBeenCalledWith(
-        `${usersPath}?limit=${options.limit}&token=${options.token}`,
+        `${usersPath}?limit=${options.limit}&group=${options.group}&token=${options.token}`,
         { headers: { Authorization: null, 'Content-Type': 'application/json' } }
       )
     })
 
     it('API call successful should return users data without token', async () => {
       axios.get.mockResolvedValueOnce(usersResponse)
-      const options = { limit: 10, token: null }
+      const options = { limit: 10, token: null, group: 'demo_admin_group' }
       await getUsers(options)
 
       expect(axios.get).toHaveBeenCalledWith(
-          `${usersPath}?limit=${options.limit}`,
+          `${usersPath}?limit=${options.limit}&group=${options.group}`,
           { headers: { Authorization: null, 'Content-Type': 'application/json' } }
       )
     })

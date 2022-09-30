@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { MetricSelector } from '../../components/MetricSelector'
@@ -6,7 +6,7 @@ import { useMetricReport } from '../../hooks/useMetricReport'
 import HeadBodyGrid from '../../components/BodyGrid'
 import { isEmptyObject } from '../../utils/userFunctions'
 import { METRICS } from '../../utils/constants/Metrics'
-import { getFromLocalStorage, addToLocalStorage } from '../../utils/useLocalStorage'
+import { getFromLocalStorage } from '../../utils/useLocalStorage'
 
 const useStyles = makeStyles(theme => ({
   stickyHeaderName: {
@@ -52,18 +52,6 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
     setMetric
   } = useMetricReport({ fromUniverseOverview, selectedMetric: getFromLocalStorage('metric') || 'actuals_revenue' })
   const classes = useStyles()
-
-  useEffect(() => {
-    const storedMetric = getFromLocalStorage('metric')
-
-    if (storedMetric) {
-      setMetric(storedMetric)
-    }
-  }, [])
-
-  useEffect(() => {
-    addToLocalStorage('metric', metric)
-  }, [metric])
 
   const getColumns = () => {
     const columns = [{ field: 'name', headerName: 'Company', aling: 'left' }]

@@ -20,23 +20,37 @@ const useUniverseOverview = () => {
     }
     setIsLoading(true)
     getUniverseOverview({ year, ...filters })
+
+    return () => setDefaultValues()
   }, [filters, year])
 
-  const getUniverseOverview = async (options) => {
-    const result = await getUniverseOverviewFromQueryParams(options)
-    const {
-      kpiAverageArray,
-      countBySizeArray,
-      growthAndMarginObject,
-      expectedGrowthAndMarginObject,
-      revenueAndEbitdaObject
-    } = destructuring(result)
-    setKpiAverage(kpiAverageArray)
-    setCountBySize(countBySizeArray)
-    setGrowthAndMargin(growthAndMarginObject)
-    setExpectedGrowthAndMargin(expectedGrowthAndMarginObject)
-    setRevenueAndEbitda(revenueAndEbitdaObject)
+  const setDefaultValues = () => {
+    setKpiAverage(null)
+    setCountBySize(null)
+    setGrowthAndMargin(null)
+    setExpectedGrowthAndMargin(null)
     setIsLoading(false)
+  }
+
+  const getUniverseOverview = async (options) => {
+    try {
+      const result = await getUniverseOverviewFromQueryParams(options)
+      const {
+        kpiAverageArray,
+        countBySizeArray,
+        growthAndMarginObject,
+        expectedGrowthAndMarginObject,
+        revenueAndEbitdaObject
+      } = destructuring(result)
+      setKpiAverage(kpiAverageArray)
+      setCountBySize(countBySizeArray)
+      setGrowthAndMargin(growthAndMarginObject)
+      setExpectedGrowthAndMargin(expectedGrowthAndMarginObject)
+      setRevenueAndEbitda(revenueAndEbitdaObject)
+      setIsLoading(false)
+    } catch (_error) {
+      setDefaultValues()
+    }
   }
 
   return {

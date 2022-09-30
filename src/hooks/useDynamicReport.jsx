@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import Context from '../context/appContext'
 import { getDynamicReport } from '../service/dynamicReport'
+import { addToLocalStorage } from '../utils/useLocalStorage'
 
 export const useDynamicReport = ({ fromUniverseOverview, selectedMetrics, selectedCalendarYear }) => {
   const { filters, companyID } = useContext(Context).filterFields
@@ -27,12 +28,20 @@ export const useDynamicReport = ({ fromUniverseOverview, selectedMetrics, select
         getReport({ company_id: companyID, metrics: newMetrics, calendarYear: newCalendarYear, investYear: '', ...filters })
       }
     }
+
+    return () => setDefaultValues()
   }, [filters, metrics, calendarYear, companyID])
+
+  useEffect(() => {
+    addToLocalStorage('metrics', metrics)
+    addToLocalStorage('calendarYear', calendarYear)
+  }, [metrics, calendarYear])
 
   const setDefaultValues = () => {
     setDynamicCompanyComparison({})
     setDynamicPeersComparison([])
     setDynamicHeader([])
+    setIsLoading(false)
   }
 
   const getReport = async (options) => {
@@ -51,7 +60,6 @@ export const useDynamicReport = ({ fromUniverseOverview, selectedMetrics, select
       setIsLoading(false)
     } catch (_error) {
       setDefaultValues()
-      setIsLoading(false)
     }
   }
 

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import Context from '../context/appContext'
 import { getByMetricReport } from '../service/metricReport'
+import { addToLocalStorage } from '../utils/useLocalStorage'
 
 export const useMetricReport = ({ fromUniverseOverview, selectedMetric }) => {
   const { filters, companyID } = useContext(Context).filterFields
@@ -22,7 +23,19 @@ export const useMetricReport = ({ fromUniverseOverview, selectedMetric }) => {
         getMetricReport({ company_id: companyID, metric, ...filters })
       }
     }
+    return () => setDefaultValues()
   }, [filters, metric, companyID])
+
+  useEffect(() => {
+    addToLocalStorage('metric', metric)
+  }, [metric])
+
+  const setDefaultValues = () => {
+    setMetricCompanyComparison({})
+    setMetricPeersComparison([])
+    setYears([])
+    setIsLoading(false)
+  }
 
   const getMetricReport = async (options) => {
     try {
@@ -39,10 +52,7 @@ export const useMetricReport = ({ fromUniverseOverview, selectedMetric }) => {
       setYears(years)
       setIsLoading(false)
     } catch (_error) {
-      setMetricCompanyComparison({})
-      setMetricPeersComparison([])
-      setYears([])
-      setIsLoading(false)
+      setDefaultValues()
     }
   }
 

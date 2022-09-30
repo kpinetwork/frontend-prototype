@@ -72,6 +72,10 @@ export function RolesTab ({ rootClass, roles, user, setUser }) {
       const firstRole = user?.roles[0]
       setRole(firstRole)
     }
+
+    return () => {
+      setRole('customer')
+    }
   }, [changed])
 
   return (

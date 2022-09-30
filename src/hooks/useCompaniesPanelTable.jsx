@@ -15,6 +15,8 @@ const useCompaniesPanelTable = () => {
 
   useEffect(() => {
     initCompanies(rowsPerPage, offset)
+
+    return () => setTotalCompanies([])
   }, [])
 
   const initCompanies = async (limit, offset) => {

@@ -14,7 +14,14 @@ const usePublicCompanies = () => {
 
   useEffect(() => {
     initCompanies(rowsPerPage, offset)
+    return () => setDefaultValues()
   }, [])
+
+  const setDefaultValues = () => {
+    setTotal(0)
+    setCompanies([])
+    setIsLoading(false)
+  }
 
   const getCompanies = async (options) => {
     setIsLoading(true)

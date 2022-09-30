@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useLocation } from 'wouter'
 import { getUsers } from '../service/users'
 
-export const useUsers = () => {
+export const useUsers = ({ groupRole }) => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [users, setUsers] = useState([])
   const [token, setToken] = useState(null)
@@ -15,7 +15,16 @@ export const useUsers = () => {
 
   useEffect(() => {
     initUsers()
-  }, [])
+
+    return () => setDefaultValues()
+  }, [groupRole])
+
+  const setDefaultValues = () => {
+    setUsers([])
+    setToken(null)
+    setIsLoading(false)
+    setTotalUsers([])
+  }
 
   const getUsersData = async (options) => {
     setIsLoading(true)
@@ -30,21 +39,20 @@ export const useUsers = () => {
       setIsLoading(false)
       return usersArray
     } catch (_error) {
-      setUsers([])
-      setIsLoading(false)
+      setDefaultValues()
       return []
     }
   }
 
   const initUsers = async () => {
-    const response = await getUsersData({ limit: rowsPerPage, tokens: token })
+    const response = await getUsersData({ limit: rowsPerPage, tokens: token, group: groupRole })
     setTotalUsers(response)
   }
 
   const callNextUsers = async (newPage) => {
     setPage(newPage)
     setMaxPage(newPage)
-    const response = await getUsersData({ limit: rowsPerPage, token })
+    const response = await getUsersData({ limit: rowsPerPage, token, group: groupRole })
     setTotalUsers([...totalUsers, ...response])
   }
 
