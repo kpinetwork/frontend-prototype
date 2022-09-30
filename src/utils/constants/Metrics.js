@@ -430,6 +430,26 @@ export const BASEMETRICS = [
     hoverText: tooltipTitles.ebitda
   },
   {
+    name: 'General & administration',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Research & development',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Sales & marketing',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Cost of goods',
+    symbol: '$',
+    position: 'left'
+  },
+  {
     name: 'Headcount',
     symbol: '',
     position: 'left'
