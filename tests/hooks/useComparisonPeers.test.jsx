@@ -34,71 +34,71 @@ const wrapper = ({ children }) => (
 )
 
 describe('useComparisonPeers', () => {
-  it('useInvestmentReport Hook render with empty values when api call fails', async () => {
+  it('useComparisonPeers Hook render with empty values when api call fails', async () => {
     mockService(getComparisonPeersFromQueryParams, 'error')
     mockService(downloadComparisonPeers, '')
 
-    let useInvestmentReportResult
+    let useComparisonPeersResult
     await act(async () => {
-      useInvestmentReportResult = renderHook(() => useComparisonPeers({ fromUniverseOverview: false }), { wrapper })
+      useComparisonPeersResult = renderHook(() => useComparisonPeers({ fromUniverseOverview: false }), { wrapper })
     })
     await act(async () => {
-      useInvestmentReportResult.result.current.downloadComparisonCsv()
+      useComparisonPeersResult.result.current.downloadComparisonCsv()
     })
 
-    expect(useInvestmentReportResult.result.current.ruleOf40).toEqual([])
-    expect(useInvestmentReportResult.result.current.peersIsLoading).toBeFalsy()
+    expect(useComparisonPeersResult.result.current.ruleOf40).toEqual([])
+    expect(useComparisonPeersResult.result.current.peersIsLoading).toBeFalsy()
   })
 
-  it('useInvestmentReport Hook render when comes from company report', async () => {
+  it('useComparisonPeers Hook render when comes from company report', async () => {
     mockService(getComparisonPeersFromQueryParams, getComparisonPeerResponse)
     mockService(downloadComparisonPeers, '')
 
-    let useInvestmentReportResult
+    let useComparisonPeersResult
     await act(async () => {
-      useInvestmentReportResult = renderHook(() => useComparisonPeers({ fromUniverseOverview: false }), { wrapper })
+      useComparisonPeersResult = renderHook(() => useComparisonPeers({ fromUniverseOverview: false }), { wrapper })
     })
     await act(async () => {
-      useInvestmentReportResult.result.current.downloadComparisonCsv()
+      useComparisonPeersResult.result.current.downloadComparisonCsv()
     })
 
-    expect(useInvestmentReportResult.result.current.ruleOf40).toEqual(getComparisonPeerResponse.rule_of_40)
-    expect(useInvestmentReportResult.result.current.peersIsLoading).toBeFalsy()
+    expect(useComparisonPeersResult.result.current.ruleOf40).toEqual(getComparisonPeerResponse.rule_of_40)
+    expect(useComparisonPeersResult.result.current.peersIsLoading).toBeFalsy()
   })
 
-  it('useInvestmentReport Hook render when comes from UniverseOverview', async () => {
+  it('useComparisonPeers Hook render when comes from UniverseOverview', async () => {
     mockService(getComparisonPeersFromQueryParams, getComparisonPeerResponse)
     mockService(downloadComparisonPeers, '')
 
-    let useInvestmentReportResult
+    let useComparisonPeersResult
     await act(async () => {
-      useInvestmentReportResult = renderHook(() => useComparisonPeers({ fromUniverseOverview: true }), { wrapper })
+      useComparisonPeersResult = renderHook(() => useComparisonPeers({ fromUniverseOverview: true }), { wrapper })
     })
     await act(async () => {
-      useInvestmentReportResult.result.current.downloadComparisonCsv()
+      useComparisonPeersResult.result.current.downloadComparisonCsv()
     })
 
-    expect(useInvestmentReportResult.result.current.ruleOf40).toEqual(getComparisonPeerResponse.rule_of_40)
-    expect(useInvestmentReportResult.result.current.peersIsLoading).toBeFalsy()
+    expect(useComparisonPeersResult.result.current.ruleOf40).toEqual(getComparisonPeerResponse.rule_of_40)
+    expect(useComparisonPeersResult.result.current.peersIsLoading).toBeFalsy()
   })
 
-  it('useInvestmentReport Hook render when downloadComparisonPeers catch error ', async () => {
+  it('useComparisonPeers Hook render when downloadComparisonPeers catch error ', async () => {
     mockService(getComparisonPeersFromQueryParams, getComparisonPeerResponse)
     mockService(downloadComparisonPeers, 'error')
 
-    let useInvestmentReportResult
+    let useComparisonPeersResult
     await act(async () => {
-      useInvestmentReportResult = renderHook(() => useComparisonPeers({ fromUniverseOverview: true }), { wrapper })
+      useComparisonPeersResult = renderHook(() => useComparisonPeers({ fromUniverseOverview: true }), { wrapper })
     })
     await act(async () => {
-      useInvestmentReportResult.result.current.downloadComparisonCsv()
+      useComparisonPeersResult.result.current.downloadComparisonCsv()
     })
 
-    expect(useInvestmentReportResult.result.current.ruleOf40).toEqual(getComparisonPeerResponse.rule_of_40)
-    expect(useInvestmentReportResult.result.current.peersIsLoading).toBeFalsy()
+    expect(useComparisonPeersResult.result.current.ruleOf40).toEqual(getComparisonPeerResponse.rule_of_40)
+    expect(useComparisonPeersResult.result.current.peersIsLoading).toBeFalsy()
   })
 
-  it('useInvestmentReport Hook render when companyID is null ', async () => {
+  it('useComparisonPeers Hook render when there is no companyID ', async () => {
     mockService(getComparisonPeersFromQueryParams, getComparisonPeerResponse)
     const wrapper = ({ children }) => (
       <Context.Provider value={{ filterFields: { filters: {}, companyID: null, year: '2021' } }}>
@@ -106,12 +106,12 @@ describe('useComparisonPeers', () => {
       </Context.Provider>
     )
 
-    let useInvestmentReportResult
+    let useComparisonPeersResult
     await act(async () => {
-      useInvestmentReportResult = renderHook(() => useComparisonPeers({ fromUniverseOverview: false }), { wrapper })
+      useComparisonPeersResult = renderHook(() => useComparisonPeers({ fromUniverseOverview: false }), { wrapper })
     })
 
-    expect(useInvestmentReportResult.result.current.ruleOf40).toEqual([])
-    expect(useInvestmentReportResult.result.current.peersIsLoading).toBeFalsy()
+    expect(useComparisonPeersResult.result.current.ruleOf40).toEqual([])
+    expect(useComparisonPeersResult.result.current.peersIsLoading).toBeFalsy()
   })
 })
