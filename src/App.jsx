@@ -12,6 +12,7 @@ import { CompanyPanelView } from './views/CompanyPanelView/CompanyPanelView'
 import { UploadFileView } from './views/UploadFileView/UploadFileView'
 import { EditModifyView } from './views/EditModify/EditModifyView'
 import { UserDetailView } from './views/UserPanelView/UserDetailView'
+import { TagsView } from './views/TagsView/TagsView'
 import { CompanyDetailView } from './views/CompanyDetailsPanelView/CompanyDetailView'
 import { ErrorView } from './views/DefaultView/ErrorView'
 import LoadingProgress from './components/Progress'
@@ -146,6 +147,11 @@ function AppRoutes ({ signOut }) {
           exact
           path="/admin/edit_modify"
           component={(props) => renderIfAdmin(EditModifyView, { ...props })}
+        />
+        <Route
+          exact
+          path="/admin/tags"
+          component={(props) => renderIfAdmin(TagsView, { ...props })}
         />
         <Route
           exact
