@@ -1,11 +1,13 @@
 import { Auth } from 'aws-amplify'
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { TagsSectionView } from '../../../../src/views/TagsView/Components/TagsSectionView'
 import useTagsSections from '../../../../src/hooks/useTagsSections'
+import useTagsTable from '../../../../src/hooks/useTagsTable'
 
 jest.mock('../../../../src/hooks/useTagsSections')
+jest.mock('../../../../src/hooks/useTagsTable')
 
 jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
   getAccessToken: () => ({
@@ -13,8 +15,16 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
   })
 })
 
+const tableHookResponse = {
+  total: 1,
+  isLoading: false,
+  tags: [{ id: '123', name: 'Tag Sample', companies: [] }]
+}
+
 const hookResponse = {
-  companies: [
+  total: 1,
+  companies: { 1: 'Sample company abc', 2: 'Sample company xyz' },
+  companiesArray: [
     {
       id: 'id',
       name: 'Test Company'
@@ -31,6 +41,7 @@ const setUp = () => {
 describe('<TagsSectionView />', () => {
   describe('render', () => {
     it('Should render tags section view ', () => {
+      useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
@@ -45,11 +56,11 @@ describe('<TagsSectionView />', () => {
   })
 
   describe('actions', () => {
-    it('Should open form when click on Add Tag button', () => {
+    it('Should open form when click on Add Tag button', async () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
+      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Add Tag' })))
 
       expect(screen.getByText('Add Tag')).toBeInTheDocument()
       expect(screen.getByText('Save')).toBeInTheDocument()
@@ -73,7 +84,7 @@ describe('<TagsSectionView />', () => {
 
       fireEvent.click(screen.getByRole('button', { name: 'Edit Tags' }))
 
-      expect(screen.getByRole('cell', { name: 'Fashion' })).toHaveClass('MuiDataGrid-cell MuiDataGrid-cell--textLeft MuiDataGrid-cell--editable')
+      expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
     })
 
     it('Should disable edition when click on cancel', () => {

@@ -2,24 +2,35 @@ import { useState, useEffect } from 'react'
 import { getPublicCompanies } from '../service/company'
 
 const useTagsSection = () => {
-  const [companies, setCompanies] = useState([])
+  const [companies, setCompanies] = useState({})
+  const [companiesArray, setCompaniesArray] = useState([])
 
   useEffect(() => {
     getCompanies()
-    return () => setCompanies([])
+
+    return () => setDefaultValues()
   }, [])
+
+  const setDefaultValues = () => {
+    setCompaniesArray([])
+    setCompanies({})
+  }
 
   const getCompanies = async () => {
     try {
       const result = await getPublicCompanies({})
-      setCompanies(result.companies)
+      const companyObject = Object.fromEntries(result.companies.map(company => [company.id, company.name]))
+      setCompaniesArray(result.companies)
+      setCompanies(companyObject)
     } catch (_error) {
-      setCompanies([])
+      setCompaniesArray([])
+      setCompanies({})
     }
   }
 
   return {
-    companies
+    companies,
+    companiesArray
   }
 }
 
