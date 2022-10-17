@@ -6,9 +6,18 @@ const tagsUrl = `${baseUrl}/tags`
 
 export const addTags = async (tagName, companies) => {
   const requestBody = { companies: companies, name: tagName }
-  console.log(requestBody)
   const headers = await getAuthorizationHeader()
   const response = await axios.post(`${tagsUrl}`, requestBody, {
+    headers: headers
+  })
+  const data = await response.data
+  return data
+}
+
+export const getTags = async (options) => {
+  const { limit, offset } = options
+  const headers = await getAuthorizationHeader()
+  const response = await axios.get(`${tagsUrl}?limit=${limit}&offset=${offset}`, {
     headers: headers
   })
   const data = await response.data

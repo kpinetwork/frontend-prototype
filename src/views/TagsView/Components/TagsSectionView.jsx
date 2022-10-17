@@ -27,9 +27,9 @@ export function TagsSectionView () {
   const [openAdd, setOpenAdd] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
-  const { companies, addTag } = useTagsSection()
   const [tagName, setTagName] = useState(null)
   const [companiesSelected, setCompaniesSelected] = useState([])
+  const { companies, companiesArray, addTag } = useTagsSection()
 
   const handleTagChange = (event) => {
     setTagName(event.target.value)
@@ -55,13 +55,13 @@ export function TagsSectionView () {
         <Box className={classes.root}>
             {openAdd &&
               <TagsForm
-                companies={companies}
+                tag={tagName}
+                companies={companiesArray}
                 onCancel={() => {
                   setOpenAdd(false)
                 }}
                 handleTagChange={handleTagChange}
                 handleCompaniesChange={handleCompaniesChange}
-                tag={tagName}
                 companiesSelected={companiesSelected}
                 onSave={onSave}
               />
