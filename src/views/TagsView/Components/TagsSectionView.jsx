@@ -55,13 +55,13 @@ export function TagsSectionView () {
         <Box className={classes.root}>
             {openAdd &&
               <TagsForm
-                tag={tagName}
-                companies={companiesArray}
                 onCancel={() => {
                   setOpenAdd(false)
                 }}
+                companies={companiesArray}
                 handleTagChange={handleTagChange}
                 handleCompaniesChange={handleCompaniesChange}
+                tag={tagName}
                 companiesSelected={companiesSelected}
                 onSave={onSave}
               />
