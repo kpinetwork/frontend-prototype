@@ -28,7 +28,7 @@ export function TagsSectionView () {
   const [openDelete, setOpenDelete] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [tag, setTag] = useState({})
-  const { companies } = useTagsSection()
+  const { companies, companiesArray } = useTagsSection()
 
   const onChange = (event, type) => {
     setTag({ ...tag, [type]: event?.target?.value })
@@ -40,7 +40,7 @@ export function TagsSectionView () {
               <TagsForm
                 tag={tag}
                 onChange={onChange}
-                companies={companies}
+                companies={companiesArray}
                 onCancel={() => {
                   setOpenAdd(false)
                 }}

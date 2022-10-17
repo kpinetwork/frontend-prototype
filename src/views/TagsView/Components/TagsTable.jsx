@@ -3,6 +3,8 @@ import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { DataGrid, useGridApiContext } from '@mui/x-data-grid'
 import { Select, MenuItem } from '@mui/material'
+import useTagsTable from '../../../hooks/useTagsTable'
+import LoadingProgress from '../../../components/Progress'
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -22,28 +24,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const rows = [
-  {
-    id: 1,
-    tag: 'Education',
-    companies: ['EXA CORP']
-  },
-  {
-    id: 2,
-    tag: 'Technology',
-    companies: ['']
-  },
-  {
-    id: 3,
-    tag: 'Fashion',
-    companies: ['Zedge, Inc.']
-  }
-]
-
 const getColumns = (isEditable, companies) => {
   return [
     {
-      field: 'tag',
+      field: 'name',
       headerName: 'Tag',
       type: 'string',
       editable: isEditable,
@@ -83,26 +67,55 @@ function CustomEditComponent (props) {
       onChange={(event) => handleChange(event)}
       sx={{ width: '100%' }}
     >
-      {companies.map((company) => (
-        <MenuItem key={company.id} value={company.name}>
-          {company.name}
-        </MenuItem>
-      ))}
+      {
+        Object.entries(companies).map((company) => (
+          <MenuItem key={company[0]} value={company[1]}>
+          {company[1]}
+          </MenuItem>
+        ))
+      }
     </Select>
   )
 }
 
 export function TagsTable ({ isEditable, companies }) {
   const classes = useStyles()
+  const {
+    total,
+    tags,
+    isLoading,
+    pageSize,
+    page,
+    handleChangePage,
+    handleChangePageSize
+  } = useTagsTable()
+
+  const getTagsData = () => {
+    const tagsData = tags.map(tagData => ({ ...tagData, companies: tagData.companies.map(company => company.name) }))
+    return tagsData
+  }
+
   return (
       <Box className={classes.box}>
-        <DataGrid
-          disableColumnMenu
-          disableSelectionOnClick={!isEditable}
-          autoHeight
-          columns={getColumns(isEditable, companies)}
-          rows={rows}
-        />
-        </Box>
+        {!isLoading &&
+          <DataGrid
+            disableColumnMenu
+            disableSelectionOnClick={!isEditable}
+            autoHeight
+            pageSize={pageSize}
+            onPageSizeChange={(newPageSize) => handleChangePageSize(newPageSize)}
+            onPageChange={(newPage) => handleChangePage(newPage)}
+            rowsPerPageOptions={[10, 25, 50, 100]}
+            pagination
+            columns={getColumns(isEditable, companies)}
+            rows={getTagsData()}
+            rowCount={total}
+            page={page}
+          />
+        }
+        {isLoading &&
+          <LoadingProgress />
+        }
+      </Box>
   )
 }
