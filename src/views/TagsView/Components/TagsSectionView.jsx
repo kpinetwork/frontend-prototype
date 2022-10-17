@@ -27,23 +27,43 @@ export function TagsSectionView () {
   const [openAdd, setOpenAdd] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
-  const [tag, setTag] = useState({})
-  const { companies } = useTagsSection()
+  const { companies, addTag } = useTagsSection()
+  const [tagName, setTagName] = useState(null)
+  const [companiesSelected, setCompaniesSelected] = useState([])
 
-  const onChange = (event, type) => {
-    setTag({ ...tag, [type]: event?.target?.value })
+  const handleTagChange = (event) => {
+    setTagName(event.target.value)
+  }
+
+  const handleCompaniesChange = (event, value) => {
+    setCompaniesSelected(value)
+  }
+
+  const onSave = async () => {
+    const companiesIds = companiesSelected.map(company => {
+      return company.id
+    })
+    const response = addTag(tagName, companiesIds)
+    if (response) {
+      setOpenAdd(false)
+      setTagName(null)
+      setCompaniesSelected([])
+    }
   }
 
   return (
         <Box className={classes.root}>
             {openAdd &&
               <TagsForm
-                tag={tag}
-                onChange={onChange}
                 companies={companies}
                 onCancel={() => {
                   setOpenAdd(false)
                 }}
+                handleTagChange={handleTagChange}
+                handleCompaniesChange={handleCompaniesChange}
+                tag={tagName}
+                companiesSelected={companiesSelected}
+                onSave={onSave}
               />
             }
             <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>

@@ -57,3 +57,8 @@ export const SCENARIO = {
   metric: 'Revenue',
   value: 50
 }
+
+export const TAG = {
+  id: '1',
+  name: 'Tag Name'
+}
