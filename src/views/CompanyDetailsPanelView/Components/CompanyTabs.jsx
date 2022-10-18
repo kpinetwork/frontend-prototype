@@ -6,6 +6,7 @@ import { InvestmentsTab } from './Tabs/InvestmentsTab'
 import Context from '../../../context/appContext'
 import CardMessage from '../../../components/CardMessage'
 import { ScenariosTab } from './Tabs/ScenariosTab'
+import { TagsTab } from './Tabs/TagsTab'
 
 const useStyles = makeStyles(theme => ({
   tabs: {
@@ -55,6 +56,7 @@ export function CompanyTabs () {
             >
               <Tab className={classes.tabs} label="Scenarios" value="scenarios" {...a11yProps('scenarios')} />
               <Tab className={classes.tabs} label="Investments" value="investments" {...a11yProps('investments')} />
+              <Tab className={classes.tabs} label="Tags" value="tags" {...a11yProps('tags')} />
             </Tabs>
           </Box>
           <Box>
@@ -63,6 +65,9 @@ export function CompanyTabs () {
             </TabPanel>
             <TabPanel value={tab} index={'investments'}>
               <InvestmentsTab />
+            </TabPanel>
+            <TabPanel value={tab} index={'tags'}>
+              <TagsTab />
             </TabPanel>
           </Box>
         </Box>
