@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks'
-import { getTags } from '../../src/service/tags'
+import { getTags, updateTags } from '../../src/service/tags'
 import useTagsTable from '../../src/hooks/useTagsTable'
+import { ACTION_FAILED, UPDATE_ERROR } from '../../src/utils/constants/tagsError'
 
 jest.mock('../../src/service/tags')
 
@@ -98,5 +99,57 @@ describe('useTagsTable', () => {
     })
 
     expect(hookResponse.result.current.pageSize).toEqual(25)
+  })
+
+  it('useTagsTable hook should call get tags when update tags is successful', async () => {
+    mockService(getTags, tags)
+    mockService(updateTags, { updated: true })
+    let hookResponse
+
+    await act(async () => {
+      hookResponse = renderHook(() => useTagsTable())
+    })
+    await act(async () => {
+      hookResponse.result.current.updateTagsInfo({})
+    })
+
+    expect(hookResponse.result.current.allowActions).toBeTruthy()
+    expect(getTags).toHaveBeenCalled()
+  })
+
+  it('useTagsTable hook should return error message when tag could not be updated', async () => {
+    mockService(getTags, tags)
+    mockService(updateTags, { updated: false })
+    let hookResponse
+    let updateResponse
+
+    await act(async () => {
+      hookResponse = renderHook(() => useTagsTable())
+    })
+    await act(async () => {
+      updateResponse = await hookResponse.result.current.updateTagsInfo({})
+    })
+
+    expect(hookResponse.result.current.allowActions).toBeTruthy()
+    expect(updateResponse).toBe(UPDATE_ERROR)
+    expect(updateTags).toHaveBeenCalled()
+  })
+
+  it('useTagsTable hook should return error message when update tags failed', async () => {
+    mockService(getTags, tags)
+    mockService(updateTags, 'error')
+    let hookResponse
+    let updateResponse
+
+    await act(async () => {
+      hookResponse = renderHook(() => useTagsTable())
+    })
+
+    await act(async () => {
+      updateResponse = await hookResponse.result.current.updateTagsInfo({})
+    })
+
+    expect(hookResponse.result.current.allowActions).toBeTruthy()
+    expect(updateResponse).toBe(ACTION_FAILED)
   })
 })

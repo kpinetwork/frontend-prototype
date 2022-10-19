@@ -15,10 +15,20 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
   })
 })
 
+const tags = { 123: { id: '123', name: 'Tag Sample', companies: [] } }
 const tableHookResponse = {
   total: 1,
   isLoading: false,
-  tags: [{ id: '123', name: 'Tag Sample', companies: [] }]
+  tags: Object.values(tags),
+  allowActions: true,
+  pageSize: 10,
+  page: 0,
+  data: JSON.parse(JSON.stringify(tags)),
+  initialData: JSON.parse(JSON.stringify(tags)),
+  setData: jest.fn(),
+  updateTagsInfo: jest.fn(),
+  errorMessage: null,
+  setErrorMessage: jest.fn()
 }
 
 const hookResponse = {

@@ -13,3 +13,12 @@ export const getTags = async (options) => {
   const data = await response.data
   return data
 }
+
+export const updateTags = async (body) => {
+  const headers = await getAuthorizationHeader()
+  const response = await axios.put(tagsUrl, body, {
+    headers: headers
+  })
+  const data = await response?.data
+  return data
+}

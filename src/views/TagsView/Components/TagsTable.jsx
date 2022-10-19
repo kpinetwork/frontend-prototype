@@ -3,10 +3,9 @@ import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { DataGrid, useGridApiContext } from '@mui/x-data-grid'
 import { Select, MenuItem } from '@mui/material'
-import useTagsTable from '../../../hooks/useTagsTable'
 import LoadingProgress from '../../../components/Progress'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((_theme) => ({
   box: {
     height: 300,
     width: '100%',
@@ -24,6 +23,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+function getFormatCompanies (params, companies) {
+  if (params.value == null) {
+    return []
+  }
+  return params.value.map(companyID => companies[companyID])
+}
+
 const getColumns = (isEditable, companies) => {
   return [
     {
@@ -40,6 +46,7 @@ const getColumns = (isEditable, companies) => {
       sortable: false,
       flex: 1,
       editable: isEditable,
+      valueFormatter: (params) => getFormatCompanies(params, companies),
       renderEditCell: (params) => <CustomEditComponent {...params} companies={companies}/>
     }
   ]
@@ -69,7 +76,7 @@ function CustomEditComponent (props) {
     >
       {
         Object.entries(companies).map((company) => (
-          <MenuItem key={company[0]} value={company[1]}>
+          <MenuItem key={company[0]} value={company[0]}>
           {company[1]}
           </MenuItem>
         ))
@@ -78,21 +85,22 @@ function CustomEditComponent (props) {
   )
 }
 
-export function TagsTable ({ isEditable, companies }) {
+export function TagsTable ({
+  isEditable,
+  companies,
+  data,
+  total,
+  isLoading,
+  pageSize,
+  page,
+  handleChangePage,
+  handleChangePageSize
+}) {
   const classes = useStyles()
-  const {
-    total,
-    tags,
-    isLoading,
-    pageSize,
-    page,
-    handleChangePage,
-    handleChangePageSize
-  } = useTagsTable()
 
-  const getTagsData = () => {
-    const tagsData = tags.map(tagData => ({ ...tagData, companies: tagData.companies.map(company => company.name) }))
-    return tagsData
+  const onCellEditted = (event) => {
+    const { id, field, value } = event
+    data[id][field] = value
   }
 
   return (
@@ -108,9 +116,10 @@ export function TagsTable ({ isEditable, companies }) {
             rowsPerPageOptions={[10, 25, 50, 100]}
             pagination
             columns={getColumns(isEditable, companies)}
-            rows={getTagsData()}
+            rows={Object.values(data)}
             rowCount={total}
             page={page}
+            onCellEditCommit={(_event) => onCellEditted(_event)}
           />
         }
         {isLoading &&
