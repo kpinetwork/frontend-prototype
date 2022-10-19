@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react'
 import { getPublicCompanies } from '../service/company'
-import { addTags } from '../service/tags'
-import useTagsTable from './useTagsTable'
 
 const useTagsSection = () => {
   const [companies, setCompanies] = useState({})
   const [companiesArray, setCompaniesArray] = useState([])
-  const { getAllTags } = useTagsTable()
-  const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
     getCompanies()
@@ -32,22 +28,8 @@ const useTagsSection = () => {
     }
   }
 
-  const addTag = async (tagName, companies) => {
-    try {
-      setLoading(true)
-      const response = await addTags(tagName, companies)
-      await getAllTags()
-      return response.added
-    } catch (_error) {
-      setLoading(false)
-      return false
-    }
-  }
-
   return {
     companies,
-    isLoading,
-    addTag,
     companiesArray
   }
 }

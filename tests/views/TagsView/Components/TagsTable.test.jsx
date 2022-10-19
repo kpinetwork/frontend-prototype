@@ -14,7 +14,13 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
 })
 
 const defaultProps = {
-  isEditable: false
+  companies: [],
+  tags: [],
+  total: 0,
+  pageSize: 10,
+  page: 0,
+  onPageChange: jest.fn(),
+  onPageSizeChange: jest.fn()
 }
 
 const setUp = (props) => {
@@ -24,7 +30,7 @@ const setUp = (props) => {
 }
 
 const hookResponse = {
-  isLoading: false,
+  isLoading: true,
   total: 1,
   tags: [{ id: '123', name: 'Tag Sample', companies: [] }]
 }
@@ -33,30 +39,23 @@ describe('<TagsTable />', () => {
   describe('render', () => {
     it('Should render tags Table', () => {
       useTagsTable.mockImplementation(() => hookResponse)
-      setUp()
-
+      setUp({ isLoading: false })
       const table = screen.getByRole('grid')
       const tagHeader = screen.getByText('Tag')
       const companiesHeader = screen.getByText('Tag')
-
       expect(table).toBeInTheDocument()
       expect(tagHeader).toBeInTheDocument()
       expect(companiesHeader).toBeInTheDocument()
     })
 
     it('Should render loading bar when data is loading', () => {
-      const response = { ...hookResponse, isLoading: true }
-      useTagsTable.mockImplementation(() => response)
-      setUp()
-
+      setUp({ isLoading: true })
       const loadingBar = screen.getByTestId('loading-progress')
-
       expect(loadingBar).toBeInTheDocument()
     })
 
     it('Should enable edition on table when table is editable', () => {
-      useTagsTable.mockImplementation(() => hookResponse)
-      setUp()
+      setUp({ isLoading: false })
       const table = screen.getByRole('grid')
       const tagHeader = screen.getByText('Tag')
       const companiesHeader = screen.getByText('Companies')
@@ -64,6 +63,10 @@ describe('<TagsTable />', () => {
       expect(table).toBeInTheDocument()
       expect(tagHeader).toBeInTheDocument()
       expect(companiesHeader).toBeInTheDocument()
+    })
+
+    it('Should render Custom Edit Component', () => {
+      setUp({ isLoading: false, isEditable: true })
     })
   })
 })

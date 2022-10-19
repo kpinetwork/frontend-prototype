@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Auth } from 'aws-amplify'
-import { getTags } from '../../src/service/tags'
+import { getTags, addTags } from '../../src/service/tags'
 
 const tags = {
   total: 2,
@@ -25,6 +25,24 @@ describe('tags service', () => {
       await getTags({ limit: 10, offset: 10 })
 
       expect(axios.get).toHaveBeenCalledWith(`${tagsUrl}?limit=10&offset=10`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
+    })
+  })
+  describe('add tag', () => {
+    it('API call successful should add tag', async () => {
+      const tagResponse = {
+        id: '1',
+        name: 'Tag Name',
+        companies: ['1', '2'],
+        added: true
+      }
+      axios.post.mockResolvedValueOnce({
+        data: {
+          tag: tagResponse
+        }
+      })
+      await addTags('Tag Name', ['1', '2'])
+
+      expect(axios.post).toHaveBeenCalledWith(`${tagsUrl}`, { name: 'Tag Name', companies: ['1', '2'] }, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
     })
   })
 })

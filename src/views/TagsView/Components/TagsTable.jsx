@@ -3,7 +3,6 @@ import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { DataGrid, useGridApiContext } from '@mui/x-data-grid'
 import { Select, MenuItem } from '@mui/material'
-import useTagsTable from '../../../hooks/useTagsTable'
 import LoadingProgress from '../../../components/Progress'
 
 const useStyles = makeStyles((theme) => ({
@@ -78,17 +77,16 @@ function CustomEditComponent (props) {
   )
 }
 
-export function TagsTable ({ isEditable, companies }) {
+export function TagsTable ({
+  isEditable, companies, total,
+  tags,
+  isLoading,
+  pageSize,
+  page,
+  handleChangePage,
+  handleChangePageSize
+}) {
   const classes = useStyles()
-  const {
-    total,
-    tags,
-    isLoading,
-    pageSize,
-    page,
-    handleChangePage,
-    handleChangePageSize
-  } = useTagsTable()
 
   const getTagsData = () => {
     const tagsData = tags.map(tagData => ({ ...tagData, companies: tagData.companies.map(company => company.name) }))

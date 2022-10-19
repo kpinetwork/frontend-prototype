@@ -6,6 +6,7 @@ import { TagsForm } from './TagsForm'
 import { TagsTable } from './TagsTable'
 import ButtonActions from '../../../components/Actions'
 import useTagsSection from '../../../hooks/useTagsSections'
+import useTagsTable from '../../../hooks/useTagsTable'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,13 +24,21 @@ const useStyles = makeStyles((theme) => ({
 
 export function TagsSectionView () {
   const classes = useStyles()
-  const isLoading = false
   const [openAdd, setOpenAdd] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [tagName, setTagName] = useState(null)
   const [companiesSelected, setCompaniesSelected] = useState([])
-  const { companies, companiesArray, addTag } = useTagsSection()
+  const { companies, companiesArray } = useTagsSection()
+  const {
+    tags,
+    isLoading,
+    pageSize,
+    page,
+    handleChangePage,
+    handleChangePageSize,
+    addTag
+  } = useTagsTable()
 
   const handleTagChange = (event) => {
     setTagName(event.target.value)
@@ -125,7 +134,12 @@ export function TagsSectionView () {
                 />
                 </Box>
             }
-            <TagsTable isEditable={openEdit} companies={companies}/>
+            <TagsTable isEditable={openEdit} companies={companies} tags={tags}
+              isLoading={isLoading}
+              pageSize={pageSize}
+              page={page}
+              handleChangePage={handleChangePage}
+              handleChangePageSize={handleChangePageSize}/>
         </Box>
   )
 }
