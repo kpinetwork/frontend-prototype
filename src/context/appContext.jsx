@@ -3,11 +3,10 @@ import { useIsAdmin } from '../hooks/useIsAdmin'
 import { getFromLocalStorage, addToLocalStorage } from '../utils/useLocalStorage'
 
 const INITIAL_FILTER_STATE = {
-  sector: '',
   investor_profile: '',
   size: '',
   growth_profile: '',
-  vertical: ''
+  tag: ''
 }
 
 const Context = createContext({})
