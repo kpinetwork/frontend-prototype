@@ -53,8 +53,8 @@ export function TagsTab ({ onSave }) {
   const { listOfTags, tagsByCompany, isLoading, handleTagsByCompany } = useCompanyTags()
 
   return (
-    !isLoading
-      ? <Card className={classes.form}>
+    !isLoading &&
+      <Card className={classes.form}>
         <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>
         {
           !activeEdition && !isLoading &&
@@ -69,8 +69,8 @@ export function TagsTab ({ onSave }) {
         }
       </Box>
         {
-            activeEdition
-              ? <CardActions style={{ flexDirection: 'row-reverse', display: 'flex' }}>
+            activeEdition &&
+               <CardActions style={{ flexDirection: 'row-reverse', display: 'flex' }}>
                 <Box px={2}>
                     <ButtonActions
                         okName='Save'
@@ -83,7 +83,6 @@ export function TagsTab ({ onSave }) {
                     />
                 </Box>
                 </CardActions>
-              : ''
         }
         <Box style={{ display: 'flex', marginBottom: 30, justifyContent: 'center', flexWrap: 'wrap' }} px={2} component='form'>
             <FormControl className={classes.input}>
@@ -108,6 +107,5 @@ export function TagsTab ({ onSave }) {
             </FormControl>
         </Box>
     </Card>
-      : ''
   )
 }
