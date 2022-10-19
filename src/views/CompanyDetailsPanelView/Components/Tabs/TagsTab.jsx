@@ -3,8 +3,8 @@ import { Box, FormControl, FormLabel, Card, makeStyles, TextField, Button } from
 import Autocomplete from '@mui/material/Autocomplete'
 import { CardActions } from '@mui/material'
 import ButtonActions from '../../../../components/Actions'
-
-const tags = ['tag1', 'tag2']
+import useCompanyTags from '../../../../hooks/useCompanyTags'
+import { Edit } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -41,29 +41,61 @@ const useStyles = makeStyles((theme) => ({
     padding: 20,
     borderRadius: 30,
     backgroundColor: '#fefeff',
-    marginBottom: 50
+    marginBottom: 50,
+    marginTop: 10,
+    flexDirection: 'row-reverse'
   }
 }))
 
-export function TagsTab ({ onChange, onSave, onCancel }) {
+export function TagsTab ({ onSave }) {
   const classes = useStyles()
   const [activeEdition, setActiveEdition] = useState(false)
+  const { listOfTags, tagsByCompany, isLoading, handleTagsByCompany } = useCompanyTags()
 
-  const onActive = () => {
-    setActiveEdition(true)
-  }
   return (
-    <Card className={classes.form}>
-        <Box style={{ display: 'flex', marginBottom: 30, justifyContent: 'start', flexWrap: 'wrap' }} px={2} component='form'>
+    !isLoading
+      ? <Card className={classes.form}>
+        <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>
+        {
+          !activeEdition && !isLoading &&
+            <Button
+              startIcon={< Edit/>}
+              style={{ textTransform: 'none' }}
+              onClick={(_) => setActiveEdition(true)}
+              disabled={activeEdition}
+            >
+              Modify
+            </Button>
+        }
+      </Box>
+        {
+            activeEdition
+              ? <CardActions style={{ flexDirection: 'row-reverse', display: 'flex' }}>
+                <Box px={2}>
+                    <ButtonActions
+                        okName='Save'
+                        cancelName='Cancel'
+                        onOk={onSave}
+                        onCancel={() => {
+                          setActiveEdition(false)
+                        }}
+                        reverse={false}
+                    />
+                </Box>
+                </CardActions>
+              : ''
+        }
+        <Box style={{ display: 'flex', marginBottom: 30, justifyContent: 'center', flexWrap: 'wrap' }} px={2} component='form'>
             <FormControl className={classes.input}>
             <FormLabel className={classes.label}>Tags</FormLabel>
             <Autocomplete
               multiple
               id="tags-outlined"
-              options={tags}
+              options={listOfTags}
               getOptionLabel={(option) => option.name}
               filterSelectedOptions
-              onChange={(event) => onChange(event, 'tags')}
+              value={tagsByCompany}
+              onChange={handleTagsByCompany}
               disabled = {!activeEdition}
               renderInput={(params) => (
                 <TextField
@@ -75,22 +107,7 @@ export function TagsTab ({ onChange, onSave, onCancel }) {
             />
             </FormControl>
         </Box>
-        <Button onClick={onActive}>Modify</Button>
-        {
-            activeEdition
-              ? <CardActions>
-                <Box px={2}>
-                    <ButtonActions
-                        okName='Save'
-                        cancelName='Cancel'
-                        onOk={onSave}
-                        onCancel={onCancel}
-                        reverse={false}
-                    />
-                </Box>
-                </CardActions>
-              : ''
-        }
     </Card>
+      : ''
   )
 }
