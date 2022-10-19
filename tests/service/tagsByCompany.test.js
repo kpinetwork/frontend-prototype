@@ -16,7 +16,7 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
 
 describe('companyTags service', () => {
   describe('get company tags', () => {
-    it('API call successful should return company tags', async () => {
+    it('API call when is successful should return company tags', async () => {
       const companyId = '1'
       const tags = [
         {
