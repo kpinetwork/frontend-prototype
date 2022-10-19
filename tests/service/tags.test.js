@@ -1,10 +1,14 @@
 import axios from 'axios'
 import { Auth } from 'aws-amplify'
-import { getCompanyTags } from '../../src/service/tags'
+import { getTags } from '../../src/service/tags'
 
+const tags = {
+  total: 2,
+  tags: [{ id: '1', name: 'Tag' }]
+}
 const { VITE_HOST: baseUrl } = import.meta.env
 
-const tag = `${baseUrl}/companies`
+const tagsUrl = `${baseUrl}/tags`
 
 jest.mock('axios')
 
@@ -14,25 +18,13 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
   })
 })
 
-describe('companyTags service', () => {
-  describe('get company tags', () => {
-    it('API call successful should return company tags', async () => {
-      const companyId = '1'
-      const tags = [
-        {
-          id: '1234',
-          name: 'Sample tag'
-        },
-        {
-          id: '1234',
-          name: 'Sample tag'
-        }
-      ]
+describe('tags service', () => {
+  describe('get tags', () => {
+    it('API call success should return all tags', async () => {
+      axios.get.mockResolvedValueOnce(tags)
+      await getTags({ limit: 10, offset: 10 })
 
-      axios.get.mockResolvedValueOnce([tags])
-      await getCompanyTags(companyId)
-
-      expect(axios.get).toHaveBeenCalledWith(`${tag}/${companyId}/tags`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
+      expect(axios.get).toHaveBeenCalledWith(`${tagsUrl}?limit=10&offset=10`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
     })
   })
 })
