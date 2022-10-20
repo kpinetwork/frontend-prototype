@@ -48,7 +48,7 @@ const setUp = () => {
   render(<TagsTab/>)
 }
 describe('<TagsTab/>', () => {
-  it('autoComplete component when tag section renderized is rendered successfully should be disabled', () => {
+  it('autoComplete component when tag section is rendered successfully should be disabled', () => {
     useCompanyTags.mockImplementation(() => hookResponse)
     setUp()
 
