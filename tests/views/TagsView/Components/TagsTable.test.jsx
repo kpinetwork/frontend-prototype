@@ -64,9 +64,5 @@ describe('<TagsTable />', () => {
       expect(tagHeader).toBeInTheDocument()
       expect(companiesHeader).toBeInTheDocument()
     })
-
-    it('Should render Custom Edit Component', () => {
-      setUp({ isLoading: false, isEditable: true })
-    })
   })
 })
