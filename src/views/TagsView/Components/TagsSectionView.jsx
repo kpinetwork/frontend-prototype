@@ -6,6 +6,7 @@ import { TagsForm } from './TagsForm'
 import { TagsTable } from './TagsTable'
 import ButtonActions from '../../../components/Actions'
 import useTagsSection from '../../../hooks/useTagsSections'
+import useTagsTable from '../../../hooks/useTagsTable'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,29 +24,59 @@ const useStyles = makeStyles((theme) => ({
 
 export function TagsSectionView () {
   const classes = useStyles()
-  const isLoading = false
   const [openAdd, setOpenAdd] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
-  const [tag, setTag] = useState({})
+  const [tagName, setTagName] = useState(null)
+  const [companiesSelected, setCompaniesSelected] = useState([])
   const { companies, companiesArray } = useTagsSection()
+  const {
+    tags,
+    isLoading,
+    pageSize,
+    page,
+    handleChangePage,
+    handleChangePageSize,
+    addTag
+  } = useTagsTable()
 
-  const onChange = (event, type) => {
-    setTag({ ...tag, [type]: event?.target?.value })
+  const handleTagChange = (event) => {
+    setTagName(event.target.value)
+  }
+
+  const handleCompaniesChange = (event, value) => {
+    setCompaniesSelected(value)
+  }
+
+  const onSave = async () => {
+    const companiesIds = companiesSelected.map(company => {
+      return company.id
+    })
+    const response = addTag(tagName, companiesIds)
+    if (response) {
+      setOpenAdd(false)
+      setTagName(null)
+      setCompaniesSelected([])
+    }
   }
 
   return (
         <Box className={classes.root}>
-            {openAdd &&
+          <Box>
+          {openAdd &&
               <TagsForm
-                tag={tag}
-                onChange={onChange}
-                companies={companiesArray}
                 onCancel={() => {
                   setOpenAdd(false)
                 }}
+                companies={companiesArray}
+                handleTagChange={handleTagChange}
+                handleCompaniesChange={handleCompaniesChange}
+                tag={tagName}
+                companiesSelected={companiesSelected}
+                onSave={onSave}
               />
             }
+          </Box>
             <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>
             {
               !openDelete && !openAdd && !openEdit && !isLoading &&
@@ -80,7 +111,6 @@ export function TagsSectionView () {
                   Add Tag
                 </Button>
             }
-            </Box>
             {
               openEdit &&
               <Box sx={{ marginBottom: 5 }}>
@@ -105,7 +135,15 @@ export function TagsSectionView () {
                 />
                 </Box>
             }
-            <TagsTable isEditable={openEdit} companies={companies}/>
+          </Box>
+          <Box>
+            <TagsTable isEditable={openEdit} companies={companies} tags={tags}
+                isLoading={isLoading}
+                pageSize={pageSize}
+                page={page}
+                handleChangePage={handleChangePage}
+                handleChangePageSize={handleChangePageSize}/>
+          </Box>
         </Box>
   )
 }

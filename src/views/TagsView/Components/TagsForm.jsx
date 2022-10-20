@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export function TagsForm ({ onCancel, onSave, onChange, companies, tag }) {
+export function TagsForm ({ onCancel, companies, handleTagChange, handleCompaniesChange, tag, companiesSelected, onSave }) {
   const classes = useStyles()
 
   return (
@@ -55,9 +55,9 @@ export function TagsForm ({ onCancel, onSave, onChange, companies, tag }) {
             <FormControl required className={classes.input}>
                 <FormLabel className={classes.label}>Tag Name</FormLabel>
                 <TextField
-                  onChange={(event) => onChange(event, 'tag')}
+                  onChange={handleTagChange}
                   variant="outlined"
-                  value={tag.tag || ''}
+                  value={tag || ''}
                   className={classes.inputBorder}
                   placeholder={'Tag name'}
                 ></TextField>
@@ -70,7 +70,8 @@ export function TagsForm ({ onCancel, onSave, onChange, companies, tag }) {
               options={companies}
               getOptionLabel={(option) => option.name}
               filterSelectedOptions
-              onChange={(event) => onChange(event, 'companies')}
+              value = {companiesSelected}
+              onChange={handleCompaniesChange}
               renderInput={(params) => (
                 <TextField
                   {...params}

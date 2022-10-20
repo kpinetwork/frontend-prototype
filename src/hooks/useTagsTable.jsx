@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getTags } from '../service/tags'
+import { getTags, addTags } from '../service/tags'
 
 const useTagsTable = () => {
   const [total, setTotal] = useState(0)
@@ -11,7 +11,9 @@ const useTagsTable = () => {
   const [maxPage, setMaxPage] = useState(0)
 
   useEffect(() => {
-    initTags(pageSize, offset)
+    (async () => {
+      await initTags(pageSize, offset)
+    })()
     return () => setDefaultValues()
   }, [])
 
@@ -38,6 +40,18 @@ const useTagsTable = () => {
     } catch (_error) {
       setDefaultValues()
       return []
+    }
+  }
+
+  const addTag = async (tagName, companies) => {
+    try {
+      const response = await addTags(tagName, companies)
+      if (response.added) {
+        initTags(pageSize, offset)
+      }
+      return response.added
+    } catch (_error) {
+      return false
     }
   }
 
@@ -75,7 +89,8 @@ const useTagsTable = () => {
     pageSize,
     page,
     handleChangePage,
-    handleChangePageSize
+    handleChangePageSize,
+    addTag
   }
 }
 

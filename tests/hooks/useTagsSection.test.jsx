@@ -10,6 +10,7 @@ const getPublicCompaniesResponse = {
 }
 
 jest.mock('../../src/service/company')
+jest.mock('../../src/service/tags')
 
 const mockService = (service, response) => {
   service.mockImplementation(() => {
