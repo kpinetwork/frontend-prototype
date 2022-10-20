@@ -62,7 +62,8 @@ export function TagsSectionView () {
 
   return (
         <Box className={classes.root}>
-            {openAdd &&
+          <Box>
+          {openAdd &&
               <TagsForm
                 onCancel={() => {
                   setOpenAdd(false)
@@ -75,6 +76,7 @@ export function TagsSectionView () {
                 onSave={onSave}
               />
             }
+          </Box>
             <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>
             {
               !openDelete && !openAdd && !openEdit && !isLoading &&
@@ -109,7 +111,6 @@ export function TagsSectionView () {
                   Add Tag
                 </Button>
             }
-            </Box>
             {
               openEdit &&
               <Box sx={{ marginBottom: 5 }}>
@@ -134,12 +135,15 @@ export function TagsSectionView () {
                 />
                 </Box>
             }
+          </Box>
+          <Box>
             <TagsTable isEditable={openEdit} companies={companies} tags={tags}
-              isLoading={isLoading}
-              pageSize={pageSize}
-              page={page}
-              handleChangePage={handleChangePage}
-              handleChangePageSize={handleChangePageSize}/>
+                isLoading={isLoading}
+                pageSize={pageSize}
+                page={page}
+                handleChangePage={handleChangePage}
+                handleChangePageSize={handleChangePageSize}/>
+          </Box>
         </Box>
   )
 }
