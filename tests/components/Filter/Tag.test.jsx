@@ -14,7 +14,8 @@ const hookResponse = {
 }
 
 const defaultProps = {
-  setFilters: jest.fn()
+  setFilters: jest.fn(),
+  selectedList: hookResponse.tags[0].name
 }
 
 const setUp = (props) => {
@@ -31,13 +32,27 @@ describe('<Tag />', () => {
     expect(combobox).toBeInTheDocument()
   })
 
-  it('Should add tags when click on a tag option in autocomplete ', () => {
+  it('Should select tag if there is no previus saved tags when click on tags combobox', async () => {
+    useTag.mockImplementation(() => hookResponse)
+    setUp({ selectedList: undefined })
+
+    const open = await screen.findByTitle('Open')
+    fireEvent.click(open)
+    const options = await screen.findAllByRole('option')
+    fireEvent.click(options[0])
+
+    expect(defaultProps.setFilters).toBeCalled()
+  })
+
+  it('Should select tag if there is previous saved tags when click on tags combobox', async () => {
     useTag.mockImplementation(() => hookResponse)
     setUp()
 
-    fireEvent.click(screen.getByTestId('ArrowDropDownIcon'))
-    fireEvent.click(screen.getByText('Tag Sample 1'))
+    const open = await screen.findByTitle('Open')
+    fireEvent.click(open)
+    const options = await screen.findAllByRole('option')
+    fireEvent.click(options[0])
 
-    expect(screen.getByText('Tag Sample 1')).toBeInTheDocument()
+    expect(defaultProps.setFilters).toBeCalled()
   })
 })

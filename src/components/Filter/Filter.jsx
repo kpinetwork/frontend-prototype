@@ -10,13 +10,14 @@ export function Filter ({ setFilters, fillFilters, filters, xs, sm, md, lg, xl }
   const {
     growth_profile: growth,
     investor_profile: investor,
-    size
+    size,
+    tag
   } = filters
   return (
     <CardKPI title={'Filters'} actions={false} overflow={'auto'} textAlign={'start'}>
         <Grid container >
             <Grid item xs={12}>
-              <Tag setFilters={setFilters}/>
+              <Tag setFilters={setFilters} selectedList={tag}/>
             </Grid>
             <Grid item xs={xs} sm={sm} md ={md} lg={lg} xl={xl} style={{ marginTop: 35 }}>
                 <Investor setFilters={setFilters} fillFilters={fillFilters} selectedList={investor}/>

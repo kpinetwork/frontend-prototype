@@ -28,9 +28,8 @@ jest.mock('@components/BubbleChart', () => ({
 const filters = {
   growth_profile: '',
   investor_profile: '',
-  sector: '',
-  size: '',
-  vertical: ''
+  tag: '',
+  size: ''
 }
 
 const useCompanyReportResponse = {
