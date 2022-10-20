@@ -10,13 +10,13 @@ const useCompanyTags = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    initTagsByCompany(100, 0)
+    initTagsByCompany()
     return () => setDefaultValues()
   }, [])
 
   const setDefaultValues = () => {
     setListOfTags([])
-    setTagsByCompany(0)
+    setTagsByCompany([])
     setIsLoading(false)
   }
 
