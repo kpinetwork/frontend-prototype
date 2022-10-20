@@ -3,12 +3,10 @@ import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { DataGrid, useGridApiContext } from '@mui/x-data-grid'
 import { Select, MenuItem } from '@mui/material'
-import useTagsTable from '../../../hooks/useTagsTable'
 import LoadingProgress from '../../../components/Progress'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((_theme) => ({
   box: {
-    height: 300,
     width: '100%',
     '& .MuiDataGrid-columnHeader': {
       backgroundColor: '#2f5487',
@@ -24,7 +22,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const getColumns = (isEditable, companies) => {
+function getFormatCompanies (params, companies) {
+  if (params.value == null) {
+    return []
+  }
+  return params.value.map(companyID => companies[companyID])
+}
+
+const getColumns = (isEditable, companies, data) => {
   return [
     {
       field: 'name',
@@ -40,16 +45,18 @@ const getColumns = (isEditable, companies) => {
       sortable: false,
       flex: 1,
       editable: isEditable,
-      renderEditCell: (params) => <CustomEditComponent {...params} companies={companies}/>
+      valueFormatter: (params) => getFormatCompanies(params, companies),
+      renderEditCell: (params) => <CustomEditComponent {...params} companies={companies} data={data}/>
     }
   ]
 }
 
 function CustomEditComponent (props) {
-  const { id, value, field, companies } = props
+  const { id, value, field, companies, data } = props
   const apiRef = useGridApiContext()
 
   const handleChange = async (event) => {
+    data[id][field] = event.target.value
     await apiRef.current.setEditCellValue({
       id,
       field,
@@ -69,7 +76,7 @@ function CustomEditComponent (props) {
     >
       {
         Object.entries(companies).map((company) => (
-          <MenuItem key={company[0]} value={company[1]}>
+          <MenuItem key={company[0]} value={company[0]}>
           {company[1]}
           </MenuItem>
         ))
@@ -78,21 +85,22 @@ function CustomEditComponent (props) {
   )
 }
 
-export function TagsTable ({ isEditable, companies }) {
+export function TagsTable ({
+  isEditable,
+  companies,
+  data,
+  total,
+  isLoading,
+  pageSize,
+  page,
+  handleChangePage,
+  handleChangePageSize
+}) {
   const classes = useStyles()
-  const {
-    total,
-    tags,
-    isLoading,
-    pageSize,
-    page,
-    handleChangePage,
-    handleChangePageSize
-  } = useTagsTable()
 
-  const getTagsData = () => {
-    const tagsData = tags.map(tagData => ({ ...tagData, companies: tagData.companies.map(company => company.name) }))
-    return tagsData
+  const onCellEditted = (event) => {
+    const { id, field, value } = event
+    data[id][field] = value
   }
 
   return (
@@ -107,10 +115,11 @@ export function TagsTable ({ isEditable, companies }) {
             onPageChange={(newPage) => handleChangePage(newPage)}
             rowsPerPageOptions={[10, 25, 50, 100]}
             pagination
-            columns={getColumns(isEditable, companies)}
-            rows={getTagsData()}
+            columns={getColumns(isEditable, companies, data)}
+            rows={Object.values(data)}
             rowCount={total}
             page={page}
+            onCellEditCommit={(_event) => onCellEditted(_event)}
           />
         }
         {isLoading &&

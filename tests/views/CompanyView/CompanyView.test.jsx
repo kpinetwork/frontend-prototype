@@ -1,4 +1,5 @@
 import React from 'react'
+import { Auth } from 'aws-amplify'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import { CompanyView } from '../../../src/views/CompanyView/CompanyView'
@@ -6,6 +7,12 @@ import { useCompanyReport } from '../../../src/hooks/useCompanyReport'
 import { useComparisonPeers } from '../../../src/hooks/useComparisionPeers'
 import Context from '../../../src/context/appContext'
 import { SAMPLECOMPANIES } from '../../data/companies'
+
+jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
+  getAccessToken: () => ({
+    getJwtToken: () => ('Secret-Token')
+  })
+})
 
 jest.mock('../../../src/hooks/useCompanyReport')
 
@@ -21,9 +28,8 @@ jest.mock('@components/BubbleChart', () => ({
 const filters = {
   growth_profile: '',
   investor_profile: '',
-  sector: '',
-  size: '',
-  vertical: ''
+  tag: '',
+  size: ''
 }
 
 const useCompanyReportResponse = {
