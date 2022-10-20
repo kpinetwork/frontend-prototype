@@ -7,7 +7,6 @@ import LoadingProgress from '../../../components/Progress'
 
 const useStyles = makeStyles((_theme) => ({
   box: {
-    height: 300,
     width: '100%',
     '& .MuiDataGrid-columnHeader': {
       backgroundColor: '#2f5487',

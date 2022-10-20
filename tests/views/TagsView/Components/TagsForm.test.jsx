@@ -23,9 +23,10 @@ const defaultProps = {
     }
   ],
   onCancel: jest.fn(),
-  onChange: jest.fn(),
+  handleTagChange: jest.fn(),
+  handleCompaniesChange: jest.fn(),
   onSave: jest.fn(),
-  tag: {}
+  tag: 'Tag Name'
 }
 
 const setUp = (props) => {
@@ -51,16 +52,16 @@ describe('<TagsForm />', () => {
     })
   })
 
-  describe('onChange events', () => {
-    it('should call onChange with textfield', () => {
+  describe('handleChange events', () => {
+    it('should call handleTagChange with textfield', () => {
       setUp()
       const textfield = screen.getByRole('textbox')
 
       fireEvent.change(textfield, { target: { value: 'Education' } })
-      expect(defaultProps.onChange).toHaveBeenCalled()
+      expect(defaultProps.handleTagChange).toHaveBeenCalled()
     })
 
-    it('should call onChange with autocomplete', () => {
+    it('should call handleCompaniesChange with autocomplete', () => {
       setUp()
 
       const autocomplete = screen.getByRole('combobox')
@@ -68,7 +69,7 @@ describe('<TagsForm />', () => {
       fireEvent.keyDown(autocomplete, ARROW_DOWN)
       fireEvent.keyDown(autocomplete, ENTER)
 
-      expect(defaultProps.onChange).toHaveBeenCalled()
+      expect(defaultProps.handleCompaniesChange).toHaveBeenCalled()
     })
   })
 })

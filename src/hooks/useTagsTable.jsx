@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getTags, updateTags } from '../service/tags'
+import { getTags, addTags, updateTags } from '../service/tags'
 import { ACTION_FAILED, UPDATE_ERROR } from '../utils/constants/tagsError'
 
 const useTagsTable = () => {
@@ -15,7 +15,9 @@ const useTagsTable = () => {
   const [initialData, setInitialData] = useState({})
 
   useEffect(() => {
-    initTags(pageSize, offset)
+    (async () => {
+      await initTags(pageSize, offset)
+    })()
     return () => setDefaultValues()
   }, [])
 
@@ -48,6 +50,18 @@ const useTagsTable = () => {
     } catch (_error) {
       setDefaultValues()
       return []
+    }
+  }
+
+  const addTag = async (tagName, companies) => {
+    try {
+      const response = await addTags(tagName, companies)
+      if (response.added) {
+        initTags(pageSize, offset)
+      }
+      return response.added
+    } catch (_error) {
+      return false
     }
   }
 
@@ -121,7 +135,8 @@ const useTagsTable = () => {
     setData,
     updateTagsInfo,
     handleChangePage,
-    handleChangePageSize
+    handleChangePageSize,
+    addTag
   }
 }
 

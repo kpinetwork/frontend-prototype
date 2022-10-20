@@ -30,12 +30,10 @@ export function TagsSectionView () {
   const [openAdd, setOpenAdd] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
-  const [tag, setTag] = useState({})
   const [errorMessage, setErrorMessage] = useState(null)
-  const {
-    companies,
-    companiesArray
-  } = useTagsSection()
+  const [tagName, setTagName] = useState(null)
+  const [companiesSelected, setCompaniesSelected] = useState([])
+  const { companies, companiesArray } = useTagsSection()
   const {
     total,
     isLoading,
@@ -47,11 +45,28 @@ export function TagsSectionView () {
     setData,
     updateTagsInfo,
     handleChangePage,
-    handleChangePageSize
+    handleChangePageSize,
+    addTag
   } = useTagsTable()
 
-  const onChange = (event, type) => {
-    setTag({ ...tag, [type]: event?.target?.value })
+  const handleTagChange = (event) => {
+    setTagName(event.target.value)
+  }
+
+  const handleCompaniesChange = (_event, value) => {
+    setCompaniesSelected(value)
+  }
+
+  const onSave = async () => {
+    const companiesIds = companiesSelected.map(company => {
+      return company.id
+    })
+    const response = addTag(tagName, companiesIds)
+    if (response) {
+      setOpenAdd(false)
+      setTagName(null)
+      setCompaniesSelected([])
+    }
   }
 
   const onCancelEdit = () => {
@@ -98,12 +113,15 @@ export function TagsSectionView () {
           </Snackbar>
           {openAdd &&
             <TagsForm
-              tag={tag}
-              onChange={onChange}
-              companies={companiesArray}
               onCancel={() => {
                 setOpenAdd(false)
               }}
+              companies={companiesArray}
+              handleTagChange={handleTagChange}
+              handleCompaniesChange={handleCompaniesChange}
+              tag={tagName}
+              companiesSelected={companiesSelected}
+              onSave={onSave}
             />
           }
           { !isLoading &&
@@ -125,7 +143,7 @@ export function TagsSectionView () {
                   startIcon={<EditOutlined />}
                   style={{ textTransform: 'none' }}
                   onClick={(_) => setOpenEdit(true)}
-                  disabled={openAdd}
+                  disabled={openEdit}
                 >
                   Edit Tags
                 </Button>

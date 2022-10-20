@@ -23,6 +23,10 @@ const tags = {
 }
 
 const tableHookResponse = {
+  addTag: jest.fn(),
+  setOpenAdd: jest.fn(),
+  setTagName: jest.fn(),
+  setCompaniesSelected: jest.fn(),
   total: 2,
   isLoading: false,
   allowActions: true,
@@ -82,6 +86,18 @@ describe('<TagsSectionView />', () => {
       expect(screen.getByText('Add Tag')).toBeInTheDocument()
       expect(screen.getByText('Save')).toBeInTheDocument()
       expect(screen.getByText('Cancel')).toBeInTheDocument()
+    })
+
+    it('Click on save should call service', () => {
+      useTagsTable.mockImplementation(() => tableHookResponse)
+      useTagsSections.mockImplementation(() => hookResponse)
+      setUp()
+
+      fireEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
+      fireEvent.change(screen.getByPlaceholderText('Tag name'), { target: { value: 'Tag' } })
+      fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+
+      expect(tableHookResponse.addTag).toBeCalled()
     })
 
     it('Should close form when click on Cancel', async () => {
