@@ -76,12 +76,14 @@ const useTagsTable = () => {
     setMaxPage(newPage)
     const response = await getAlltags({ limit: pageSize, offset: nextOffset })
     setTags([...tags, ...response])
+    setInitialData({ ...initialData, ...copyTags(response) })
+    setData({ ...initialData, ...copyTags(response) })
   }
 
   const copyTags = (tags) => {
     return JSON.parse(JSON.stringify(
       Object.fromEntries(
-        Object.values(tags).map(tag => [
+        tags.map(tag => [
           tag.id, { ...tag, companies: tag.companies.map(company => company.id) }
         ])
       )
@@ -93,7 +95,10 @@ const useTagsTable = () => {
       setEnableActios(false)
       const response = await updateTags({ tags: body })
       if (response?.updated) {
-        initTags(pageSize, offset)
+        setPage(0)
+        setMaxPage(0)
+        setOffset(0)
+        initTags(pageSize, 0)
         return null
       }
       return UPDATE_ERROR

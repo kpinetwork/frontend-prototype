@@ -38,7 +38,6 @@ export function TagsSectionView () {
   } = useTagsSection()
   const {
     total,
-    tags,
     isLoading,
     allowActions,
     pageSize,
@@ -56,7 +55,9 @@ export function TagsSectionView () {
   }
 
   const onCancelEdit = () => {
-    setData(JSON.parse(JSON.stringify(initialData)))
+    setTimeout(() => {
+      setData(JSON.parse(JSON.stringify(initialData)))
+    }, 10)
     setOpenEdit(false)
   }
 
@@ -80,6 +81,7 @@ export function TagsSectionView () {
     }
     const message = await updateTagsInfo(body)
     setErrorMessage(message)
+    setOpenEdit(false)
   }
 
   const onCloseSnackbar = () => {
@@ -104,7 +106,7 @@ export function TagsSectionView () {
               }}
             />
           }
-          { allowActions &&
+          { !isLoading &&
             <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>
             {
               !openDelete && !openAdd && !openEdit &&
@@ -142,7 +144,7 @@ export function TagsSectionView () {
             </Box>
           }
           {
-            openEdit &&
+            openEdit && !isLoading &&
             <Box sx={{ marginBottom: 5 }}>
               <ButtonActions
                 okName='Save'
@@ -155,7 +157,7 @@ export function TagsSectionView () {
             </Box>
           }
           {
-            openDelete &&
+            openDelete && !isLoading &&
             <Box sx={{ marginBottom: 5 }}>
               <ButtonActions
                 okName='Save'
@@ -172,7 +174,6 @@ export function TagsSectionView () {
             companies={companies}
             data={data}
             total={total}
-            tags={tags}
             isLoading={isLoading}
             pageSize={pageSize}
             page={page}

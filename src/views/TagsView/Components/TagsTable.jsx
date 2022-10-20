@@ -30,7 +30,7 @@ function getFormatCompanies (params, companies) {
   return params.value.map(companyID => companies[companyID])
 }
 
-const getColumns = (isEditable, companies) => {
+const getColumns = (isEditable, companies, data) => {
   return [
     {
       field: 'name',
@@ -47,16 +47,17 @@ const getColumns = (isEditable, companies) => {
       flex: 1,
       editable: isEditable,
       valueFormatter: (params) => getFormatCompanies(params, companies),
-      renderEditCell: (params) => <CustomEditComponent {...params} companies={companies}/>
+      renderEditCell: (params) => <CustomEditComponent {...params} companies={companies} data={data}/>
     }
   ]
 }
 
 function CustomEditComponent (props) {
-  const { id, value, field, companies } = props
+  const { id, value, field, companies, data } = props
   const apiRef = useGridApiContext()
 
   const handleChange = async (event) => {
+    data[id][field] = event.target.value
     await apiRef.current.setEditCellValue({
       id,
       field,
@@ -115,7 +116,7 @@ export function TagsTable ({
             onPageChange={(newPage) => handleChangePage(newPage)}
             rowsPerPageOptions={[10, 25, 50, 100]}
             pagination
-            columns={getColumns(isEditable, companies)}
+            columns={getColumns(isEditable, companies, data)}
             rows={Object.values(data)}
             rowCount={total}
             page={page}
