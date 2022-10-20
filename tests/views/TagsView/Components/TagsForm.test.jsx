@@ -3,6 +3,7 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { TagsForm } from '../../../../src/views/TagsView/Components/TagsForm'
+import { ARROW_DOWN, ENTER } from '../../../keyEventCodes'
 
 jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
   getAccessToken: () => ({
@@ -65,8 +66,8 @@ describe('<TagsForm />', () => {
 
       const autocomplete = screen.getByRole('combobox')
       fireEvent.change(autocomplete, { target: { value: 'Test Company' } })
-      fireEvent.keyDown(autocomplete, { key: 'ArrowDown' })
-      fireEvent.keyDown(autocomplete, { key: 'Enter' })
+      fireEvent.keyDown(autocomplete, ARROW_DOWN)
+      fireEvent.keyDown(autocomplete, ENTER)
 
       expect(defaultProps.handleCompaniesChange).toHaveBeenCalled()
     })

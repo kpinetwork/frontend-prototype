@@ -23,8 +23,7 @@ const useTagsSection = () => {
       setCompaniesArray(result.companies)
       setCompanies(companyObject)
     } catch (_error) {
-      setCompaniesArray([])
-      setCompanies({})
+      setDefaultValues()
     }
   }
 

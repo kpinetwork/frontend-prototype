@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function ButtonActions ({ okName, cancelName, onOk, onCancel, reverse = true }) {
+export default function ButtonActions ({ okName, cancelName, onOk, onCancel, allowActions = true, reverse = true }) {
   const classes = useStyles()
   return (
     <Box className={reverse ? classes.rowReverse : classes.row}>
@@ -32,12 +32,14 @@ export default function ButtonActions ({ okName, cancelName, onOk, onCancel, rev
         className={classes.mainButton}
         variant='contained'
         style={{ marginRight: reverse ? 0 : 20 }}
+        disabled={!allowActions}
        >
         {okName}
       </Button>
       <Button onClick={onCancel}
         className={classes.textButton}
         variant='outlined'
+        disabled={!allowActions}
       >
         {cancelName}
       </Button>

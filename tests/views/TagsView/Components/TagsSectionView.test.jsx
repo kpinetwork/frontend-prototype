@@ -5,6 +5,8 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { TagsSectionView } from '../../../../src/views/TagsView/Components/TagsSectionView'
 import useTagsSections from '../../../../src/hooks/useTagsSections'
 import useTagsTable from '../../../../src/hooks/useTagsTable'
+import { NOTHING_TO_CHANGE, UPDATE_ERROR } from '../../../../src/utils/constants/tagsError'
+import { ESCAPE } from '../../../keyEventCodes'
 
 jest.mock('../../../../src/hooks/useTagsSections')
 jest.mock('../../../../src/hooks/useTagsTable')
@@ -15,14 +17,28 @@ jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
   })
 })
 
+const tags = {
+  123: { id: 123, name: 'Tag Sample', companies: [] },
+  124: { id: 124, name: 'Fashion', companies: [] }
+}
+
 const tableHookResponse = {
   addTag: jest.fn(),
   setOpenAdd: jest.fn(),
   setTagName: jest.fn(),
   setCompaniesSelected: jest.fn(),
-  total: 1,
+  total: 2,
   isLoading: false,
-  tags: [{ id: '123', name: 'Tag Sample', companies: [] }]
+  allowActions: true,
+  pageSize: 10,
+  page: 0,
+  tags: JSON.parse(JSON.stringify(Object.values(tags))),
+  data: JSON.parse(JSON.stringify(tags)),
+  initialData: JSON.parse(JSON.stringify(tags)),
+  setData: jest.fn(),
+  updateTagsInfo: jest.fn(),
+  errorMessage: null,
+  setErrorMessage: jest.fn()
 }
 
 const hookResponse = {
@@ -61,6 +77,7 @@ describe('<TagsSectionView />', () => {
 
   describe('actions', () => {
     it('Should open form when click on Add Tag button', async () => {
+      useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
@@ -74,15 +91,17 @@ describe('<TagsSectionView />', () => {
     it('Click on save should call service', () => {
       useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
-
       setUp()
+
       fireEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
       fireEvent.change(screen.getByPlaceholderText('Tag name'), { target: { value: 'Tag' } })
       fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+
       expect(tableHookResponse.addTag).toBeCalled()
     })
 
     it('Should close form when click on Cancel', async () => {
+      useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
@@ -94,6 +113,7 @@ describe('<TagsSectionView />', () => {
     })
 
     it('Should enable edition when click on Edit Tags button', () => {
+      useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
@@ -103,6 +123,7 @@ describe('<TagsSectionView />', () => {
     })
 
     it('Should disable edition when click on cancel', () => {
+      useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
@@ -113,18 +134,36 @@ describe('<TagsSectionView />', () => {
       expect(cancelButton).not.toBeInTheDocument()
     })
 
-    it('Should edit data when click on save before click on Edit tags', () => {
+    it('Should open snackbar when save edited values click without changes', async () => {
+      tableHookResponse.updateTagsInfo.mockReturnValue(UPDATE_ERROR)
+      useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
       fireEvent.click(screen.getByRole('button', { name: 'Edit Tags' }))
-      const saveButton = screen.getByRole('button', { name: 'Save' })
-      fireEvent.click(saveButton)
+      fireEvent.doubleClick(screen.getByRole('cell', { name: 'Tag Sample' }))
+      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Save' })))
 
-      expect(saveButton).toBeInTheDocument()
+      expect(screen.getByRole('presentation')).toBeInTheDocument()
+      expect(screen.getByText(NOTHING_TO_CHANGE)).toBeInTheDocument()
+    })
+
+    it('Should close snackbar when click outside of the snackbar', async () => {
+      tableHookResponse.updateTagsInfo.mockReturnValue(UPDATE_ERROR)
+      useTagsTable.mockImplementation(() => tableHookResponse)
+      useTagsSections.mockImplementation(() => hookResponse)
+      setUp()
+
+      fireEvent.click(screen.getByRole('button', { name: 'Edit Tags' }))
+      fireEvent.doubleClick(screen.getByRole('cell', { name: 'Tag Sample' }))
+      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Save' })))
+      await waitFor(() => fireEvent.keyDown(screen.getByRole('presentation'), ESCAPE))
+
+      expect(screen.getByRole('presentation')).not.toHaveFocus()
     })
 
     it('Should enable deletion when click on Delete Tags button', () => {
+      useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
@@ -137,6 +176,7 @@ describe('<TagsSectionView />', () => {
     })
 
     it('Should disable deletion when click on Cancel', () => {
+      useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
@@ -148,6 +188,7 @@ describe('<TagsSectionView />', () => {
     })
 
     it('Should delete tags when click on Save', () => {
+      useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
@@ -156,6 +197,22 @@ describe('<TagsSectionView />', () => {
       fireEvent.click(saveButton)
 
       expect(saveButton).toBeInTheDocument()
+    })
+  })
+
+  describe('update tags', () => {
+    it('Should call updateTagsInfo when click on Save and tag changed', async () => {
+      useTagsTable.mockImplementation(() => tableHookResponse)
+      useTagsSections.mockImplementation(() => hookResponse)
+      setUp()
+
+      fireEvent.click(screen.getByRole('button', { name: 'Edit Tags' }))
+      fireEvent.doubleClick(screen.getByRole('cell', { name: 'Tag Sample' }))
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Science' } })
+      await waitFor(() => fireEvent.click(screen.getByRole('cell', { name: 'Fashion' })))
+      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Save' })))
+
+      expect(tableHookResponse.updateTagsInfo).toHaveBeenCalled()
     })
   })
 })
