@@ -30,10 +30,13 @@ const defaultProps = {
   },
   total: 3,
   isLoading: false,
+  actionWaiting: false,
   pageSize: 10,
   page: 0,
   handleChangePage: jest.fn(),
-  handleChangePageSize: jest.fn()
+  handleChangePageSize: jest.fn(),
+  tagsToDelete: [],
+  setTagsToDelete: jest.fn()
 }
 
 jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
@@ -121,6 +124,17 @@ describe('<TagsTable />', () => {
       fireEvent.click(screen.getByRole('option', { name: '50' }))
 
       expect(defaultProps.handleChangePageSize).toHaveBeenCalled()
+    })
+  })
+
+  describe('checkbox selection', () => {
+    it('Should call setTagsToDelete when select a tag to delete', async () => {
+      setUp({ allowSelectionDelete: true })
+      const checkboxTagID = screen.getAllByRole('checkbox')[0]
+
+      fireEvent.click(checkboxTagID)
+
+      expect(defaultProps.setTagsToDelete).toHaveBeenCalled()
     })
   })
 })
