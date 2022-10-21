@@ -20,10 +20,10 @@ const useCompanyTags = () => {
     setIsLoading(false)
   }
 
-  const initTagsByCompany = async (limit, offset) => {
+  const initTagsByCompany = async () => {
     const tagsByCompanyResponse = await getTagsByCompany()
     setTagsByCompany(tagsByCompanyResponse)
-    const tagsListResponse = await getListOfTags({ limit, offset })
+    const tagsListResponse = await getListOfTags({})
     setListOfTags(tagsListResponse)
   }
 
