@@ -57,7 +57,7 @@ describe('<SelectCompany />', () => {
     it('Click on select', async () => {
       setUp()
 
-      await userEvent.click(getByRole(screen.getByTestId('company-select'), 'button'))
+      await waitFor(() => userEvent.click(getByRole(screen.getByTestId('company-select'), 'button')))
       await waitFor(() => userEvent.click(screen.getByText(sampleCompanies[2].name)))
 
       expect(screen.getByRole('button', { name: sampleCompanies[2].name })).toBeInTheDocument()
