@@ -28,7 +28,7 @@ const addTagsResponse = {
   added: true
 }
 
-const addTagsRequest = { name: 'Tag Name', companies: ['1', '2'] }
+const addTagsRequest = { name: 'Tag Name', companies: [{ id: '1', name: 'Company Name' }, { id: '2', name: 'Company Test' }] }
 
 const mockService = (service, response) => {
   service.mockImplementation(() => {
@@ -159,6 +159,29 @@ describe('useTagsTable', () => {
     })
 
     expect(hookResponse.result.current.isLoading).toBeFalsy()
+    expect(hookResponse.result.current.tags).toEqual(tags.tags)
+  })
+  it('useTagsTable hook should return negative confirmation when call add service fails', async () => {
+    const addResponse = {
+      tag: {
+        id: '2',
+        name: 'Tag Name',
+        companies: ['1', '2']
+      },
+      added: false
+    }
+    mockService(getTags, tags)
+    mockService(addTags, addResponse)
+    let hookResponse
+
+    await act(async () => {
+      hookResponse = renderHook(() => useTagsTable())
+    })
+
+    await act(async () => {
+      hookResponse.result.current.addTag(addTagsRequest)
+    })
+
     expect(hookResponse.result.current.tags).toEqual(tags.tags)
   })
 })

@@ -45,12 +45,14 @@ const useTagsTable = () => {
 
   const addTag = async (tagName, companies) => {
     try {
+      setIsLoading(true)
       const response = await addTags(tagName, companies)
       if (response.added) {
         initTags(pageSize, offset)
       }
       return response.added
     } catch (_error) {
+      setIsLoading(false)
       return false
     }
   }

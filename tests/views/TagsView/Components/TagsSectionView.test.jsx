@@ -1,4 +1,3 @@
-import { Auth } from 'aws-amplify'
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
@@ -6,23 +5,18 @@ import { TagsSectionView } from '../../../../src/views/TagsView/Components/TagsS
 import useTagsSections from '../../../../src/hooks/useTagsSections'
 import useTagsTable from '../../../../src/hooks/useTagsTable'
 
-jest.mock('../../../../src/hooks/useTagsSections')
 jest.mock('../../../../src/hooks/useTagsTable')
-
-jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
-  getAccessToken: () => ({
-    getJwtToken: () => ('Secret-Token')
-  })
-})
+jest.mock('../../../../src/hooks/useTagsSections')
 
 const tableHookResponse = {
   addTag: jest.fn(),
-  setOpenAdd: jest.fn(),
-  setTagName: jest.fn(),
-  setCompaniesSelected: jest.fn(),
   total: 1,
   isLoading: false,
-  tags: [{ id: '123', name: 'Tag Sample', companies: [] }]
+  tags: [{ id: '123', name: 'Tag Sample', companies: [] }],
+  pageSize: 100,
+  page: 0,
+  handleChangePage: jest.fn(),
+  handleChangePageSize: jest.fn()
 }
 
 const hookResponse = {
@@ -71,13 +65,15 @@ describe('<TagsSectionView />', () => {
       expect(screen.getByText('Cancel')).toBeInTheDocument()
     })
 
-    it('Click on save should call service', () => {
-      useTagsTable.mockImplementation(() => tableHookResponse)
+    it('Click on save should call service', async () => {
       useTagsSections.mockImplementation(() => hookResponse)
-
+      useTagsTable.mockImplementation(() => tableHookResponse)
       setUp()
       fireEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
       fireEvent.change(screen.getByPlaceholderText('Tag name'), { target: { value: 'Tag' } })
+      fireEvent.change(screen.getByRole('combobox'), { target: { value: 'Company Name' } })
+      fireEvent.keyDown(screen.getByRole('combobox'), { key: 'ArrowDown' })
+      fireEvent.keyDown(screen.getByRole('combobox'), { key: 'Enter' })
       fireEvent.click(screen.getByRole('button', { name: 'Save' }))
       expect(tableHookResponse.addTag).toBeCalled()
     })
