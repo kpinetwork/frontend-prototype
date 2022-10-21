@@ -115,7 +115,7 @@ describe('<InvestmenteReport />', () => {
 
       await userEvent.click(getByRole(screen.getAllByTestId('metric-selector')[0], 'button'))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Ebitda - actual' })), { timeout: 3000 })
-      await userEvent.click(getByRole(screen.getAllByTestId('metric-selector')[1], 'button'))
+      await waitFor(() => userEvent.click(getByRole(screen.getAllByTestId('metric-selector')[1], 'button')))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Rule of 40' })), { timeout: 3000 })
 
       expect(useInvestmentReportResponse.setSecondMetric).toHaveBeenCalled()

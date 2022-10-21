@@ -50,6 +50,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     min_ttl = 0
     default_ttl = 3600
     max_ttl = 86400
+    
     function_association {
       event_type   = "viewer-response"
       function_arn = aws_cloudfront_function.http_headers_cloudfront_function.arn
@@ -83,6 +84,11 @@ resource "aws_cloudfront_distribution" "distribution" {
     max_ttl = 31536000
     compress = true
     viewer_protocol_policy = "redirect-to-https"
+
+    function_association {
+      event_type   = "viewer-response"
+      function_arn = aws_cloudfront_function.http_headers_cloudfront_function.arn
+    }
   }
   restrictions {
     geo_restriction {
@@ -100,6 +106,10 @@ resource "aws_cloudfront_distribution" "distribution" {
     response_code = 200
     response_page_path = "/index.html"
   }
+
+  depends_on = [
+    aws_cloudfront_function.http_headers_cloudfront_function
+  ]
 }
 
 resource "aws_cloudfront_origin_access_identity" "web_distribution" {

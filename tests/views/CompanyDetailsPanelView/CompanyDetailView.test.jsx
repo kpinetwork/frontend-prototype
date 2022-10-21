@@ -1,4 +1,5 @@
 import React from 'react'
+import { Auth } from 'aws-amplify'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import { CompanyDetailView } from '../../../src/views/CompanyDetailsPanelView/CompanyDetailView'
@@ -16,6 +17,12 @@ const setUp = (id) => {
 
 jest.mock('../../../src/hooks/useCompanyDetails')
 jest.mock('../../../src/hooks/useScenariosTable')
+
+jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
+  getAccessToken: () => ({
+    getJwtToken: () => ('Secret-Token')
+  })
+})
 
 const scenariosTablehookResponse = {
   rowsPerPage: 10,

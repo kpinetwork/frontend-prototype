@@ -43,7 +43,7 @@ describe('fetchMetricReport', () => {
       axios.get.mockResolvedValueOnce(getDynamicReportResponse)
       await getDynamicReport({ metrics: 'actuals_revenue', company_id: '123', calendarYear: '2020' })
 
-      expect(axios.get).toHaveBeenCalledWith(`${dynamicReportUrl}/123?metrics=actuals_revenue&calendar_year=2020&investment_year=undefined&new=true`,
+      expect(axios.get).toHaveBeenCalledWith(`${dynamicReportUrl}/123?metrics=actuals_revenue&calendar_year=2020`,
         { headers: { Authorization: null, 'Content-Type': 'application/json' }, params: { } })
     })
   })

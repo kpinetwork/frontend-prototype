@@ -4,10 +4,12 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { CompanyTabs } from '../../../../src/views/CompanyDetailsPanelView/Components/CompanyTabs'
 import useCompanyDetails from '../../../../src/hooks/useCompanyDetails'
 import useScenariosTable from '../../../../src/hooks/useScenariosTable'
+import useCompanyTags from '../../../../src/hooks/useCompanyTags'
 import Context from '../../../../src/context/appContext'
 
 jest.mock('../../../../src/hooks/useCompanyDetails')
 jest.mock('../../../../src/hooks/useScenariosTable')
+jest.mock('../../../../src/hooks/useCompanyTags')
 
 const scenariosTablehookResponse = {
   rowsPerPage: 10,
@@ -45,6 +47,44 @@ const companyDetailshookResponse = {
   isLoading: false
 }
 
+const companyTagshookResponse = {
+  tagsByCompany: [
+    {
+      id: '1234',
+      name: 'Sample tag'
+    },
+    {
+      id: '1234',
+      name: 'Sample tag'
+    }
+  ],
+  listOfTags: [
+    {
+      id: '1',
+      name: 'Tag',
+      companies: [
+        {
+          id: '1',
+          name: 'Tag'
+        }
+      ]
+    },
+    {
+
+      id: '2',
+      name: 'Tag Name',
+      companies: [
+        {
+          id: '1',
+          name: 'Company Name'
+        }
+      ]
+    }
+  ],
+  isLoading: false,
+  handleTagsByCompany: jest.fn()
+}
+
 const companyID = 'id'
 
 const setUp = (id) => {
@@ -59,6 +99,7 @@ describe('<CompanyTabs />', () => {
   it('should render no company selected card', () => {
     useCompanyDetails.mockImplementation(() => companyDetailshookResponse)
     useScenariosTable.mockImplementation(() => scenariosTablehookResponse)
+    useCompanyTags.mockImplementation(() => companyTagshookResponse)
     setUp()
 
     const label = screen.getByText('No company selected')
@@ -69,37 +110,62 @@ describe('<CompanyTabs />', () => {
   it('should render tabs', () => {
     useCompanyDetails.mockImplementation(() => companyDetailshookResponse)
     useScenariosTable.mockImplementation(() => scenariosTablehookResponse)
+    useCompanyTags.mockImplementation(() => companyTagshookResponse)
     setUp(companyID)
 
     const scenariosTab = screen.getByRole('tab', { name: 'Scenarios' })
     const investmentsTab = screen.getByRole('tab', { name: 'Investments' })
+    const tagsTab = screen.getByRole('tab', { name: 'Tags' })
 
     expect(scenariosTab).toBeInTheDocument()
     expect(investmentsTab).toBeInTheDocument()
+    expect(tagsTab).toBeInTheDocument()
   })
 
-  it('should be selected scenarios tab by default', () => {
+  it('Scenario tab when is selected should be highlighted', () => {
     useCompanyDetails.mockImplementation(() => companyDetailshookResponse)
     useScenariosTable.mockImplementation(() => scenariosTablehookResponse)
+    useCompanyTags.mockImplementation(() => companyTagshookResponse)
     setUp(companyID)
 
     const scenariosTab = screen.getByRole('tab', { name: 'Scenarios' })
     const investmentsTab = screen.getByRole('tab', { name: 'Investments' })
+    const tagsTab = screen.getByRole('tab', { name: 'Tags' })
 
     expect(scenariosTab).toHaveAttribute('aria-selected', 'true')
     expect(investmentsTab).toHaveAttribute('aria-selected', 'false')
+    expect(tagsTab).toHaveAttribute('aria-selected', 'false')
   })
 
-  it('should change tab on click event', () => {
+  it('Investment tab when is selected should be highlighted', () => {
     useCompanyDetails.mockImplementation(() => companyDetailshookResponse)
     useScenariosTable.mockImplementation(() => scenariosTablehookResponse)
+    useCompanyTags.mockImplementation(() => companyTagshookResponse)
     setUp(companyID)
     const scenariosTab = screen.getByRole('tab', { name: 'Scenarios' })
     const investmentsTab = screen.getByRole('tab', { name: 'Investments' })
+    const tagsTab = screen.getByRole('tab', { name: 'Tags' })
 
     fireEvent.click(investmentsTab)
 
     expect(scenariosTab).toHaveAttribute('aria-selected', 'false')
     expect(investmentsTab).toHaveAttribute('aria-selected', 'true')
+    expect(tagsTab).toHaveAttribute('aria-selected', 'false')
+  })
+
+  it('Tag tab when is selected should be highlighted', () => {
+    useCompanyDetails.mockImplementation(() => companyDetailshookResponse)
+    useScenariosTable.mockImplementation(() => scenariosTablehookResponse)
+    useCompanyTags.mockImplementation(() => companyTagshookResponse)
+    setUp(companyID)
+    const scenariosTab = screen.getByRole('tab', { name: 'Scenarios' })
+    const investmentsTab = screen.getByRole('tab', { name: 'Investments' })
+    const tagsTab = screen.getByRole('tab', { name: 'Tags' })
+
+    fireEvent.click(tagsTab)
+
+    expect(scenariosTab).toHaveAttribute('aria-selected', 'false')
+    expect(investmentsTab).toHaveAttribute('aria-selected', 'false')
+    expect(tagsTab).toHaveAttribute('aria-selected', 'true')
   })
 })
