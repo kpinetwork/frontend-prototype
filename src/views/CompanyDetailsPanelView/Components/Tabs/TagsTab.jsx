@@ -51,6 +51,7 @@ export function TagsTab ({ onSave }) {
   const classes = useStyles()
   const [activeEdition, setActiveEdition] = useState(false)
   const { listOfTags, tagsByCompany, isLoading, handleTagsByCompany } = useCompanyTags()
+  const defaultOptions = tagsByCompany.map(tag => { return tag.name })
 
   return (
     !isLoading &&
@@ -93,7 +94,7 @@ export function TagsTab ({ onSave }) {
               options={listOfTags}
               getOptionLabel={(option) => option.name}
               filterSelectedOptions
-              value={tagsByCompany}
+              value={listOfTags.filter((item) => defaultOptions.includes(item.name))}
               onChange={handleTagsByCompany}
               disabled = {!activeEdition}
               renderInput={(params) => (
