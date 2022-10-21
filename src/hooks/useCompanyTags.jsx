@@ -15,8 +15,6 @@ const useCompanyTags = () => {
   }, [])
 
   const setDefaultValues = () => {
-    setListOfTags([])
-    setTagsByCompany([])
     setIsLoading(false)
   }
 
@@ -32,8 +30,6 @@ const useCompanyTags = () => {
       setIsLoading(true)
       const result = await getTags({})
       const { tags } = destructuring(result)
-      setListOfTags(tags)
-      setIsLoading(false)
       return tags
     } catch (_error) {
       setDefaultValues()
@@ -43,10 +39,10 @@ const useCompanyTags = () => {
   const getTagsByCompany = async () => {
     try {
       const result = await getCompanyTags(selectedCompanyID)
-      setTagsByCompany(result)
       return result
     } catch (_error) {
-      setTagsByCompany([])
+      setDefaultValues()
+      return []
     }
   }
 

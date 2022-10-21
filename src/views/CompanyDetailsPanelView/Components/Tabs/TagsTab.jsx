@@ -62,7 +62,8 @@ export function TagsTab ({ onSave }) {
             <Button
               startIcon={< Edit/>}
               style={{ textTransform: 'none' }}
-              disabled={true}
+              onClick={(_) => setActiveEdition(true)}
+              disabled
             >
               Modify
             </Button>

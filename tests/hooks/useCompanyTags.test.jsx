@@ -62,7 +62,7 @@ const wrapper = ({ children }) => (
 )
 
 describe('useCompanyTags', () => {
-  it('useCompanyTags hook when is successful should return tags options', async () => {
+  it('useCompanyTags hook when get list of tags is successful should return tags options', async () => {
     mockService(getTags, tagsOptions)
     let hookResponse
 
@@ -72,7 +72,8 @@ describe('useCompanyTags', () => {
 
     expect(hookResponse.result.current.listOfTags).toEqual(tagsOptions.tags)
   })
-  it('useCompanyTags hook when it fails should return empty values', async () => {
+
+  it('useCompanyTags hook when get list of tags fails should return empty values', async () => {
     mockService(getTags, 'error')
     let hookResponse
 
@@ -82,7 +83,8 @@ describe('useCompanyTags', () => {
 
     expect(hookResponse.result.current.listOfTags).toEqual([])
   })
-  it('useCompanyTags hook when successful should return company tags', async () => {
+
+  it('useCompanyTags hook when company tags is successful should return company tags', async () => {
     mockService(getTags, tagsOptions)
     mockService(getCompanyTags, companyTagsResponse)
     let hookResponse
@@ -92,5 +94,17 @@ describe('useCompanyTags', () => {
     })
 
     expect(hookResponse.result.current.tagsByCompany).toEqual(companyTagsResponse)
+  })
+
+  it('useCompanyTags hook when company tags fails should return empty values', async () => {
+    mockService(getTags, tagsOptions)
+    mockService(getCompanyTags, 'error')
+    let hookResponse
+
+    await act(async () => {
+      hookResponse = renderHook(() => useCompanyTags(), { wrapper })
+    })
+
+    expect(hookResponse.result.current.tagsByCompany).toEqual([])
   })
 })
