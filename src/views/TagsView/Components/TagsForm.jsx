@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 export function TagsForm ({ onCancel, companies, handleTagChange, handleCompaniesChange, tag, companiesSelected, onSave }) {
   const classes = useStyles()
+  const defaultOptions = companiesSelected.map(company => { return company.name })
 
   return (
         <Card className={classes.form}>
@@ -70,7 +71,7 @@ export function TagsForm ({ onCancel, companies, handleTagChange, handleCompanie
               options={companies}
               getOptionLabel={(option) => option.name}
               filterSelectedOptions
-              value = {companiesSelected}
+              value={companies.filter((item) => defaultOptions.includes(item.name))}
               onChange={handleCompaniesChange}
               renderInput={(params) => (
                 <TextField
