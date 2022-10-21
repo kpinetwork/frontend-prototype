@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Auth } from 'aws-amplify'
-import { getTags, addTags, updateTags } from '../../src/service/tags'
+import { getTags, addTags, updateTags, deleteTags } from '../../src/service/tags'
 const { VITE_HOST: baseUrl } = import.meta.env
 
 const tags = {
@@ -32,16 +32,6 @@ describe('tags service', () => {
     })
   })
 
-  describe('update tags', () => {
-    it('should return if the tags were updated', async () => {
-      axios.put.mockResolvedValueOnce(updateTagsResponse)
-      await updateTags({})
-
-      expect(axios.put).toHaveBeenCalledWith(tagsUrl, {},
-        { headers: { Authorization: null, 'Content-Type': 'application/json' } })
-    })
-  })
-
   describe('add tag', () => {
     it('API call successful should add tag', async () => {
       const tagResponse = {
@@ -58,6 +48,30 @@ describe('tags service', () => {
       await addTags('Tag Name', ['1', '2'])
 
       expect(axios.post).toHaveBeenCalledWith(`${tagsUrl}`, { name: 'Tag Name', companies: ['1', '2'] }, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
+    })
+  })
+
+  describe('update tags', () => {
+    it('should return if the tags were updated when api call is successful', async () => {
+      axios.put.mockResolvedValueOnce(updateTagsResponse)
+      await updateTags({})
+
+      expect(axios.put).toHaveBeenCalledWith(tagsUrl, {},
+        { headers: { Authorization: null, 'Content-Type': 'application/json' } })
+    })
+  })
+
+  describe('delete tags', () => {
+    it('should return if the tags were deleted when api call is successful', async () => {
+      const tagsToDelete = ['1']
+      axios.delete.mockResolvedValueOnce({ deleted: true })
+      await deleteTags(tagsToDelete)
+
+      expect(axios.delete).toHaveBeenCalledWith(tagsUrl,
+        {
+          headers: { Authorization: null, 'Content-Type': 'application/json' },
+          data: tagsToDelete
+        })
     })
   })
 })

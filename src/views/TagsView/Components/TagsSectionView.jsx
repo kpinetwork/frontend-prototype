@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button } from '@material-ui/core'
+import { Box, Button, Dialog } from '@material-ui/core'
 import { Snackbar, Alert } from '@mui/material'
 import { makeStyles } from '@material-ui/core/styles'
 import { Add, DeleteOutlined, EditOutlined } from '@material-ui/icons'
@@ -10,6 +10,8 @@ import useTagsSection from '../../../hooks/useTagsSections'
 import useTagsTable from '../../../hooks/useTagsTable'
 import { isEmptyObject } from '../../../utils/userFunctions'
 import { NOTHING_TO_CHANGE } from '../../../utils/constants/tagsError'
+import { DeleteTagsDialog } from './DeleteTagsDialog'
+import LoadingProgress from '../../../components/Progress'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,20 +35,25 @@ export function TagsSectionView () {
   const [errorMessage, setErrorMessage] = useState(null)
   const [tagName, setTagName] = useState(null)
   const [companiesSelected, setCompaniesSelected] = useState([])
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const { companies, companiesArray } = useTagsSection()
   const {
     total,
     isLoading,
     allowActions,
+    actionWaiting,
     pageSize,
     page,
     data,
     initialData,
+    tagsToDelete,
+    setTagsToDelete,
     setData,
     updateTagsInfo,
     handleChangePage,
     handleChangePageSize,
-    addTag
+    addTag,
+    onDeleteTags
   } = useTagsTable()
 
   const handleTagChange = (event) => {
@@ -76,6 +83,25 @@ export function TagsSectionView () {
       setData(JSON.parse(JSON.stringify(initialData)))
     }, 10)
     setOpenEdit(false)
+  }
+
+  const onCancelDelete = () => {
+    setTagsToDelete([])
+    setOpenDelete(false)
+    setConfirmDelete(false)
+  }
+
+  const onDelete = () => {
+    if (tagsToDelete.length < 1) return
+    setConfirmDelete(true)
+  }
+
+  const onConfirmDelete = async () => {
+    if (tagsToDelete.length < 1) return
+    setConfirmDelete(false)
+    const message = await onDeleteTags(tagsToDelete)
+    setErrorMessage(message)
+    onCancelDelete()
   }
 
   const buildBody = () => {
@@ -113,6 +139,18 @@ export function TagsSectionView () {
           >
             <Alert severity="error">{errorMessage}</Alert>
           </Snackbar>
+          <Dialog
+            PaperProps={{
+              style: {
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
+                overflow: 'hidden'
+              }
+            }}
+            open={actionWaiting}
+            >
+            <LoadingProgress/>
+          </Dialog>
           {openAdd &&
             <TagsForm
               onCancel={() => {
@@ -133,7 +171,10 @@ export function TagsSectionView () {
                 <Button
                   startIcon={<DeleteOutlined />}
                   style={{ textTransform: 'none' }}
-                  onClick={(_) => setOpenDelete(true)}
+                  onClick={(_) => {
+                    setTagsToDelete([])
+                    setOpenDelete(true)
+                  }}
                   disabled={openDelete}
                 >
                   Delete Tags
@@ -182,15 +223,26 @@ export function TagsSectionView () {
               <ButtonActions
                 okName='Save'
                 cancelName='Cancel'
-                onOk={(_) => setOpenDelete(true)}
-                onCancel={(_) => setOpenDelete(false)}
+                onOk={(_) => onDelete()}
+                onCancel={(_) => onCancelDelete()}
                 reverse={true}
                 allowActions={allowActions}
               />
             </Box>
           }
+          <DeleteTagsDialog
+            open={confirmDelete}
+            onCancel={() => {
+              setConfirmDelete(false)
+            }}
+            onOk={() => onConfirmDelete()}
+            tags={tagsToDelete.map(tagID => initialData[tagID]?.name)}
+          />
           <TagsTable
             isEditable={openEdit}
+            allowSelectionDelete={openDelete}
+            setTagsToDelete={setTagsToDelete}
+            tagsToDelete={tagsToDelete}
             companies={companies}
             data={data}
             total={total}

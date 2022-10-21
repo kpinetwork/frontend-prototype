@@ -4,7 +4,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { TagsSectionView } from '../../../../src/views/TagsView/Components/TagsSectionView'
 import useTagsSections from '../../../../src/hooks/useTagsSections'
 import useTagsTable from '../../../../src/hooks/useTagsTable'
-import { NOTHING_TO_CHANGE, UPDATE_ERROR } from '../../../../src/utils/constants/tagsError'
+import { NOTHING_TO_CHANGE, UPDATE_TAGS_ERROR } from '../../../../src/utils/constants/tagsError'
 import { ESCAPE } from '../../../keyEventCodes'
 
 jest.mock('../../../../src/hooks/useTagsTable')
@@ -25,6 +25,7 @@ const tableHookResponse = {
   total: 2,
   isLoading: false,
   allowActions: true,
+  actionWaiting: false,
   pageSize: 10,
   page: 0,
   tags: JSON.parse(JSON.stringify(Object.values(tags))),
@@ -33,7 +34,10 @@ const tableHookResponse = {
   setData: jest.fn(),
   updateTagsInfo: jest.fn(),
   errorMessage: null,
-  setErrorMessage: jest.fn()
+  setErrorMessage: jest.fn(),
+  tagsToDelete: [],
+  setTagsToDelete: jest.fn(),
+  onDeleteTags: jest.fn()
 }
 
 const hookResponse = {
@@ -83,7 +87,7 @@ describe('<TagsSectionView />', () => {
       expect(screen.getByText('Cancel')).toBeInTheDocument()
     })
 
-    it('Click on save should call service', async () => {
+    it('Click on save should call add service', async () => {
       useTagsSections.mockImplementation(() => hookResponse)
       useTagsTable.mockImplementation(() => tableHookResponse)
       setUp()
@@ -133,7 +137,7 @@ describe('<TagsSectionView />', () => {
     })
 
     it('Should open snackbar when save edited values click without changes', async () => {
-      tableHookResponse.updateTagsInfo.mockReturnValue(UPDATE_ERROR)
+      tableHookResponse.updateTagsInfo.mockReturnValue(UPDATE_TAGS_ERROR)
       useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
@@ -147,7 +151,7 @@ describe('<TagsSectionView />', () => {
     })
 
     it('Should close snackbar when click outside of the snackbar', async () => {
-      tableHookResponse.updateTagsInfo.mockReturnValue(UPDATE_ERROR)
+      tableHookResponse.updateTagsInfo.mockReturnValue(UPDATE_TAGS_ERROR)
       useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
@@ -160,20 +164,22 @@ describe('<TagsSectionView />', () => {
       expect(screen.getByRole('presentation')).not.toHaveFocus()
     })
 
-    it('Should enable deletion when click on Delete Tags button', () => {
+    it('Should enable tags checkbox selection when click on Delete Tags button', () => {
       useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
       fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))
+      const checkboxCell = screen.getByRole('checkbox', { name: 'Select all rows' })
       const saveButton = screen.getByRole('button', { name: 'Save' })
       const cancelButton = screen.getByRole('button', { name: 'Cancel' })
 
       expect(saveButton).toBeInTheDocument()
       expect(cancelButton).toBeInTheDocument()
+      expect(checkboxCell).toBeInTheDocument()
     })
 
-    it('Should disable deletion when click on Cancel', () => {
+    it('Should disable tags checkbox selection for deleting when click on Cancel', () => {
       useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
@@ -183,18 +189,7 @@ describe('<TagsSectionView />', () => {
       fireEvent.click(cancelButton)
 
       expect(cancelButton).not.toBeInTheDocument()
-    })
-
-    it('Should delete tags when click on Save', () => {
-      useTagsTable.mockImplementation(() => tableHookResponse)
-      useTagsSections.mockImplementation(() => hookResponse)
-      setUp()
-
-      fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))
-      const saveButton = screen.getByRole('button', { name: 'Save' })
-      fireEvent.click(saveButton)
-
-      expect(saveButton).toBeInTheDocument()
+      expect(tableHookResponse.setTagsToDelete).toHaveBeenCalled()
     })
   })
 
@@ -211,6 +206,43 @@ describe('<TagsSectionView />', () => {
       await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Save' })))
 
       expect(tableHookResponse.updateTagsInfo).toHaveBeenCalled()
+    })
+  })
+
+  describe('delete tags', () => {
+    it('Should open dialog when click on Save with tags selected', () => {
+      useTagsTable.mockImplementation(() => ({ ...tableHookResponse, tagsToDelete: [123] }))
+      useTagsSections.mockImplementation(() => hookResponse)
+      setUp()
+
+      fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+
+      expect(screen.getByRole('dialog')).toBeVisible()
+    })
+
+    it('Should close dialog when click on Cancel for comfirmation', async () => {
+      useTagsTable.mockImplementation(() => ({ ...tableHookResponse, tagsToDelete: [123] }))
+      useTagsSections.mockImplementation(() => hookResponse)
+      setUp()
+
+      fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'No' })))
+
+      expect(screen.getByRole('dialog')).not.toBeVisible()
+    })
+
+    it('Should call onDeleteTags when click on Ok in comfirmation for deleting', async () => {
+      useTagsTable.mockImplementation(() => ({ ...tableHookResponse, tagsToDelete: [123] }))
+      useTagsSections.mockImplementation(() => hookResponse)
+      setUp()
+
+      fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Ok' })))
+
+      expect(tableHookResponse.onDeleteTags).toHaveBeenCalled()
     })
   })
 })

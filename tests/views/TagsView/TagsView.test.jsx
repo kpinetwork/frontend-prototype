@@ -21,6 +21,7 @@ const tableHookResponse = {
   isLoading: false,
   tags: Object.values(tags),
   allowActions: true,
+  actionWaiting: false,
   pageSize: 10,
   page: 0,
   data: JSON.parse(JSON.stringify(tags)),
@@ -28,7 +29,8 @@ const tableHookResponse = {
   setData: jest.fn(),
   updateTagsInfo: jest.fn(),
   errorMessage: null,
-  setErrorMessage: jest.fn()
+  setErrorMessage: jest.fn(),
+  tagsToDelete: []
 }
 
 const hookResponse = {
