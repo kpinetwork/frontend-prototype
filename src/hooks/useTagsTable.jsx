@@ -57,6 +57,7 @@ const useTagsTable = () => {
 
   const addTag = async (tagName, companies) => {
     try {
+      setEnableActios(false)
       setWaiting(true)
       const response = await addTags(tagName, companies)
       if (response.added) {
@@ -64,10 +65,10 @@ const useTagsTable = () => {
       }
       return response.added
     } catch (_error) {
-      setWaiting(false)
       return false
     } finally {
       setWaiting(false)
+      setEnableActios(true)
     }
   }
 
