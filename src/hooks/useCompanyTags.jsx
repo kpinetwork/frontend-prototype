@@ -20,17 +20,17 @@ const useCompanyTags = () => {
     setIsLoading(false)
   }
 
-  const initTagsByCompany = async (limit, offset) => {
+  const initTagsByCompany = async () => {
     const tagsByCompanyResponse = await getTagsByCompany()
     setTagsByCompany(tagsByCompanyResponse)
-    const tagsListResponse = await getListOfTags({ limit, offset })
+    const tagsListResponse = await getListOfTags()
     setListOfTags(tagsListResponse)
   }
 
-  const getListOfTags = async (options) => {
+  const getListOfTags = async () => {
     try {
       setIsLoading(true)
-      const result = await getTags(options)
+      const result = await getTags({})
       const { tags } = destructuring(result)
       setListOfTags(tags)
       setIsLoading(false)

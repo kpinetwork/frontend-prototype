@@ -152,6 +152,7 @@ describe('<CompanyTabs />', () => {
     expect(investmentsTab).toHaveAttribute('aria-selected', 'true')
     expect(tagsTab).toHaveAttribute('aria-selected', 'false')
   })
+
   it('Tag tab when is selected should be highlighted', () => {
     useCompanyDetails.mockImplementation(() => companyDetailshookResponse)
     useScenariosTable.mockImplementation(() => scenariosTablehookResponse)
