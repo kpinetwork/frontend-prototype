@@ -26,7 +26,11 @@ const defaultProps = {
   handleTagChange: jest.fn(),
   handleCompaniesChange: jest.fn(),
   onSave: jest.fn(),
-  tag: 'Tag Name'
+  tag: 'Tag Name',
+  companiesSelected: [{
+    id: '1',
+    name: 'Test Company'
+  }]
 }
 
 const setUp = (props) => {

@@ -64,16 +64,18 @@ export function TagsSectionView () {
     setCompaniesSelected(value)
   }
 
-  const onSave = async () => {
-    const companiesIds = companiesSelected.map(company => {
+  const getCompaniesIds = (companies) => {
+    const companiesIds = companies.map(company => {
       return company.id
     })
-    const response = addTag(tagName, companiesIds)
-    if (response) {
-      setOpenAdd(false)
-      setTagName(null)
-      setCompaniesSelected([])
-    }
+    return companiesIds
+  }
+
+  const onSave = async () => {
+    addTag(tagName, getCompaniesIds(companiesSelected))
+    setOpenAdd(false)
+    setTagName(null)
+    setCompaniesSelected([])
   }
 
   const onCancelEdit = () => {

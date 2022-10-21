@@ -1,4 +1,3 @@
-import { Auth } from 'aws-amplify'
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
@@ -8,14 +7,8 @@ import useTagsTable from '../../../../src/hooks/useTagsTable'
 import { NOTHING_TO_CHANGE, UPDATE_TAGS_ERROR } from '../../../../src/utils/constants/tagsError'
 import { ESCAPE } from '../../../keyEventCodes'
 
-jest.mock('../../../../src/hooks/useTagsSections')
 jest.mock('../../../../src/hooks/useTagsTable')
-
-jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
-  getAccessToken: () => ({
-    getJwtToken: () => ('Secret-Token')
-  })
-})
+jest.mock('../../../../src/hooks/useTagsSections')
 
 const tags = {
   123: { id: 123, name: 'Tag Sample', companies: [] },
@@ -23,6 +16,8 @@ const tags = {
 }
 
 const tableHookResponse = {
+  handleChangePage: jest.fn(),
+  handleChangePageSize: jest.fn(),
   addTag: jest.fn(),
   setOpenAdd: jest.fn(),
   setTagName: jest.fn(),
@@ -92,13 +87,16 @@ describe('<TagsSectionView />', () => {
       expect(screen.getByText('Cancel')).toBeInTheDocument()
     })
 
-    it('Click on save should call service', () => {
-      useTagsTable.mockImplementation(() => tableHookResponse)
+    it('Click on save should call add service', async () => {
       useTagsSections.mockImplementation(() => hookResponse)
+      useTagsTable.mockImplementation(() => tableHookResponse)
       setUp()
 
       fireEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
       fireEvent.change(screen.getByPlaceholderText('Tag name'), { target: { value: 'Tag' } })
+      fireEvent.change(screen.getByRole('combobox'), { target: { value: 'Company Name' } })
+      fireEvent.keyDown(screen.getByRole('combobox'), { key: 'ArrowDown' })
+      fireEvent.keyDown(screen.getByRole('combobox'), { key: 'Enter' })
       fireEvent.click(screen.getByRole('button', { name: 'Save' }))
 
       expect(tableHookResponse.addTag).toBeCalled()
