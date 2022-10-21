@@ -50,7 +50,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     min_ttl = 0
     default_ttl = 3600
     max_ttl = 86400
-
+    
     function_association {
       event_type   = "viewer-response"
       function_arn = aws_cloudfront_function.http_headers_cloudfront_function.arn
