@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { getTags, addTags, updateTags } from '../service/tags'
-import { ACTION_FAILED, UPDATE_ERROR } from '../utils/constants/tagsError'
+import { getTags, addTags, updateTags, deleteTags } from '../service/tags'
+import { ACTION_FAILED, UPDATE_TAGS_ERROR, DELETE_TAGS_ERROR } from '../utils/constants/tagsError'
 
 const useTagsTable = () => {
   const [total, setTotal] = useState(0)
@@ -13,6 +13,8 @@ const useTagsTable = () => {
   const [allowActions, setEnableActios] = useState(false)
   const [data, setData] = useState({})
   const [initialData, setInitialData] = useState({})
+  const [tagsToDelete, setTagsToDelete] = useState([])
+  const [actionWaiting, setWaiting] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -55,6 +57,7 @@ const useTagsTable = () => {
 
   const addTag = async (tagName, companies) => {
     try {
+      setWaiting(true)
       const response = await addTags(tagName, companies)
       if (response.added) {
         initTags(pageSize, offset)
@@ -62,6 +65,8 @@ const useTagsTable = () => {
       return response.added
     } catch (_error) {
       return false
+    } finally {
+      setWaiting(false)
     }
   }
 
@@ -104,21 +109,45 @@ const useTagsTable = () => {
     ))
   }
 
+  const refreshTags = () => {
+    setPage(0)
+    setMaxPage(0)
+    setOffset(0)
+    initTags(pageSize, 0)
+  }
+
   const updateTagsInfo = async (body) => {
     try {
       setEnableActios(false)
+      setWaiting(true)
       const response = await updateTags({ tags: body })
       if (response?.updated) {
-        setPage(0)
-        setMaxPage(0)
-        setOffset(0)
-        initTags(pageSize, 0)
+        refreshTags()
         return null
       }
-      return UPDATE_ERROR
+      return UPDATE_TAGS_ERROR
     } catch (_error) {
       return ACTION_FAILED
     } finally {
+      setWaiting(false)
+      setEnableActios(true)
+    }
+  }
+
+  const onDeleteTags = async (body) => {
+    try {
+      setEnableActios(false)
+      setWaiting(true)
+      const response = await deleteTags(body)
+      if (response?.deleted) {
+        refreshTags()
+        return null
+      }
+      return DELETE_TAGS_ERROR
+    } catch (_error) {
+      return ACTION_FAILED
+    } finally {
+      setWaiting(false)
       setEnableActios(true)
     }
   }
@@ -128,15 +157,19 @@ const useTagsTable = () => {
     tags,
     isLoading,
     allowActions,
+    actionWaiting,
     pageSize,
     page,
     data,
     initialData,
+    tagsToDelete,
+    setTagsToDelete,
     setData,
     updateTagsInfo,
     handleChangePage,
     handleChangePageSize,
-    addTag
+    addTag,
+    onDeleteTags
   }
 }
 

@@ -11,13 +11,19 @@ const useStyles = makeStyles((_theme) => ({
     '& .MuiDataGrid-columnHeader': {
       backgroundColor: '#2f5487',
       color: 'white',
-      width: 1500
+      width: 1500,
+      '& .MuiCheckbox-colorPrimary.Mui-checked': {
+        color: 'white !important'
+      }
     },
     '& .MuiDataGrid-columnHeaderTitle': {
       fontWeight: 'bold'
     },
     '& .MuiDataGrid-columnSeparator': {
       visibility: 'hidden'
+    },
+    '& .MuiCheckbox-colorPrimary.Mui-checked': {
+      color: '#3f50b5 !important'
     }
   }
 }))
@@ -93,6 +99,9 @@ export function TagsTable ({
   isLoading,
   pageSize,
   page,
+  allowSelectionDelete,
+  tagsToDelete,
+  setTagsToDelete,
   handleChangePage,
   handleChangePageSize
 }) {
@@ -103,12 +112,19 @@ export function TagsTable ({
     data[id][field] = value
   }
 
+  const onChangeCheckboxSelection = (selectionModel) => {
+    setTagsToDelete(selectionModel)
+  }
+
   return (
       <Box className={classes.box}>
         {!isLoading &&
           <DataGrid
             disableColumnMenu
             disableSelectionOnClick={!isEditable}
+            checkboxSelection={allowSelectionDelete}
+            onSelectionModelChange={(selectionModel) => onChangeCheckboxSelection(selectionModel)}
+            selectionModel={tagsToDelete}
             autoHeight
             pageSize={pageSize}
             onPageSizeChange={(newPageSize) => handleChangePageSize(newPageSize)}
