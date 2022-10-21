@@ -7,7 +7,7 @@ const useCompanyTags = () => {
   const { selectedCompanyID } = useContext(Context).company
   const [listOfTags, setListOfTags] = useState([])
   const [tagsByCompany, setTagsByCompany] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     initTagsByCompany()
@@ -23,11 +23,11 @@ const useCompanyTags = () => {
     setTagsByCompany(tagsByCompanyResponse)
     const tagsListResponse = await getListOfTags()
     setListOfTags(tagsListResponse)
+    setIsLoading(false)
   }
 
   const getListOfTags = async () => {
     try {
-      setIsLoading(true)
       const result = await getTags({})
       const { tags } = destructuring(result)
       return tags
