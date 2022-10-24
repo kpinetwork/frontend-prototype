@@ -1,9 +1,10 @@
 import React from 'react'
 import { renderHook, act } from '@testing-library/react-hooks'
 import { getCompanyTags } from '../../src/service/tagsByCompany'
-import { getTags } from '../../src/service/tags'
+import { getTags, updateTags } from '../../src/service/tags'
 import useCompanyTags from '../../src/hooks/useCompanyTags'
 import Context from '../../src/context/appContext'
+import { UPDATE_TAGS_ERROR } from '../../src/utils/constants/tagsError'
 
 jest.mock('../../src/service/tagsByCompany')
 jest.mock('../../src/service/tags')
@@ -106,5 +107,81 @@ describe('useCompanyTags', () => {
     })
 
     expect(hookResponse.result.current.tagsByCompany).toEqual([])
+  })
+
+  it('useCompanyTags when on save tags should call update tags service', async () => {
+    mockService(updateTags, { updated: true })
+    let hookResponse
+    await act(async () => {
+      hookResponse = renderHook(() => useCompanyTags(), { wrapper })
+    })
+
+    await act(async () => {
+      hookResponse.result.current.onSave()
+    })
+
+    expect(hookResponse.result.current.isLoading).toBeFalsy()
+    expect(updateTags).toBeCalled()
+  })
+
+  it('useCompanyTags when on save tags fails should set error message', async () => {
+    mockService(getCompanyTags, companyTagsResponse)
+    mockService(updateTags, 'error')
+    let hookResponse
+    await act(async () => {
+      hookResponse = renderHook(() => useCompanyTags(), { wrapper })
+    })
+
+    await act(async () => {
+      hookResponse.result.current.onSave()
+    })
+
+    expect(hookResponse.result.current.isLoading).toBeFalsy()
+    expect(hookResponse.result.current.tagsByCompany).toEqual(companyTagsResponse)
+    expect(hookResponse.result.current.error).toEqual(UPDATE_TAGS_ERROR)
+    expect(updateTags).toBeCalled()
+  })
+
+  it('useCompanyTags when on cancel tags update should set tags by company to the initial data ', async () => {
+    mockService(getCompanyTags, companyTagsResponse)
+    let hookResponse
+    await act(async () => {
+      hookResponse = renderHook(() => useCompanyTags(), { wrapper })
+    })
+
+    await act(async () => {
+      hookResponse.result.current.onCancel()
+    })
+
+    expect(hookResponse.result.current.tagsByCompany).toEqual(companyTagsResponse)
+    expect(updateTags).not.toBeCalled()
+  })
+
+  it('useCompanyTags when closing snackbar should not set error message', async () => {
+    let hookResponse
+    await act(async () => {
+      hookResponse = renderHook(() => useCompanyTags(), { wrapper })
+    })
+
+    await act(async () => {
+      hookResponse.result.current.onCloseSnackbar()
+    })
+
+    expect(hookResponse.result.current.error).toBeNull()
+  })
+
+  it('useCompanyTags when handling change of tags should set tags by company', async () => {
+    mockService(getCompanyTags, companyTagsResponse)
+    const updatedTags = [{ id: '1233', name: 'Test Tag' }]
+    let hookResponse
+    await act(async () => {
+      hookResponse = renderHook(() => useCompanyTags(), { wrapper })
+    })
+
+    await act(async () => {
+      hookResponse.result.current.handleTagsByCompany({}, updatedTags)
+    })
+
+    expect(hookResponse.result.current.tagsByCompany).toEqual(updatedTags)
   })
 })
