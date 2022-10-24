@@ -157,7 +157,7 @@ describe('useCompanyTags', () => {
     expect(updateTags).not.toBeCalled()
   })
 
-  it('useCompanyTags when closing snackbar should not set error message', async () => {
+  it('useCompanyTags when closing snackbar should reset the default value of the error message', async () => {
     let hookResponse
     await act(async () => {
       hookResponse = renderHook(() => useCompanyTags(), { wrapper })

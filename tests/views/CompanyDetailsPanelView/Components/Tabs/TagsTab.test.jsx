@@ -66,7 +66,6 @@ describe('<TagsTab/>', () => {
   it('action buttons and autoComplete component when modify button is activated should be enabled and showed', () => {
     useCompanyTags.mockImplementation(() => hookResponse)
     setUp()
-
     const tagsAutocomplete = screen.getByRole('combobox')
     const modifyButton = screen.getByRole('button', { name: 'Modify' })
 
@@ -90,8 +89,8 @@ describe('<TagsTab/>', () => {
   it('Should select tag if there is no previus saved tags when click on tags combobox', async () => {
     useCompanyTags.mockImplementation(() => hookResponse)
     setUp()
-
     const modifyButton = screen.getByRole('button', { name: 'Modify' })
+
     fireEvent.click(modifyButton)
     const tagsAutocomplete = screen.getByRole('combobox')
     fireEvent.change(tagsAutocomplete, { target: { value: 'Sample tag' } })
@@ -104,8 +103,8 @@ describe('<TagsTab/>', () => {
   it('should call on save method if edition mode is active when click on save button', async () => {
     useCompanyTags.mockImplementation(() => hookResponse)
     setUp()
-
     const modifyButton = screen.getByRole('button', { name: 'Modify' })
+
     fireEvent.click(modifyButton)
     fireEvent.click(screen.getByText('Save'))
 
@@ -115,8 +114,8 @@ describe('<TagsTab/>', () => {
   it('should call on cancel method if edition mode is active when click on cancel button', async () => {
     useCompanyTags.mockImplementation(() => hookResponse)
     setUp()
-
     const modifyButton = screen.getByRole('button', { name: 'Modify' })
+
     fireEvent.click(modifyButton)
     fireEvent.click(screen.getByText('Cancel'))
 
