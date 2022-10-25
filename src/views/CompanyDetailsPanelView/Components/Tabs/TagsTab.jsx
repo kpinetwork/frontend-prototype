@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Box, FormControl, FormLabel, Card, makeStyles, TextField, Button } from '@material-ui/core'
 import Autocomplete from '@mui/material/Autocomplete'
-import { CardActions } from '@mui/material'
+import { CardActions, Snackbar, Alert } from '@mui/material'
 import ButtonActions from '../../../../components/Actions'
 import useCompanyTags from '../../../../hooks/useCompanyTags'
 import { Edit } from '@material-ui/icons'
+import LoadingProgress from '../../../../components/Progress'
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -47,14 +48,23 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export function TagsTab ({ onSave }) {
+export function TagsTab () {
   const classes = useStyles()
   const [activeEdition, setActiveEdition] = useState(false)
-  const { listOfTags, tagsByCompany, isLoading, handleTagsByCompany } = useCompanyTags()
+  const { listOfTags, tagsByCompany, isLoading, handleTagsByCompany, onSave, onCancel, error, onCloseSnackbar } = useCompanyTags()
   const defaultOptions = tagsByCompany.map(tag => { return tag.name })
 
   return (
-    !isLoading &&
+    <>
+      <Snackbar
+        open={error != null}
+        autoHideDuration={6000}
+        onClose={onCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert severity="error">{error}</Alert>
+      </Snackbar>
+    {!isLoading &&
       <Card className={classes.form}>
         <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>
         {
@@ -63,7 +73,6 @@ export function TagsTab ({ onSave }) {
               startIcon={< Edit/>}
               style={{ textTransform: 'none' }}
               onClick={(_) => setActiveEdition(true)}
-              disabled
             >
               Modify
             </Button>
@@ -76,8 +85,12 @@ export function TagsTab ({ onSave }) {
                     <ButtonActions
                         okName='Save'
                         cancelName='Cancel'
-                        onOk={onSave}
+                        onOk={() => {
+                          onSave()
+                          setActiveEdition(false)
+                        }}
                         onCancel={() => {
+                          onCancel()
                           setActiveEdition(false)
                         }}
                         reverse={false}
@@ -108,5 +121,10 @@ export function TagsTab ({ onSave }) {
             </FormControl>
         </Box>
     </Card>
-  )
+  }
+  {
+    isLoading &&
+    <LoadingProgress/>
+  }
+  </>)
 }
