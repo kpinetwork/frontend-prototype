@@ -22,13 +22,15 @@ describe('<AdminPanelContainer />', () => {
     const importDataTab = screen.getByText('Import Data')
     const editTab = screen.getByText('Edit Modify')
     const tagsTab = screen.getByText('Tags')
+    const rangesTab = screen.getByText('Ranges')
 
-    expect(tabs).toHaveLength(5)
+    expect(tabs).toHaveLength(6)
     expect(usersTab).toBeInTheDocument()
     expect(companiesTab).toBeInTheDocument()
     expect(importDataTab).toBeInTheDocument()
     expect(editTab).toBeInTheDocument()
     expect(tagsTab).toBeInTheDocument()
+    expect(rangesTab).toBeInTheDocument()
   })
 
   it('should render AdminPanelContainer when there is no initial Tab', () => {
@@ -40,12 +42,14 @@ describe('<AdminPanelContainer />', () => {
     const importDataTab = screen.getByText('Import Data')
     const editTab = screen.getByText('Edit Modify')
     const tagsTab = screen.getByText('Tags')
+    const rangesTab = screen.getByText('Ranges')
 
-    expect(tabs).toHaveLength(5)
+    expect(tabs).toHaveLength(6)
     expect(usersTab).toBeInTheDocument()
     expect(companiesTab).toBeInTheDocument()
     expect(importDataTab).toBeInTheDocument()
     expect(editTab).toBeInTheDocument()
     expect(tagsTab).toBeInTheDocument()
+    expect(rangesTab).toBeInTheDocument()
   })
 })
