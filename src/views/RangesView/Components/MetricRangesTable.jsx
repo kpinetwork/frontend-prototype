@@ -16,7 +16,8 @@ const useStyles = makeStyles((_theme) => ({
   },
   name: {
     '&.MuiTableCell-root': {
-      borderRight: '1px solid rgba(224, 224, 224, 1)'
+      borderRight: '1px solid rgba(224, 224, 224, 1)',
+      width: '50%'
     }
   }
 }))
@@ -36,7 +37,7 @@ export const MetricRangesTable = ({
     <Box my={2}>
       {
         !isLoading &&
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className={classes.root}>
         <Table className={classes.root}>
           <TableHead>
             <TableRow className={classes.head}>
