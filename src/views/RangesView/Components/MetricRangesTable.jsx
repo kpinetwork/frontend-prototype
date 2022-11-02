@@ -63,10 +63,10 @@ export const MetricRangesTable = ({
                       metric.ranges.map(range => (
                         <TableRow key={`${metricKey}-${range?.label}`}>
                           <TableCell key={`${metricKey}-from`}>
-                            {range?.max}
+                            {range?.min_value}
                           </TableCell>
                           <TableCell key={`${metricKey}-to`}>
-                            {range?.min}
+                            {range?.max_value}
                           </TableCell>
                         </TableRow>
                       ))
