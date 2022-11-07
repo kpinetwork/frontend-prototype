@@ -67,6 +67,12 @@ export function AdminPanelContainer ({ initialTab, children }) {
                 value="tags"
                 href="/admin/tags"
               />
+              <Tab
+                className={classes.tabs}
+                label="Ranges"
+                value="ranges"
+                href="/admin/ranges"
+              />
             </Tabs>
           </Box>
           <Box style={{ padding: 20, width: isPhone || isTablet ? '100%' : 'calc(100% - 160px)' }}>{children}</Box>
