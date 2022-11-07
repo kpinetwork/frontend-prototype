@@ -1,9 +1,24 @@
 import React, { useState } from 'react'
 import { Box, Button } from '@material-ui/core'
 import { Edit } from '@material-ui/icons'
+import { makeStyles } from '@material-ui/core/styles'
 import useMetricRanges from '../../../hooks/useMetricRanges'
 import { MetricRangesTable } from './MetricRangesTable'
 import { MetricRangeForm } from './MetricRangeForm'
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    [theme.breakpoints.up('md')]: {
+      width: '130vh'
+    },
+    [theme.breakpoints.between('sm', 'md')]: {
+      mimWidth: '55vh'
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    }
+  }
+}))
 
 export const RangeViewContainer = () => {
   const {
@@ -18,9 +33,11 @@ export const RangeViewContainer = () => {
     setMetricSelected,
     handleChangePageSize
   } = useMetricRanges()
+  const classes = useStyles()
   const [openModify, setOpenModify] = useState(false)
   return (
-        <Box>
+       <Box display="flex" justifyContent="center" alignItems="center">
+        <Box className={classes.root}>
           <Box>
             {
               openModify &&
@@ -60,5 +77,6 @@ export const RangeViewContainer = () => {
             handleChangeRowsPerPage={handleChangePageSize}
           />
         </Box>
+      </Box>
   )
 }
