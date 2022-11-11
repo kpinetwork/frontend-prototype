@@ -20,11 +20,13 @@ const hookResponse = {
   metrics: ['Revenue', 'Ebitda'],
   pageSize: 10,
   isLoading: false,
-  metricRanges: DATA.ranges,
+  allMetricRanges: DATA.ranges,
   metricSelected: null,
+  metricRanges: [{ id: '1', max_value: 20, min_value: 10 }],
   handleChangePage: jest.fn(),
   setMetricSelected: jest.fn(),
-  handleChangePageSize: jest.fn()
+  handleChangePageSize: jest.fn(),
+  getRangesBySpecificMetric: jest.fn()
 }
 
 const setUp = () => {

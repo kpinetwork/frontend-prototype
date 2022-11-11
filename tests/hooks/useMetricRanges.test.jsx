@@ -1,7 +1,7 @@
 import { Auth } from 'aws-amplify'
 import { renderHook, act } from '@testing-library/react-hooks'
 import useMetricRanges from '../../src/hooks/useMetricRanges'
-import { getMetricRanges } from '../../src/service/metricRanges'
+import { getMetricRanges, getRangesByMetric } from '../../src/service/metricRanges'
 import { getMetricsType } from '../../src/service/metrics'
 import { DATA } from '../data/ranges'
 
@@ -37,8 +37,8 @@ describe('useMetricRanges', () => {
 
       expect(hookResponse.result.current.total).toEqual(DATA.total)
       expect(hookResponse.result.current.isLoading).toBeFalsy()
-      expect(hookResponse.result.current.metricRanges).toEqual(DATA.ranges)
-      expect(hookResponse.result.current.metrics).toEqual([...metrics, 'Gross profit'])
+      expect(hookResponse.result.current.allMetricRanges).toEqual(DATA.ranges)
+      expect(hookResponse.result.current.metrics).toEqual([...metrics, 'Gross profit', 'Revenue per employee'])
     })
 
     it('should render hook with empty data when api calls fail', async () => {
@@ -51,8 +51,38 @@ describe('useMetricRanges', () => {
 
       expect(hookResponse.result.current.total).toEqual(0)
       expect(hookResponse.result.current.isLoading).toBeFalsy()
-      expect(hookResponse.result.current.metricRanges).toEqual([])
+      expect(hookResponse.result.current.allMetricRanges).toEqual([])
       expect(hookResponse.result.current.metrics).toEqual([])
+    })
+
+    it('should return ranges by metric with no empty data when api call is successful', async () => {
+      mockService(getRangesByMetric, DATA.ranges)
+      let hookResponse
+      await act(async () => {
+        hookResponse = renderHook(() => useMetricRanges())
+      })
+
+      await act(async () => {
+        hookResponse.result.current.getRangesBySpecificMetric()
+      })
+
+      expect(hookResponse.result.current.isLoading).toBeFalsy()
+      expect(hookResponse.result.current.metricRanges).toEqual(DATA.ranges)
+    })
+
+    it('should return ranges by metric with empty data when api call fail', async () => {
+      mockService(getRangesByMetric, 'error')
+      let hookResponse
+      await act(async () => {
+        hookResponse = renderHook(() => useMetricRanges())
+      })
+
+      await act(async () => {
+        hookResponse.result.current.getRangesBySpecificMetric()
+      })
+
+      expect(hookResponse.result.current.isLoading).toBeFalsy()
+      expect(hookResponse.result.current.metricRanges).toEqual([])
     })
   })
 

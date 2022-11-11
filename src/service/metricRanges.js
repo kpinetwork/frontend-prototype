@@ -13,3 +13,12 @@ export const getMetricRanges = async (options) => {
   const data = await response.data
   return data
 }
+
+export const getRangesByMetric = async (metric) => {
+  const headers = await getAuthorizationHeader()
+  const response = await axios.get(`${metricRangesUrl}/${metric}`, {
+    headers: headers
+  })
+  const data = await response.data
+  return data
+}
