@@ -9,17 +9,15 @@ import {
   TableHead,
   TextField,
   Paper,
+  IconButton,
   makeStyles
 } from '@material-ui/core'
-import { Add, RemoveCircleOutline } from '@material-ui/icons'
+import { Add, DeleteOutline } from '@material-ui/icons'
 import LoadingProgress from '../../../components/Progress'
 
 const defautlRange = { min_value: '', max_value: '' }
 
 const useStyles = makeStyles((_theme) => ({
-  root: {
-    width: '70%'
-  },
   container: {
     width: '100%',
     alignContent: 'center',
@@ -48,6 +46,17 @@ const useStyles = makeStyles((_theme) => ({
     '& .MuiFilledInput-underline:hover:not(.Mui-disabled):before': {
       borderBottom: 'none'
     }
+  },
+  tableContainer: {
+    width: '70%',
+    marginLeft: '8rem',
+    marginRight: '8rem'
+  },
+  actions: {
+    '&.MuiTableCell-root': {
+      borderRight: '1px solid rgba(224, 224, 224, 1)',
+      width: '5%'
+    }
   }
 }))
 
@@ -56,7 +65,7 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric }) 
 
   const handleAddSpecificRow = (idx) => {
     const newRanges = [...ranges]
-    const range = { min_value: '', max_value: '' }
+    const range = { id: '', label: '', min_value: '', max_value: '' }
     newRanges.splice(idx + 2, 0, range)
     setRanges(newRanges)
   }
@@ -67,49 +76,87 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric }) 
     setRanges(newRanges)
   }
 
+  const handleInputChange = (idx) => (e) => {
+    const { name, value } = e.target
+    const actualRange = ranges[idx + 1]
+    if (name === 'min_value') {
+      actualRange.min_value = parseInt(value)
+    }
+    if (name === 'max_value') {
+      actualRange.max_value = parseInt(value)
+    }
+    const newRanges = [...ranges]
+    newRanges[idx + 1] = {
+      ...actualRange
+    }
+    setRanges(newRanges)
+  }
+
   return (
       <Box>
       {
         !isLoading && metric &&
-        <TableContainer component={Paper} className={classes.root}>
+        <TableContainer component={Paper} className={classes.tableContainer}>
         <Table className={classes.container}>
           <TableHead>
             <TableRow className={classes.head}>
-            <TableCell className={classes.head}></TableCell>
-              <TableCell className={classes.head}>FROM</TableCell>
-              <TableCell className={classes.head}>TO</TableCell>
+              <TableCell className={classes.head} style={{ borderRight: '1px solid #979797' }}>Actions</TableCell>
+              <TableCell className={classes.head}>From</TableCell>
+              <TableCell className={classes.head}>To</TableCell>
             </TableRow>
           </TableHead>
             <TableBody>
-            {ranges.length > 0 && ranges.slice(1, -1).map((range, idx) => (
-              <TableRow key={idx}>
-                <TableCell style={{ color: '#B0B0B0', width: 80 }}
+            {ranges.length > 0 && ranges.slice(1, -1).map((_, idx) => (
+              <TableRow
+              key={idx}
+              className={classes.row}
+              >
+                <TableCell className={classes.actions}
                 >
-                  <Add
-                    data-testid="add-button"
-                    className={classes.icon}
-                    onClick={(_) => handleAddSpecificRow(idx)}
-                  />
-                  <RemoveCircleOutline
-                    data-testid="remove-button"
-                    style={{ color: '#B0B0B0' }}
-                    onClick={(_) => handleRemoveSpecificRow(idx)}
-                  />
+                  <Box style={{ display: 'flex' }}>
+                    <IconButton
+                      onClick={(_) => handleAddSpecificRow(idx)}
+                    >
+                      <Add
+                        fontSize={'small'}
+                        data-testid="add-button"
+                        style={{ color: '#1A1EA5' }}
+                      />
+                    </IconButton>
+                    <IconButton
+                       onClick={(_) => handleRemoveSpecificRow(idx)}
+                    >
+                      <DeleteOutline
+                        fontSize={'small'}
+                        data-testid="remove-button"
+                        style={{ color: '#BBBBBF' }}
+                      />
+                    </IconButton>
+                  </Box>
+
                 </TableCell>
-                <TableCell style={{ textAlign: 'center' }}>
+                <TableCell
+                style={{ textAlign: 'center' }}
+                >
                   <TextField
                   variant="filled"
                   inputProps={{ style: { textAlign: 'center' } }}
                   className={classes.input}
-                  defaultValue={range.min_value}
+                  value={ranges[idx + 1].min_value}
+                  name="min_value"
+                  onChange={handleInputChange(idx)}
                   />
                 </TableCell>
-                <TableCell style={{ textAlign: 'center' }}>
+                <TableCell
+                style={{ textAlign: 'center' }}
+                >
                 <TextField
                   variant="filled"
                   inputProps={{ style: { textAlign: 'center' } }}
                   className={classes.input}
-                  defaultValue={range.max_value}
+                  value={ranges[idx + 1].max_value}
+                  name="max_value"
+                  onChange={handleInputChange(idx)}
                   />
                 </TableCell>
               </TableRow>
@@ -118,15 +165,18 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric }) 
               ranges.slice(1, -1).length === 0 && [...ranges.slice(1, -1), defautlRange].map(
                 (_, idx) => (
                   <TableRow key={idx}>
-                  <TableCell style={{ color: '#B0B0B0', width: 100 }}>
-                    <Add
-                      data-testid="add-button"
-                      className={classes.icon}
+                  <TableCell className={classes.actions}>
+                  <IconButton
                       onClick={(_) => handleAddSpecificRow(idx - 1)}
-                    />
+                    >
+                      <Add
+                        fontSize={'small'}
+                        data-testid="add-button"
+                        style={{ color: '#1A1EA5' }}
+                      />
+                    </IconButton>
                 </TableCell>
-                <TableCell>NO DATA</TableCell>
-                <TableCell></TableCell>
+                <TableCell colSpan={2} align={'center'} style={{ color: '#6B6A6A' }}>NO DATA</TableCell>
               </TableRow>
                 )
               )
