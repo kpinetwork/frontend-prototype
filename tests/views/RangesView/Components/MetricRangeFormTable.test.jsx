@@ -67,12 +67,31 @@ describe('<MetricRangeFormTable />', () => {
 
     it('Should remove row when click on remove icon and there are ranges', () => {
       setUp()
-      screen.debug()
       const addButton = screen.getByTestId('remove-button')
 
       fireEvent.click(addButton)
 
       expect(defaultProps.setRanges).toHaveBeenCalled()
+    })
+
+    it('Should change textfield value when edit min value cell', () => {
+      setUp()
+      const inputCells = screen.getAllByRole('textbox')
+      const cell = inputCells.filter(elem => elem.value === '20')[0]
+
+      fireEvent.change(cell, { target: { value: '' } })
+
+      expect(cell.value).toBe('20')
+    })
+
+    it('Should change textfield value when edit max value cell', () => {
+      setUp()
+      const inputCells = screen.getAllByRole('textbox')
+      const cell = inputCells.filter(elem => elem.value === '30')[0]
+
+      fireEvent.change(cell, { target: { value: '' } })
+
+      expect(cell.value).toBe('30')
     })
   })
 })
