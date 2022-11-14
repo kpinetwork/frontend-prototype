@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import useMetricRanges from '../../../hooks/useMetricRanges'
 import { MetricRangesTable } from './MetricRangesTable'
 import { MetricRangeForm } from './MetricRangeForm'
+import { TOTALMETRICS } from '../../../utils/constants/Metrics'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,14 +28,24 @@ export const RangeViewContainer = () => {
     metrics,
     pageSize,
     isLoading,
+    isRangesLoading,
+    allMetricRanges,
     metricRanges,
     metricSelected,
+    setMetricRanges,
     handleChangePage,
     setMetricSelected,
-    handleChangePageSize
+    handleChangePageSize,
+    getRangesBySpecificMetric
   } = useMetricRanges()
   const classes = useStyles()
   const [openModify, setOpenModify] = useState(false)
+
+  const getMetricStandardName = (name) => {
+    const metric = TOTALMETRICS.find(item => item.name === name)
+    return metric.tableName
+  }
+
   return (
        <Box display="flex" justifyContent="center" alignItems="center">
         <Box className={classes.root}>
@@ -48,10 +59,14 @@ export const RangeViewContainer = () => {
               }}
               onChange={(metric) => {
                 setMetricSelected(metric)
+                getRangesBySpecificMetric(getMetricStandardName(metric))
               }}
               onSave={() => {}}
               metrics={metrics}
               metric={metricSelected}
+              ranges={metricRanges}
+              setRanges={setMetricRanges}
+              isLoading={isRangesLoading}
               />
             }
           </Box>
@@ -70,7 +85,7 @@ export const RangeViewContainer = () => {
           <MetricRangesTable
             page={page}
             total={total}
-            ranges={metricRanges}
+            ranges={allMetricRanges}
             isLoading={isLoading}
             rowsPerPage={pageSize}
             handleChangePage={handleChangePage}

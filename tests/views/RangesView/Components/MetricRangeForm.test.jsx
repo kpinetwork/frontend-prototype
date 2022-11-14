@@ -8,7 +8,8 @@ const defaultProps = {
   onChange: jest.fn(),
   onSave: jest.fn(),
   metrics: ['Revenue', 'Ebitda'],
-  metric: null
+  metric: null,
+  ranges: [{ id: '1', max_value: 20, min_value: 10 }]
 }
 
 const setUp = (props) => {

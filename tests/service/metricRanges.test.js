@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Auth } from 'aws-amplify'
-import { getMetricRanges } from '../../src/service/metricRanges'
+import { getMetricRanges, getRangesByMetric } from '../../src/service/metricRanges'
 const { VITE_HOST: baseUrl } = import.meta.env
 
 const ranges = {
@@ -31,6 +31,15 @@ describe('ranges service', () => {
       await getMetricRanges({ limit: 10, offset: 10 })
 
       expect(axios.get).toHaveBeenCalledWith(`${metricRangesUrl}?limit=10&offset=10`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
+    })
+  })
+
+  describe('get ranges by metric', () => {
+    it('API call success should return ranges by metric', async () => {
+      axios.get.mockResolvedValueOnce(ranges)
+      await getRangesByMetric('revenue')
+
+      expect(axios.get).toHaveBeenCalledWith(`${metricRangesUrl}/revenue`, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
     })
   })
 })
