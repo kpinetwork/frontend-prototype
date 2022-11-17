@@ -19,7 +19,8 @@ const hookResponse = {
   handleChangePage: jest.fn(),
   setMetricSelected: jest.fn(),
   handleChangePageSize: jest.fn(),
-  getRangesBySpecificMetric: jest.fn()
+  getRangesBySpecificMetric: jest.fn(),
+  setEditedRanges: jest.fn()
 }
 
 const setUp = () => {
