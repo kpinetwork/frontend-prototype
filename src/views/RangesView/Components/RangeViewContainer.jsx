@@ -76,7 +76,10 @@ export const RangeViewContainer = () => {
                 getRangesBySpecificMetric(getMetricStandardName(metric))
                 setEditedRanges([])
               }}
-              onSave={saveRanges}
+              onSave={() => {
+                saveRanges()
+                handleSaveRanges()
+              }}
               metrics={metrics}
               metric={metricSelected}
               ranges={metricRanges}

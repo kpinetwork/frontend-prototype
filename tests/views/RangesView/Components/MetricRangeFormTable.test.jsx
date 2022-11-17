@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { MetricRangeFormTable } from '../../../../src/views/RangesView/Components/MetricRangeFormTable'
 
 const defaultProps = {
@@ -117,18 +117,14 @@ describe('<MetricRangeFormTable />', () => {
 
     it('Should change textfield value when edit max value cell', () => {
       render(<MetricRangeFormTable {...defaultProps}/>)
-      const inputCells = screen.getAllByRole('textbox')
+      const inputCells = screen.getAllByRole('spinbutton')
 
       const cell = inputCells.filter(elem => elem.value === '30')[0]
 
-      waitFor(() => {
-        fireEvent.change(cell, { target: { value: '' } })
-      })
+      fireEvent.change(cell, { target: { value: '' } })
 
-      waitFor(() => {
-        expect(cell.value).toBe('30')
-        expect(defaultProps.setEditedRanges).toHaveBeenCalled()
-      })
+      expect(cell.value).toBe('30')
+      expect(defaultProps.setEditedRanges).toHaveBeenCalled()
     })
   })
 })
