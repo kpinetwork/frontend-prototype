@@ -67,7 +67,7 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ra
 
   useEffect(() => {
     validateRanges()
-  }, [ranges])
+  }, [ranges, errors])
 
   const handleAddSpecificRow = (idx, isRangesEmpty) => {
     const newRanges = isRangesEmpty ? [...ranges, { min_value: null, max_value: null }, { min_value: null, max_value: null }] : [...ranges]
@@ -85,9 +85,13 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ra
     setRangesToDelete(deletedRanges)
   }
 
-  const isRangeCorrect = (range) => (range?.min_value < range?.max_value) || (range?.max_value == null || range?.min_value == null)
+  const castToNumber = (number) => {
+    return number !== null ? parseFloat(number) : number
+  }
 
-  const isRangeLimitCorrect = (range, nextRange) => range?.max_value === nextRange?.min_value || (nextRange?.max_value == null || nextRange?.min_value == null) || (range?.max_value == null || range?.min_value == null)
+  const isRangeCorrect = (range) => (castToNumber(range?.min_value) < castToNumber(range?.max_value)) || (range?.max_value == null || range?.min_value == null)
+
+  const isRangeLimitCorrect = (range, nextRange) => castToNumber(range?.max_value) === castToNumber(nextRange?.min_value) || (nextRange?.max_value == null || nextRange?.min_value == null) || (range?.max_value == null || range?.min_value == null)
 
   const rowHasSpecificError = (errorType, index) => errors.find(error => error?.row === index && error?.type === errorType)
 
@@ -95,7 +99,7 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ra
     ranges.forEach((range, index) => {
       if (rowHasSpecificError('rangeError', index) && isRangeCorrect(range)) {
         const updatedError = errors.filter(error => error?.row !== index || error?.type !== 'rangeError')
-        setErrors(updatedError)
+        setErrors([...updatedError])
       }
       if (rowHasSpecificError('limitError', index) && isRangeLimitCorrect(range, ranges[index + 1])) {
         const updatedError = errors.filter(error => (error?.row !== index || error?.type !== 'limitError'))
