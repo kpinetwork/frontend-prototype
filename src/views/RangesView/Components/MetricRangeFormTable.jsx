@@ -81,6 +81,13 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ra
     const deletedRanges = [...rangesToDelete, deletedRow.id].filter(id => id !== '')
     const newRanges = [...ranges]
     newRanges.splice(idx + 1, 1)
+    if (idx === 0) {
+      newRanges[0].max_value = newRanges[1].min_value
+      newRanges[1].defaultIndex = 1
+    }
+    if (idx === newRanges.length - 2) {
+      newRanges[newRanges.length - 1].min_value = newRanges[newRanges.length - 2].max_value
+    }
     setRanges(newRanges)
     setRangesToDelete(deletedRanges)
   }

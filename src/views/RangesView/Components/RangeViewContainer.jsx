@@ -74,6 +74,7 @@ export const RangeViewContainer = () => {
               onChange={(metric) => {
                 setMetricSelected(metric)
                 getRangesBySpecificMetric(getMetricStandardName(metric))
+                setRangesToDelete([])
                 setEditedRanges([])
               }}
               onSave={() => {
