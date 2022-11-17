@@ -32,20 +32,28 @@ export const RangeViewContainer = () => {
     allMetricRanges,
     metricRanges,
     metricSelected,
+    rangesToDelete,
+    setRangesToDelete,
     setMetricRanges,
     handleChangePage,
     setMetricSelected,
     handleChangePageSize,
     getRangesBySpecificMetric,
+    modifyRanges,
     editedRanges,
     setEditedRanges,
     saveRanges
   } = useMetricRanges()
   const classes = useStyles()
   const [openModify, setOpenModify] = useState(false)
+  const [errors, setErrors] = useState([])
   const getMetricStandardName = (name) => {
     const metric = TOTALMETRICS.find(item => item.name === name)
     return metric.tableName
+  }
+
+  const handleSaveRanges = () => {
+    modifyRanges(getMetricStandardName(metricSelected))
   }
 
   return (
@@ -56,7 +64,10 @@ export const RangeViewContainer = () => {
               openModify &&
               <MetricRangeForm
               onCancel={() => {
+                setErrors([])
+                setMetricRanges([])
                 setOpenModify(false)
+                setRangesToDelete([])
                 setMetricSelected(null)
                 setEditedRanges([])
               }}
@@ -71,8 +82,12 @@ export const RangeViewContainer = () => {
               ranges={metricRanges}
               setRanges={setMetricRanges}
               isLoading={isRangesLoading}
+              rangesToDelete={rangesToDelete}
+              setRangesToDelete={setRangesToDelete}
               editedRanges={editedRanges}
               setEditedRanges={setEditedRanges}
+              errors={errors}
+              setErrors={setErrors}
               />
             }
           </Box>

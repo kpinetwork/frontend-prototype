@@ -6,10 +6,14 @@ import { MetricRangeFormTable } from '../../../../src/views/RangesView/Component
 const defaultProps = {
   metric: 'Revenue',
   ranges: [{ id: '1', max_value: 20, min_value: 10 }, { id: '1', max_value: 30, min_value: 20 }, { id: '1', max_value: 40, min_value: 30 }],
-  setRanges: jest.fn(),
   isLoading: false,
+  errors: [],
+  rangesToDelete: [],
   editedRanges: [{ id: '1', max_value: 20, min_value: 10, defaultIndex: 1 }],
-  setEditedRanges: jest.fn()
+  setRanges: jest.fn(),
+  setEditedRanges: jest.fn(),
+  setRangesToDelete: jest.fn(),
+  setErrors: jest.fn()
 }
 const removedItems = 2
 const headCount = 1
@@ -27,7 +31,7 @@ describe('<MetricRangeFormTable />', () => {
       const rows = screen.getAllByRole('row')
 
       expect(screen.getByRole('table')).toBeInTheDocument()
-      expect(rows).toHaveLength(defaultProps.ranges.length + headCount - removedItems)
+      expect(rows).toHaveLength(defaultProps.ranges.length + headCount)
     })
 
     it('Should render table with no data when there is are not ranges and metric is selected', () => {
@@ -46,14 +50,26 @@ describe('<MetricRangeFormTable />', () => {
 
       expect(progressBar).toBeInTheDocument()
     })
+
+    it('Should render error validation alert when there are errors', () => {
+      const errors = [
+        { row: 0, type: 'rangeError', errorMessage: 'error' },
+        { row: 1, type: 'limitError', errorMessage: 'error' }
+      ]
+      setUp({ ...defaultProps, errors: errors })
+
+      const alert = screen.getByText('Validation Error')
+
+      expect(alert).toBeInTheDocument()
+    })
   })
 
   describe('actions', () => {
     it('Should add row when click on add icon and there are ranges', () => {
       setUp()
-      const addButton = screen.getByTestId('add-button')
+      const addButton = screen.getAllByTestId('add-button')
 
-      fireEvent.click(addButton)
+      fireEvent.click(addButton[1])
 
       expect(defaultProps.setRanges).toHaveBeenCalled()
     })
@@ -69,16 +85,16 @@ describe('<MetricRangeFormTable />', () => {
 
     it('Should remove row when click on remove icon and there are ranges', () => {
       setUp()
-      const addButton = screen.getByTestId('remove-button')
+      const removeButton = screen.getAllByTestId('remove-button')
 
-      fireEvent.click(addButton)
+      fireEvent.click(removeButton[1])
 
       expect(defaultProps.setRanges).toHaveBeenCalled()
     })
 
     it('Should change textfield value when edit min value cell', () => {
       setUp()
-      const inputCells = screen.getAllByRole('textbox')
+      const inputCells = screen.getAllByRole('spinbutton')
       const cell = inputCells.filter(elem => elem.value === '20')[0]
 
       fireEvent.change(cell, { target: { value: '' } })
@@ -90,7 +106,7 @@ describe('<MetricRangeFormTable />', () => {
     it('Should edit range already edited when any value is re edited', () => {
       defaultProps.editedRanges = []
       setUp()
-      const inputCells = screen.getAllByRole('textbox')
+      const inputCells = screen.getAllByRole('spinbutton')
       const cell = inputCells.filter(elem => elem.value === '30')[0]
 
       fireEvent.change(cell, { target: { value: '' } })
