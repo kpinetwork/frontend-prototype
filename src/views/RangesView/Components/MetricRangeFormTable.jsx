@@ -60,7 +60,7 @@ const useStyles = makeStyles((_theme) => ({
   }
 }))
 
-export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric }) {
+export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, editedRanges, setEditedRanges }) {
   const classes = useStyles()
 
   const handleAddSpecificRow = (idx) => {
@@ -80,14 +80,23 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric }) 
     const { name, value } = e.target
     const actualRange = ranges[idx + 1]
     if (name === 'min_value') {
-      actualRange.min_value = parseInt(value)
+      actualRange.min_value = value
     }
     if (name === 'max_value') {
-      actualRange.max_value = parseInt(value)
+      actualRange.max_value = value
     }
     const newRanges = [...ranges]
     newRanges[idx + 1] = {
       ...actualRange
+    }
+    const modifiedRange = editedRanges.find(elem => elem.id === actualRange.id)
+    actualRange.defaultIndex = idx + 1
+    if (modifiedRange === undefined) {
+      setEditedRanges([...editedRanges, actualRange])
+    } else {
+      const indexRange = editedRanges.map(elem => elem.id).indexOf(modifiedRange.id)
+      editedRanges[indexRange] = actualRange
+      setEditedRanges(editedRanges)
     }
     setRanges(newRanges)
   }

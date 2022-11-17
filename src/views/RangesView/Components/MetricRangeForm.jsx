@@ -62,7 +62,7 @@ const useStyles = makeStyles((_theme) => ({
   }
 }))
 
-export function MetricRangeForm ({ onCancel, onChange, onSave, metrics, metric, ranges, setRanges, isLoading }) {
+export function MetricRangeForm ({ onCancel, onChange, onSave, metrics, metric, ranges, setRanges, isLoading, editedRanges, setEditedRanges }) {
   const classes = useStyles()
 
   const getAnonymizableMetrics = () => {
@@ -104,7 +104,7 @@ export function MetricRangeForm ({ onCancel, onChange, onSave, metrics, metric, 
                 }
               </Select>
             </FormControl>
-            <MetricRangeFormTable ranges={ranges} setRanges={setRanges} isLoading={isLoading} metric={metric}/>
+            <MetricRangeFormTable ranges={ranges} setRanges={setRanges} isLoading={isLoading} metric={metric} editedRanges={editedRanges} setEditedRanges={setEditedRanges} />
           </Box>
         </CardContent>
         <CardActions className={classes.actions} p={4}>

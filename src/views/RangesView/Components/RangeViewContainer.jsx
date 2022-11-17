@@ -36,11 +36,13 @@ export const RangeViewContainer = () => {
     handleChangePage,
     setMetricSelected,
     handleChangePageSize,
-    getRangesBySpecificMetric
+    getRangesBySpecificMetric,
+    editedRanges,
+    setEditedRanges,
+    saveRanges
   } = useMetricRanges()
   const classes = useStyles()
   const [openModify, setOpenModify] = useState(false)
-
   const getMetricStandardName = (name) => {
     const metric = TOTALMETRICS.find(item => item.name === name)
     return metric.tableName
@@ -56,17 +58,21 @@ export const RangeViewContainer = () => {
               onCancel={() => {
                 setOpenModify(false)
                 setMetricSelected(null)
+                setEditedRanges([])
               }}
               onChange={(metric) => {
                 setMetricSelected(metric)
                 getRangesBySpecificMetric(getMetricStandardName(metric))
+                setEditedRanges([])
               }}
-              onSave={() => {}}
+              onSave={saveRanges}
               metrics={metrics}
               metric={metricSelected}
               ranges={metricRanges}
               setRanges={setMetricRanges}
               isLoading={isRangesLoading}
+              editedRanges={editedRanges}
+              setEditedRanges={setEditedRanges}
               />
             }
           </Box>
