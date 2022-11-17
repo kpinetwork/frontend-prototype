@@ -160,4 +160,79 @@ describe('useMetricRanges', () => {
       expect(getMetricRanges).toHaveBeenCalledTimes(2)
     })
   })
+  describe('actions', () => {
+    it('save first range when is editing the ranges data', async () => {
+      const editedRanges = [{ id: 1, label: '30-70', max_value: 70, min_value: 30, defaultIndex: 1 }]
+      mockService(getRangesByMetric, DATA.ranges[0].ranges)
+      mockService(getMetricsType, metrics)
+      let hookResponse
+      await act(async () => {
+        hookResponse = renderHook(() => useMetricRanges())
+      })
+
+      await act(async () => {
+        hookResponse.result.current.getRangesBySpecificMetric()
+      })
+
+      await act(async () => {
+        hookResponse.result.current.setEditedRanges(editedRanges)
+      })
+
+      await act(async () => {
+        hookResponse.result.current.saveRanges()
+      })
+
+      expect(hookResponse.result.current.editedRanges).toEqual([...editedRanges, { label: '<50', max_value: 30, min_value: null }])
+    })
+  })
+  describe('actions', () => {
+    it('save last range when is editing the ranges data', async () => {
+      const editedRanges = [{ id: 1, label: '70-150', max_value: 150, min_value: 70, defaultIndex: 2 }]
+      mockService(getRangesByMetric, DATA.ranges[0].ranges)
+      mockService(getMetricsType, metrics)
+      let hookResponse
+      await act(async () => {
+        hookResponse = renderHook(() => useMetricRanges())
+      })
+
+      await act(async () => {
+        hookResponse.result.current.getRangesBySpecificMetric()
+      })
+
+      await act(async () => {
+        hookResponse.result.current.setEditedRanges(editedRanges)
+      })
+
+      await act(async () => {
+        hookResponse.result.current.saveRanges()
+      })
+
+      expect(hookResponse.result.current.editedRanges).toEqual([...editedRanges, { label: '100+', max_value: null, min_value: 150 }])
+    })
+  })
+  describe('actions', () => {
+    it('save last range when is editing the ranges data', async () => {
+      const editedRanges = [{ id: 1, label: '30-70', max_value: 70, min_value: 30, defaultIndex: 1 }, { id: 1, label: '70-150', max_value: 150, min_value: 70, defaultIndex: 2 }]
+      mockService(getRangesByMetric, DATA.ranges[0].ranges)
+      mockService(getMetricsType, metrics)
+      let hookResponse
+      await act(async () => {
+        hookResponse = renderHook(() => useMetricRanges())
+      })
+
+      await act(async () => {
+        hookResponse.result.current.getRangesBySpecificMetric()
+      })
+
+      await act(async () => {
+        hookResponse.result.current.setEditedRanges(editedRanges)
+      })
+
+      await act(async () => {
+        hookResponse.result.current.saveRanges()
+      })
+
+      expect(hookResponse.result.current.editedRanges).toEqual([...editedRanges, { label: '<50', max_value: 30, min_value: null }, { label: '100+', max_value: null, min_value: 150 }])
+    })
+  })
 })

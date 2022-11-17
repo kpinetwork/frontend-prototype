@@ -9,7 +9,8 @@ const defaultProps = {
   onSave: jest.fn(),
   metrics: ['Revenue', 'Ebitda'],
   metric: null,
-  ranges: [{ id: '1', max_value: 20, min_value: 10 }]
+  ranges: [{ id: '1', max_value: 20, min_value: 10 }],
+  editedRanges: [{ id: '1', max_value: 20, min_value: 10, defaultIndex: 1 }]
 }
 
 const setUp = (props) => {

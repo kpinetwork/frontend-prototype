@@ -1,20 +1,21 @@
 export const DATA = {
-  total: 4,
+  total: 5,
   ranges: [
     {
       key: 'revenue',
       name: 'Revenue',
       ranges: [
-        { label: '100+', max: null, min: 100 },
-        { label: '50-100', max: 100, min: 50 },
-        { label: '>50', max: 50, min: null }
+        { label: '<50', max_value: 50, min_value: null },
+        { label: '50-70', max_value: 70, min_value: 50 },
+        { label: '70-100', max_value: 100, min_value: 70 },
+        { label: '100+', max_value: null, min_value: 100 }
       ]
     },
     {
       key: 'ebitda',
       name: 'Ebitda',
       ranges: [
-        { label: '30+', max: null, min: 30 }
+        { label: '30+', max_value: null, min_value: 30 }
       ]
     }
   ]

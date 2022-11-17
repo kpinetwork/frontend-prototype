@@ -1,13 +1,15 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { MetricRangeFormTable } from '../../../../src/views/RangesView/Components/MetricRangeFormTable'
 
 const defaultProps = {
   metric: 'Revenue',
   ranges: [{ id: '1', max_value: 20, min_value: 10 }, { id: '1', max_value: 30, min_value: 20 }, { id: '1', max_value: 40, min_value: 30 }],
   setRanges: jest.fn(),
-  isLoading: false
+  isLoading: false,
+  editedRanges: [{ id: '1', max_value: 20, min_value: 10, defaultIndex: 1 }],
+  setEditedRanges: jest.fn()
 }
 const removedItems = 2
 const headCount = 1
@@ -82,9 +84,11 @@ describe('<MetricRangeFormTable />', () => {
       fireEvent.change(cell, { target: { value: '' } })
 
       expect(cell.value).toBe('20')
+      expect(defaultProps.setEditedRanges).toHaveBeenCalled()
     })
 
-    it('Should change textfield value when edit max value cell', () => {
+    it('Should edit range already edited when any value is re edited', () => {
+      defaultProps.editedRanges = []
       setUp()
       const inputCells = screen.getAllByRole('textbox')
       const cell = inputCells.filter(elem => elem.value === '30')[0]
@@ -92,6 +96,23 @@ describe('<MetricRangeFormTable />', () => {
       fireEvent.change(cell, { target: { value: '' } })
 
       expect(cell.value).toBe('30')
+      expect(defaultProps.setEditedRanges).toHaveBeenCalled()
+    })
+
+    it('Should change textfield value when edit max value cell', () => {
+      render(<MetricRangeFormTable {...defaultProps}/>)
+      const inputCells = screen.getAllByRole('textbox')
+
+      const cell = inputCells.filter(elem => elem.value === '30')[0]
+
+      waitFor(() => {
+        fireEvent.change(cell, { target: { value: '' } })
+      })
+
+      waitFor(() => {
+        expect(cell.value).toBe('30')
+        expect(defaultProps.setEditedRanges).toHaveBeenCalled()
+      })
     })
   })
 })

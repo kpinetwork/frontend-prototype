@@ -7,6 +7,7 @@ const useMetricRanges = () => {
   const [totalRanges, setTotalRanges] = useState()
   const [metricRanges, setMetricRanges] = useState([])
   const [metrics, setMetrics] = useState([])
+  const [editedRanges, setEditedRanges] = useState([])
   const [metricSelected, setMetricSelected] = useState(null)
   const [total, setTotal] = useState(0)
   const [offset, setOffset] = useState(0)
@@ -117,6 +118,42 @@ const useMetricRanges = () => {
     setTotalRanges([...metricRanges, ...ranges])
   }
 
+  const getFirstRange = (listOfRanges) => {
+    const newFirstRange = listOfRanges.find(elem => elem.defaultIndex === 1)
+    if (newFirstRange !== undefined) {
+      const initialRange = metricRanges[0]
+      initialRange.max_value = newFirstRange.min_value
+      return initialRange
+    }
+  }
+
+  const getLastRange = (listOfRanges) => {
+    const newLastRange = listOfRanges.find(elem => elem.defaultIndex === metricRanges.length - 2)
+    if (newLastRange !== undefined) {
+      const finalRange = metricRanges[metricRanges.length - 1]
+      finalRange.min_value = newLastRange.max_value
+      return finalRange
+    }
+  }
+
+  const saveEdgeRanges = (listOfRanges, handleChageList) => {
+    const firstRange = getFirstRange(listOfRanges)
+    const lastRange = getLastRange(listOfRanges)
+    if (firstRange !== undefined && lastRange !== undefined) {
+      handleChageList([...listOfRanges, firstRange, lastRange])
+    }
+    if (firstRange === undefined && lastRange !== undefined) {
+      handleChageList([...listOfRanges, lastRange])
+    }
+    if (firstRange !== undefined && lastRange === undefined) {
+      handleChageList([...listOfRanges, firstRange])
+    }
+  }
+
+  const saveRanges = () => {
+    saveEdgeRanges(editedRanges, setEditedRanges)
+  }
+
   return {
     page,
     total,
@@ -127,11 +164,14 @@ const useMetricRanges = () => {
     allMetricRanges,
     metricSelected,
     metricRanges,
+    editedRanges,
     setMetricRanges,
     getRangesBySpecificMetric,
     handleChangePage,
     setMetricSelected,
-    handleChangePageSize
+    handleChangePageSize,
+    setEditedRanges,
+    saveRanges
   }
 }
 
