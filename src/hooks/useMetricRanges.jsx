@@ -103,7 +103,7 @@ const useMetricRanges = () => {
       metric_ranges: {
         key: metric,
         label: 'million',
-        ranges_to_update: getRangesToAdd(),
+        ranges_to_update: editedRanges,
         ranges_to_add: getRangesToAdd(),
         ranges_to_delete: rangesToDelete
       }
