@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { getMetricRanges, getRangesByMetric } from '../service/metricRanges'
+import { getMetricRanges, getRangesByMetric, modifyMetricRanges } from '../service/metricRanges'
 import { getMetricsType } from '../service/metrics'
 
 const useMetricRanges = () => {
   const [allMetricRanges, setAllRanges] = useState([])
   const [totalRanges, setTotalRanges] = useState()
   const [metricRanges, setMetricRanges] = useState([])
+  const [rangesToDelete, setRangesToDelete] = useState([])
   const [metrics, setMetrics] = useState([])
   const [editedRanges, setEditedRanges] = useState([])
   const [metricSelected, setMetricSelected] = useState(null)
@@ -76,11 +77,37 @@ const useMetricRanges = () => {
     }
   }
 
+  const modifyRanges = async (metric) => {
+    try {
+      const response = await modifyMetricRanges(getModifiedRanges(metric))
+      if (response.modified) {
+        initData({ limit: pageSize, offset })
+      }
+      return response.modified
+    } catch (_error) {
+      return false
+    }
+  }
+
   const initRanges = async (limit, offset) => {
     setIsLoading(true)
     const ranges = await getRanges({ limit, offset })
     setIsLoading(false)
     return ranges
+  }
+
+  const getRangesToAdd = () => metricRanges.filter(range => !range.id)
+
+  const getModifiedRanges = (metric) => {
+    return {
+      metric_ranges: {
+        key: metric,
+        label: 'million',
+        ranges_to_update: getRangesToAdd(),
+        ranges_to_add: getRangesToAdd(),
+        ranges_to_delete: rangesToDelete
+      }
+    }
   }
 
   const handleChangePageSize = async (newPageSize) => {
@@ -165,13 +192,16 @@ const useMetricRanges = () => {
     metricSelected,
     metricRanges,
     editedRanges,
+    rangesToDelete,
     setMetricRanges,
+    setRangesToDelete,
     getRangesBySpecificMetric,
     handleChangePage,
     setMetricSelected,
     handleChangePageSize,
     setEditedRanges,
-    saveRanges
+    saveRanges,
+    modifyRanges
   }
 }
 

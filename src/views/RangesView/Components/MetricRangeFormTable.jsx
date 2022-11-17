@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Box,
   Table,
@@ -10,12 +10,14 @@ import {
   TextField,
   Paper,
   IconButton,
-  makeStyles
+  makeStyles,
+  Typography
 } from '@material-ui/core'
+import { Alert, AlertTitle } from '@mui/material'
 import { Add, DeleteOutline } from '@material-ui/icons'
 import LoadingProgress from '../../../components/Progress'
 
-const defautlRange = { min_value: '', max_value: '' }
+const defaultRange = { min_value: '', max_value: '' }
 
 const useStyles = makeStyles((_theme) => ({
   container: {
@@ -60,20 +62,52 @@ const useStyles = makeStyles((_theme) => ({
   }
 }))
 
-export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, editedRanges, setEditedRanges }) {
+export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, rangesToDelete, setRangesToDelete, editedRanges, setEditedRanges, errors, setErrors }) {
   const classes = useStyles()
 
-  const handleAddSpecificRow = (idx) => {
-    const newRanges = [...ranges]
-    const range = { id: '', label: '', min_value: '', max_value: '' }
-    newRanges.splice(idx + 2, 0, range)
+  useEffect(() => {
+    validateRanges()
+  }, [ranges])
+
+  const handleAddSpecificRow = (idx, isRangesEmpty) => {
+    const newRanges = isRangesEmpty ? [...ranges, { min_value: null, max_value: null }, { min_value: null, max_value: null }] : [...ranges]
+    const range = { ...defaultRange }
+    newRanges.splice(idx, 0, range)
     setRanges(newRanges)
   }
 
   const handleRemoveSpecificRow = (idx) => {
+    const deletedRow = ranges[idx + 1]
+    const deletedRanges = [...rangesToDelete, deletedRow.id].filter(id => id !== '')
     const newRanges = [...ranges]
     newRanges.splice(idx + 1, 1)
     setRanges(newRanges)
+    setRangesToDelete(deletedRanges)
+  }
+
+  const isRangeCorrect = (range) => (range?.min_value < range?.max_value) || (range?.max_value == null || range?.min_value == null)
+
+  const isRangeLimitCorrect = (range, nextRange) => range?.max_value === nextRange?.min_value || (nextRange?.max_value == null || nextRange?.min_value == null) || (range?.max_value == null || range?.min_value == null)
+
+  const rowHasSpecificError = (errorType, index) => errors.find(error => error?.row === index && error?.type === errorType)
+
+  const validateRanges = () => {
+    ranges.forEach((range, index) => {
+      if (rowHasSpecificError('rangeError', index) && isRangeCorrect(range)) {
+        const updatedError = errors.filter(error => error?.row !== index || error?.type !== 'rangeError')
+        setErrors(updatedError)
+      }
+      if (rowHasSpecificError('limitError', index) && isRangeLimitCorrect(range, ranges[index + 1])) {
+        const updatedError = errors.filter(error => (error?.row !== index || error?.type !== 'limitError'))
+        setErrors([...updatedError])
+      }
+      if (!rowHasSpecificError('rangeError', index) && !isRangeCorrect(range)) {
+        setErrors([...errors, { row: index, type: 'rangeError', errorMessage: `row ${index}: The minimum value must be less than the maximum value in the same range` }])
+      }
+      if (!rowHasSpecificError('limitError', index) && !isRangeLimitCorrect(range, ranges[index + 1]) && index !== 0) {
+        setErrors([...errors, { row: index, type: 'limitError', errorMessage: `row ${index}: The upper limit must be equal to the lower limit of the next range` }])
+      }
+    })
   }
 
   const handleInputChange = (idx) => (e) => {
@@ -104,6 +138,18 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ed
   return (
       <Box>
       {
+        errors.length > 0 &&
+        <Alert severity="error" style={{ marginBottom: 10 }}>
+          <AlertTitle>Validation Error</AlertTitle>
+            {
+              errors.map((error, idx) => {
+                return (<Typography key={idx}>{error.errorMessage}</Typography>)
+              })
+            }
+        </Alert>
+      }
+
+      {
         !isLoading && metric &&
         <TableContainer component={Paper} className={classes.tableContainer}>
         <Table className={classes.container}>
@@ -115,7 +161,7 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ed
             </TableRow>
           </TableHead>
             <TableBody>
-            {ranges.length > 0 && ranges.slice(1, -1).map((_, idx) => (
+            {ranges.length > 0 && ranges.filter(range => range?.min_value !== null && range?.max_value !== null).map((_, idx) => (
               <TableRow
               key={idx}
               className={classes.row}
@@ -124,20 +170,20 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ed
                 >
                   <Box style={{ display: 'flex' }}>
                     <IconButton
-                      onClick={(_) => handleAddSpecificRow(idx)}
+                      data-testid="add-button"
+                      onClick={(_) => handleAddSpecificRow(idx + 2, false)}
                     >
                       <Add
                         fontSize={'small'}
-                        data-testid="add-button"
                         style={{ color: '#1A1EA5' }}
                       />
                     </IconButton>
                     <IconButton
+                      data-testid="remove-button"
                        onClick={(_) => handleRemoveSpecificRow(idx)}
                     >
                       <DeleteOutline
                         fontSize={'small'}
-                        data-testid="remove-button"
                         style={{ color: '#BBBBBF' }}
                       />
                     </IconButton>
@@ -149,9 +195,10 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ed
                 >
                   <TextField
                   variant="filled"
+                  type='number'
                   inputProps={{ style: { textAlign: 'center' } }}
                   className={classes.input}
-                  value={ranges[idx + 1].min_value}
+                  value={ranges[idx + 1]?.min_value}
                   name="min_value"
                   onChange={handleInputChange(idx)}
                   />
@@ -161,9 +208,10 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ed
                 >
                 <TextField
                   variant="filled"
+                  type='number'
                   inputProps={{ style: { textAlign: 'center' } }}
                   className={classes.input}
-                  value={ranges[idx + 1].max_value}
+                  value={ranges[idx + 1]?.max_value}
                   name="max_value"
                   onChange={handleInputChange(idx)}
                   />
@@ -171,24 +219,21 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ed
               </TableRow>
             ))}
             {
-              ranges.slice(1, -1).length === 0 && [...ranges.slice(1, -1), defautlRange].map(
-                (_, idx) => (
-                  <TableRow key={idx}>
-                  <TableCell className={classes.actions}>
-                  <IconButton
-                      onClick={(_) => handleAddSpecificRow(idx - 1)}
-                    >
-                      <Add
-                        fontSize={'small'}
-                        data-testid="add-button"
-                        style={{ color: '#1A1EA5' }}
-                      />
-                    </IconButton>
-                </TableCell>
-                <TableCell colSpan={2} align={'center'} style={{ color: '#6B6A6A' }}>NO DATA</TableCell>
-              </TableRow>
-                )
-              )
+              ranges.filter(range => range?.min_value !== null && range?.max_value !== null).length === 0 &&
+              <TableRow>
+                    <TableCell className={classes.actions}>
+                      <IconButton
+                        onClick={(_) => handleAddSpecificRow(-1, true)}
+                      >
+                          <Add
+                            fontSize={'small'}
+                            data-testid="add-button"
+                            style={{ color: '#1A1EA5' }}
+                          />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell colSpan={2} align={'center'} style={{ color: '#6B6A6A' }}>NO DATA</TableCell>
+                  </TableRow>
             }
           </TableBody>
         </Table>

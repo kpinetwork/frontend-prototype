@@ -62,7 +62,7 @@ const useStyles = makeStyles((_theme) => ({
   }
 }))
 
-export function MetricRangeForm ({ onCancel, onChange, onSave, metrics, metric, ranges, setRanges, isLoading, editedRanges, setEditedRanges }) {
+export function MetricRangeForm ({ onCancel, onChange, onSave, metrics, metric, ranges, setRanges, isLoading, rangesToDelete, setRangesToDelete, editedRanges, setEditedRanges, errors, setErrors }) {
   const classes = useStyles()
 
   const getAnonymizableMetrics = () => {
@@ -104,7 +104,18 @@ export function MetricRangeForm ({ onCancel, onChange, onSave, metrics, metric, 
                 }
               </Select>
             </FormControl>
-            <MetricRangeFormTable ranges={ranges} setRanges={setRanges} isLoading={isLoading} metric={metric} editedRanges={editedRanges} setEditedRanges={setEditedRanges} />
+            <MetricRangeFormTable
+              ranges={ranges}
+              setRanges={setRanges}
+              isLoading={isLoading}
+              metric={metric}
+              rangesToDelete={rangesToDelete}
+              setRangesToDelete={setRangesToDelete}
+              editedRanges={editedRanges}
+              setEditedRanges={setEditedRanges}
+              errors={errors}
+              setErrors={setErrors}
+            />
           </Box>
         </CardContent>
         <CardActions className={classes.actions} p={4}>
@@ -112,6 +123,7 @@ export function MetricRangeForm ({ onCancel, onChange, onSave, metrics, metric, 
             <Box px={2}>
               <ButtonActions
                 okName='Save'
+                allowActions={errors.length === 0}
                 cancelName='Cancel'
                 onOk={onSave}
                 onCancel={onCancel}

@@ -16,11 +16,15 @@ const hookResponse = {
   allMetricRanges: DATA.ranges,
   metricRanges: [{ id: '1', max_value: 20, min_value: 10 }],
   metricSelected: null,
+  errors: [],
+  setErrors: jest.fn(),
+  setMetricRanges: jest.fn(),
   handleChangePage: jest.fn(),
   setMetricSelected: jest.fn(),
   handleChangePageSize: jest.fn(),
   getRangesBySpecificMetric: jest.fn(),
-  setEditedRanges: jest.fn()
+  setEditedRanges: jest.fn(),
+  setRangesToDelete: jest.fn()
 }
 
 const setUp = () => {
