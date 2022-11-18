@@ -1,7 +1,7 @@
 import { Auth } from 'aws-amplify'
 import { renderHook, act } from '@testing-library/react-hooks'
 import useMetricRanges from '../../src/hooks/useMetricRanges'
-import { getMetricRanges, getRangesByMetric } from '../../src/service/metricRanges'
+import { getMetricRanges, getRangesByMetric, modifyMetricRanges } from '../../src/service/metricRanges'
 import { getMetricsType } from '../../src/service/metrics'
 import { DATA } from '../data/ranges'
 
@@ -158,6 +158,61 @@ describe('useMetricRanges', () => {
 
       expect(hookResponse.result.current.pageSize).toEqual(25)
       expect(getMetricRanges).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('Modify ranges', () => {
+    it('Should modify ranges when calling service and api call is successful', async () => {
+      mockService(modifyMetricRanges, { updated: true })
+      const mockEditedRanges = [{ id: '1', min_value: 10, max_value: 20 }]
+      const mockRangesToDelete = ['2']
+      let hookResponse
+
+      await act(async () => {
+        hookResponse = renderHook(() => useMetricRanges())
+      })
+      await act(async () => {
+        hookResponse.result.current.setEditedRanges(mockEditedRanges)
+      })
+      await act(async () => {
+        hookResponse.result.current.setRangesToDelete(mockRangesToDelete)
+      })
+      await act(async () => {
+        hookResponse.result.current.modifyRanges('revenue')
+      })
+
+      expect(hookResponse.result.current.isLoading).toBeFalsy()
+      expect(hookResponse.result.current.editedRanges).toEqual(mockEditedRanges)
+      expect(hookResponse.result.current.rangesToDelete).toEqual(mockRangesToDelete)
+    })
+
+    it('Should return false when calling service and api call is successful but modification fails', async () => {
+      mockService(modifyMetricRanges, { updated: false })
+      let hookResponse
+
+      await act(async () => {
+        hookResponse = renderHook(() => useMetricRanges())
+      })
+      await act(async () => {
+        hookResponse.result.current.modifyRanges('revenue')
+      })
+
+      expect(hookResponse.result.current.isLoading).toBeFalsy()
+    })
+
+    it('Should return false when calling service and api call fails', async () => {
+      mockService(modifyMetricRanges, 'error')
+      let hookResponse
+
+      await act(async () => {
+        hookResponse = renderHook(() => useMetricRanges())
+      })
+
+      await act(async () => {
+        hookResponse.result.current.modifyRanges('revenue')
+      })
+
+      expect(hookResponse.result.current.isLoading).toBeFalsy()
     })
   })
 })

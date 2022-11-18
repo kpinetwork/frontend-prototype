@@ -1,7 +1,7 @@
 import React from 'react'
 import { Auth } from 'aws-amplify'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { RangesView } from '../../../src/views/RangesView/RangesView'
 import useMetricRanges from '../../../src/hooks/useMetricRanges'
 import { DATA } from '../../data/ranges'
