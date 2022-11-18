@@ -5,7 +5,7 @@ import { MetricRangeFormTable } from '../../../../src/views/RangesView/Component
 
 const defaultProps = {
   metric: 'Revenue',
-  ranges: [{ id: '1', max_value: 20, min_value: 10 }, { id: '1', max_value: 30, min_value: 20 }, { id: '1', max_value: 40, min_value: 30 }],
+  ranges: [{ id: '1', max_value: 10, min_value: null }, { id: '1', max_value: 20, min_value: 10 }, { id: '1', max_value: 20, min_value: 10 }, { id: '1', max_value: 30, min_value: 20 }, { id: '1', max_value: 40, min_value: 30 }, { id: '1', max_value: null, min_value: 40 }],
   isLoading: false,
   errors: [],
   rangesToDelete: [],
@@ -31,7 +31,7 @@ describe('<MetricRangeFormTable />', () => {
       const rows = screen.getAllByRole('row')
 
       expect(screen.getByRole('table')).toBeInTheDocument()
-      expect(rows).toHaveLength(defaultProps.ranges.length + headCount)
+      expect(rows).toHaveLength(defaultProps.ranges.length + headCount - removedItems)
     })
 
     it('Should render table with no data when there is are not ranges and metric is selected', () => {
@@ -41,7 +41,7 @@ describe('<MetricRangeFormTable />', () => {
 
       expect(screen.getByRole('table')).toBeInTheDocument()
       expect(message).toBeInTheDocument()
-      expect(rows).toHaveLength(defaultProps.ranges.length + headCount - removedItems)
+      expect(rows).toHaveLength(headCount + 1)
     })
 
     it('Should render progress bar when data is still loadind', () => {

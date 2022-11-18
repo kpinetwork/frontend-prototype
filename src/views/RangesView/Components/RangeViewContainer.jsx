@@ -55,6 +55,13 @@ export const RangeViewContainer = () => {
     modifyRanges(getMetricStandardName(metricSelected))
   }
 
+  const getDefaultValue = () => {
+    setErrors([])
+    setMetricRanges([])
+    setRangesToDelete([])
+    setEditedRanges([])
+  }
+
   return (
        <Box display="flex" justifyContent="center" alignItems="center">
         <Box className={classes.root}>
@@ -63,21 +70,20 @@ export const RangeViewContainer = () => {
               openModify &&
               <MetricRangeForm
               onCancel={() => {
-                setErrors([])
-                setMetricRanges([])
                 setOpenModify(false)
-                setRangesToDelete([])
                 setMetricSelected(null)
-                setEditedRanges([])
+                getDefaultValue()
               }}
               onChange={(metric) => {
                 setMetricSelected(metric)
                 getRangesBySpecificMetric(getMetricStandardName(metric))
-                setRangesToDelete([])
-                setEditedRanges([])
+                getDefaultValue()
               }}
               onSave={() => {
                 handleSaveRanges()
+                setOpenModify(false)
+                setMetricSelected(null)
+                getDefaultValue()
               }}
               metrics={metrics}
               metric={metricSelected}

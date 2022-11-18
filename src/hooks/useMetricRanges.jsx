@@ -6,6 +6,7 @@ const useMetricRanges = () => {
   const [allMetricRanges, setAllRanges] = useState([])
   const [totalRanges, setTotalRanges] = useState()
   const [metricRanges, setMetricRanges] = useState([])
+  const [initMetricRanges, setInitMetricRanges] = useState([])
   const [rangesToDelete, setRangesToDelete] = useState([])
   const [metrics, setMetrics] = useState([])
   const [editedRanges, setEditedRanges] = useState([])
@@ -59,6 +60,7 @@ const useMetricRanges = () => {
       setIsRangesLoading(true)
       const result = await getRangesByMetric(metric)
       setIsRangesLoading(false)
+      setInitMetricRanges(result)
       setMetricRanges(result)
       return result
     } catch (_error) {
@@ -79,12 +81,15 @@ const useMetricRanges = () => {
 
   const modifyRanges = async (metric) => {
     try {
+      setIsLoading(true)
       const response = await modifyMetricRanges(getModifiedRanges(metric))
-      if (response.modified) {
+      setIsLoading(false)
+      if (response.updated) {
         initData({ limit: pageSize, offset })
       }
-      return response.modified
+      return response.updated
     } catch (_error) {
+      setIsLoading(false)
       return false
     }
   }
@@ -96,16 +101,24 @@ const useMetricRanges = () => {
     return ranges
   }
 
-  const getRangesToAdd = () => metricRanges.filter(range => !range.id)
+  const getEdgeRanges = (allRanges) => allRanges.filter(range => range?.min_value === null || range?.max_value === null).map(range => range.id)
+
+  const getRangesToAdd = () => {
+    const rangesToAdd = metricRanges.filter(range => !range.id)
+    if (editedRanges.filter(range => range.id).length === 0 && getEdgeRanges(rangesToAdd).length === rangesToAdd.length && initMetricRanges.length === 0) {
+      return []
+    }
+    return rangesToAdd
+  }
 
   const getModifiedRanges = (metric) => {
     return {
       metric_ranges: {
         key: metric,
         label: 'million',
-        ranges_to_update: editedRanges,
+        ranges_to_update: editedRanges.filter(range => range.id),
         ranges_to_add: getRangesToAdd(),
-        ranges_to_delete: rangesToDelete
+        ranges_to_delete: rangesToDelete.filter(id => id)
       }
     }
   }
