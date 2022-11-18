@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { MetricRangeFormTable } from '../../../../src/views/RangesView/Components/MetricRangeFormTable'
 
 const defaultProps = {
@@ -69,7 +69,14 @@ describe('<MetricRangeFormTable />', () => {
       setUp()
       const addButton = screen.getAllByTestId('add-button')
 
-      fireEvent.click(addButton[1])
+      fireEvent.click(addButton[2])
+
+      const inputCells = screen.getAllByRole('spinbutton')
+      const cell = inputCells.filter(elem => elem.value === '')[3]
+
+      waitFor(() => {
+        fireEvent.change(cell, { target: { value: '' } })
+      })
 
       expect(defaultProps.setRanges).toHaveBeenCalled()
     })
@@ -87,9 +94,10 @@ describe('<MetricRangeFormTable />', () => {
       setUp()
       const removeButton = screen.getAllByTestId('remove-button')
 
-      fireEvent.click(removeButton[1])
+      fireEvent.click(removeButton[0])
 
       expect(defaultProps.setRanges).toHaveBeenCalled()
+      expect(defaultProps.setEditedRanges).toHaveBeenCalled()
     })
 
     it('Should change textfield value when edit min value cell', () => {
@@ -121,10 +129,14 @@ describe('<MetricRangeFormTable />', () => {
 
       const cell = inputCells.filter(elem => elem.value === '30')[0]
 
-      fireEvent.change(cell, { target: { value: '' } })
+      waitFor(() => {
+        fireEvent.change(cell, { target: { value: '' } })
+      })
 
-      expect(cell.value).toBe('30')
-      expect(defaultProps.setEditedRanges).toHaveBeenCalled()
+      waitFor(() => {
+        expect(cell.value).toBe('30')
+        expect(defaultProps.setEditedRanges).toHaveBeenCalled()
+      })
     })
   })
 })

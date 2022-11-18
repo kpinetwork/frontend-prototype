@@ -41,8 +41,7 @@ export const RangeViewContainer = () => {
     getRangesBySpecificMetric,
     modifyRanges,
     editedRanges,
-    setEditedRanges,
-    saveRanges
+    setEditedRanges
   } = useMetricRanges()
   const classes = useStyles()
   const [openModify, setOpenModify] = useState(false)
@@ -78,7 +77,6 @@ export const RangeViewContainer = () => {
                 setEditedRanges([])
               }}
               onSave={() => {
-                saveRanges()
                 handleSaveRanges()
               }}
               metrics={metrics}
