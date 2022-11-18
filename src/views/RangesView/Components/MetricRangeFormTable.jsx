@@ -71,8 +71,11 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ra
 
   const handleAddSpecificRow = (idx, isRangesEmpty) => {
     const newRanges = isRangesEmpty ? [...ranges, { min_value: null, max_value: null }, { min_value: null, max_value: null }] : [...ranges]
-    const range = { ...defaultRange }
+    const range = { ...defaultRange, defaultIndex: idx }
     newRanges.splice(idx, 0, range)
+    if (idx === newRanges.length - 2) {
+      newRanges[newRanges.length - 1].min_value = newRanges[newRanges.length - 2].max_value
+    }
     setRanges(newRanges)
   }
 
@@ -84,9 +87,11 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ra
     if (idx === 0) {
       newRanges[0].max_value = newRanges[1].min_value
       newRanges[1].defaultIndex = 1
+      setEditedRanges([...editedRanges, newRanges[0]])
     }
     if (idx === newRanges.length - 2) {
       newRanges[newRanges.length - 1].min_value = newRanges[newRanges.length - 2].max_value
+      setEditedRanges([...editedRanges, newRanges[newRanges.length - 1]])
     }
     setRanges(newRanges)
     setRangesToDelete(deletedRanges)
@@ -134,18 +139,33 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ra
     newRanges[idx + 1] = {
       ...actualRange
     }
-    const modifiedRange = editedRanges.find(elem => elem.id === actualRange.id)
-    actualRange.defaultIndex = idx + 1
-    if (modifiedRange === undefined) {
-      setEditedRanges([...editedRanges, actualRange])
-    } else {
-      const indexRange = editedRanges.map(elem => elem.id).indexOf(modifiedRange.id)
-      editedRanges[indexRange] = actualRange
-      setEditedRanges(editedRanges)
+    if (actualRange.id !== undefined) {
+      const modifiedRange = editedRanges.find(elem => elem.id === actualRange.id)
+      actualRange.defaultIndex = idx + 1
+      if (modifiedRange === undefined) {
+        setEditedRanges([...editedRanges, actualRange])
+      } else {
+        const indexRange = editedRanges.map(elem => elem.id).indexOf(modifiedRange.id)
+        editedRanges[indexRange] = actualRange
+        setEditedRanges(editedRanges)
+      }
+    }
+    if (idx === newRanges.length - 3) {
+      newRanges[newRanges.length - 1].min_value = newRanges[newRanges.length - 2].max_value
+      const updatedRange = editedRanges.find(elem => elem.id === newRanges[newRanges.length - 1].id)
+      if (updatedRange === undefined) {
+        setEditedRanges([...editedRanges, newRanges[newRanges.length - 1]])
+      }
+    }
+    if (idx === 0) {
+      newRanges[0].max_value = newRanges[1].min_value
+      const updatedRange = editedRanges.find(elem => elem.id === newRanges[0].id)
+      if (updatedRange === undefined) {
+        setEditedRanges([...editedRanges, newRanges[0]])
+      }
     }
     setRanges(newRanges)
   }
-
   return (
       <Box>
       {
