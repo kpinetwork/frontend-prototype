@@ -37,8 +37,8 @@ export const useRangeTrackChanges = (
     setRangesToDelete(deletedRanges)
   }
 
-  const handleInputChange = (idx) => (e) => {
-    const { name, value } = e.target
+  const handleInputChange = (e, idx) => {
+    const { name, value } = e?.target
     const actualRange = ranges[idx + 1]
     if (name === 'min_value') {
       actualRange.min_value = value
