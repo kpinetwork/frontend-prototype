@@ -145,7 +145,7 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ra
                   className={classes.input}
                   value={ranges[idx + 1]?.min_value}
                   name="min_value"
-                  onChange={handleInputChange(idx)}
+                  onChange={event => handleInputChange(event, idx)}
                   />
                 </TableCell>
                 <TableCell
@@ -158,7 +158,7 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ra
                   className={classes.input}
                   value={ranges[idx + 1]?.max_value}
                   name="max_value"
-                  onChange={handleInputChange(idx)}
+                  onChange={event => handleInputChange(event, idx)}
                   />
                 </TableCell>
               </TableRow>

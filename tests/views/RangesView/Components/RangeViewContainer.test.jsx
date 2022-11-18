@@ -24,7 +24,8 @@ const hookResponse = {
   handleChangePageSize: jest.fn(),
   getRangesBySpecificMetric: jest.fn(),
   setEditedRanges: jest.fn(),
-  setRangesToDelete: jest.fn()
+  setRangesToDelete: jest.fn(),
+  modifyRanges: jest.fn()
 }
 
 const setUp = () => {
@@ -78,6 +79,18 @@ describe('<RangeViewContainer />', () => {
       fireEvent.click(screen.getByRole('option', { name: 'Revenue' }))
 
       expect(hookResponse.setMetricSelected).toHaveBeenCalledWith('Revenue')
+    })
+
+    it('Should save data when click on save in card range form', async () => {
+      const response = { ...hookResponse, metricSelected: 'Revenue' }
+      useMetricRanges.mockImplementation(() => response)
+      setUp()
+      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Modify' })))
+
+      const saveButton = screen.getByRole('button', { name: 'Save' })
+      fireEvent.click(saveButton)
+
+      expect(hookResponse.modifyRanges).toHaveBeenCalled()
     })
   })
 })
