@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import useMetricRanges from '../../../hooks/useMetricRanges'
 import { MetricRangesTable } from './MetricRangesTable'
 import { MetricRangeForm } from './MetricRangeForm'
+import { TOTALMETRICS } from '../../../utils/constants/Metrics'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,14 +28,40 @@ export const RangeViewContainer = () => {
     metrics,
     pageSize,
     isLoading,
+    isRangesLoading,
+    allMetricRanges,
     metricRanges,
     metricSelected,
+    rangesToDelete,
+    setRangesToDelete,
+    setMetricRanges,
     handleChangePage,
     setMetricSelected,
-    handleChangePageSize
+    handleChangePageSize,
+    getRangesBySpecificMetric,
+    modifyRanges,
+    editedRanges,
+    setEditedRanges
   } = useMetricRanges()
   const classes = useStyles()
   const [openModify, setOpenModify] = useState(false)
+  const [errors, setErrors] = useState([])
+  const getMetricStandardName = (name) => {
+    const metric = TOTALMETRICS.find(item => item.name === name)
+    return metric.tableName
+  }
+
+  const handleSaveRanges = () => {
+    modifyRanges(getMetricStandardName(metricSelected))
+  }
+
+  const getDefaultValue = () => {
+    setErrors([])
+    setMetricRanges([])
+    setRangesToDelete([])
+    setEditedRanges([])
+  }
+
   return (
        <Box display="flex" justifyContent="center" alignItems="center">
         <Box className={classes.root}>
@@ -45,13 +72,30 @@ export const RangeViewContainer = () => {
               onCancel={() => {
                 setOpenModify(false)
                 setMetricSelected(null)
+                getDefaultValue()
               }}
               onChange={(metric) => {
                 setMetricSelected(metric)
+                getRangesBySpecificMetric(getMetricStandardName(metric))
+                getDefaultValue()
               }}
-              onSave={() => {}}
+              onSave={() => {
+                handleSaveRanges()
+                setOpenModify(false)
+                setMetricSelected(null)
+                getDefaultValue()
+              }}
               metrics={metrics}
               metric={metricSelected}
+              ranges={metricRanges}
+              setRanges={setMetricRanges}
+              isLoading={isRangesLoading}
+              rangesToDelete={rangesToDelete}
+              setRangesToDelete={setRangesToDelete}
+              editedRanges={editedRanges}
+              setEditedRanges={setEditedRanges}
+              errors={errors}
+              setErrors={setErrors}
               />
             }
           </Box>
@@ -70,7 +114,7 @@ export const RangeViewContainer = () => {
           <MetricRangesTable
             page={page}
             total={total}
-            ranges={metricRanges}
+            ranges={allMetricRanges}
             isLoading={isLoading}
             rowsPerPage={pageSize}
             handleChangePage={handleChangePage}

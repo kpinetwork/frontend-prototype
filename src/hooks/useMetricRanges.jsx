@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react'
-import { getMetricRanges } from '../service/metricRanges'
+import { getMetricRanges, getRangesByMetric, modifyMetricRanges } from '../service/metricRanges'
 import { getMetricsType } from '../service/metrics'
 
 const useMetricRanges = () => {
-  const [metricRanges, setRanges] = useState([])
+  const [allMetricRanges, setAllRanges] = useState([])
   const [totalRanges, setTotalRanges] = useState()
+  const [metricRanges, setMetricRanges] = useState([])
+  const [initMetricRanges, setInitMetricRanges] = useState([])
+  const [rangesToDelete, setRangesToDelete] = useState([])
   const [metrics, setMetrics] = useState([])
+  const [editedRanges, setEditedRanges] = useState([])
   const [metricSelected, setMetricSelected] = useState(null)
   const [total, setTotal] = useState(0)
   const [offset, setOffset] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const [isRangesLoading, setIsRangesLoading] = useState(true)
   const [pageSize, setPageSize] = useState(100)
   const [page, setPage] = useState(0)
   const [maxPage, setMaxPage] = useState(0)
@@ -23,7 +28,7 @@ const useMetricRanges = () => {
 
   const setDefaultValues = () => {
     setTotal(0)
-    setRanges([])
+    setAllRanges([])
     setMetrics([])
     setIsLoading(false)
   }
@@ -41,11 +46,26 @@ const useMetricRanges = () => {
       const result = await getMetricRanges(options)
       const { total, ranges } = destructuring(result)
       setTotal(total)
-      setRanges(ranges)
+      setAllRanges(ranges)
       return ranges
     } catch (_error) {
       setTotal(0)
-      setRanges([])
+      setAllRanges([])
+      return []
+    }
+  }
+
+  const getRangesBySpecificMetric = async (metric) => {
+    try {
+      setIsRangesLoading(true)
+      const result = await getRangesByMetric(metric)
+      setIsRangesLoading(false)
+      setInitMetricRanges(result)
+      setMetricRanges(result)
+      return result
+    } catch (_error) {
+      setMetricRanges([])
+      setIsRangesLoading(false)
       return []
     }
   }
@@ -53,9 +73,24 @@ const useMetricRanges = () => {
   const getBaseMetrics = async () => {
     try {
       const result = await getMetricsType()
-      setMetrics([...result, 'Gross profit'])
+      setMetrics([...result, 'Gross profit', 'Revenue per employee'])
     } catch (_error) {
       setMetrics([])
+    }
+  }
+
+  const modifyRanges = async (metric) => {
+    try {
+      setIsLoading(true)
+      const response = await modifyMetricRanges(getModifiedRanges(metric))
+      setIsLoading(false)
+      if (response.updated) {
+        initData({ limit: pageSize, offset })
+      }
+      return response.updated
+    } catch (_error) {
+      setIsLoading(false)
+      return false
     }
   }
 
@@ -64,6 +99,28 @@ const useMetricRanges = () => {
     const ranges = await getRanges({ limit, offset })
     setIsLoading(false)
     return ranges
+  }
+
+  const getEdgeRanges = (allRanges) => allRanges.filter(range => range?.min_value === null || range?.max_value === null).map(range => range.id)
+
+  const getRangesToAdd = () => {
+    const rangesToAdd = metricRanges.filter(range => !range.id)
+    if (editedRanges.filter(range => range.id).length === 0 && getEdgeRanges(rangesToAdd).length === rangesToAdd.length && initMetricRanges.length === 0) {
+      return []
+    }
+    return rangesToAdd
+  }
+
+  const getModifiedRanges = (metric) => {
+    return {
+      metric_ranges: {
+        key: metric,
+        label: 'million',
+        ranges_to_update: editedRanges.filter(range => range.id),
+        ranges_to_add: getRangesToAdd(),
+        ranges_to_delete: rangesToDelete.filter(id => id)
+      }
+    }
   }
 
   const handleChangePageSize = async (newPageSize) => {
@@ -89,7 +146,7 @@ const useMetricRanges = () => {
     setPage(newPage)
     const offset = newPage * newRowsPerPage
     const max = (newPage - page) < 0 ? page * newRowsPerPage : offset + newRowsPerPage
-    setRanges(totalRanges.slice(offset, max))
+    setAllRanges(totalRanges.slice(offset, max))
   }
 
   const callNextRanges = async (newPage) => {
@@ -107,11 +164,20 @@ const useMetricRanges = () => {
     metrics,
     pageSize,
     isLoading,
-    metricRanges,
+    isRangesLoading,
+    allMetricRanges,
     metricSelected,
+    metricRanges,
+    editedRanges,
+    rangesToDelete,
+    setMetricRanges,
+    setRangesToDelete,
+    getRangesBySpecificMetric,
     handleChangePage,
     setMetricSelected,
-    handleChangePageSize
+    handleChangePageSize,
+    setEditedRanges,
+    modifyRanges
   }
 }
 

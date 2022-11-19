@@ -15,12 +15,15 @@ import {
 } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import ButtonActions from '../../../components/Actions'
+import { MetricRangeFormTable } from './MetricRangeFormTable'
 
 const useStyles = makeStyles((_theme) => ({
   input: {
     marginRight: 20,
     marginTop: 25,
-    minWidth: 200
+    minWidth: 200,
+    marginBottom: 25,
+    justifyContent: 'center'
   },
   inputBorder: {
     '& .MuiOutlinedInput-root': {
@@ -59,8 +62,13 @@ const useStyles = makeStyles((_theme) => ({
   }
 }))
 
-export function MetricRangeForm ({ onCancel, onChange, onSave, metrics, metric }) {
+export function MetricRangeForm ({ onCancel, onChange, onSave, metrics, metric, ranges, setRanges, isLoading, rangesToDelete, setRangesToDelete, editedRanges, setEditedRanges, errors, setErrors }) {
   const classes = useStyles()
+
+  const getAnonymizableMetrics = () => {
+    const anonymizableMetrics = metrics.filter(metric => metric !== 'Headcount')
+    return anonymizableMetrics
+  }
 
   return (
       <Card className={classes.form}>
@@ -88,7 +96,7 @@ export function MetricRangeForm ({ onCancel, onChange, onSave, metrics, metric }
                 data-testid='metric-range-selector'
               >
                 {
-                  metrics.map(metric => (
+                  getAnonymizableMetrics().map(metric => (
                     <MenuItem key={metric} value={metric}>
                       {metric}
                     </MenuItem>
@@ -96,6 +104,18 @@ export function MetricRangeForm ({ onCancel, onChange, onSave, metrics, metric }
                 }
               </Select>
             </FormControl>
+            <MetricRangeFormTable
+              ranges={ranges}
+              setRanges={setRanges}
+              isLoading={isLoading}
+              metric={metric}
+              rangesToDelete={rangesToDelete}
+              setRangesToDelete={setRangesToDelete}
+              editedRanges={editedRanges}
+              setEditedRanges={setEditedRanges}
+              errors={errors}
+              setErrors={setErrors}
+            />
           </Box>
         </CardContent>
         <CardActions className={classes.actions} p={4}>
@@ -103,6 +123,7 @@ export function MetricRangeForm ({ onCancel, onChange, onSave, metrics, metric }
             <Box px={2}>
               <ButtonActions
                 okName='Save'
+                allowActions={errors.length === 0}
                 cancelName='Cancel'
                 onOk={onSave}
                 onCancel={onCancel}

@@ -419,98 +419,117 @@ export const BY_YEAR_METRICS = [
 export const BASEMETRICS = [
   {
     name: 'Revenue',
+    tableName: 'revenue',
     symbol: '$',
     position: 'left',
     hoverText: tooltipTitles.revenue
   },
   {
     name: 'Ebitda',
+    tableName: 'ebitda',
     symbol: '$',
     position: 'left',
     hoverText: tooltipTitles.ebitda
   },
   {
     name: 'General & administration',
+    tableName: 'general_admin',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'Research & development',
+    tableName: 'research_development',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'Sales & marketing',
+    tableName: 'sales_marketing',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'Cost of goods',
+    tableName: 'cost_of_goods',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'Headcount',
+    tableName: 'headcount',
     symbol: '',
     position: 'left'
   },
   {
     name: 'CLV',
+    tableName: 'customer_lifetime_value',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'CAC',
+    tableName: 'customer_acquition_costs',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'CAV',
+    tableName: 'customer_annual_value',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'Other operating expenses',
+    tableName: 'other_operating_expenses',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'Run rate revenue',
+    tableName: 'run_rate_revenue',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'Losses and downgrades',
+    tableName: 'losses_and_downgrades',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'Upsells',
+    tableName: 'upsells',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'New bookings',
+    tableName: 'new_bookings',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'Cash & Equivalents',
+    tableName: 'cash_and_equivalents',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'Long term debt',
+    tableName: 'long_term_debt',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'Equity invested',
+    tableName: 'equity_invested',
     symbol: '$',
     position: 'left'
   },
   {
     name: 'Cash flow from operations',
+    tableName: 'cash_flow_operations',
     symbol: '$',
     position: 'left'
   }
@@ -519,3 +538,14 @@ export const BASEMETRICS = [
 export const BASE_SCENARIOS = [
   'Actuals', 'Budget'
 ]
+
+export const CALCULATEDMETRICS = [{
+  name: 'Revenue per employee',
+  tableName: 'revenue_per_employee'
+},
+{
+  name: 'Gross profit',
+  tableName: 'gross_profit'
+}]
+
+export const TOTALMETRICS = BASEMETRICS.concat(CALCULATEDMETRICS).filter(metric => metric.name !== 'Headcount')

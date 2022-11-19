@@ -7,8 +7,12 @@ const defaultProps = {
   onCancel: jest.fn(),
   onChange: jest.fn(),
   onSave: jest.fn(),
+  setError: jest.fn(),
+  errors: [],
   metrics: ['Revenue', 'Ebitda'],
-  metric: null
+  metric: null,
+  ranges: [{ id: '1', max_value: 20, min_value: 10 }],
+  editedRanges: [{ id: '1', max_value: 20, min_value: 10, defaultIndex: 1 }]
 }
 
 const setUp = (props) => {
