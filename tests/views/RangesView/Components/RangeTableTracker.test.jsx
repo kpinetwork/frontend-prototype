@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react-hooks'
 import { useRangeTrackChanges } from '../../../../src/views/RangesView/Components/RangeTableTracker'
 
 const defaultProps = {
-  ranges: [{ id: '1', max_value: 10, min_value: null }, { id: '1', max_value: 20, min_value: 10 }, { id: '1', max_value: null, min_value: 20 }],
+  ranges: [{ id: '1', max_value: 10, min_value: null }, { id: '2', max_value: 20, min_value: 10 }, { id: '3', max_value: null, min_value: 20 }],
   setRanges: jest.fn(),
   rangesToDelete: [],
   setRangesToDelete: jest.fn(),
@@ -148,5 +148,18 @@ describe('useRangeTrackChanges', () => {
     })
 
     expect(defaultProps.setEditedRanges).toHaveBeenCalled()
+  })
+
+  it('useRangeTrackChanges should handle editing first row when edge range is in ranges to delete', async () => {
+    let useComparisonPeersResult
+    await act(async () => {
+      useComparisonPeersResult = renderHook(() => useRangeTrackChanges({ ...defaultProps, rangesToDelete: ['1'] }))
+    })
+    await act(async () => {
+      useComparisonPeersResult.result.current.handleInputChange({ target: { name: 'min_value', value: '10' } }, 0)
+    })
+
+    expect(defaultProps.setEditedRanges).toHaveBeenCalled()
+    expect(defaultProps.setRangesToDelete).toHaveBeenCalled()
   })
 })
