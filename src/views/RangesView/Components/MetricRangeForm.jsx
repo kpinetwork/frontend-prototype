@@ -127,7 +127,6 @@ export function MetricRangeForm ({ onCancel, onChange, onSave, metrics, metric, 
                 cancelName='Cancel'
                 onOk={onSave}
                 onCancel={onCancel}
-                reverse={false}
               />
           </Box>
           }

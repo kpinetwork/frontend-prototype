@@ -90,7 +90,6 @@ export function TagsForm ({ onCancel, companies, handleTagChange, handleCompanie
                 cancelName='Cancel'
                 onOk={onSave}
                 onCancel={onCancel}
-                reverse={false}
             />
         </Box>
         </CardActions>

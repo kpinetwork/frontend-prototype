@@ -27,9 +27,9 @@ export default function ResetModal ({ open, onOk, onCancel }) {
                 <Typography variant="subtitle1" fontSize={'18px'} pb={3}>Are you sure you want to reset this form?</Typography>
                 <ButtonActions
                     onOk={onOk}
-                    okName='YES'
+                    okName='Yes'
                     onCancel={onCancel}
-                    cancelName='NO'>
+                    cancelName='No'>
                 </ButtonActions>
             </Box>
         </Modal>

@@ -40,9 +40,9 @@ export default function DeleteModal ({ open = false, onOk, onCancel, loading = f
             }
             <ButtonActions
                 onOk={onOk}
-                okName='YES'
+                okName='Yes'
                 onCancel={onCancel}
-                cancelName='NO'>
+                cancelName='No'>
             </ButtonActions>
         </Box>
     </Modal>

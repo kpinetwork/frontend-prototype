@@ -11,7 +11,7 @@ export const TwoMetricSelector = ({ firstMetric, secondMetric, onMetricChange })
                 metric={firstMetric}
                 onChange={(event) => onMetricChange(event.target.value, 'first')}
                 needEmptyValue={false}
-                customStyle={{ marginBottom: 20, marginLeft: 10 }}
+                customStyle={{ marginLeft: 10 }}
             />
             <MetricSelector
                 nameOfSelect="Second Metric"

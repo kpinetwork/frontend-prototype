@@ -103,7 +103,7 @@ export const RangeViewContainer = () => {
             !openModify && !isLoading &&
             <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>
               <Button
-                startIcon={< Edit/>}
+                startIcon={< Edit style={{ color: '#364b8a' }}/>}
                 style={{ textTransform: 'none' }}
                 onClick={(_) => setOpenModify(true)}
               >

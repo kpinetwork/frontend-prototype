@@ -25,6 +25,7 @@ const useStyles = makeStyles({
   },
   buttonContainer: {
     display: 'flex',
+    marginTop: 10,
     flexDirection: 'row-reverse'
   },
   fileInfoContainer: {
@@ -33,19 +34,21 @@ const useStyles = makeStyles({
   },
   resetButton: {
     marginRight: 10,
-    width: 130,
-    alignItem: 'center'
+    alignItem: 'center',
+    textTransform: 'none'
   },
   editButton: {
     backgroundColor: '#364b8a',
     color: 'white',
     marginRight: 10,
-    width: 130
+    width: 80,
+    textTransform: 'none'
   },
   uploadButton: {
     backgroundColor: '#364b8a',
     color: 'white',
-    marginRight: 10
+    marginRight: 10,
+    textTransform: 'none'
   }
 })
 
@@ -81,7 +84,7 @@ export function EditModifyButtons ({ onCancel, edit, setEdit, onSend }) {
               onClick={onCancel}
             >
               Cancel
-              <RestartAltIcon color="action" fontSize="small" sx={{ marginLeft: 0.4 }}></RestartAltIcon>
+              <RestartAltIcon color="action" fontSize="small" sx={{ marginLeft: 0.4, color: '#364b8a' }}></RestartAltIcon>
             </Button>
           </Box>
         }

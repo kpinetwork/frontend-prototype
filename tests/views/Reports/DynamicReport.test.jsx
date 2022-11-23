@@ -48,8 +48,8 @@ describe('<DynamicReport />', () => {
 
       const header = screen.getByRole('row', { name: 'Name Revenue - actual' })
 
-      expect(screen.getByText('Metric')).toBeInTheDocument()
       expect(screen.getByText('Calendar Year')).toBeInTheDocument()
+      expect(screen.getByTestId('metric-selector')).toBeInTheDocument()
       expect(screen.getAllByRole('row')).toHaveLength(2 + companies.length)
       expect(header).toBeInTheDocument()
     })

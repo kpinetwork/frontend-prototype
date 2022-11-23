@@ -86,7 +86,7 @@ export function InvestmentsTab () {
         {
           !openAdd && !isLoading &&
             <Button
-              startIcon={<Add />}
+              startIcon={<Add style={{ color: '#364b8a' }}/>}
               style={{ textTransform: 'none' }}
               onClick={(_) => setOpenAdd(true)}
               disabled={openAdd}

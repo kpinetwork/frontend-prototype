@@ -18,17 +18,17 @@ describe('<DeleteTagDialog />', () => {
   it('should render component with button actions', () => {
     setUp()
 
-    const confirmButton = screen.getByRole('button', { name: 'Ok' })
+    const confirmButton = screen.getByRole('button', { name: 'Yes' })
     const cancelButton = screen.getByRole('button', { name: 'No' })
 
     expect(confirmButton).toBeInTheDocument()
     expect(cancelButton).toBeInTheDocument()
   })
 
-  it('should call ok action when click ok option', () => {
+  it('should call yes action when click yes option', () => {
     setUp()
 
-    const confirmButton = screen.getByRole('button', { name: 'Ok' })
+    const confirmButton = screen.getByRole('button', { name: 'Yes' })
 
     fireEvent.click(confirmButton)
 

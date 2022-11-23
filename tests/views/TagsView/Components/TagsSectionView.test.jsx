@@ -240,7 +240,7 @@ describe('<TagsSectionView />', () => {
 
       fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))
       fireEvent.click(screen.getByRole('button', { name: 'Save' }))
-      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Ok' })))
+      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Yes' })))
 
       expect(tableHookResponse.onDeleteTags).toHaveBeenCalled()
     })

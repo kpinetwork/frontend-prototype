@@ -160,7 +160,7 @@ export function ScenariosTab () {
         {
           !openDelete && !openAdd && !isLoading &&
             <Button
-              startIcon={<DeleteOutlined />}
+              startIcon={<DeleteOutlined style={{ color: '#364b8a' }}/>}
               style={{ textTransform: 'none' }}
               onClick={(_) => setOpenDelete(true)}
               disabled={openDelete}
@@ -171,7 +171,7 @@ export function ScenariosTab () {
         {
           !openAdd && !openDelete && !isLoading &&
             <Button
-              startIcon={<Add />}
+              startIcon={<Add style={{ color: '#364b8a' }}/>}
               style={{ textTransform: 'none' }}
               onClick={(_) => setOpenAdd(true)}
               disabled={openAdd}

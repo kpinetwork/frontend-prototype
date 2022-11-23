@@ -169,7 +169,7 @@ export function TagsSectionView () {
             {
               !openDelete && !openAdd && !openEdit &&
                 <Button
-                  startIcon={<DeleteOutlined />}
+                  startIcon={<DeleteOutlined style={{ color: '#364b8a' }}/>}
                   style={{ textTransform: 'none' }}
                   onClick={(_) => {
                     setTagsToDelete([])
@@ -183,7 +183,7 @@ export function TagsSectionView () {
             {
               !openAdd && !openDelete && !openEdit &&
                 <Button
-                  startIcon={<EditOutlined />}
+                  startIcon={<EditOutlined style={{ color: '#364b8a' }}/>}
                   style={{ textTransform: 'none' }}
                   onClick={(_) => setOpenEdit(true)}
                   disabled={openEdit}
@@ -194,7 +194,7 @@ export function TagsSectionView () {
             {
               !openAdd && !openDelete && !openEdit &&
                 <Button
-                  startIcon={<Add />}
+                  startIcon={<Add style={{ color: '#364b8a' }}/>}
                   style={{ textTransform: 'none' }}
                   onClick={(_) => setOpenAdd(true)}
                   disabled={openAdd}
@@ -212,7 +212,6 @@ export function TagsSectionView () {
                 cancelName='Cancel'
                 onOk={(_) => onUpdate(_)}
                 onCancel={(_) => onCancelEdit()}
-                reverse={true}
                 allowActions={allowActions}
               />
             </Box>
@@ -225,7 +224,6 @@ export function TagsSectionView () {
                 cancelName='Cancel'
                 onOk={(_) => onDelete()}
                 onCancel={(_) => onCancelDelete()}
-                reverse={true}
                 allowActions={allowActions}
               />
             </Box>

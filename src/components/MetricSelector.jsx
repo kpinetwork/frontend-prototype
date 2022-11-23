@@ -1,33 +1,31 @@
 import React from 'react'
-import { Select, makeStyles, MenuItem, InputLabel, FormControl, Box } from '@material-ui/core'
+import { Select, makeStyles, MenuItem, FormLabel, FormControl, Box } from '@material-ui/core'
 import { METRICS } from './../utils/constants/Metrics'
 import { isEmptyObject } from '../utils/userFunctions'
 
 const useStyles = makeStyles({
-  select: {
-    '&:before': {
-      borderColor: '#008b9a'
-    },
-    '&:after': {
-      borderColor: '#008b9a'
-    }
+  input: {
+    marginRight: 20,
+    marginTop: 5,
+    minWidth: 200,
+    marginBottom: 5,
+    justifyContent: 'center'
   },
   inputBorder: {
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
-        borderRadius: 10
+        borderRadius: 25
       }
     },
     '& .MuiSelect-root': {
       '&:focus': {
-        borderRadius: 10
+        borderRadius: 25
       }
     },
-    marginTop: 10,
+    marginTop: 5,
     backgroundColor: 'white',
-    borderRadius: 10,
-    fontSize: 13,
-    heigth: 5
+    borderRadius: 25,
+    fontSize: 14
   },
   label: {
     marginLeft: 10,
@@ -74,13 +72,14 @@ export const MetricSelector = (
       ? customStyle
       : { marginBottom: 60, marginLeft: 10 }}
     >
-      <FormControl sx={{ m: 1, minWidth: 220 }}>
-      <InputLabel id='metric-label'>{nameOfSelect}</InputLabel>
+      <FormControl className={classes.input}>
+      <FormLabel id='metric-label' className={classes.label}>{nameOfSelect}</FormLabel>
       <Select
           value={metric || getDefaultValue()}
           label='Metric'
           onChange={onChange}
-          className={classes.select}
+          className={classes.inputBorder}
+          variant='outlined'
           style={{ width: 220 }}
           data-testid='metric-selector'
           multiple={fromDynamicReport}

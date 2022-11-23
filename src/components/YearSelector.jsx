@@ -1,29 +1,28 @@
 import React, { useState } from 'react'
-import { Select, makeStyles, MenuItem, InputLabel, FormControl, Box } from '@material-ui/core'
+import { Select, makeStyles, MenuItem, FormLabel, FormControl, Box } from '@material-ui/core'
 const useStyles = makeStyles({
-  select: {
-    '&:before': {
-      borderColor: '#008b9a'
-    },
-    '&:after': {
-      borderColor: '#008b9a'
-    }
+  input: {
+    marginRight: 20,
+    marginTop: 5,
+    minWidth: 200,
+    marginBottom: 5,
+    justifyContent: 'center'
   },
   inputBorder: {
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
-        borderRadius: 10
+        borderRadius: 25
       }
     },
     '& .MuiSelect-root': {
       '&:focus': {
-        borderRadius: 10
+        borderRadius: 25
       }
     },
-    marginTop: 10,
+    marginTop: 5,
     backgroundColor: 'white',
-    borderRadius: 10,
-    fontSize: 13
+    borderRadius: 25,
+    fontSize: 14
   },
   label: {
     marginLeft: 10,
@@ -46,15 +45,15 @@ export const YearSelector = ({ nameOfSelect, year, onChange, needEmptyValue }) =
 
   return (
     <Box style={{ marginRight: 10 }}>
-      <FormControl sx={{ m: 1, minWidth: 150 }}>
-      <InputLabel id="year-label">{nameOfSelect}</InputLabel>
+      <FormControl className={classes.input}>
+      <FormLabel id="year-label" className={classes.label}>{nameOfSelect}</FormLabel>
       <Select
           data-testid='calendar-year-selector'
           value={year || ''}
           label="Age"
+          variant='outlined'
           onChange={onChange}
-          className={classes.select}
-          style={{ width: 150 }}
+          className={classes.inputBorder}
       >
           {yearOptions.map((year) => (
               <MenuItem key={year} value={year}>{year}</MenuItem>

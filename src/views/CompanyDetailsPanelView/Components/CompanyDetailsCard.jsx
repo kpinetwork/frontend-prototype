@@ -65,7 +65,7 @@ export function CompanyDetailsCard () {
         flexDirection: 'row-reverse'
       }}>
         <Button
-          startIcon={<DeleteOutlined />}
+          startIcon={<DeleteOutlined style={{ color: '#364b8a' }}/>}
           style={{ textTransform: 'none' }}
           onClick={() => { setOpenDeleted(true) }}
         >
