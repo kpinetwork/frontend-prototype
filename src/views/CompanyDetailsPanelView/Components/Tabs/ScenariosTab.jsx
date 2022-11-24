@@ -165,7 +165,7 @@ export function ScenariosTab () {
               onClick={(_) => setOpenDelete(true)}
               disabled={openDelete}
             >
-              Delete Scenarios
+              Delete scenarios
             </Button>
         }
         {
@@ -176,7 +176,7 @@ export function ScenariosTab () {
               onClick={(_) => setOpenAdd(true)}
               disabled={openAdd}
             >
-              Add Scenario
+              Add scenario
             </Button>
         }
         { openDelete &&

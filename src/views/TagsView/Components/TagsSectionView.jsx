@@ -177,7 +177,7 @@ export function TagsSectionView () {
                   }}
                   disabled={openDelete}
                 >
-                  Delete Tags
+                  Delete tags
                 </Button>
             }
             {
@@ -188,7 +188,7 @@ export function TagsSectionView () {
                   onClick={(_) => setOpenEdit(true)}
                   disabled={openEdit}
                 >
-                  Edit Tags
+                  Edit tags
                 </Button>
             }
             {
@@ -199,7 +199,7 @@ export function TagsSectionView () {
                   onClick={(_) => setOpenAdd(true)}
                   disabled={openAdd}
                 >
-                  Add Tag
+                  Add tag
                 </Button>
             }
             </Box>
