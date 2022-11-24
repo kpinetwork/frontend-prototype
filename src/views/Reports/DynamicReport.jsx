@@ -135,7 +135,7 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
               needEmptyValue={true}
             />
         </Box>
-        <Box>
+        <Box sx={{ marginTop: 25 }}>
             <MetricSelector
               nameOfSelect="Metric"
               metric={metrics}
