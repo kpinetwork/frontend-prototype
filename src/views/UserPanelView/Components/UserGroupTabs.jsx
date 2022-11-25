@@ -18,7 +18,7 @@ export const UserGroupTabs = ({ classes }) => {
     <>
     <TabContext value={value}>
       <Box>
-          <TabList onChange={handleChange} indicatorColor='primary'>
+          <TabList onChange={handleChange} TabIndicatorProps={{ className: classes.indicator }}>
             <Tab label={GROUPROLES.customers.label} value={GROUPROLES.customers.value} />
             <Tab label={GROUPROLES.admins.label} value={GROUPROLES.admins.value} />
           </TabList>
