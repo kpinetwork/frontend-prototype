@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import { CardKPI } from '@components/Card/CardKPI'
 import HeadBodyGrid from '@components/BodyGrid'
@@ -16,7 +16,7 @@ const rows = [
 ]
 
 export const KPIAveragesCard = ({ kpiAverage, isLoading }) => {
-  const [data, setData] = React.useState(rows)
+  const [data, setData] = useState(rows)
 
   useEffect(() => {
     if (kpiAverage) {
