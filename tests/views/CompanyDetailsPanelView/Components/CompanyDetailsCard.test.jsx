@@ -57,7 +57,7 @@ describe('<CompanyDetailCard />', () => {
     const hook = { ...companyDetailshookResponse, openDeleted: true }
     useCompanyDetails.mockImplementation(() => hook)
     setUp('123')
-    const confirmButton = screen.getByRole('button', { name: 'YES' })
+    const confirmButton = screen.getByRole('button', { name: 'Yes' })
 
     fireEvent.click(confirmButton)
 
@@ -68,7 +68,7 @@ describe('<CompanyDetailCard />', () => {
     const hook = { ...companyDetailshookResponse, openDeleted: true }
     useCompanyDetails.mockImplementation(() => hook)
     setUp('123')
-    const cancelButton = screen.getByRole('button', { name: 'NO' })
+    const cancelButton = screen.getByRole('button', { name: 'No' })
 
     fireEvent.click(cancelButton)
 
@@ -79,7 +79,7 @@ describe('<CompanyDetailCard />', () => {
     const hook = { ...companyDetailshookResponse, openDeleted: true }
     useCompanyDetails.mockImplementation(() => hook)
     setUp('123')
-    const cancelButton = screen.getByRole('button', { name: 'NO' })
+    const cancelButton = screen.getByRole('button', { name: 'No' })
 
     fireEvent.click(cancelButton)
 

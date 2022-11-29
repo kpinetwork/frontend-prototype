@@ -70,7 +70,7 @@ export function TagsTab () {
         {
           !activeEdition && !isLoading &&
             <Button
-              startIcon={< Edit/>}
+              startIcon={< Edit style={{ color: '#364b8a' }}/>}
               style={{ textTransform: 'none' }}
               onClick={(_) => setActiveEdition(true)}
             >
@@ -93,7 +93,6 @@ export function TagsTab () {
                           onCancel()
                           setActiveEdition(false)
                         }}
-                        reverse={false}
                     />
                 </Box>
                 </CardActions>

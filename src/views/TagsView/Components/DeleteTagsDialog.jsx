@@ -38,7 +38,7 @@ export function DeleteTagsDialog ({ open, onCancel, onOk, tags }) {
       }
       <DialogActions sx={{ py: 10 }}>
           <ButtonActions
-          okName={'Ok'}
+          okName={'Yes'}
           cancelName={'No'}
           onOk={onOk}
           onCancel={onCancel}

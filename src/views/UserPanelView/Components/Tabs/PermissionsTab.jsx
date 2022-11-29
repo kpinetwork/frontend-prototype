@@ -17,7 +17,7 @@ export function PermissionsTab ({ rootClass, permissionClass, permissions, setOp
       !verifyAdminRole() &&
       <Grid>
         <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>
-          <Button startIcon={<Add />} style={{ textTransform: 'none' }} onClick={(_) => setOpenPermissions(true) }>Add permissions</Button>
+          <Button startIcon={<Add style={{ color: '#364b8a' }}/>} style={{ textTransform: 'none' }} onClick={(_) => setOpenPermissions(true) }>Add permissions</Button>
         </Box>
         <Table className={rootClass}>
           <TableHead>

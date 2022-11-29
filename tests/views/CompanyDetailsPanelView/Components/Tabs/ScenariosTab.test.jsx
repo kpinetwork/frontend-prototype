@@ -99,7 +99,7 @@ describe('<ScenariosTab/>', () => {
     it('click on add button should open form', () => {
       useScenariosTable.mockImplementation(() => hookResponse)
       setUp()
-      const button = screen.getByRole('button', { name: 'Add Scenario' })
+      const button = screen.getByRole('button', { name: 'Add scenario' })
 
       fireEvent.click(button)
 
@@ -110,7 +110,7 @@ describe('<ScenariosTab/>', () => {
       useScenariosTable.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Add Scenario' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Add scenario' }))
       const cancelButton = screen.getByRole('button', { name: 'Cancel' })
       fireEvent.click(cancelButton)
 
@@ -121,7 +121,7 @@ describe('<ScenariosTab/>', () => {
       useScenariosTable.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Add Scenario' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Add scenario' }))
       const saveButton = screen.getByRole('button', { name: 'Save' })
       fireEvent.click(saveButton)
       const errorMessage = screen.getByText('Please fill in all the required fields')
@@ -133,7 +133,7 @@ describe('<ScenariosTab/>', () => {
       useScenariosTable.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Add Scenario' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Add scenario' }))
       await userEvent.click(getByRole(screen.getByTestId('scenario-selector'), 'button'))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Actuals' })))
       await userEvent.click(getByRole(screen.getByTestId('metric-name-selector'), 'button'))
@@ -152,7 +152,7 @@ describe('<ScenariosTab/>', () => {
       useScenariosTable.mockImplementation(() => ({ ...hookResponse, addScenario: () => false }))
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Add Scenario' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Add scenario' }))
       await userEvent.click(getByRole(screen.getByTestId('scenario-selector'), 'button'))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Actuals' })))
       await userEvent.click(getByRole(screen.getByTestId('metric-name-selector'), 'button'))
@@ -173,7 +173,7 @@ describe('<ScenariosTab/>', () => {
       useScenariosTable.mockImplementation(() => ({ ...hookResponse, addScenario: () => false }))
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Delete Scenarios' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Delete scenarios' }))
 
       const checkboxes = screen.getAllByRole('checkbox')
       const deleteButton = screen.getByText('Delete')
@@ -188,7 +188,7 @@ describe('<ScenariosTab/>', () => {
       useScenariosTable.mockImplementation(() => ({ ...hookResponse, addScenario: () => false }))
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Delete Scenarios' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Delete scenarios' }))
 
       const checkbox = screen.getByRole('checkbox', { name: '9cd20ace-79e1-426a-89ac-c8b92921a514' })
       fireEvent.click(checkbox)
@@ -223,7 +223,7 @@ describe('<ScenariosTab/>', () => {
       useScenariosTable.mockImplementation(() => ({ ...hookResponse, scenarios: metrics }))
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Delete Scenarios' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Delete scenarios' }))
       const checkbox = screen.getAllByRole('checkbox')
       fireEvent.click(checkbox[0])
       fireEvent.click(checkbox[1])
@@ -240,7 +240,7 @@ describe('<ScenariosTab/>', () => {
       useScenariosTable.mockImplementation(() => ({ ...hookResponse, addScenario: () => false }))
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Delete Scenarios' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Delete scenarios' }))
       const checkbox = screen.getByRole('checkbox')
       fireEvent.click(checkbox)
       fireEvent.click(screen.getByText('Delete'))
@@ -255,7 +255,7 @@ describe('<ScenariosTab/>', () => {
       useScenariosTable.mockImplementation(() => ({ ...hookResponse }))
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Delete Scenarios' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Delete scenarios' }))
       const checkbox = screen.getByRole('checkbox', { name: '9cd20ace-79e1-426a-89ac-c8b92921a514' })
       fireEvent.click(checkbox)
       fireEvent.click(screen.getByText('Cancel'))
@@ -292,7 +292,7 @@ describe('<ScenariosTab/>', () => {
       ]
       useScenariosTable.mockImplementation(() => ({ ...hookResponse, scenarios: metrics }))
       setUp()
-      fireEvent.click(screen.getByRole('button', { name: 'Delete Scenarios' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Delete scenarios' }))
 
       const checkbox = screen.getAllByRole('checkbox')
       fireEvent.click(checkbox[0])
@@ -334,7 +334,7 @@ describe('<ScenariosTab/>', () => {
       ]
       useScenariosTable.mockImplementation(() => ({ ...hookResponse, scenarios: metrics }))
       setUp()
-      fireEvent.click(screen.getByRole('button', { name: 'Delete Scenarios' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Delete scenarios' }))
 
       const checkbox = screen.getAllByRole('checkbox')
       fireEvent.click(checkbox[0])

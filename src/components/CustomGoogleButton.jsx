@@ -8,7 +8,7 @@ const CustomGoogleButton = ({ onClick, title, classes }) => {
       onClick={onClick}
       variant="outlined"
       className={classes.googleButton}
-      startIcon={<GoogleIcon />}
+      startIcon={<GoogleIcon style={{ color: '#364b8a' }}/>}
     >
       {title}
     </Button>

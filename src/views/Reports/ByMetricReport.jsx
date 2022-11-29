@@ -12,14 +12,16 @@ const useStyles = makeStyles(theme => ({
   stickyHeaderName: {
     position: 'sticky',
     left: 0,
-    background: 'white',
-    zIndex: 900
+    zIndex: 900,
+    backgroundColor: '#2f5487',
+    color: 'white'
   },
   stickyHeader: {
     position: 'sticky',
     left: 0,
-    background: 'white',
-    zIndex: 800
+    zIndex: 800,
+    backgroundColor: '#2f5487',
+    color: 'white'
   },
   stickyCompany: {
     position: 'sticky',
