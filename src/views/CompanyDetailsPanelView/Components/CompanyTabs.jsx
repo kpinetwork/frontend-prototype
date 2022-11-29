@@ -54,9 +54,9 @@ export function CompanyTabs () {
               sx={{ borderRight: 1, borderColor: 'divider' }}
               TabIndicatorProps={{ className: classes.indicator }}
             >
-              <Tab className={classes.tabs} label="Scenarios" value="scenarios" {...a11yProps('scenarios')} />
-              <Tab className={classes.tabs} label="Investments" value="investments" {...a11yProps('investments')} />
-              <Tab className={classes.tabs} label="Tags" value="tags" {...a11yProps('tags')} />
+              <Tab className={classes.tabs} label="SCENARIOS" value="scenarios" {...a11yProps('scenarios')} />
+              <Tab className={classes.tabs} label="INVESTMENTS" value="investments" {...a11yProps('investments')} />
+              <Tab className={classes.tabs} label="TAGS" value="tags" {...a11yProps('tags')} />
             </Tabs>
           </Box>
           <Box>

@@ -74,8 +74,8 @@ describe('<CompanyDetailView />', () => {
     setUp('123')
 
     const companyCell = screen.getByText('Sample Company')
-    const scenariosTab = screen.getByRole('tab', { name: 'Scenarios' })
-    const investmentsTab = screen.getByRole('tab', { name: 'Investments' })
+    const scenariosTab = screen.getByRole('tab', { name: 'SCENARIOS' })
+    const investmentsTab = screen.getByRole('tab', { name: 'INVESTMENTS' })
 
     expect(companyCell).toBeInTheDocument()
     expect(scenariosTab).toBeInTheDocument()

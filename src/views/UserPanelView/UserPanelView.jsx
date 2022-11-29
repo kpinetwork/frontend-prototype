@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
   roleName: {
     marginRight: 10,
     textTransform: 'capitalize'
+  },
+  indicator: {
+    backgroundColor: '#008b9a'
   }
 }))
 
