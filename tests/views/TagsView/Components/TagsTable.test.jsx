@@ -3,7 +3,6 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { TagsTable } from '../../../../src/views/TagsView/Components/TagsTable'
-import { TrendingUpOutlined } from '@mui/icons-material'
 
 const defaultProps = {
   isEditable: false,
@@ -98,7 +97,7 @@ describe('<TagsTable />', () => {
 
   describe('edition', () => {
     it('Should change tag name on edition name texfield when table is editable', async () => {
-      setUp({ isEditable: TrendingUpOutlined })
+      setUp({ isEditable: true })
       const tag = screen.getByRole('cell', { name: 'Education' })
 
       fireEvent.doubleClick(tag)
