@@ -3,6 +3,7 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { TagsTable } from '../../../../src/views/TagsView/Components/TagsTable'
+import { TrendingUpOutlined } from '@mui/icons-material'
 
 const defaultProps = {
   isEditable: false,
@@ -36,7 +37,26 @@ const defaultProps = {
   handleChangePage: jest.fn(),
   handleChangePageSize: jest.fn(),
   tagsToDelete: [],
-  setTagsToDelete: jest.fn()
+  setTagsToDelete: jest.fn(),
+  openEdit: true,
+  setData: jest.fn(),
+  initialData: {
+    1: {
+      id: 1,
+      name: 'Education',
+      companies: [1]
+    },
+    2: {
+      id: 2,
+      name: 'Technology',
+      companies: []
+    },
+    3: {
+      id: 3,
+      name: 'Fashion',
+      companies: [2]
+    }
+  }
 }
 
 jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({
@@ -78,7 +98,7 @@ describe('<TagsTable />', () => {
 
   describe('edition', () => {
     it('Should change tag name on edition name texfield when table is editable', async () => {
-      setUp({ isEditable: true })
+      setUp({ isEditable: TrendingUpOutlined })
       const tag = screen.getByRole('cell', { name: 'Education' })
 
       fireEvent.doubleClick(tag)
@@ -103,6 +123,12 @@ describe('<TagsTable />', () => {
         screen.getByRole('cell',
           { name: `${companyAlreadySelected},${companyToSelect}` })
       ).toBeInTheDocument()
+    })
+
+    it('Should reset initial data on table when edition is cancelled', async () => {
+      setUp({ isEditable: true, openEdit: false })
+
+      expect(defaultProps.setData).toHaveBeenCalled()
     })
   })
 

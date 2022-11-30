@@ -79,9 +79,6 @@ export function TagsSectionView () {
   }
 
   const onCancelEdit = () => {
-    setTimeout(() => {
-      setData(JSON.parse(JSON.stringify(initialData)))
-    }, 10)
     setOpenEdit(false)
   }
 
@@ -249,6 +246,9 @@ export function TagsSectionView () {
             page={page}
             handleChangePage={handleChangePage}
             handleChangePageSize={handleChangePageSize}
+            openEdit={openEdit}
+            setData={setData}
+            initialData={initialData}
           />
         </Box>
   )
