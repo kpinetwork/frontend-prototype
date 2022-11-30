@@ -16,11 +16,11 @@ export const AppContextProvider = ({ children }) => {
   const [companyID, setCompanyID] = useState(undefined)
   const [selectedEmail, setSelectedEmail] = useState(undefined)
   const [selectedCompanyID, setSelectedCompanyID] = useState(undefined)
-  const [year, setYear] = useState(() => {
+  const { isAdmin, isRoleLoading } = useIsAdmin()
+  const [year, setYear] = useState(getFromLocalStorage('year') || (() => {
     const year = new Date().getFullYear()
     return year
-  })
-  const { isAdmin, isRoleLoading } = useIsAdmin()
+  }))
 
   useEffect(() => {
     const storedYear = getFromLocalStorage('year')

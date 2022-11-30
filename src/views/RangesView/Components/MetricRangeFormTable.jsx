@@ -100,9 +100,9 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ra
         <Table className={classes.container}>
           <TableHead>
             <TableRow className={classes.head}>
-              <TableCell className={classes.head} style={{ borderRight: '1px solid #979797' }}>Actions</TableCell>
               <TableCell className={classes.head}>From</TableCell>
               <TableCell className={classes.head}>To</TableCell>
+              <TableCell className={classes.head} style={{ borderRight: '1px solid #979797' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
             <TableBody>
@@ -111,6 +111,32 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ra
               key={idx}
               className={classes.row}
               >
+                <TableCell
+                style={{ textAlign: 'center' }}
+                >
+                  <TextField
+                  variant="filled"
+                  type='number'
+                  inputProps={{ style: { textAlign: 'center' } }}
+                  className={classes.input}
+                  value={ranges[idx + 1]?.min_value}
+                  name="min_value"
+                  onChange={event => handleInputChange(event, idx)}
+                  />
+                </TableCell>
+                <TableCell
+                style={{ textAlign: 'center' }}
+                >
+                  <TextField
+                    variant="filled"
+                    type='number'
+                    inputProps={{ style: { textAlign: 'center' } }}
+                    className={classes.input}
+                    value={ranges[idx + 1]?.max_value}
+                    name="max_value"
+                    onChange={event => handleInputChange(event, idx)}
+                    />
+                </TableCell>
                 <TableCell className={classes.actions}
                 >
                   <Box style={{ display: 'flex' }}>
@@ -135,37 +161,12 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ra
                   </Box>
 
                 </TableCell>
-                <TableCell
-                style={{ textAlign: 'center' }}
-                >
-                  <TextField
-                  variant="filled"
-                  type='number'
-                  inputProps={{ style: { textAlign: 'center' } }}
-                  className={classes.input}
-                  value={ranges[idx + 1]?.min_value}
-                  name="min_value"
-                  onChange={event => handleInputChange(event, idx)}
-                  />
-                </TableCell>
-                <TableCell
-                style={{ textAlign: 'center' }}
-                >
-                <TextField
-                  variant="filled"
-                  type='number'
-                  inputProps={{ style: { textAlign: 'center' } }}
-                  className={classes.input}
-                  value={ranges[idx + 1]?.max_value}
-                  name="max_value"
-                  onChange={event => handleInputChange(event, idx)}
-                  />
-                </TableCell>
               </TableRow>
             ))}
             {
               getRangesWithoutEdges().length === 0 &&
               <TableRow>
+                    <TableCell colSpan={2} align={'center'} style={{ color: '#6B6A6A' }}>NO DATA</TableCell>
                     <TableCell className={classes.actions}>
                       <IconButton
                         onClick={(_) => handleAddSpecificRow(-1, true)}
@@ -177,7 +178,6 @@ export function MetricRangeFormTable ({ ranges, setRanges, isLoading, metric, ra
                           />
                       </IconButton>
                     </TableCell>
-                    <TableCell colSpan={2} align={'center'} style={{ color: '#6B6A6A' }}>NO DATA</TableCell>
                   </TableRow>
             }
           </TableBody>
