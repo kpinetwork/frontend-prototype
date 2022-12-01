@@ -37,7 +37,8 @@ const tableHookResponse = {
   setErrorMessage: jest.fn(),
   tagsToDelete: [],
   setTagsToDelete: jest.fn(),
-  onDeleteTags: jest.fn()
+  onDeleteTags: jest.fn(),
+  setIsLoading: jest.fn()
 }
 
 const hookResponse = {
