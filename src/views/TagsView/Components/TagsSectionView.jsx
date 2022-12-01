@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Button, Dialog } from '@material-ui/core'
 import { Snackbar, Alert } from '@mui/material'
 import { makeStyles } from '@material-ui/core/styles'
@@ -53,7 +53,8 @@ export function TagsSectionView () {
     handleChangePage,
     handleChangePageSize,
     addTag,
-    onDeleteTags
+    onDeleteTags,
+    setIsLoading
   } = useTagsTable()
 
   const handleTagChange = (event) => {
@@ -80,6 +81,7 @@ export function TagsSectionView () {
 
   const onCancelEdit = () => {
     setOpenEdit(false)
+    setIsLoading(true)
   }
 
   const onCancelDelete = () => {
@@ -127,6 +129,13 @@ export function TagsSectionView () {
   const onCloseSnackbar = () => {
     setErrorMessage(null)
   }
+
+  useEffect(() => {
+    if (!openEdit && isLoading) {
+      setData(JSON.parse(JSON.stringify(initialData)))
+      setIsLoading(false)
+    }
+  }, [openEdit, isLoading])
 
   return (
         <Box className={classes.root}>
@@ -246,9 +255,6 @@ export function TagsSectionView () {
             page={page}
             handleChangePage={handleChangePage}
             handleChangePageSize={handleChangePageSize}
-            openEdit={openEdit}
-            setData={setData}
-            initialData={initialData}
           />
         </Box>
   )

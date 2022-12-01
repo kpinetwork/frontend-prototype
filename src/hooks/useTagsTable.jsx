@@ -171,7 +171,8 @@ const useTagsTable = () => {
     handleChangePage,
     handleChangePageSize,
     addTag,
-    onDeleteTags
+    onDeleteTags,
+    setIsLoading
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { DataGrid, useGridApiContext } from '@mui/x-data-grid'
@@ -103,10 +103,7 @@ export function TagsTable ({
   tagsToDelete,
   setTagsToDelete,
   handleChangePage,
-  handleChangePageSize,
-  openEdit,
-  setData,
-  initialData
+  handleChangePageSize
 }) {
   const classes = useStyles()
 
@@ -118,12 +115,6 @@ export function TagsTable ({
   const onChangeCheckboxSelection = (selectionModel) => {
     setTagsToDelete(selectionModel)
   }
-
-  useEffect(() => {
-    if (!openEdit) {
-      setData(JSON.parse(JSON.stringify(initialData)))
-    }
-  }, [openEdit, data])
 
   return (
       <Box className={classes.box}>

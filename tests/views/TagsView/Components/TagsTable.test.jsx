@@ -123,12 +123,6 @@ describe('<TagsTable />', () => {
           { name: `${companyAlreadySelected},${companyToSelect}` })
       ).toBeInTheDocument()
     })
-
-    it('Should reset initial data on table when edition is cancelled', async () => {
-      setUp({ isEditable: true, openEdit: false })
-
-      expect(defaultProps.setData).toHaveBeenCalled()
-    })
   })
 
   describe('pagination', () => {
