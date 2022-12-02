@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Button, Dialog } from '@material-ui/core'
 import { Snackbar, Alert } from '@mui/material'
 import { makeStyles } from '@material-ui/core/styles'
@@ -53,7 +53,8 @@ export function TagsSectionView () {
     handleChangePage,
     handleChangePageSize,
     addTag,
-    onDeleteTags
+    onDeleteTags,
+    setIsLoading
   } = useTagsTable()
 
   const handleTagChange = (event) => {
@@ -79,10 +80,8 @@ export function TagsSectionView () {
   }
 
   const onCancelEdit = () => {
-    setTimeout(() => {
-      setData(JSON.parse(JSON.stringify(initialData)))
-    }, 10)
     setOpenEdit(false)
+    setIsLoading(true)
   }
 
   const onCancelDelete = () => {
@@ -131,6 +130,13 @@ export function TagsSectionView () {
     setErrorMessage(null)
   }
 
+  useEffect(() => {
+    if (!openEdit && isLoading) {
+      setData(JSON.parse(JSON.stringify(initialData)))
+      setIsLoading(false)
+    }
+  }, [openEdit, isLoading])
+
   return (
         <Box className={classes.root}>
           <Snackbar open={errorMessage != null} autoHideDuration={6000}
@@ -169,7 +175,7 @@ export function TagsSectionView () {
             {
               !openDelete && !openAdd && !openEdit &&
                 <Button
-                  startIcon={<DeleteOutlined />}
+                  startIcon={<DeleteOutlined style={{ color: '#364b8a' }}/>}
                   style={{ textTransform: 'none' }}
                   onClick={(_) => {
                     setTagsToDelete([])
@@ -177,29 +183,29 @@ export function TagsSectionView () {
                   }}
                   disabled={openDelete}
                 >
-                  Delete Tags
+                  Delete tags
                 </Button>
             }
             {
               !openAdd && !openDelete && !openEdit &&
                 <Button
-                  startIcon={<EditOutlined />}
+                  startIcon={<EditOutlined style={{ color: '#364b8a' }}/>}
                   style={{ textTransform: 'none' }}
                   onClick={(_) => setOpenEdit(true)}
                   disabled={openEdit}
                 >
-                  Edit Tags
+                  Edit tags
                 </Button>
             }
             {
               !openAdd && !openDelete && !openEdit &&
                 <Button
-                  startIcon={<Add />}
+                  startIcon={<Add style={{ color: '#364b8a' }}/>}
                   style={{ textTransform: 'none' }}
                   onClick={(_) => setOpenAdd(true)}
                   disabled={openAdd}
                 >
-                  Add Tag
+                  Add tag
                 </Button>
             }
             </Box>
@@ -212,7 +218,6 @@ export function TagsSectionView () {
                 cancelName='Cancel'
                 onOk={(_) => onUpdate(_)}
                 onCancel={(_) => onCancelEdit()}
-                reverse={true}
                 allowActions={allowActions}
               />
             </Box>
@@ -225,7 +230,6 @@ export function TagsSectionView () {
                 cancelName='Cancel'
                 onOk={(_) => onDelete()}
                 onCancel={(_) => onCancelDelete()}
-                reverse={true}
                 allowActions={allowActions}
               />
             </Box>

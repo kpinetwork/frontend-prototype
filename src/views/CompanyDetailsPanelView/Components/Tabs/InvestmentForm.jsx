@@ -183,7 +183,6 @@ export function InvestmentForm ({ onCancel, edit, error, onChange, investment, o
                   cancelName='Cancel'
                   onOk={onSave}
                   onCancel={onCancel}
-                  reverse={false}
               />
           </Box>
           </CardActions>

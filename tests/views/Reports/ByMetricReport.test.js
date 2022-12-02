@@ -53,7 +53,7 @@ describe('<ByMetricReport />', () => {
       const columnHeader = screen.getAllByRole('columnheader')
       const header = screen.getByRole('row', { name: 'Company 2019 2020 2021 2022' })
 
-      expect(screen.getByText('Metric')).toBeInTheDocument()
+      expect(screen.getByTestId('metric-selector')).toBeInTheDocument()
       expect(screen.getAllByRole('row')).toHaveLength(1 + companies.length)
       expect(columnHeader).toHaveLength(1 + useMetricReportResponse.years.length)
       expect(header).toBeInTheDocument()
@@ -68,7 +68,7 @@ describe('<ByMetricReport />', () => {
       const columnHeader = screen.getAllByRole('columnheader')
       const header = screen.getByRole('row', { name: 'Company 2019 2020 2021 2022' })
 
-      expect(screen.getByText('Metric')).toBeInTheDocument()
+      expect(screen.getByTestId('metric-selector')).toBeInTheDocument()
       expect(screen.getAllByRole('row')).toHaveLength(1 + companies.length + [companies[0]].length)
       expect(columnHeader).toHaveLength((1 + useMetricReportResponse.years.length) * 2)
       expect(header).toBeInTheDocument()
@@ -80,7 +80,7 @@ describe('<ByMetricReport />', () => {
 
       const data = screen.getByRole('row', { name: 'Sample Company 14 % 8 % 18 %' })
 
-      expect(screen.getByText('Metric')).toBeInTheDocument()
+      expect(screen.getByTestId('metric-selector')).toBeInTheDocument()
       expect(screen.getAllByRole('row')).toHaveLength(1 + companies.length)
       expect(data).toBeInTheDocument()
     })
@@ -109,7 +109,7 @@ describe('<ByMetricReport />', () => {
     useMetricReport.mockImplementation(() => ({ ...useMetricReportResponse, metricIsLoading: true }))
     setUp()
 
-    expect(screen.getByText('Metric')).toBeInTheDocument()
+    expect(screen.getByTestId('metric-selector')).toBeInTheDocument()
     expect(screen.getByText('Loading...')).toBeInTheDocument()
   })
 

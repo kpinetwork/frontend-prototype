@@ -18,8 +18,8 @@ describe('<DeleteCompanyModal />', () => {
   it('should render', () => {
     setUp()
 
-    const confirmButton = screen.getByRole('button', { name: 'YES' })
-    const cancelButton = screen.getByRole('button', { name: 'NO' })
+    const confirmButton = screen.getByRole('button', { name: 'Yes' })
+    const cancelButton = screen.getByRole('button', { name: 'No' })
 
     expect(confirmButton).toBeInTheDocument()
     expect(cancelButton).toBeInTheDocument()
@@ -28,7 +28,7 @@ describe('<DeleteCompanyModal />', () => {
   it('should call ok action when click yes option', () => {
     setUp()
 
-    const confirmButton = screen.getByRole('button', { name: 'YES' })
+    const confirmButton = screen.getByRole('button', { name: 'Yes' })
 
     fireEvent.click(confirmButton)
 
@@ -37,7 +37,7 @@ describe('<DeleteCompanyModal />', () => {
 
   it('should call cancel action when click no option', () => {
     setUp()
-    const cancelButton = screen.getByRole('button', { name: 'NO' })
+    const cancelButton = screen.getByRole('button', { name: 'No' })
 
     fireEvent.click(cancelButton)
 

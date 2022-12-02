@@ -36,7 +36,26 @@ const defaultProps = {
   handleChangePage: jest.fn(),
   handleChangePageSize: jest.fn(),
   tagsToDelete: [],
-  setTagsToDelete: jest.fn()
+  setTagsToDelete: jest.fn(),
+  openEdit: true,
+  setData: jest.fn(),
+  initialData: {
+    1: {
+      id: 1,
+      name: 'Education',
+      companies: [1]
+    },
+    2: {
+      id: 2,
+      name: 'Technology',
+      companies: []
+    },
+    3: {
+      id: 3,
+      name: 'Fashion',
+      companies: [2]
+    }
+  }
 }
 
 jest.spyOn(Auth, 'currentAuthenticatedUser').mockReturnValue({

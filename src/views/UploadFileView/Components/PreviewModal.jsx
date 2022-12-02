@@ -148,7 +148,7 @@ export default function PreviewModal ({ open, onClose, onOk, onCancel, validData
           }
           {validData &&
             <Box sx={{ marginBottom: 20 }}>
-              <Typography>There is not existing or repeated companies descriptive information in your file.</Typography>
+              <Typography>Data in file will be uploaded to database.</Typography>
             </Box>
           }
           {getRepeatedScenarios()}

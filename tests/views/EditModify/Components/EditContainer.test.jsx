@@ -126,7 +126,7 @@ describe('<EditPreviewContainer/>', () => {
     setUp()
 
     const container = screen.getByTestId('edit-modify-container')
-    const okButton = screen.getByRole('button', { name: 'YES' })
+    const okButton = screen.getByRole('button', { name: 'Yes' })
     fireEvent.click(okButton)
 
     expect(container).toBeInTheDocument()
@@ -140,7 +140,7 @@ describe('<EditPreviewContainer/>', () => {
     setUp()
 
     const container = screen.getByTestId('edit-modify-container')
-    const cancelButton = screen.getByRole('button', { name: 'NO' })
+    const cancelButton = screen.getByRole('button', { name: 'No' })
     fireEvent.click(cancelButton)
 
     expect(container).toBeInTheDocument()

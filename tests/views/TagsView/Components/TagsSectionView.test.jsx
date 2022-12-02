@@ -37,7 +37,8 @@ const tableHookResponse = {
   setErrorMessage: jest.fn(),
   tagsToDelete: [],
   setTagsToDelete: jest.fn(),
-  onDeleteTags: jest.fn()
+  onDeleteTags: jest.fn(),
+  setIsLoading: jest.fn()
 }
 
 const hookResponse = {
@@ -64,9 +65,9 @@ describe('<TagsSectionView />', () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      const addButton = screen.getByText('Add Tag')
-      const editButton = screen.getByText('Edit Tags')
-      const deleteButton = screen.getByText('Delete Tags')
+      const addButton = screen.getByText('Add tag')
+      const editButton = screen.getByText('Edit tags')
+      const deleteButton = screen.getByText('Delete tags')
 
       expect(addButton).toBeInTheDocument()
       expect(editButton).toBeInTheDocument()
@@ -80,7 +81,7 @@ describe('<TagsSectionView />', () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Add Tag' })))
+      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Add tag' })))
 
       expect(screen.getByText('Add Tag')).toBeInTheDocument()
       expect(screen.getByText('Save')).toBeInTheDocument()
@@ -92,7 +93,7 @@ describe('<TagsSectionView />', () => {
       useTagsTable.mockImplementation(() => tableHookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Add tag' }))
       fireEvent.change(screen.getByPlaceholderText('Tag name'), { target: { value: 'Tag' } })
       fireEvent.change(screen.getByRole('combobox'), { target: { value: 'Company Name' } })
       fireEvent.keyDown(screen.getByRole('combobox'), { key: 'ArrowDown' })
@@ -107,7 +108,7 @@ describe('<TagsSectionView />', () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Add Tag' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Add tag' }))
       const cancelButton = screen.getByRole('button', { name: 'Cancel' })
       fireEvent.click(cancelButton)
 
@@ -119,7 +120,7 @@ describe('<TagsSectionView />', () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Edit Tags' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Edit tags' }))
 
       expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
     })
@@ -129,7 +130,7 @@ describe('<TagsSectionView />', () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Edit Tags' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Edit tags' }))
       const cancelButton = screen.getByRole('button', { name: 'Cancel' })
       fireEvent.click(cancelButton)
 
@@ -142,7 +143,7 @@ describe('<TagsSectionView />', () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Edit Tags' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Edit tags' }))
       fireEvent.doubleClick(screen.getByRole('cell', { name: 'Tag Sample' }))
       await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Save' })))
 
@@ -156,7 +157,7 @@ describe('<TagsSectionView />', () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Edit Tags' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Edit tags' }))
       fireEvent.doubleClick(screen.getByRole('cell', { name: 'Tag Sample' }))
       await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Save' })))
       await waitFor(() => fireEvent.keyDown(screen.getByRole('presentation'), ESCAPE))
@@ -169,7 +170,7 @@ describe('<TagsSectionView />', () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Delete tags' }))
       const checkboxCell = screen.getByRole('checkbox', { name: 'Select all rows' })
       const saveButton = screen.getByRole('button', { name: 'Save' })
       const cancelButton = screen.getByRole('button', { name: 'Cancel' })
@@ -184,7 +185,7 @@ describe('<TagsSectionView />', () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Delete tags' }))
       const cancelButton = screen.getByRole('button', { name: 'Cancel' })
       fireEvent.click(cancelButton)
 
@@ -199,7 +200,7 @@ describe('<TagsSectionView />', () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Edit Tags' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Edit tags' }))
       fireEvent.doubleClick(screen.getByRole('cell', { name: 'Tag Sample' }))
       fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Science' } })
       await waitFor(() => fireEvent.click(screen.getByRole('cell', { name: 'Fashion' })))
@@ -215,7 +216,7 @@ describe('<TagsSectionView />', () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Delete tags' }))
       fireEvent.click(screen.getByRole('button', { name: 'Save' }))
 
       expect(screen.getByRole('dialog')).toBeVisible()
@@ -226,7 +227,7 @@ describe('<TagsSectionView />', () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Delete tags' }))
       fireEvent.click(screen.getByRole('button', { name: 'Save' }))
       await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'No' })))
 
@@ -238,9 +239,9 @@ describe('<TagsSectionView />', () => {
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()
 
-      fireEvent.click(screen.getByRole('button', { name: 'Delete Tags' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Delete tags' }))
       fireEvent.click(screen.getByRole('button', { name: 'Save' }))
-      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Ok' })))
+      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Yes' })))
 
       expect(tableHookResponse.onDeleteTags).toHaveBeenCalled()
     })

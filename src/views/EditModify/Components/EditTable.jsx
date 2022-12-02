@@ -16,12 +16,12 @@ const useStyles = makeStyles(theme => ({
     borderRightWidth: 1
   },
   primaryHead: {
-    backgroundColor: '#F1F1F1',
-    color: 'black',
     fontWeight: 'bold',
     zIndex: 900,
     top: 0,
-    position: 'sticky'
+    position: 'sticky',
+    backgroundColor: '#2f5487',
+    color: 'white'
   },
   body: {
     '&.MuiTableCell-body': {
@@ -51,13 +51,15 @@ const useStyles = makeStyles(theme => ({
   stickyHeader: {
     position: 'sticky',
     left: 0,
-    background: '#F1F1F1'
+    backgroundColor: '#2f5487',
+    color: 'white'
   },
   stickyHeaderName: {
     position: 'sticky',
     left: 0,
-    background: '#F1F1F1',
-    zIndex: 1000
+    zIndex: 1000,
+    backgroundColor: '#2f5487',
+    color: 'white'
   },
   sticky: {
     position: 'sticky',

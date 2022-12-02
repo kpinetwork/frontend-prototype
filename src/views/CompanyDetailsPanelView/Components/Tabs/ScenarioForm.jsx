@@ -173,7 +173,6 @@ export function ScenarioForm ({ onCancel, error, scenario, onChange, onSave, met
                   cancelName='Cancel'
                   onOk={onSave}
                   onCancel={onCancel}
-                  reverse={false}
               />
           </Box>
           </CardActions>

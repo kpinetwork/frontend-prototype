@@ -26,24 +26,26 @@ const useStyles = makeStyles({
   },
   buttonContainer: {
     display: 'flex',
-    flexDirection: 'row-reverse'
+    marginTop: 10,
+    justifyContent: 'right'
   },
   fileInfoContainer: {
     flexDirection: 'column',
     margin: '20px'
   },
   resetButton: {
+    textTransform: 'none',
     marginRight: 10,
-    width: 130,
     alignItem: 'center'
   },
   editButton: {
+    textTransform: 'none',
     backgroundColor: '#364b8a',
     color: 'white',
-    marginRight: 10,
-    width: 130
+    marginRight: 10
   },
   uploadButton: {
+    textTransform: 'none',
     backgroundColor: '#364b8a',
     color: 'white',
     marginRight: 10
@@ -59,7 +61,7 @@ export function ButtonOptions ({ onCancel, setEdit, onValidateData }) {
         className={classes.resetButton}
         onClick={onCancel}
       >Reset
-        <RestartAltIcon color="action" fontSize="small" sx={{ marginLeft: 0.4 }}></RestartAltIcon>
+        <RestartAltIcon color="action" fontSize="small" sx={{ marginLeft: 0.4, color: '#364b8a' }}></RestartAltIcon>
       </Button>
       <Button
         variant="contained"

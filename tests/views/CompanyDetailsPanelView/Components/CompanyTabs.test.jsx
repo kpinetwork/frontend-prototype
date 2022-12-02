@@ -113,9 +113,9 @@ describe('<CompanyTabs />', () => {
     useCompanyTags.mockImplementation(() => companyTagshookResponse)
     setUp(companyID)
 
-    const scenariosTab = screen.getByRole('tab', { name: 'Scenarios' })
-    const investmentsTab = screen.getByRole('tab', { name: 'Investments' })
-    const tagsTab = screen.getByRole('tab', { name: 'Tags' })
+    const scenariosTab = screen.getByRole('tab', { name: 'SCENARIOS' })
+    const investmentsTab = screen.getByRole('tab', { name: 'INVESTMENTS' })
+    const tagsTab = screen.getByRole('tab', { name: 'TAGS' })
 
     expect(scenariosTab).toBeInTheDocument()
     expect(investmentsTab).toBeInTheDocument()
@@ -128,9 +128,9 @@ describe('<CompanyTabs />', () => {
     useCompanyTags.mockImplementation(() => companyTagshookResponse)
     setUp(companyID)
 
-    const scenariosTab = screen.getByRole('tab', { name: 'Scenarios' })
-    const investmentsTab = screen.getByRole('tab', { name: 'Investments' })
-    const tagsTab = screen.getByRole('tab', { name: 'Tags' })
+    const scenariosTab = screen.getByRole('tab', { name: 'SCENARIOS' })
+    const investmentsTab = screen.getByRole('tab', { name: 'INVESTMENTS' })
+    const tagsTab = screen.getByRole('tab', { name: 'TAGS' })
 
     expect(scenariosTab).toHaveAttribute('aria-selected', 'true')
     expect(investmentsTab).toHaveAttribute('aria-selected', 'false')
@@ -142,9 +142,9 @@ describe('<CompanyTabs />', () => {
     useScenariosTable.mockImplementation(() => scenariosTablehookResponse)
     useCompanyTags.mockImplementation(() => companyTagshookResponse)
     setUp(companyID)
-    const scenariosTab = screen.getByRole('tab', { name: 'Scenarios' })
-    const investmentsTab = screen.getByRole('tab', { name: 'Investments' })
-    const tagsTab = screen.getByRole('tab', { name: 'Tags' })
+    const scenariosTab = screen.getByRole('tab', { name: 'SCENARIOS' })
+    const investmentsTab = screen.getByRole('tab', { name: 'INVESTMENTS' })
+    const tagsTab = screen.getByRole('tab', { name: 'TAGS' })
 
     fireEvent.click(investmentsTab)
 
@@ -158,9 +158,9 @@ describe('<CompanyTabs />', () => {
     useScenariosTable.mockImplementation(() => scenariosTablehookResponse)
     useCompanyTags.mockImplementation(() => companyTagshookResponse)
     setUp(companyID)
-    const scenariosTab = screen.getByRole('tab', { name: 'Scenarios' })
-    const investmentsTab = screen.getByRole('tab', { name: 'Investments' })
-    const tagsTab = screen.getByRole('tab', { name: 'Tags' })
+    const scenariosTab = screen.getByRole('tab', { name: 'SCENARIOS' })
+    const investmentsTab = screen.getByRole('tab', { name: 'INVESTMENTS' })
+    const tagsTab = screen.getByRole('tab', { name: 'TAGS' })
 
     fireEvent.click(tagsTab)
 
