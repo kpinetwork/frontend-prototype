@@ -1,8 +1,8 @@
 export const order = {
   '<$10 million': 0,
-  '$10-<30 million': 1,
+  '$10-<$30 million': 1,
   '$30-<$50 million': 2,
-  '$50-$100 million': 3,
+  '$50-<$100 million': 3,
   '$100 million+': 4
 }
 
