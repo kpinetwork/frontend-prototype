@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-npx eslint . --ext .js --ext .jsx && npx --no -- commitlint --edit ${1}

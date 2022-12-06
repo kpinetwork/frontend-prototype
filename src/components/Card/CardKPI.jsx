@@ -51,7 +51,7 @@ export function CardKPI ({ children, topActions, title, actions = true, overflow
     {
       actions &&
       <CardActions>
-        <Button size="small" variant="text" color="inherit">Learn More</Button>
+        <Button size="small" variant="text" color="inherit">Learn More about this</Button>
       </CardActions>
     }
   </Card>
