@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     fontSize: 18,
     color: '#005f83',
     fontWeight: 'bold',
-    letterSpacing: "0.5px"
+    letterSpacing: '0.5px'
   },
   body: {
     display: 'grid',
@@ -51,7 +51,7 @@ export function CardKPI ({ children, topActions, title, actions = true, overflow
     {
       actions &&
       <CardActions>
-        <Button size="small" variant="text" color="inherit">Learn More </Button>
+        <Button size="small" variant="text" color="inherit">Learn More</Button>
       </CardActions>
     }
   </Card>
