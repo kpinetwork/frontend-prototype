@@ -3,9 +3,10 @@ import Papa from 'papaparse'
 import { Snackbar, Box, Typography, CircularProgress } from '@material-ui/core'
 import { Alert } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
-import { getObjectFromPreview } from '../../../utils/validateFile/getObjectToValidate'
+import { getObjectFromPreview, getMetricsFromPreview } from '../../../utils/validateFile/getObjectToValidate'
 import { uploadFileData, validateData } from '../../../service/uploadFileData'
 import { getUserId } from './../../../service/session'
+import { getMetricsType } from '../../../service/metrics'
 import PreviewTable from './PreviewTable'
 import { DragAndDrop, ButtonOptions } from './DragAndDrop'
 import { isEmptyObject } from '../../../utils/userFunctions'
@@ -143,12 +144,18 @@ export default function PreviewContainer (props) {
     setEdit(false)
   }
 
-  const setValidData = (data) => {
+  const getNonExistentMetrics = async (headRows) => {
+    const metrics = await getMetricsType()
+    const metricsFromPreview = getMetricsFromPreview(headRows)
+    return metricsFromPreview.filter(metric => !metrics.includes(metric))
+  }
+
+  const setValidData = async (data, nonExistentMetrics) => {
     const existingNames = data.existing_names && data.existing_names.length === 0
     const ids = data.repeated_ids && isEmptyObject(data.repeated_ids)
     const repeatedNames = data.repeated_names && isEmptyObject(data.repeated_names)
 
-    setIsValid(existingNames && ids && repeatedNames)
+    setIsValid(existingNames && ids && repeatedNames && nonExistentMetrics.length > 0)
   }
 
   const onValidateData = async () => {
@@ -156,8 +163,9 @@ export default function PreviewContainer (props) {
     setIsValidating(true)
     try {
       const response = await validateData(data)
-      setData(response)
-      setValidData(response)
+      const nonExistentMetrics = await getNonExistentMetrics(headRows)
+      setData({ ...response, non_existent_metrics: nonExistentMetrics })
+      setValidData(response, nonExistentMetrics)
       setOpenModal(true)
       setIsValidating(false)
     } catch (_error) {
