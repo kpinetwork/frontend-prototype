@@ -10,6 +10,8 @@ import { ESCAPE } from '../../../keyEventCodes'
 jest.mock('../../../../src/hooks/useTagsTable')
 jest.mock('../../../../src/hooks/useTagsSections')
 
+jest.setTimeout(10000)
+
 const tags = {
   123: { id: 123, name: 'Tag Sample', companies: [] },
   124: { id: 124, name: 'Fashion', companies: [] }
