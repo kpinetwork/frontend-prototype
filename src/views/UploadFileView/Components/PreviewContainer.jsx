@@ -154,8 +154,7 @@ export default function PreviewContainer (props) {
     const existingNames = data.existing_names && data.existing_names.length === 0
     const ids = data.repeated_ids && isEmptyObject(data.repeated_ids)
     const repeatedNames = data.repeated_names && isEmptyObject(data.repeated_names)
-
-    setIsValid(existingNames && ids && repeatedNames && nonExistentMetrics.length > 0)
+    setIsValid(existingNames && ids && repeatedNames && nonExistentMetrics.length === 0)
   }
 
   const onValidateData = async () => {
