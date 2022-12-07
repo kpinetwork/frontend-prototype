@@ -19,6 +19,16 @@ const metric = {
 
 const metrics = BASEMETRICS.map(metric => metric.name)
 
+const ADD_SCENARIOS_RESPONSES = {
+  added_response: { added: true },
+  fail_response: { error: "Can't add scenario" }
+}
+
+const DELETE_SCENARIOS_RESPONSES = {
+  deleted_response: { 'scenarios deleted': 1 },
+  fail_response: { error: "Can't delete scenario" }
+}
+
 const hookResponse = {
   rowsPerPage: 10,
   isLoading: false,
@@ -27,8 +37,8 @@ const hookResponse = {
   page: 0,
   handleChangePage: jest.fn(),
   handleChangeRowsPerPage: jest.fn(),
-  addScenario: () => true,
-  deleteScenarios: jest.fn(),
+  addScenario: () => ADD_SCENARIOS_RESPONSES.added_response,
+  deleteScenarios: () => DELETE_SCENARIOS_RESPONSES.deleted_response,
   metricNames: metrics
 }
 
@@ -149,7 +159,7 @@ describe('<ScenariosTab/>', () => {
     })
 
     it('click on save with valid data should display error', async () => {
-      useScenariosTable.mockImplementation(() => ({ ...hookResponse, addScenario: () => false }))
+      useScenariosTable.mockImplementation(() => ({ ...hookResponse, addScenario: () => ADD_SCENARIOS_RESPONSES.fail_response }))
       setUp()
 
       fireEvent.click(screen.getByRole('button', { name: 'Add scenario' }))
@@ -162,7 +172,7 @@ describe('<ScenariosTab/>', () => {
       fireEvent.change(screen.getByPlaceholderText('metric value'), { target: { value: '123' } })
       await waitFor(() => fireEvent.click(screen.getByText('Save')))
 
-      const errorMessage = screen.getByText('Something went wrong, the scenario could not be added, please try again')
+      const errorMessage = screen.getByText(ADD_SCENARIOS_RESPONSES.fail_response.error)
 
       expect(errorMessage).toBeInTheDocument()
     })

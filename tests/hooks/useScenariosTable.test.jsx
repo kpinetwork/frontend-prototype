@@ -19,6 +19,16 @@ const mockService = (service, response) => {
   })
 }
 
+const ADD_SCENARIOS_RESPONSES = {
+  added_response: { added: true },
+  fail_response: { error: "Can't add scenario" }
+}
+
+const DELETE_SCENARIOS_RESPONSES = {
+  deleted_response: { 'scenarios deleted': 1 },
+  fail_response: { error: "Can't delete scenario" }
+}
+
 const metrics = BASEMETRICS.map(metric => metric.name)
 
 const wrapper = ({ children }) => (
@@ -171,7 +181,7 @@ describe('useScenariosTable', () => {
 
   it('add scenario success', async () => {
     mockService(getCompanyDetails, COMPANIESDETAILS)
-    mockService(addCompanyScenario, true)
+    mockService(addCompanyScenario, ADD_SCENARIOS_RESPONSES.added_response)
     let hookResponse
     let addScenario
 
@@ -179,10 +189,10 @@ describe('useScenariosTable', () => {
       hookResponse = renderHook(() => useScenariosTable(), { wrapper })
     })
     await act(async () => {
-      addScenario = hookResponse.result.current.addScenario(SCENARIO)
+      addScenario = await hookResponse.result.current.addScenario(SCENARIO)
     })
 
-    expect(addScenario).toBeTruthy()
+    expect(addScenario).toEqual(ADD_SCENARIOS_RESPONSES.added_response)
     expect(getCompanyDetails).toBeCalled()
   })
 
@@ -203,17 +213,19 @@ describe('useScenariosTable', () => {
 
   it('delete scenarios success', async () => {
     mockService(getCompanyDetails, COMPANIESDETAILS)
-    mockService(deleteCompanyScenarios, () => true)
+    mockService(deleteCompanyScenarios, DELETE_SCENARIOS_RESPONSES.deleted_response)
     let hookResponse
+    let deletedScenario
 
     await act(async () => {
       hookResponse = renderHook(() => useScenariosTable(), { wrapper })
     })
     await act(async () => {
-      hookResponse.result.current.deleteScenarios(SCENARIO)
+      deletedScenario = await hookResponse.result.current.deleteScenarios(SCENARIO)
     })
 
     expect(deleteCompanyScenarios).toHaveBeenCalled()
+    expect(deletedScenario).toEqual(DELETE_SCENARIOS_RESPONSES.deleted_response)
   })
 
   it('delete scenarios catch error', async () => {

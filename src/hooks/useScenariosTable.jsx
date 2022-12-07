@@ -64,12 +64,15 @@ const useScenariosTable = () => {
     try {
       setLoading(true)
       const response = await addCompanyScenario(selectedCompanyID, scenario)
-      setPage(0)
-      setRowsPerPage(100)
-      setMaxPage(0)
-      setScenarios([])
-      initScenarios(limit, offset)
-      return response.added
+      if (response.added) {
+        setPage(0)
+        setRowsPerPage(100)
+        setMaxPage(0)
+        setScenarios([])
+        initScenarios(limit, offset)
+      }
+      setLoading(false)
+      return response
     } catch (_error) {
       setLoading(false)
       return false
@@ -80,12 +83,15 @@ const useScenariosTable = () => {
     try {
       setLoading(true)
       const response = await deleteCompanyScenarios(selectedCompanyID, scenarios)
-      setPage(0)
-      setRowsPerPage(100)
-      setMaxPage(0)
-      setScenarios([])
-      initScenarios(limit, offset)
-      return response.scenarios_deleted
+      if (response['scenarios deleted']) {
+        setPage(0)
+        setRowsPerPage(100)
+        setMaxPage(0)
+        setScenarios([])
+        initScenarios(limit, offset)
+      }
+      setLoading(false)
+      return response
     } catch (_error) {
       setLoading(false)
       return 0
