@@ -8,7 +8,8 @@
     "serve": "vite preview",
     "test": "jest --env=jsdom",
     "coverage": "vitest --coverage",
-    "clear-jest": "jest --clearCache"
+    "clear-jest": "jest --clearCache",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^2.18.3",
