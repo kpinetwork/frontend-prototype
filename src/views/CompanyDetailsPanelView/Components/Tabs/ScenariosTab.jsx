@@ -65,7 +65,8 @@ export function ScenariosTab () {
     handleChangeRowsPerPage,
     handleSortScenarios,
     addScenario,
-    deleteScenarios
+    deleteScenarios,
+    setLoading
   } = useScenariosTable()
 
   const isSelected = (metricId) => (selectedScenarios.map(scenario => scenario.metric_id).indexOf(metricId) !== -1)
@@ -103,6 +104,7 @@ export function ScenariosTab () {
         setError(response.error)
         setShowMessage(true)
         setSeverity('error')
+        setLoading(false)
       } else {
         setScenario({})
         setOpenAdd(false)

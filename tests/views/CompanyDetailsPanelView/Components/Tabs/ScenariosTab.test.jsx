@@ -152,10 +152,30 @@ describe('<ScenariosTab/>', () => {
       fireEvent.click(screen.getByRole('button', { name: '2023' }))
       fireEvent.change(screen.getByPlaceholderText('metric value'), { target: { value: '123' } })
       await waitFor(() => fireEvent.click(screen.getByText('Save')))
+      const message = screen.queryByText('Scenario added successfully')
 
-      const errorMessage = screen.queryByText('Something went wrong, the scenario could not be added, please try again')
+      expect(message).toBeInTheDocument()
+    })
 
-      expect(errorMessage).not.toBeInTheDocument()
+    it('click on save with valid data successful and close alert', async () => {
+      useScenariosTable.mockImplementation(() => hookResponse)
+      setUp()
+
+      fireEvent.click(screen.getByRole('button', { name: 'Add scenario' }))
+      await userEvent.click(getByRole(screen.getByTestId('scenario-selector'), 'button'))
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Actuals' })))
+      await userEvent.click(getByRole(screen.getByTestId('metric-name-selector'), 'button'))
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Revenue' })))
+      fireEvent.click(screen.getByPlaceholderText('year'))
+      fireEvent.click(screen.getByRole('button', { name: '2023' }))
+      fireEvent.change(screen.getByPlaceholderText('metric value'), { target: { value: '123' } })
+      await waitFor(() => fireEvent.click(screen.getByText('Save')))
+
+      const message = screen.queryByText('Scenario added successfully')
+      const closeMessage = screen.getByRole('button', { name: 'Close' })
+      fireEvent.click(closeMessage)
+
+      waitFor(() => { expect(message).not.toBeInTheDocument() })
     })
 
     it('click on save with valid data should display error', async () => {

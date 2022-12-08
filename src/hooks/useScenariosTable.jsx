@@ -71,7 +71,6 @@ const useScenariosTable = () => {
         setScenarios([])
         initScenarios(limit, offset)
       }
-      setLoading(false)
       return response
     } catch (_error) {
       setLoading(false)
@@ -90,7 +89,6 @@ const useScenariosTable = () => {
         setScenarios([])
         initScenarios(limit, offset)
       }
-      setLoading(false)
       return response
     } catch (_error) {
       setLoading(false)
@@ -165,7 +163,8 @@ const useScenariosTable = () => {
     handleChangeRowsPerPage,
     handleSortScenarios,
     addScenario,
-    deleteScenarios
+    deleteScenarios,
+    setLoading
   }
 }
 

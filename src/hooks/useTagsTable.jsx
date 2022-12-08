@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getTags, addTags, updateTags, deleteTags } from '../service/tags'
-import { ACTION_FAILED, UPDATE_TAGS_ERROR, DELETE_TAGS_ERROR } from '../utils/constants/tagsError'
+import { ACTION_FAILED } from '../utils/constants/tagsError'
 
 const useTagsTable = () => {
   const [total, setTotal] = useState(0)
@@ -63,7 +63,7 @@ const useTagsTable = () => {
       if (response.added) {
         initTags(pageSize, offset)
       }
-      return response.added
+      return response
     } catch (_error) {
       return false
     } finally {
@@ -125,9 +125,8 @@ const useTagsTable = () => {
       const response = await updateTags({ tags: body })
       if (response?.updated) {
         refreshTags()
-        return null
       }
-      return UPDATE_TAGS_ERROR
+      return response
     } catch (_error) {
       return ACTION_FAILED
     } finally {
@@ -143,9 +142,8 @@ const useTagsTable = () => {
       const response = await deleteTags(body)
       if (response?.deleted) {
         refreshTags()
-        return null
       }
-      return DELETE_TAGS_ERROR
+      return response
     } catch (_error) {
       return ACTION_FAILED
     } finally {
