@@ -11,6 +11,9 @@
     "clear-jest": "jest --clearCache",
     "prepare": "husky install"
   },
+  "lint-staged": {
+    "*.{js,jsx}": "npx eslint --fix"
+  },
   "dependencies": {
     "@aws-amplify/ui-react": "^2.18.3",
     "@date-io/date-fns": "^2.14.0",
@@ -65,6 +68,7 @@
     "happy-dom": "2.25.1",
     "husky": "^8.0.2",
     "jest": "^27.4.5",
+    "lint-staged": "^13.1.0",
     "react-test-renderer": "^17.0.2",
     "vite": "2.7.1",
     "vitest": "0.0.107"
