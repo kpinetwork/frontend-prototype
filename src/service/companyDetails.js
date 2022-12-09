@@ -25,12 +25,16 @@ export const getCompanyInvestments = async (companyID) => {
 }
 
 export const addCompanyInvestment = async (companyID, investment) => {
-  const headers = await getAuthorizationHeader()
-  const response = await axios.post(`${investmentsUrl}/${companyID}`, investment, {
-    headers: headers
-  })
-  const data = await response.data
-  return data
+  try {
+    const headers = await getAuthorizationHeader()
+    const response = await axios.post(`${investmentsUrl}/${companyID}`, investment, {
+      headers: headers
+    })
+    const data = await response.data
+    return data
+  } catch (_error) {
+    return _error.response.data
+  }
 }
 
 export const addCompanyScenario = async (companyID, scenario) => {
