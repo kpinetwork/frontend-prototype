@@ -136,7 +136,7 @@ describe('<ScenariosTab/>', () => {
 
       fireEvent.click(screen.getByRole('button', { name: 'Add scenario' }))
       await userEvent.click(getByRole(screen.getByTestId('scenario-selector'), 'button'))
-      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Actuals' })))
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Actuals' })), { timeout: 10000 })
       await userEvent.click(getByRole(screen.getByTestId('metric-name-selector'), 'button'))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Revenue' })), { timeout: 10000 })
       fireEvent.click(screen.getByPlaceholderText('year'))
