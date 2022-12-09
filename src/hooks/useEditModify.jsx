@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getEditModifyData, updateEditModifyData, deleteScenarios } from '../service/editModifyData'
-import { getCompanies } from '../service/company'
+import { getPublicCompanies } from '../service/company'
 import { isEmptyObject } from '../utils/userFunctions'
 import { INVESTOR_PROFILES, SECTORS, VERTICALS } from '../utils/constants/CompanyDescription'
 
@@ -66,7 +66,7 @@ export const useEditModify = () => {
 
   const getAllCompanies = async () => {
     try {
-      const companiesObject = await getCompanies()
+      const companiesObject = await getPublicCompanies()
       setCompanies(companiesObject.companies.map(company => company.name))
     } catch (_error) {
       setCompanies([])

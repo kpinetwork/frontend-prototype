@@ -52,18 +52,28 @@ export default function PreviewModal ({ open, onClose, onOk, onCancel, validData
   }
 
   const getExistingNames = () => {
-    const names = data.existing_names || []
-    if (names.length === 0) {
+    const title = 'Existing company names'
+    const message = 'The following companies already exist on KPI, please change with a valid name'
+    return getComponentFromList(data.existing_names || [], title, message)
+  }
+
+  const getUnexistentMetrics = () => {
+    const title = 'Not valid metrics'
+    const message = 'These metrics are not valid:'
+    return getComponentFromList(data.non_existent_metrics || [], title, message)
+  }
+
+  const getComponentFromList = (data, title, message) => {
+    if (data.length === 0) {
       return <></>
     }
-    const text = 'The following companies already exist on KPI, please change with a valid name'
     return (
       <Box sx={{ marginBottom: 20 }}>
-        <Typography variant='body1'>Existing company names</Typography>
+        <Typography variant='body1'>{title}</Typography>
         <Divider className={classes.border} />
-        <Typography variant="subtitle2" >{text}</Typography>
+        <Typography variant="subtitle2" >{message}</Typography>
         <Box sx={{ borderRadius: '16px', backgroundColor: 'white', py: 2, px: 2, marginTop: 5 }}>
-          {names.map((name) => (
+          {data.map((name) => (
             <Typography key={`existing-${name}`} variant="body2">
               {name}
             </Typography>
@@ -72,6 +82,7 @@ export default function PreviewModal ({ open, onClose, onOk, onCancel, validData
       </Box>
     )
   }
+
   const getRepeatedScenarios = () => {
     if (data.validated_companies == null || data.validated_companies.length === 0) {
       return <></>
@@ -144,6 +155,7 @@ export default function PreviewModal ({ open, onClose, onOk, onCancel, validData
               {getRepeatedNames()}
               {getRepeatedIds()}
               {getExistingNames()}
+              {getUnexistentMetrics()}
             </Box>
           }
           {validData &&
