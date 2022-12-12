@@ -117,6 +117,23 @@ describe('<TagsSectionView />', () => {
       expect(message).toBeInTheDocument()
     })
 
+    it('should show an error when save service fails', async () => {
+      useTagsSections.mockImplementation(() => hookResponse)
+      useTagsTable.mockImplementation(() => ({ ...tableHookResponse, addTag: () => ADD_TAGS_RESPONSES.fail_response }))
+      setUp()
+
+      await waitFor(() => { fireEvent.click(screen.getByRole('button', { name: 'Add tag' })) })
+      await waitFor(() => { fireEvent.change(screen.getByPlaceholderText('Tag name'), { target: { value: 'Tag' } }) })
+      await waitFor(() => { fireEvent.change(screen.getByRole('combobox'), { target: { value: 'Company Name' } }) })
+      await waitFor(() => { fireEvent.keyDown(screen.getByRole('combobox'), { key: 'ArrowDown' }) })
+      await waitFor(() => { fireEvent.keyDown(screen.getByRole('combobox'), { key: 'Enter' }) })
+      await waitFor(() => { fireEvent.click(screen.getByRole('button', { name: 'Save' })) })
+
+      const message = screen.getByText("Can't add tag")
+
+      expect(message).toBeInTheDocument()
+    })
+
     it('Should close form when click on Cancel', async () => {
       useTagsTable.mockImplementation(() => tableHookResponse)
       useTagsSections.mockImplementation(() => hookResponse)
@@ -260,6 +277,20 @@ describe('<TagsSectionView />', () => {
       await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Yes' })))
 
       const message = screen.getByText('The tags were deleted successfully')
+
+      expect(message).toBeInTheDocument()
+    })
+
+    it('Should show the erroe message when click on Ok in comfirmation for deleting but service fails', async () => {
+      useTagsTable.mockImplementation(() => ({ ...tableHookResponse, tagsToDelete: [123], onDeleteTags: () => DELETE_TAGS_RESPONSES.fail_response }))
+      useTagsSections.mockImplementation(() => hookResponse)
+      setUp()
+
+      fireEvent.click(screen.getByRole('button', { name: 'Delete tags' }))
+      await waitFor(() => { fireEvent.click(screen.getByRole('button', { name: 'Save' })) })
+      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Yes' })))
+
+      const message = screen.getByText("Can't delete tags")
 
       expect(message).toBeInTheDocument()
     })
