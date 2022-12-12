@@ -16,19 +16,28 @@ export const RevenueAndEbitdaCard = ({ revenueAndEbitda, isLoading }) => {
   useEffect(() => {
     if (revenueAndEbitda) {
       setData(() => {
-        const orderedGrowth = Object.values(revenueAndEbitda).map((row, index) => {
-          row.revenue = Number(row.revenue)?.toFixed(2) + ' %'
-          row.ebitda = Number(row.ebitda)?.toFixed(2) + ' %'
+        const growth = getGrowthList()
+        const orderedSizes = growth.map((row) => {
           return {
-            id: order[row.size_cohort],
+            id: order(growth)[row.size_cohort],
             ...row
           }
         })
-        sortByKey(orderedGrowth, 'id')
-        return orderedGrowth
+        sortByKey(orderedSizes, 'id')
+        return orderedSizes
       })
     }
   }, [revenueAndEbitda])
+
+  const getGrowthList = () => (
+    Object.values(revenueAndEbitda).map(row => {
+      row.growth = Number(row.growth)?.toFixed(2) + ' %'
+      row.margin = Number(row.margin)?.toFixed(2) + ' %'
+      return {
+        ...row
+      }
+    })
+  )
   return (
     <CardKPI title={'Revenue & ebitda vs budget'} actions={false}>
       {!isLoading

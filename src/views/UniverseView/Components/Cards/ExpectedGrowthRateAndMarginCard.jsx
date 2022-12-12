@@ -13,22 +13,33 @@ const columns = [
 
 export const ExpectedGrowthRateAndMarginCard = ({ expectedGrowthAndMargin, isLoading }) => {
   const [data, setData] = useState([])
+
   useEffect(() => {
     if (expectedGrowthAndMargin) {
       setData(() => {
-        const orderedGrowth = Object.values(expectedGrowthAndMargin).map((row, index) => {
-          row.growth = Number(row.growth)?.toFixed(2) + ' %'
-          row.margin = Number(row.margin)?.toFixed(2) + ' %'
+        const growth = getGrowthList()
+        const orderObject = order(growth)
+        const orderedSizes = growth.map((row) => {
           return {
-            id: order[row.size_cohort],
+            id: orderObject[row.size_cohort],
             ...row
           }
         })
-        sortByKey(orderedGrowth, 'id')
-        return orderedGrowth
+        sortByKey(orderedSizes, 'id')
+        return orderedSizes
       })
     }
   }, [expectedGrowthAndMargin])
+
+  const getGrowthList = () => (
+    Object.values(expectedGrowthAndMargin).map(row => {
+      row.growth = Number(row.growth)?.toFixed(2) + ' %'
+      row.margin = Number(row.margin)?.toFixed(2) + ' %'
+      return {
+        ...row
+      }
+    })
+  )
   return (
     <CardKPI title={'Growth and margin by size; projected'} actions={false}>
         {!isLoading
