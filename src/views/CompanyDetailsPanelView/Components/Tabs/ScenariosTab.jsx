@@ -159,7 +159,6 @@ export function ScenariosTab () {
         onClose={() => {
           setError(undefined)
           setShowMessage(false)
-          setSeverity(undefined)
         }}
         severity={severity}
         message={error}

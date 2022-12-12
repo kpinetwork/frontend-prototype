@@ -173,7 +173,6 @@ export function TagsSectionView () {
             onClose={() => {
               setShowMessage(false)
               setErrorMessage(undefined)
-              setSeverity(undefined)
             }}
             severity={severity}
             message={errorMessage}

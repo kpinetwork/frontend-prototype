@@ -24,6 +24,7 @@ describe('<BasicSnackBar />', () => {
   it('close snackbar message when click on close button', async () => {
     setUp()
     const button = screen.getByRole('button', { name: 'Close' })
+
     fireEvent.click(button)
 
     expect(defaultProps.onClose).toHaveBeenCalled()

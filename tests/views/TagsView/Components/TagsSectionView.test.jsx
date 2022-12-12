@@ -281,7 +281,7 @@ describe('<TagsSectionView />', () => {
       expect(message).toBeInTheDocument()
     })
 
-    it('Should show the erroe message when click on Ok in comfirmation for deleting but service fails', async () => {
+    it('Should show the error message when click on Ok in confirmation for deleting but service fails', async () => {
       useTagsTable.mockImplementation(() => ({ ...tableHookResponse, tagsToDelete: [123], onDeleteTags: () => DELETE_TAGS_RESPONSES.fail_response }))
       useTagsSections.mockImplementation(() => hookResponse)
       setUp()

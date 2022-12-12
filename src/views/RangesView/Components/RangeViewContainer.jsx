@@ -89,7 +89,6 @@ export const RangeViewContainer = () => {
             onClose={() => {
               setShowMessage(false)
               setErrorMessage(undefined)
-              setSeverity(undefined)
             }}
             severity={severity}
             message={errorMessage}
