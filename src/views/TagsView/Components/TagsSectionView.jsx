@@ -177,7 +177,7 @@ export function TagsSectionView () {
             }}
             severity={severity}
             message={errorMessage}
-        />
+          />
           <Dialog
             PaperProps={{
               style: {

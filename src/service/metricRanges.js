@@ -24,10 +24,14 @@ export const getRangesByMetric = async (metric) => {
 }
 
 export const modifyMetricRanges = async (body) => {
-  const headers = await getAuthorizationHeader()
-  const response = await axios.put(metricRangesUrl, body, {
-    headers: headers
-  })
-  const data = await response?.data
-  return data
+  try {
+    const headers = await getAuthorizationHeader()
+    const response = await axios.put(metricRangesUrl, body, {
+      headers: headers
+    })
+    const data = await response?.data
+    return data
+  } catch (_error) {
+    return _error.response.data
+  }
 }

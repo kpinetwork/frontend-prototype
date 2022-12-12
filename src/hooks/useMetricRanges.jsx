@@ -83,14 +83,14 @@ const useMetricRanges = () => {
     try {
       setIsLoading(true)
       const response = await modifyMetricRanges(getModifiedRanges(metric))
-      setIsLoading(false)
       if (response.updated) {
         initData({ limit: pageSize, offset })
       }
-      return response.updated
+      return response
     } catch (_error) {
-      setIsLoading(false)
       return false
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -177,7 +177,8 @@ const useMetricRanges = () => {
     setMetricSelected,
     handleChangePageSize,
     setEditedRanges,
-    modifyRanges
+    modifyRanges,
+    setIsLoading
   }
 }
 

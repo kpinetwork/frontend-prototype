@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 import { deleteTags, addTags, getTags, updateTags } from '../../src/service/tags'
 import useTagsTable from '../../src/hooks/useTagsTable'
-import { ACTION_FAILED, DELETE_TAGS_ERROR, UPDATE_TAGS_ERROR } from '../../src/utils/constants/tagsError'
+import { ACTION_FAILED } from '../../src/utils/constants/tagsError'
 
 jest.mock('../../src/service/tags')
 
