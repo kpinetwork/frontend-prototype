@@ -5,6 +5,8 @@ import { InvestmentReport } from '../../../src/views/Reports/InvestmentReport'
 import { useInvestmentDateReport } from '../../../src/hooks/useInvestmentDateReport'
 import userEvent from '@testing-library/user-event'
 
+jest.setTimeout(10000)
+
 const companies = [
   {
     id: '123',
@@ -114,9 +116,9 @@ describe('<InvestmenteReport />', () => {
       setUp()
 
       await userEvent.click(getByRole(screen.getAllByTestId('metric-selector')[0], 'button'))
-      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Ebitda - actual' })), { timeout: 3000 })
-      await waitFor(() => userEvent.click(getByRole(screen.getAllByTestId('metric-selector')[1], 'button')))
-      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Rule of 40' })), { timeout: 3000 })
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Ebitda - actual' })), { timeout: 10000 })
+      await waitFor(() => userEvent.click(getByRole(screen.getAllByTestId('metric-selector')[1], 'button')), { timeout: 10000 })
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Rule of 40' })), { timeout: 10000 })
 
       expect(useInvestmentReportResponse.setSecondMetric).toHaveBeenCalled()
       expect(useInvestmentReportResponse.setFirstMetric).toHaveBeenCalled()

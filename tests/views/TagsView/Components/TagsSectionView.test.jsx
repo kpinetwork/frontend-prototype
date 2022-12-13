@@ -9,6 +9,8 @@ import { NOTHING_TO_CHANGE, UPDATE_TAGS_SUCCESS } from '../../../../src/utils/co
 jest.mock('../../../../src/hooks/useTagsTable')
 jest.mock('../../../../src/hooks/useTagsSections')
 
+jest.setTimeout(10000)
+
 const tags = {
   123: { id: 123, name: 'Tag Sample', companies: [] },
   124: { id: 124, name: 'Fashion', companies: [] }

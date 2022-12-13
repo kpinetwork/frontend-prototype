@@ -7,6 +7,7 @@ import useScenariosTable from '../../../../../src/hooks/useScenariosTable'
 import { BASEMETRICS } from '../../../../../src/utils/constants/Metrics'
 
 jest.mock('../../../../../src/hooks/useScenariosTable')
+jest.setTimeout(10000)
 
 const metric = {
   scenario_id: '02b8fc45-204c-450b-b4aa-525b35ad2323',
@@ -145,13 +146,13 @@ describe('<ScenariosTab/>', () => {
       setUp()
 
       fireEvent.click(screen.getByRole('button', { name: 'Add scenario' }))
-      await waitFor(() => userEvent.click(getByRole(screen.getByTestId('scenario-selector'), 'button')))
-      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Actuals' })))
-      await waitFor(() => userEvent.click(getByRole(screen.getByTestId('metric-name-selector'), 'button')))
-      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Revenue' })))
-      await waitFor(() => { fireEvent.click(screen.getByPlaceholderText('year')) })
-      await waitFor(() => { fireEvent.click(screen.getByRole('button', { name: '2023' })) })
-      await waitFor(() => { fireEvent.change(screen.getByPlaceholderText('metric value'), { target: { value: '123' } }) })
+      await userEvent.click(getByRole(screen.getByTestId('scenario-selector'), 'button'))
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Actuals' })), { timeout: 10000 })
+      await userEvent.click(getByRole(screen.getByTestId('metric-name-selector'), 'button'))
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Revenue' })), { timeout: 10000 })
+      fireEvent.click(screen.getByPlaceholderText('year'))
+      fireEvent.click(screen.getByRole('button', { name: '2023' }))
+      fireEvent.change(screen.getByPlaceholderText('metric value'), { target: { value: '123' } })
       await waitFor(() => fireEvent.click(screen.getByText('Save')))
       const message = screen.queryByText('Scenario added successfully')
 
@@ -165,11 +166,11 @@ describe('<ScenariosTab/>', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Add scenario' }))
       await waitFor(() => userEvent.click(getByRole(screen.getByTestId('scenario-selector'), 'button')))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Actuals' })))
-      await waitFor(() => userEvent.click(getByRole(screen.getByTestId('metric-name-selector'), 'button')))
-      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Revenue' })))
-      await waitFor(() => { fireEvent.click(screen.getByPlaceholderText('year')) })
-      await waitFor(() => { fireEvent.click(screen.getByRole('button', { name: '2023' })) })
-      await waitFor(() => { fireEvent.change(screen.getByPlaceholderText('metric value'), { target: { value: '123' } }) })
+      await userEvent.click(getByRole(screen.getByTestId('metric-name-selector'), 'button'))
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Revenue' })), { timeout: 10000 })
+      fireEvent.click(screen.getByPlaceholderText('year'))
+      fireEvent.click(screen.getByRole('button', { name: '2023' }))
+      fireEvent.change(screen.getByPlaceholderText('metric value'), { target: { value: '123' } })
       await waitFor(() => fireEvent.click(screen.getByText('Save')))
 
       const message = screen.queryByText('Scenario added successfully')
