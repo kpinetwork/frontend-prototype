@@ -39,28 +39,6 @@ describe('<FiltersSelectors />', () => {
     expect(combo.textContent).toBe('')
   })
 
-  it('should change select sector values', () => {
-    setUp({})
-    const sector = 'Communication Equipment'
-    const button = screen.getByRole('button', { name: 'Application Software' })
-
-    fireEvent.mouseDown(button)
-    fireEvent.click(screen.getAllByRole('option')[1])
-
-    expect(button.textContent).toBe(`${defaultProps.filters.sectors[0]}, ${sector}`)
-  })
-
-  it('should change select vertical values', () => {
-    setUp({})
-    const vertical = 'Banking'
-    const button = screen.getByRole('button', { name: 'Accounting & Auditing' })
-
-    fireEvent.mouseDown(button)
-    fireEvent.click(screen.getAllByRole('option')[1])
-
-    expect(button.textContent).toBe(`${defaultProps.filters.verticals[0]}, ${vertical}`)
-  })
-
   it('should change select investor profile values', () => {
     setUp({})
     const profile = 'Growth stage VC'

@@ -87,10 +87,6 @@ export function CompanyDetailsCard () {
              field='Company'
              value={company?.name}
             />
-            <ItemCard
-             field='Sector'
-             value={company?.sector}
-            />
           </Grid>
           <Grid item
             xs={12} sm={12} md={6} lg={6} xl={6}
@@ -98,10 +94,6 @@ export function CompanyDetailsCard () {
             <ItemCard
              field='Investor Profile'
              value={company?.investorProfile}
-            />
-            <ItemCard
-             field='Vertical'
-             value={company?.vertical}
             />
           </Grid>
         </Grid>
