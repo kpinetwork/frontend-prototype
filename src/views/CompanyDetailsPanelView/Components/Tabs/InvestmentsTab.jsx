@@ -4,6 +4,7 @@ import { InvestmentForm } from './InvestmentForm'
 import { Add } from '@material-ui/icons'
 import useCompanyDetails from '../../../../hooks/useCompanyDetails'
 import LoadingProgress from '../../../../components/Progress'
+import BasicSnackBar from '../../../../components/Alert/BasicSnackBar'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +31,9 @@ export function InvestmentsTab () {
   const [openAdd, setOpenAdd] = useState(false)
   const [investment, setInvestment] = useState({})
   const [error, setError] = useState(undefined)
-  const { addInvestment, investments, isLoading } = useCompanyDetails({})
+  const [showMessage, setShowMessage] = useState(false)
+  const [severity, setSeverity] = useState(undefined)
+  const { addInvestment, investments, isLoading, setLoading } = useCompanyDetails({})
 
   const onChange = (event, type) => {
     setInvestment({ ...investment, [type]: event?.target?.value })
@@ -46,12 +49,23 @@ export function InvestmentsTab () {
   const onSave = () => {
     const isValid = isValidInvestment()
     if (isValid) {
-      addInvestment(investment)
-      setInvestment({})
-      setOpenAdd(false)
-      setError(undefined)
+      const response = addInvestment(investment)
+      if (response.error) {
+        setError(response.error)
+        setShowMessage(true)
+        setSeverity('error')
+        setLoading(false)
+      } else {
+        setInvestment({})
+        setOpenAdd(false)
+        setError('Investment added successfully')
+        setShowMessage(true)
+        setSeverity('success')
+      }
     } else {
       setError('Invalid investment date')
+      setShowMessage(true)
+      setSeverity('error')
     }
   }
 
@@ -63,13 +77,21 @@ export function InvestmentsTab () {
   return (
     <Grid>
       <Box>
+        <BasicSnackBar
+        open={showMessage}
+        onClose={() => {
+          setError(undefined)
+          setShowMessage(false)
+        }}
+        severity={severity}
+        message={error}
+        />
         {
           openAdd &&
             <Box>
               <InvestmentForm
                 investment={investment}
                 edit={false}
-                error={error}
                 onChange={onChange}
                 onCancel={() => {
                   setOpenAdd(false)

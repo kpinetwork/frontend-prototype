@@ -25,33 +25,45 @@ export const getCompanyInvestments = async (companyID) => {
 }
 
 export const addCompanyInvestment = async (companyID, investment) => {
-  const headers = await getAuthorizationHeader()
-  const response = await axios.post(`${investmentsUrl}/${companyID}`, investment, {
-    headers: headers
-  })
-  const data = await response.data
-  return data
+  try {
+    const headers = await getAuthorizationHeader()
+    const response = await axios.post(`${investmentsUrl}/${companyID}`, investment, {
+      headers: headers
+    })
+    const data = await response.data
+    return data
+  } catch (_error) {
+    return _error.response.data
+  }
 }
 
 export const addCompanyScenario = async (companyID, scenario) => {
-  const requestBody = { ...scenario, company_id: companyID }
-  const headers = await getAuthorizationHeader()
-  const response = await axios.post(`${companiesUrl}/${companyID}/scenarios`, requestBody, {
-    headers: headers
-  })
-  const data = await response.data
-  return data
+  try {
+    const requestBody = { ...scenario, company_id: companyID }
+    const headers = await getAuthorizationHeader()
+    const response = await axios.post(`${companiesUrl}/${companyID}/scenarios`, requestBody, {
+      headers: headers
+    })
+    const data = await response.data
+    return data
+  } catch (_error) {
+    return _error.response.data
+  }
 }
 
 export const deleteCompanyScenarios = async (companyID, scenarios) => {
-  const requestBody = { scenarios: scenarios }
-  const headers = await getAuthorizationHeader()
-  const response = await axios.delete(`${companiesUrl}/${companyID}/scenarios`, {
-    headers: headers,
-    data: requestBody
-  })
-  const data = await response.data
-  return data
+  try {
+    const requestBody = { scenarios: scenarios }
+    const headers = await getAuthorizationHeader()
+    const response = await axios.delete(`${companiesUrl}/${companyID}/scenarios`, {
+      headers: headers,
+      data: requestBody
+    })
+    const data = await response.data
+    return data
+  } catch (_error) {
+    return _error.response.data
+  }
 }
 
 export const deleteCompany = async (companyID) => {

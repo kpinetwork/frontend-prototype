@@ -7,6 +7,11 @@ import { DATA } from '../../../data/ranges'
 
 jest.mock('../../../../src/hooks/useMetricRanges')
 
+const MODIFY_RANGES_RESPONSE = {
+  updated_response: { updated: true },
+  fail_response: { error: "Can't update ranges" }
+}
+
 const hookResponse = {
   page: 0,
   total: DATA.total,
@@ -25,7 +30,8 @@ const hookResponse = {
   getRangesBySpecificMetric: jest.fn(),
   setEditedRanges: jest.fn(),
   setRangesToDelete: jest.fn(),
-  modifyRanges: jest.fn()
+  modifyRanges: () => MODIFY_RANGES_RESPONSE.updated_response,
+  setIsLoading: jest.fn()
 }
 
 const setUp = () => {
@@ -88,9 +94,39 @@ describe('<RangeViewContainer />', () => {
       await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Modify' })))
 
       const saveButton = screen.getByRole('button', { name: 'Save' })
-      fireEvent.click(saveButton)
+      await waitFor(() => { fireEvent.click(saveButton) })
 
-      expect(hookResponse.modifyRanges).toHaveBeenCalled()
+      const message = await screen.getByText('Ranges modified successfully')
+
+      waitFor(() => { expect(message).toBeInTheDocument() })
+    })
+    it('Should message dissapear when click on snackbar cancel after saving', async () => {
+      const response = { ...hookResponse, metricSelected: 'Revenue' }
+      useMetricRanges.mockImplementation(() => response)
+      setUp()
+      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Modify' })))
+
+      const saveButton = screen.getByRole('button', { name: 'Save' })
+      await waitFor(() => { fireEvent.click(saveButton) })
+
+      const message = await screen.getByText('Ranges modified successfully')
+      const closeMessage = screen.getByRole('button', { name: 'Close' })
+      fireEvent.click(closeMessage)
+
+      waitFor(() => { expect(message).not.toBeInTheDocument() })
+    })
+    it('Should show the error when click on save without valid data', async () => {
+      const response = { ...hookResponse, metricSelected: 'Revenue', modifyRanges: () => MODIFY_RANGES_RESPONSE.fail_response }
+      useMetricRanges.mockImplementation(() => response)
+      setUp()
+      await waitFor(() => fireEvent.click(screen.getByRole('button', { name: 'Modify' })))
+
+      const saveButton = screen.getByRole('button', { name: 'Save' })
+      await waitFor(() => { fireEvent.click(saveButton) })
+
+      const message = await screen.getByText("Can't update ranges")
+
+      waitFor(() => { expect(message).toBeInTheDocument() })
     })
   })
 })

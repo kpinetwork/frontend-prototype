@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export function InvestmentForm ({ onCancel, edit, error, onChange, investment, onSave, rounds }) {
+export function InvestmentForm ({ onCancel, edit, onChange, investment, onSave, rounds }) {
   const classes = useStyles()
 
   const getYear = () => {
@@ -67,12 +67,6 @@ export function InvestmentForm ({ onCancel, edit, error, onChange, investment, o
           <CardHeader
             title={<Typography style={{ color: '#364b8a', fontSize: 16, fontWeight: 'bold' }}>Add investment</Typography>}
           />
-          {
-            error &&
-            <Box px={2}>
-              <Typography style={{ color: 'red' }} variant='subtitle2'>{error}</Typography>
-            </Box>
-          }
           <Box style={{ display: 'flex', marginBottom: 30, justifyContent: 'start', flexWrap: 'wrap' }} px={2} component='form'>
               <FormControl className={classes.input}>
                   <FormLabel className={classes.label}>Invest date</FormLabel>

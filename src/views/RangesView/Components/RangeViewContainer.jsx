@@ -6,6 +6,7 @@ import useMetricRanges from '../../../hooks/useMetricRanges'
 import { MetricRangesTable } from './MetricRangesTable'
 import { MetricRangeForm } from './MetricRangeForm'
 import { TOTALMETRICS } from '../../../utils/constants/Metrics'
+import BasicSnackBar from '../../../components/Alert/BasicSnackBar'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,18 +42,36 @@ export const RangeViewContainer = () => {
     getRangesBySpecificMetric,
     modifyRanges,
     editedRanges,
-    setEditedRanges
+    setEditedRanges,
+    setIsLoading
   } = useMetricRanges()
   const classes = useStyles()
   const [openModify, setOpenModify] = useState(false)
   const [errors, setErrors] = useState([])
+  const [showMessage, setShowMessage] = useState(false)
+  const [severity, setSeverity] = useState(undefined)
+  const [errorMessage, setErrorMessage] = useState(null)
   const getMetricStandardName = (name) => {
     const metric = TOTALMETRICS.find(item => item.name === name)
     return metric.tableName
   }
 
-  const handleSaveRanges = () => {
-    modifyRanges(getMetricStandardName(metricSelected))
+  const handleSaveRanges = async () => {
+    const response = await modifyRanges(getMetricStandardName(metricSelected))
+    if (response.error) {
+      setErrorMessage(response.error)
+      setShowMessage(true)
+      setSeverity('error')
+      setIsLoading(false)
+      setOpenModify(false)
+    } else {
+      setErrorMessage('Ranges modified successfully')
+      setShowMessage(true)
+      setSeverity('success')
+      setOpenModify(false)
+      setMetricSelected(null)
+      getDefaultValue()
+    }
   }
 
   const getDefaultValue = () => {
@@ -65,6 +84,15 @@ export const RangeViewContainer = () => {
   return (
        <Box display="flex" justifyContent="center" alignItems="center">
         <Box className={classes.root}>
+          <BasicSnackBar
+            open={showMessage}
+            onClose={() => {
+              setShowMessage(false)
+              setErrorMessage(undefined)
+            }}
+            severity={severity}
+            message={errorMessage}
+          />
           <Box>
             {
               openModify &&
@@ -81,9 +109,6 @@ export const RangeViewContainer = () => {
               }}
               onSave={() => {
                 handleSaveRanges()
-                setOpenModify(false)
-                setMetricSelected(null)
-                getDefaultValue()
               }}
               metrics={metrics}
               metric={metricSelected}
