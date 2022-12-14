@@ -16,19 +16,28 @@ export const GrowthAndMarginCard = ({ growthAndMargin, isLoading }) => {
   useEffect(() => {
     if (growthAndMargin) {
       setData(() => {
-        const orderedGrowth = Object.values(growthAndMargin).map((row, index) => {
-          row.growth = Number(row.growth)?.toFixed(2) + ' %'
-          row.margin = Number(row.margin)?.toFixed(2) + ' %'
+        const growth = getGrowthList()
+        const orderedSizes = growth.map((row) => {
           return {
-            id: order[row.size_cohort],
+            id: order(growth)[row.size_cohort],
             ...row
           }
         })
-        sortByKey(orderedGrowth, 'id')
-        return orderedGrowth
+        sortByKey(orderedSizes, 'id')
+        return orderedSizes
       })
     }
   }, [growthAndMargin])
+
+  const getGrowthList = () => (
+    Object.values(growthAndMargin).map(row => {
+      row.growth = Number(row.growth)?.toFixed(2) + ' %'
+      row.margin = Number(row.margin)?.toFixed(2) + ' %'
+      return {
+        ...row
+      }
+    })
+  )
   return (
     <CardKPI title={'Growth and margin by size; recent actuals'} actions={false}>
     {!isLoading

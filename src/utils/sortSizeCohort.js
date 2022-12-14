@@ -1,10 +1,24 @@
-export const order = {
-  '<$10 million': 0,
-  '$10-<$30 million': 1,
-  '$30-<$50 million': 2,
-  '$50-<$100 million': 3,
-  '$100 million+': 4
+export const order = (listObj) => {
+  if (listObj.length !== 0) {
+    const middleValues = getListFilteredByChar(listObj, '-')
+    middleValues.sort((a, b) => getRangeValue(a) - getRangeValue(b))
+
+    const endValue = getListFilteredByChar(listObj, '+')
+
+    const initValue = listObj.filter(size => size.size_cohort.substring(0, 1) === '<').map(size => size.size_cohort)
+
+    const finalArray = initValue.concat(middleValues).concat(endValue)
+    return Object.fromEntries(finalArray.map((element, index) => [element, index]))
+  }
+  return {}
 }
+
+const getRangeValue = (label) => {
+  const number = label.split('-')[0].substring(1)
+  return number
+}
+
+const getListFilteredByChar = (sizeList, char) => sizeList.filter(size => size.size_cohort.includes(char)).map(size => size.size_cohort)
 
 export const sortByKey = (array, key) => {
   return array.sort((a, b) => {

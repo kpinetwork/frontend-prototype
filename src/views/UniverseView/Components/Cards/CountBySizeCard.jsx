@@ -12,12 +12,13 @@ const columns = [
 
 export const CountBySizeCard = ({ countBySize, isLoading }) => {
   const [data, setData] = useState([])
+
   useEffect(() => {
     if (countBySize) {
       setData(() => {
         const orderedCountBySize = countBySize.map((row) => {
           return {
-            id: order[row.size_cohort],
+            id: order(countBySize)[row.size_cohort],
             ...row
           }
         })
