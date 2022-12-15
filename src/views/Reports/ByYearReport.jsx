@@ -12,13 +12,14 @@ export const ByYearReport = ({ fromUniverseOverview }) => {
     year,
     companyComparison,
     peersComparison,
+    averages,
     calendarPeersLoading,
     setCalendarYear,
     downloadComparisonCsv
   } = useCalendarReport({ fromUniverseOverview, selectedYear: getFromLocalStorage('year') || new Date().getFullYear() })
 
   const data = {
-    calendar: { companyComparison, peersComparison, isLoading: calendarPeersLoading }
+    calendar: { companyComparison, peersComparison, averages, isLoading: calendarPeersLoading }
   }
   const getData = (type) => {
     return data[type]

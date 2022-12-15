@@ -8,6 +8,7 @@ export const useCalendarReport = ({ fromUniverseOverview, selectedYear }) => {
   const { filters, companyID } = useContext(Context).filterFields
   const [companyComparison, setCompanyComparison] = useState({})
   const [peersComparison, setPeersComparison] = useState([])
+  const [averages, setAverages] = useState([])
   const [calendarPeersLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export const useCalendarReport = ({ fromUniverseOverview, selectedYear }) => {
   const setDefaultValues = () => {
     setCompanyComparison({})
     setPeersComparison([])
+    setAverages([])
     setIsLoading(false)
   }
 
@@ -40,10 +42,12 @@ export const useCalendarReport = ({ fromUniverseOverview, selectedYear }) => {
       const result = await getComparisonPeersFromQueryParams(options)
       const {
         companyComparisonData,
-        peersComparisonDataArray
+        peersComparisonDataArray,
+        averagesData
       } = destructuring(result)
       setCompanyComparison(companyComparisonData)
       setPeersComparison(peersComparisonDataArray)
+      setAverages(averagesData)
       setIsLoading(false)
     } catch (_error) {
       setDefaultValues()
@@ -67,6 +71,7 @@ export const useCalendarReport = ({ fromUniverseOverview, selectedYear }) => {
     year,
     companyComparison,
     peersComparison,
+    averages,
     calendarPeersLoading,
     setCalendarYear,
     downloadComparisonCsv
@@ -76,10 +81,12 @@ export const useCalendarReport = ({ fromUniverseOverview, selectedYear }) => {
 function destructuring (result) {
   const {
     company_comparison_data: companyComparisonData,
-    peers_comparison_data: peersComparisonDataArray
+    peers_comparison_data: peersComparisonDataArray,
+    averages: averagesData
   } = result
   return {
     companyComparisonData,
-    peersComparisonDataArray
+    peersComparisonDataArray,
+    averagesData
   }
 }

@@ -19,7 +19,7 @@ describe('<ByYearReport />', () => {
     expect(screen.getByText('Calendar Year')).toBeInTheDocument()
     expect(screen.getByText('2022')).toBeInTheDocument()
     expect(screen.getByRole('table')).toBeInTheDocument()
-    expect(screen.getAllByRole('row')).toHaveLength(1)
+    expect(screen.getAllByRole('row')).toHaveLength(2)
   })
 
   it('change calendar year select', async () => {
