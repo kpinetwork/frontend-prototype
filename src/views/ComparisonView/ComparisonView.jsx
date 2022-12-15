@@ -217,7 +217,7 @@ export function ComparisonView ({ companyComparison, peersComparison, averages, 
     }
   }
 
-  const containerStyle = { height: peersComparison.length > 0 ? '80vh' : '20vh', display: 'grid', alignSelf: 'center', justifySelf: 'center' }
+  const containerStyle = { height: peersComparison?.length > 0 ? '80vh' : '20vh', display: 'grid', alignSelf: 'center', justifySelf: 'center' }
 
   return (
     <div style={{ overflow: 'none' }}>
