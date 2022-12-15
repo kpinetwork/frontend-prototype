@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Box, TableSortLabel } from '@material-ui/core'
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Box, TableSortLabel, TableFooter } from '@material-ui/core'
 import { CloudDownload } from '@material-ui/icons'
 import HeadBodyGrid from '../../components/BodyGrid'
 import { saveAs } from 'file-saver'
@@ -53,6 +53,27 @@ const useStyles = makeStyles(theme => ({
     position: 'sticky',
     top: '105px',
     background: '#dbdbdb'
+  },
+  stickyAverageLabel: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    zIndex: 900,
+    color: 'black',
+    fontWeight: 'bold'
+  },
+  stickyFooter: {
+    zIndex: 1000,
+    position: 'sticky',
+    bottom: 0,
+    backgroundColor: 'white',
+    '& td': {
+      zIndex: 800,
+      color: 'black',
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontSize: 14
+    }
   }
 }))
 
@@ -120,7 +141,7 @@ const ExportOption = ({ buttonClass, isLoading, downloading, saveComparisonRepor
   )
 }
 
-export function ComparisonView ({ companyComparison, peersComparison, isLoading, downloadComparisonCsv, fromUniverseOverview, typeOfSelector }) {
+export function ComparisonView ({ companyComparison, peersComparison, averages, isLoading, downloadComparisonCsv, fromUniverseOverview, typeOfSelector }) {
   const [data, setData] = useState([])
   const [downloading, setDownloading] = useState(false)
   const classes = useStyles()
@@ -129,11 +150,13 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
   const [orderDirection, setOrderDirection] = useState('asc')
   const [valueToOrderBy, setValueToOrderBy] = useState('name')
 
-  const validPeersComparison = () => {
-    if (peersComparison == null) {
+  const checkValidData = (data) => {
+    if (data == null) {
       return []
-    } else return peersComparison
+    } else return data
   }
+
+  const validAverages = checkValidData(averages)
 
   useEffect(() => {
     if (companyComparison) {
@@ -194,6 +217,8 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
     }
   }
 
+  const containerStyle = { height: peersComparison?.length > 0 ? '80vh' : '20vh', display: 'grid', alignSelf: 'center', justifySelf: 'center' }
+
   return (
     <div style={{ overflow: 'none' }}>
       {typeOfSelector === 'calendar'
@@ -205,7 +230,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
       />
         : <br></br>}
 
-      <div style={{ height: '50vh', display: 'grid', alignSelf: 'center', justifySelf: 'center' }}>
+      <div style={containerStyle}>
         {!isLoading
           ? <TableContainer component={Paper} >
               <Table stickyHeader>
@@ -253,7 +278,7 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                     }
                 </TableHead>
                 <TableBody>
-                  {validPeersComparison().slice().sort(getComparator(order, orderBy)).map((row) => (
+                  {checkValidData(peersComparison).slice().sort(getComparator(order, orderBy)).map((row) => (
                     <TableRow
                       key={row?.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -280,6 +305,32 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                     </TableRow>
                   ))}
                 </TableBody>
+                <TableFooter className={classes.stickyFooter}>
+                    <TableRow>
+                      <TableCell className={classes.stickyAverageLabel}>
+                        Averages
+                      </TableCell>
+                      <TableCell >{getRevenueValue(validAverages.revenue)}</TableCell>
+                      <TableCell >{getPercentageValues(validAverages.growth)}</TableCell>
+                      <TableCell >{getPercentageValues(validAverages.ebitda_margin)}</TableCell>
+                      <TableCell >{getPercentageValues(validAverages.revenue_vs_budget)}</TableCell>
+                      <TableCell >{getPercentageValues(validAverages.ebitda_vs_budget)}</TableCell>
+                      <TableCell >{validAverages.rule_of_40}</TableCell>
+                      <TableCell >{getRevenueValue(validAverages.gross_profit)}</TableCell>
+                      <TableCell >{getPercentageValues(validAverages.gross_margin)}</TableCell>
+                      <TableCell >{getPercentageValues(validAverages.sales_and_marketing)}</TableCell>
+                      <TableCell >{getPercentageValues(validAverages.research_and_development)}</TableCell>
+                      <TableCell >{getPercentageValues(validAverages.general_and_admin)}</TableCell>
+                      <TableCell >{getPercentageValues(validAverages.opex_of_revenue)}</TableCell>
+                      <TableCell >{getRevenueValue(validAverages.revenue_per_employee)}</TableCell>
+                      <TableCell >{validAverages.cac_ratio }</TableCell>
+                      <TableCell >{validAverages.clv_cac_ratio}</TableCell>
+                      <TableCell >{getPercentageValues(validAverages.gross_retention)}</TableCell>
+                      <TableCell >{getPercentageValues(validAverages.net_retention)}</TableCell>
+                      <TableCell >{getPercentageValues(validAverages.new_bookings_growth)}</TableCell>
+                      <TableCell >{getPercentageValues(validAverages.debt_ebitda)}</TableCell>
+                    </TableRow>
+                  </TableFooter>
               </Table>
             </TableContainer>
           : <HeadBodyGrid/>}
