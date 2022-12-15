@@ -57,19 +57,19 @@ const useStyles = makeStyles(theme => ({
   stickyAverageLabel: {
     position: 'sticky',
     left: 0,
-    background: '#2f5487',
+    background: 'white',
     zIndex: 900,
-    color: 'white',
+    color: 'black',
     fontWeight: 'bold'
   },
   stickyFooter: {
     zIndex: 1000,
     position: 'sticky',
     bottom: 0,
-    backgroundColor: '#2f5487',
+    backgroundColor: 'white',
     '& td': {
       zIndex: 800,
-      color: 'white',
+      color: 'black',
       textAlign: 'center',
       fontWeight: 'bold',
       fontSize: 14
