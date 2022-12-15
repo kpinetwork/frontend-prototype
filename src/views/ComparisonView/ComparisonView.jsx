@@ -81,8 +81,6 @@ const columns = [
 
 const INITIAL_DATA = [
   { id: 1, key: 'name', value: '', sign: '', position: 'right', align: 'left' },
-  { id: 2, key: 'sector', value: '', sign: '', position: 'right', align: 'left' },
-  { id: 3, key: 'vertical', value: '', sign: '', position: 'right', align: 'left' },
   { id: 4, key: 'revenue', value: '', sign: '$', position: 'left', align: 'center' },
   { id: 5, key: 'growth', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 6, key: 'ebitda_margin', value: '', sign: '%', position: 'right', align: 'center' },
