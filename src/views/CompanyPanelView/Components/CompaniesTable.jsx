@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
   root: {
     [theme.breakpoints.up('md')]: {
-      width: '80%'
+      width: '60%'
     },
     [theme.breakpoints.between('sm', 'md')]: {
       mimWidth: '55vh'
@@ -82,8 +82,6 @@ export function CompaniesPanelTable () {
             <TableRow className={classes.head}>
               <TableCell className={classes.head}>ID</TableCell>
               <TableCell className={classes.head}>Name</TableCell>
-              <TableCell className={classes.head}>Sector</TableCell>
-              <TableCell className={`${classes.hide} ${classes.head}`}>Vertical</TableCell>
               <TableCell className={classes.head}>Public</TableCell>
             </TableRow>
           </TableHead>
@@ -97,8 +95,6 @@ export function CompaniesPanelTable () {
                   setSelectedCompanyID(company?.id)
                 }}>{company.id}</TableCell>
                 <TableCell>{company.name}</TableCell>
-                <TableCell>{company.sector}</TableCell>
-                <TableCell className={classes.hide}>{company.vertical}</TableCell>
                 <TableCell>
                   <Checkbox onChange={(event) => handleChange({ event, company, field: 'is_public' })}
                   color="primary" disabled={!wantsChange}

@@ -53,7 +53,7 @@ describe('<CompaniesPanelTable />', () => {
 
       const rows = screen.getAllByRole('row')
       const button = screen.getByText('Change publicly')
-      const company = screen.getByRole('row', { name: '1234 Sample company abc Application Software Education' })
+      const company = screen.getByRole('row', { name: '1234 Sample company abc' })
       const pagination = screen.getByRole('row', { name: 'Rows per page: 10 1-1 of 1' })
 
       expect(screen.getByRole('table'))

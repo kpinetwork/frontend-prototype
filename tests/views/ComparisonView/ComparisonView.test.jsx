@@ -44,7 +44,7 @@ describe('<CompanyCard />', () => {
     it('render correctly', () => {
       setUp()
 
-      const companyRow = screen.getByRole('row', { name: /Sample Company Online media Education/ })
+      const companyRow = screen.getByRole('row', { name: /Sample Company/ })
 
       expect(screen.getByText('Export CSV')).toBeInTheDocument()
       expect(screen.getByRole('table')).toBeInTheDocument()

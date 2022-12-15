@@ -58,8 +58,6 @@ const useStyles = makeStyles(theme => ({
 
 const columns = [
   { field: 'name', headerName: 'Company', width: 260, align: 'left', needsTooltip: false },
-  { field: 'sector', headerName: 'Sector', width: 160, align: 'left', needsTooltip: false },
-  { field: 'vertical', headerName: 'Vertical', width: 160, align: 'left', needsTooltip: false },
   { field: 'revenue', headerName: 'Revenue', width: 110, align: 'center', needsTooltip: true },
   { field: 'growth', headerName: 'Growth', width: 110, align: 'center', needsTooltip: true },
   { field: 'ebitda_margin', headerName: 'Ebitda Margin', width: 130, align: 'center', needsTooltip: true },
@@ -83,8 +81,6 @@ const columns = [
 
 const INITIAL_DATA = [
   { id: 1, key: 'name', value: '', sign: '', position: 'right', align: 'left' },
-  { id: 2, key: 'sector', value: '', sign: '', position: 'right', align: 'left' },
-  { id: 3, key: 'vertical', value: '', sign: '', position: 'right', align: 'left' },
   { id: 4, key: 'revenue', value: '', sign: '$', position: 'left', align: 'center' },
   { id: 5, key: 'growth', value: '', sign: '%', position: 'right', align: 'center' },
   { id: 6, key: 'ebitda_margin', value: '', sign: '%', position: 'right', align: 'center' },
@@ -262,8 +258,6 @@ export function ComparisonView ({ companyComparison, peersComparison, isLoading,
                       key={row?.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                       <TableCell align="left" data-testid={'name'} className={classes.sticky}>{row.name}</TableCell>
-                      <TableCell align="left">{row.sector}</TableCell>
-                      <TableCell align="left">{row.vertical}</TableCell>
                       <TableCell align="center" data-testid={'revenue'}>{getRevenueValue(row.revenue)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.growth)}</TableCell>
                       <TableCell align="center">{getPercentageValues(row.ebitda_margin)}</TableCell>

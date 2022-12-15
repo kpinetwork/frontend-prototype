@@ -303,13 +303,14 @@ export default function EditPreviewTable ({ head, body, edit, errorObject, isLoa
             head.length > 0 &&
             <TableRow key={'0-scanrios'} >
               {head.slice(0, 1)[0].map((item, index) => (
-                <TableCell
-                  key={`${index}-names`}
-                  align="center"
-                  className={`${classes.primaryHead} ${getStickyClassName(index, classes.stickyHeaderName, classes.primaryHead)}`}
-                >
-                  {item}
-                </TableCell>
+                item !== 'Sector' && item !== 'Vertical' &&
+                  <TableCell
+                    key={`${index}-names`}
+                    align="center"
+                    className={`${classes.primaryHead} ${getStickyClassName(index, classes.stickyHeaderName, classes.primaryHead)}`}
+                  >
+                    {item}
+                  </TableCell>
               )
               )}
             </TableRow>
@@ -318,7 +319,8 @@ export default function EditPreviewTable ({ head, body, edit, errorObject, isLoa
             return (
               <TableRow key={`${index}-scenario-header`}>
                 {row.map((item, columnIndex) => {
-                  return <TableCell key={columnIndex} align="center" className={`${classes.head} ${getStickyClassName(columnIndex, classes.stickyMetricNameHeader, classes.stickyMetricHeader)}`}>
+                  return columnIndex !== 2 && columnIndex !== 3 &&
+                  <TableCell key={columnIndex} align="center" className={`${classes.head} ${getStickyClassName(columnIndex, classes.stickyMetricNameHeader, classes.stickyMetricHeader)}`}>
                     {item}
                   </TableCell>
                 }
@@ -331,7 +333,8 @@ export default function EditPreviewTable ({ head, body, edit, errorObject, isLoa
             return (
               <TableRow key={`${index}-year-header`}>
                 {row.map((item, columnIndex) => {
-                  return <TableCell
+                  return columnIndex !== 2 && columnIndex !== 3 &&
+                  <TableCell
                     key={columnIndex}
                     align="center"
                     className={`${classes.head} ${getStickyClassName(columnIndex, classes.stickyYearNameHeader, classes.stickyYearHeader)}`}
@@ -350,7 +353,7 @@ export default function EditPreviewTable ({ head, body, edit, errorObject, isLoa
             return (
               <TableRow key={`${rowIndex + 4}`} className={classes.customCell}>
                 {Object.keys(row).map((key, index) => {
-                  return key !== 'scenarios'
+                  return key !== 'scenarios' && key !== 'sector' && key !== 'vertical'
                     ? <TableCellContainer
                       cellKey={`${row.id}-${key}`}
                       key={`${row.id}-${key}`}
@@ -360,10 +363,11 @@ export default function EditPreviewTable ({ head, body, edit, errorObject, isLoa
                       item={row[key]}
                       field={key}
                     />
-                    : Object.values(row[key]).map((scenario, scenarioIndex) => {
-                      const position = `${rowIndex}-${scenarioIndex}-scenario`
-                      const cellKey = isEmptyObject(scenario) ? position : `${position}-${scenario.metric_id}`
-                      return <ScenarioTableCell
+                    : key === 'scenarios'
+                      ? Object.values(row[key]).map((scenario, scenarioIndex) => {
+                        const position = `${rowIndex}-${scenarioIndex}-scenario`
+                        const cellKey = isEmptyObject(scenario) ? position : `${position}-${scenario.metric_id}`
+                        return <ScenarioTableCell
                       cellKey={cellKey}
                       key={cellKey}
                       condition={edit}
@@ -372,7 +376,8 @@ export default function EditPreviewTable ({ head, body, edit, errorObject, isLoa
                       scenarioIndex={scenarioIndex}
                       item={`${scenario.value}`}
                     />
-                    })
+                      })
+                      : null
                 })}
               </TableRow>
             )
