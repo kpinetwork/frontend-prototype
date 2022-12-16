@@ -321,10 +321,10 @@ export function ComparisonView ({ companyComparison, peersComparison, averages, 
                       <TableCell >{getPercentageValues(validAverages.sales_and_marketing)}</TableCell>
                       <TableCell >{getPercentageValues(validAverages.research_and_development)}</TableCell>
                       <TableCell >{getPercentageValues(validAverages.general_and_admin)}</TableCell>
+                      <TableCell >{validAverages.clv_cac_ratio}</TableCell>
+                      <TableCell >{validAverages.cac_ratio }</TableCell>
                       <TableCell >{getPercentageValues(validAverages.opex_of_revenue)}</TableCell>
                       <TableCell >{getRevenueValue(validAverages.revenue_per_employee)}</TableCell>
-                      <TableCell >{validAverages.cac_ratio }</TableCell>
-                      <TableCell >{validAverages.clv_cac_ratio}</TableCell>
                       <TableCell >{getPercentageValues(validAverages.gross_retention)}</TableCell>
                       <TableCell >{getPercentageValues(validAverages.net_retention)}</TableCell>
                       <TableCell >{getPercentageValues(validAverages.new_bookings_growth)}</TableCell>
