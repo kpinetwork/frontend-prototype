@@ -6,6 +6,7 @@ import { Information } from '../../src/components/HeaderInformation'
 
 const year = '2021'
 const setYear = jest.fn()
+jest.setTimeout(10000)
 const setUp = (props) => {
   const { container } = render(<Information {...props} />)
   return container
