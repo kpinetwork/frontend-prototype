@@ -26,6 +26,8 @@ const companies = [
   }
 ]
 
+jest.setTimeout(10000)
+
 const defaultProps = {
   fromUniverseOverview: true
 }

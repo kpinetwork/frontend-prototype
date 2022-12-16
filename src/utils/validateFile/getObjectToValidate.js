@@ -60,3 +60,8 @@ export const getObjectFromPreview = (head, body) => {
 export const getFirstScenarioIndex = (row) => {
   return row.findIndex(elem => elem.startsWith(':'))
 }
+
+export const getMetricsFromPreview = (head) => {
+  const metrics = [...new Set(head[1])]
+  return metrics.map(metric => metric.split(':').join('')).filter(metric => metric !== '')
+}

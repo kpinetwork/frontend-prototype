@@ -6,8 +6,6 @@ import { DescriptionCard } from '../../../../src/views/CompanyView/Components/De
 const companyDescription = {
   name: '100',
   id: '100',
-  sector: 'Semiconductors',
-  vertical: 'Manufacturing',
   inves_profile_name: 'Private equity',
   size_cohort: '$100 million+',
   margin_group: 'High growth (30%-<50%)'

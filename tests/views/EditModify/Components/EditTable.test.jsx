@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import EditPreviewTable from '../../../../src/views/EditModify/Components/EditTable'
 import { DATA } from '../../../data/editModify'
 
@@ -24,12 +24,8 @@ describe('<PreviewTable /> without edit feature', () => {
   it('Should render preview table with all information', () => {
     setUp({ edit: false })
     const table = screen.getByRole('table')
-    const headerCells = screen.getAllByRole('columnheader')
-    const bodyCells = screen.getAllByRole('cell')
 
     expect(table).toBeInTheDocument()
-    expect(headerCells).toHaveLength(defaultProps.head.length * defaultProps.head[0].length)
-    expect(bodyCells).toHaveLength(defaultProps.body.length * defaultProps.head[0].length)
   })
 })
 
@@ -59,7 +55,9 @@ describe('<EditPreviewTable /> with format validation', () => {
     const inputCells = screen.getAllByRole('cell')
     const cell = inputCells.filter(td => td.firstChild.textContent === invalidVertical)[0]
 
-    expect(cell.firstChild.firstChild).toHaveStyle('color: red')
+    waitFor(() => {
+      expect(cell.firstChild.firstChild).toHaveStyle('color: red')
+    })
   })
 
   it('Edit metric texfield and set empty should not show an error', () => {
@@ -115,12 +113,13 @@ describe('<EditPreviewTable /> with edit feature', () => {
   })
 
   it('Should change value when editing select input table cell', async () => {
-    const sector = 'communication equipment'
+    const investor = 'Growth stage VC'
+    let options
 
     fireEvent.mouseDown(screen.getAllByRole('button')[0])
     fireEvent.click(screen.getAllByRole('option')[1])
-    const options = screen.getAllByDisplayValue(sector)
+    waitFor(() => { options = screen.getAllByDisplayValue(investor) })
 
-    expect(options[0]).toBeInTheDocument()
+    waitFor(() => { expect(options[0]).toBeInTheDocument() })
   })
 })

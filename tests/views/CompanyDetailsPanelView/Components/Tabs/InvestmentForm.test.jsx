@@ -116,15 +116,4 @@ describe('<InvestmentForm />', () => {
       expect(defaultProps.onChange).toBeCalled()
     })
   })
-
-  describe('with error message', () => {
-    it('should display error message', () => {
-      const text = 'Invesmet date invalid'
-      setUp({ error: text })
-
-      const errorText = screen.getByText(text)
-
-      expect(errorText).toBeInTheDocument()
-    })
-  })
 })

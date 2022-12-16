@@ -1,13 +1,18 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { InvestmentsTab } from '../../../../../src/views/CompanyDetailsPanelView/Components/Tabs/InvestmentsTab'
 import useCompanyDetails from '../../../../../src/hooks/useCompanyDetails'
 
 jest.mock('../../../../../src/hooks/useCompanyDetails')
 
+const ADD_INVESTMENTS_RESPONSES = {
+  added_response: { added: true },
+  fail_response: { error: "Can't add investment" }
+}
+
 const hookResponse = {
-  addInvestment: jest.fn(),
+  addInvestment: () => ADD_INVESTMENTS_RESPONSES.added_response,
   investments: [
     {
       company_id: 'id',
@@ -20,7 +25,8 @@ const hookResponse = {
       investor_type: 'Private equity'
     }
   ],
-  isLoading: false
+  isLoading: false,
+  setLoading: jest.fn()
 }
 
 const setUp = () => {
@@ -94,10 +100,10 @@ describe('<InvestmentsTab/>', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Add investments' }))
 
     fireEvent.click(screen.getByRole('button', { name: 'Save' }))
-    const errorText = screen.getByText('Invalid investment date')
 
-    expect(errorText).toBeInTheDocument()
-    expect(screen.getByRole('textbox')).toBeInTheDocument()
+    const errorMessage = screen.getByText('Invalid investment date')
+
+    expect(errorMessage).toBeInTheDocument()
   })
 
   it('click on save with valid data should call service', () => {
@@ -107,7 +113,36 @@ describe('<InvestmentsTab/>', () => {
 
     fireEvent.change(screen.getByPlaceholderText('Investment date'), { target: { value: '2020-09' } })
     fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+    const message = screen.queryByText('Investment added successfully')
 
-    expect(hookResponse.addInvestment).toBeCalled()
+    expect(message).toBeInTheDocument()
+  })
+
+  it('click on save with valid data successful and close alert', () => {
+    useCompanyDetails.mockImplementation(() => hookResponse)
+    setUp()
+    fireEvent.click(screen.getByRole('button', { name: 'Add investments' }))
+
+    fireEvent.change(screen.getByPlaceholderText('Investment date'), { target: { value: '2020-09' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+    const message = screen.queryByText('Investment added successfully')
+
+    const closeMessage = screen.getByRole('button', { name: 'Close' })
+    fireEvent.click(closeMessage)
+
+    waitFor(() => { expect(message).not.toBeInTheDocument() })
+  })
+
+  it('click on save with valid data fail should show error', () => {
+    useCompanyDetails.mockImplementation(() => ({ ...hookResponse, addInvestment: () => ADD_INVESTMENTS_RESPONSES.fail_response }))
+    setUp()
+    fireEvent.click(screen.getByRole('button', { name: 'Add investments' }))
+
+    fireEvent.change(screen.getByPlaceholderText('Investment date'), { target: { value: '2020-09' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+    const message = screen.queryByText("Can't add investment")
+
+    expect(message).toBeInTheDocument()
+    expect(hookResponse.setLoading).toHaveBeenCalled()
   })
 })

@@ -93,15 +93,4 @@ describe('<ScenarioForm />', () => {
       expect(defaultProps.onChange).toHaveBeenCalled()
     })
   })
-
-  describe('with error message', () => {
-    it('should display error message', () => {
-      const text = 'Invesmet date invalid'
-      setUp({ error: text })
-
-      const errorText = screen.getByText(text)
-
-      expect(errorText).toBeInTheDocument()
-    })
-  })
 })

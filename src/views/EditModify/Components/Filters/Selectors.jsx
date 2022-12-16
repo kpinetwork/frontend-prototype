@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Select, makeStyles, Box, Grid, FormControl, InputLabel, MenuItem, Typography, Button } from '@material-ui/core'
-import { SECTORS, VERTICALS, INVESTOR_PROFILES } from '../../../../utils/constants/CompanyDescription'
+import { INVESTOR_PROFILES } from '../../../../utils/constants/CompanyDescription'
 import { BASE_SCENARIOS } from '../../../../utils/constants/Metrics'
 import { Autocomplete, Stack, TextField } from '@mui/material'
 import { FilterAlt, RestartAlt } from '@mui/icons-material'
@@ -30,6 +30,11 @@ const useStyles = makeStyles({
     display: 'flex',
     paddingTop: 10,
     flexDirection: 'row-reverse'
+  },
+  containerSelector: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
@@ -121,8 +126,8 @@ export const FilterSelectors = ({ companies, filters, setFilters }) => {
         <Typography style={{ color: 'grey' }}>Choose your filters</Typography>
       </Box>
       <Box sx ={{ backgroundColor: 'white', borderRadius: '16px', paddingBottom: 25, paddingTop: 10, paddingLeft: 10, paddingRight: 10 }}>
-        <Grid container>
-          <Grid item md={4} lg={4} xl={4}>
+        <Grid container >
+          <Grid item md={4} lg={4} xl={4} className={classes.containerSelector}>
             <Box style={{ marginLeft: 10 }}>
               <Stack style={{ width: 250 }}>
                   <Autocomplete
@@ -161,27 +166,7 @@ export const FilterSelectors = ({ companies, filters, setFilters }) => {
               </Stack>
             </Box>
           </Grid>
-          <Grid item md={4} lg={4}>
-            <SelectOptions
-              tmpFilters={tmpFilters}
-              label={'Sector'}
-              field={'sectors'}
-              names={SECTORS}
-              onChange={onChange}
-              classes={classes}
-            />
-          </Grid>
-          <Grid item lg={4} md={4}>
-          <SelectOptions
-              tmpFilters={tmpFilters}
-              label={'Vertical'}
-              field={'verticals'}
-              names={VERTICALS}
-              onChange={onChange}
-              classes={classes}
-            />
-          </Grid>
-          <Grid item lg={4} md={4}>
+          <Grid item lg={4} md={4} className={classes.containerSelector}>
             <SelectOptions
               tmpFilters={tmpFilters}
               label={'Investor Profile'}
@@ -191,7 +176,7 @@ export const FilterSelectors = ({ companies, filters, setFilters }) => {
               classes={classes}
             />
           </Grid>
-          <Grid item lg={4} md={4}>
+          <Grid item lg={4} md={4} className={classes.containerSelector}>
             <SelectOptions
               tmpFilters={tmpFilters}
               label={'Scenario'}

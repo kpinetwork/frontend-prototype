@@ -44,11 +44,11 @@ describe('<CompanyCard />', () => {
     it('render correctly', () => {
       setUp()
 
-      const companyRow = screen.getByRole('row', { name: /Sample Company Online media Education/ })
+      const companyRow = screen.getByRole('row', { name: /Sample Company/ })
 
       expect(screen.getByText('Export CSV')).toBeInTheDocument()
       expect(screen.getByRole('table')).toBeInTheDocument()
-      expect(screen.getAllByRole('row')).toHaveLength(2)
+      expect(screen.getAllByRole('row')).toHaveLength(3)
       expect(companyRow).toBeInTheDocument()
     })
 
@@ -57,7 +57,7 @@ describe('<CompanyCard />', () => {
 
       expect(screen.getByText('Export CSV')).toBeInTheDocument()
       expect(screen.getByRole('table')).toBeInTheDocument()
-      expect(screen.getAllByRole('row')).toHaveLength(1)
+      expect(screen.getAllByRole('row')).toHaveLength(2)
     })
 
     it('render metric value with NA if doesnt exist from company report', () => {
@@ -71,7 +71,7 @@ describe('<CompanyCard />', () => {
       })
 
       expect(screen.getByRole('table')).toBeInTheDocument()
-      expect(screen.getAllByRole('cell', { name: 'NA' })).toHaveLength(8)
+      expect(screen.getAllByRole('cell', { name: 'NA' })).toHaveLength(24)
     })
 
     it('render company metric values with NA or null', () => {

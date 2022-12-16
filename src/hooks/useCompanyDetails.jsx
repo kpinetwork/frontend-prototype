@@ -53,8 +53,10 @@ const useCompanyDetails = () => {
     try {
       setLoading(true)
       const response = await addCompanyInvestment(selectedCompanyID, investment)
-      await getInvestments()
-      return response.added
+      if (response.added) {
+        await getInvestments()
+      }
+      return response
     } catch (_error) {
       setLoading(false)
       return false
@@ -90,7 +92,8 @@ const useCompanyDetails = () => {
     setErrorMessage,
     setOpenDeleted,
     getInvestments,
-    addInvestment
+    addInvestment,
+    setLoading
   }
 }
 

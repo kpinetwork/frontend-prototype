@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 import { deleteTags, addTags, getTags, updateTags } from '../../src/service/tags'
 import useTagsTable from '../../src/hooks/useTagsTable'
-import { ACTION_FAILED, DELETE_TAGS_ERROR, UPDATE_TAGS_ERROR } from '../../src/utils/constants/tagsError'
+import { ACTION_FAILED } from '../../src/utils/constants/tagsError'
 
 jest.mock('../../src/service/tags')
 
@@ -20,6 +20,17 @@ const tags = {
     }
   ]
 }
+
+const UPDATE_TAGS_RESPONSES = {
+  updated_response: { updated: true },
+  fail_response: { error: "Can't update tag" }
+}
+
+const DELETE_TAGS_RESPONSES = {
+  deleted_response: { 'tags deleted': 1 },
+  fail_response: { error: "Can't delete tags" }
+}
+
 const addTagsResponse = {
   tag: {
     id: '2',
@@ -183,7 +194,7 @@ describe('useTagsTable', () => {
 
   it('useTagsTable hook should return error message when tag could not be updated', async () => {
     mockService(getTags, tags)
-    mockService(updateTags, { updated: false })
+    mockService(updateTags, UPDATE_TAGS_RESPONSES.fail_response)
     let hookResponse
     let updateResponse
 
@@ -197,7 +208,7 @@ describe('useTagsTable', () => {
     })
 
     expect(hookResponse.result.current.allowActions).toBeTruthy()
-    expect(updateResponse).toBe(UPDATE_TAGS_ERROR)
+    expect(updateResponse).toBe(UPDATE_TAGS_RESPONSES.fail_response)
     expect(updateTags).toHaveBeenCalled()
   })
 
@@ -239,7 +250,7 @@ describe('useTagsTable', () => {
 
   it('useTagsTable hook should return error message when tag could not be deleted', async () => {
     mockService(getTags, tags)
-    mockService(deleteTags, { deleted: false })
+    mockService(deleteTags, DELETE_TAGS_RESPONSES.fail_response)
     let hookResponse
     let deleteResponse
 
@@ -251,7 +262,7 @@ describe('useTagsTable', () => {
     })
 
     expect(hookResponse.result.current.allowActions).toBeTruthy()
-    expect(deleteResponse).toBe(DELETE_TAGS_ERROR)
+    expect(deleteResponse).toBe(DELETE_TAGS_RESPONSES.fail_response)
     expect(deleteTags).toHaveBeenCalled()
   })
 

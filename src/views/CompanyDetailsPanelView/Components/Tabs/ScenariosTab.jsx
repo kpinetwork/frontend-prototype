@@ -8,6 +8,7 @@ import LoadingProgress from '../../../../components/Progress'
 import ButtonActions from '../../../../components/Actions'
 import { makeStyles } from '@material-ui/core/styles'
 import { BASEMETRICS } from '../../../../utils/constants/Metrics'
+import BasicSnackBar from '../../../../components/Alert/BasicSnackBar.jsx'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,6 +50,8 @@ export function ScenariosTab () {
   const [error, setError] = useState(undefined)
   const [selectedScenarios, setSelectedScenarios] = useState([])
   const [openModal, setOpenModal] = useState(false)
+  const [showMessage, setShowMessage] = useState(false)
+  const [severity, setSeverity] = useState(undefined)
   const {
     rowsPerPage,
     metricNames,
@@ -62,7 +65,8 @@ export function ScenariosTab () {
     handleChangeRowsPerPage,
     handleSortScenarios,
     addScenario,
-    deleteScenarios
+    deleteScenarios,
+    setLoading
   } = useScenariosTable()
 
   const isSelected = (metricId) => (selectedScenarios.map(scenario => scenario.metric_id).indexOf(metricId) !== -1)
@@ -96,21 +100,33 @@ export function ScenariosTab () {
     if (validScenario()) {
       validateScenario()
       const response = await addScenario(scenario, 100, 0)
-      if (!response) {
-        setError('Something went wrong, the scenario could not be added, please try again')
+      if (response.error) {
+        setError(response.error)
+        setShowMessage(true)
+        setSeverity('error')
+        setLoading(false)
       } else {
         setScenario({})
         setOpenAdd(false)
-        setError(undefined)
+        setError('Scenario added successfully')
+        setShowMessage(true)
+        setSeverity('success')
       }
     } else {
       setError('Please fill in all the required fields')
+      setShowMessage(true)
+      setSeverity('error')
     }
   }
 
   const onDeleteModal = async () => {
     setOpenModal(false)
-    await deleteScenarios(selectedScenarios, 100, 0)
+    const response = await deleteScenarios(selectedScenarios, 100, 0)
+    if (response['scenarios deleted']) {
+      setError('Scenarios deleted: ' + response['scenarios deleted'])
+      setShowMessage(true)
+      setSeverity('success')
+    }
     setSelectedScenarios([])
     setOpenDelete(false)
   }
@@ -138,13 +154,21 @@ export function ScenariosTab () {
   return (
     <Grid>
       <Box>
+        <BasicSnackBar
+        open={showMessage}
+        onClose={() => {
+          setError(undefined)
+          setShowMessage(false)
+        }}
+        severity={severity}
+        message={error}
+        />
         {
           openAdd &&
             <Box>
               <ScenarioForm
                 scenario = {scenario}
                 metrics={metricNames}
-                error={error}
                 onChange={onChange}
                 onCancel={() => {
                   setOpenAdd(false)

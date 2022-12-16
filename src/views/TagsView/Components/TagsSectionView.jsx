@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Button, Dialog } from '@material-ui/core'
-import { Snackbar, Alert } from '@mui/material'
 import { makeStyles } from '@material-ui/core/styles'
 import { Add, DeleteOutlined, EditOutlined } from '@material-ui/icons'
 import { TagsForm } from './TagsForm'
@@ -9,9 +8,10 @@ import ButtonActions from '../../../components/Actions'
 import useTagsSection from '../../../hooks/useTagsSections'
 import useTagsTable from '../../../hooks/useTagsTable'
 import { isEmptyObject } from '../../../utils/userFunctions'
-import { NOTHING_TO_CHANGE } from '../../../utils/constants/tagsError'
+import { NOTHING_TO_CHANGE, UPDATE_TAGS_SUCCESS, DELETE_TAGS_SUCCESS } from '../../../utils/constants/tagsError'
 import { DeleteTagsDialog } from './DeleteTagsDialog'
 import LoadingProgress from '../../../components/Progress'
+import BasicSnackBar from '../../../components/Alert/BasicSnackBar'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +36,8 @@ export function TagsSectionView () {
   const [tagName, setTagName] = useState(null)
   const [companiesSelected, setCompaniesSelected] = useState([])
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [showMessage, setShowMessage] = useState(false)
+  const [severity, setSeverity] = useState(undefined)
   const { companies, companiesArray } = useTagsSection()
   const {
     total,
@@ -73,10 +75,21 @@ export function TagsSectionView () {
   }
 
   const onSave = async () => {
-    addTag(tagName, getCompaniesIds(companiesSelected))
-    setOpenAdd(false)
-    setTagName(null)
-    setCompaniesSelected([])
+    const response = await addTag(tagName, getCompaniesIds(companiesSelected))
+    if (response.error) {
+      setErrorMessage(response.error)
+      setShowMessage(true)
+      setSeverity('error')
+      setIsLoading(false)
+    } else {
+      setOpenAdd(false)
+      setErrorMessage('Tag added successfully')
+      setShowMessage(true)
+      setSeverity('success')
+      setOpenAdd(false)
+      setTagName(null)
+      setCompaniesSelected([])
+    }
   }
 
   const onCancelEdit = () => {
@@ -99,8 +112,18 @@ export function TagsSectionView () {
     if (tagsToDelete.length < 1) return
     setConfirmDelete(false)
     const message = await onDeleteTags(tagsToDelete)
-    setErrorMessage(message)
-    onCancelDelete()
+    if (message.error) {
+      setErrorMessage(message.error)
+      setShowMessage(true)
+      setSeverity('error')
+      setIsLoading(false)
+    } else {
+      setErrorMessage(DELETE_TAGS_SUCCESS)
+      setShowMessage(true)
+      setSeverity('success')
+      setOpenEdit(false)
+      onCancelDelete()
+    }
   }
 
   const buildBody = () => {
@@ -119,15 +142,21 @@ export function TagsSectionView () {
     const body = buildBody()
     if (isEmptyObject(body)) {
       setErrorMessage(NOTHING_TO_CHANGE)
-      return
+      setShowMessage(true)
+      setSeverity('warning')
+    } else {
+      const message = await updateTagsInfo(body)
+      if (message.error) {
+        setErrorMessage(message.error)
+        setShowMessage(true)
+        setSeverity('error')
+      } else {
+        setErrorMessage(UPDATE_TAGS_SUCCESS)
+        setShowMessage(true)
+        setSeverity('success')
+        setOpenEdit(false)
+      }
     }
-    const message = await updateTagsInfo(body)
-    setErrorMessage(message)
-    setOpenEdit(false)
-  }
-
-  const onCloseSnackbar = () => {
-    setErrorMessage(null)
   }
 
   useEffect(() => {
@@ -139,12 +168,15 @@ export function TagsSectionView () {
 
   return (
         <Box className={classes.root}>
-          <Snackbar open={errorMessage != null} autoHideDuration={6000}
-            onClose={onCloseSnackbar}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          >
-            <Alert severity="error">{errorMessage}</Alert>
-          </Snackbar>
+          <BasicSnackBar
+            open={showMessage}
+            onClose={() => {
+              setShowMessage(false)
+              setErrorMessage(undefined)
+            }}
+            severity={severity}
+            message={errorMessage}
+          />
           <Dialog
             PaperProps={{
               style: {

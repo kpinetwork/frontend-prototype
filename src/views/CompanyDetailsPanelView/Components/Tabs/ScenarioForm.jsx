@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export function ScenarioForm ({ onCancel, error, scenario, onChange, onSave, metrics }) {
+export function ScenarioForm ({ onCancel, scenario, onChange, onSave, metrics }) {
   const classes = useStyles()
   const [dateValue, setDateValue] = useState({})
   const [valueError, setValueError] = useState(false)
@@ -78,12 +78,6 @@ export function ScenarioForm ({ onCancel, error, scenario, onChange, onSave, met
           <CardHeader
             title={<Typography style={{ color: '#364b8a', fontSize: 16, fontWeight: 'bold' }}>Add scenario</Typography>}
           />
-          {
-            error &&
-            <Box px={2}>
-              <Typography style={{ color: 'red' }} variant='subtitle2'>{error}</Typography>
-            </Box>
-          }
           <Box style={{ display: 'flex', marginBottom: 30, justifyContent: 'start', flexWrap: 'wrap' }} px={2} component='form'>
               <FormControl required className={classes.input}>
                   <FormLabel className={classes.label}>Scenario</FormLabel>
