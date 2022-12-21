@@ -10,6 +10,7 @@ export const useDynamicReport = ({ fromUniverseOverview, selectedMetrics, select
   const [dynamicHeader, setDynamicHeader] = useState([])
   const [dynamicCompanyComparison, setDynamicCompanyComparison] = useState({})
   const [dynamicPeersComparison, setDynamicPeersComparison] = useState([])
+  const [averages, setAverages] = useState({})
   const [IsLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -41,6 +42,7 @@ export const useDynamicReport = ({ fromUniverseOverview, selectedMetrics, select
     setDynamicCompanyComparison({})
     setDynamicPeersComparison([])
     setDynamicHeader([])
+    setAverages({})
     setIsLoading(false)
   }
 
@@ -51,12 +53,14 @@ export const useDynamicReport = ({ fromUniverseOverview, selectedMetrics, select
 
       const {
         headers,
+        averages,
         companyComparisonData,
         peersComparisonDataArray
       } = destructuring(result)
       setDynamicCompanyComparison(companyComparisonData)
       setDynamicPeersComparison(peersComparisonDataArray)
       setDynamicHeader(headers)
+      setAverages(averages)
       setIsLoading(false)
     } catch (_error) {
       setDefaultValues()
@@ -69,6 +73,7 @@ export const useDynamicReport = ({ fromUniverseOverview, selectedMetrics, select
     dynamicHeader,
     dynamicCompanyComparison,
     dynamicPeersComparison,
+    averages,
     IsLoading,
     setMetrics,
     setCalendarYear
@@ -79,11 +84,13 @@ function destructuring (result) {
   const {
     company_comparison_data: companyComparisonData,
     peers_comparison_data: peersComparisonDataArray,
-    headers
+    headers,
+    averages
   } = result
   return {
     companyComparisonData,
     peersComparisonDataArray,
-    headers
+    headers,
+    averages
   }
 }
