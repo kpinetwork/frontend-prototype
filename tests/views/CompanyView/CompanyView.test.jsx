@@ -24,6 +24,12 @@ jest.mock('@components/BubbleChart', () => ({
     return <MockBubbleChart data-testid='bubble-chart-mock' />
   }
 }))
+jest.mock('@components/Filter/Filter', () => ({
+  Filter: () => {
+    const MockFilter = 'filter-mock'
+    return <MockFilter data-testid='filter-mock' />
+  }
+}))
 
 const filters = {
   growth_profile: '',
@@ -87,8 +93,8 @@ describe('<CompanyView />', () => {
       expect(screen.getByText('Please select a company of the 2022:'))
       expect(screen.getByText('Company financial profile'))
       expect(screen.getByText('Description'))
-      expect(screen.getByText('Filters'))
       expect(screen.getByTestId('bubble-chart-mock'))
+      expect(screen.getByTestId('filter-mock'))
     })
   })
 })
