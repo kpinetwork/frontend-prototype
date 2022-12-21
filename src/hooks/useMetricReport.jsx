@@ -10,6 +10,7 @@ export const useMetricReport = ({ fromUniverseOverview, selectedMetric }) => {
   const [metricCompanyComparison, setMetricCompanyComparison] = useState({})
   const [metricPeersComparison, setMetricPeersComparison] = useState([])
   const [metricIsLoading, setIsLoading] = useState(false)
+  const [averages, setAverages] = useState([])
 
   useEffect(() => {
     if (metric == null) {
@@ -35,6 +36,7 @@ export const useMetricReport = ({ fromUniverseOverview, selectedMetric }) => {
     setMetricPeersComparison([])
     setYears([])
     setIsLoading(false)
+    setAverages([])
   }
 
   const getMetricReport = async (options) => {
@@ -45,11 +47,13 @@ export const useMetricReport = ({ fromUniverseOverview, selectedMetric }) => {
       const {
         companyComparisonData,
         peersComparisonDataArray,
-        years
+        years,
+        averages
       } = destructuring(result)
       setMetricCompanyComparison(companyComparisonData)
       setMetricPeersComparison(peersComparisonDataArray)
       setYears(years)
+      setAverages(averages)
       setIsLoading(false)
     } catch (_error) {
       setDefaultValues()
@@ -62,7 +66,8 @@ export const useMetricReport = ({ fromUniverseOverview, selectedMetric }) => {
     metricCompanyComparison,
     metricPeersComparison,
     metricIsLoading,
-    setMetric
+    setMetric,
+    averages
   }
 }
 
@@ -70,11 +75,13 @@ function destructuring (result) {
   const {
     company_comparison_data: companyComparisonData,
     peers_comparison_data: peersComparisonDataArray,
-    years
+    years,
+    averages
   } = result
   return {
     companyComparisonData,
     peersComparisonDataArray,
-    years
+    years,
+    averages
   }
 }
