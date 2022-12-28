@@ -1,59 +1,296 @@
-export const DATA = {
-  head: [
-    ['UID', 'Name', 'Sector', 'Vertical', 'Investor profile', 'Actuals', ''],
-    ['', '', '', '', '', 'Revenue', 'Ebitda'],
-    ['', '', '', '', '', '2020', '2020']
+export const body = [
+  {
+    id: 'cddc6b46-ea24-4695-b3ce-ee0f9c0c4087',
+    name: 'BK Technologies',
+    sector: 'Communication Equipment',
+    vertical: 'Real Estate',
+    inves_profile_name: 'Early stage VC',
+    scenarios: [
+      {
+        scenario_id: '097bc329-d0b0-451c-aba2-7fee357869e8',
+        scenario: 'Actuals',
+        year: '2019',
+        metric_id: 'df142944-f62f-430f-92ac-3a60358849d5',
+        metric: 'Revenue',
+        value: 45
+      },
+      {
+        scenario_id: 'ac7d7264-503f-47d9-91db-d5590343a862',
+        scenario: 'Actuals',
+        year: '2020',
+        metric_id: 'a58ec76f-1b4c-4034-8225-16e37e5dfa6f',
+        metric: 'Revenue',
+        value: 43
+      }
+    ]
+  },
+  {
+    id: '277dcc68-203e-487b-b282-bbaa5bdef48b',
+    name: 'Clearfield, Inc.',
+    sector: 'Communication Equipment',
+    vertical: 'Banking',
+    inves_profile_name: 'Founder backed',
+    scenarios: [
+      {
+        scenario_id: 'e04733fd-cdf6-4667-8dde-512cd47021b4',
+        scenario: 'Actuals',
+        year: '2019',
+        metric_id: '6aa9c26c-c851-4c21-950c-1d5fb0f9e62c',
+        metric: 'Revenue',
+        value: 83
+      },
+      {
+        scenario_id: '974122d1-3eba-49e6-b33c-af7eccb102a8',
+        scenario: 'Actuals',
+        year: '2020',
+        metric_id: '15d709bd-f5ee-4167-9552-768fcf8431d2',
+        metric: 'Revenue',
+        value: 86
+      },
+      {
+        scenario_id: '37aae755-a62d-44ee-988a-cd9e8627b625',
+        scenario: 'Actuals',
+        year: '2021',
+        metric_id: '4c117606-39df-4541-a063-f78ecfbccad5',
+        metric: 'Revenue',
+        value: 110
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {
+        scenario_id: 'e04733fd-cdf6-4667-8dde-512cd47021b4',
+        scenario: 'Actuals',
+        year: '2019',
+        metric_id: 'b3dd4d7b-05f1-42f4-8169-5cb54e655de3',
+        metric: 'Ebitda',
+        value: 9
+      },
+      {
+        scenario_id: '974122d1-3eba-49e6-b33c-af7eccb102a8',
+        scenario: 'Actuals',
+        year: '2020',
+        metric_id: '7e6a1582-5812-4d39-89c2-248808c16e6f',
+        metric: 'Ebitda',
+        value: 7
+      },
+      {
+        scenario_id: '37aae755-a62d-44ee-988a-cd9e8627b625',
+        scenario: 'Actuals',
+        year: '2021',
+        metric_id: '8b5448fc-3f97-4821-8d57-a3cf818ae419',
+        metric: 'Ebitda',
+        value: 18
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {
+        scenario_id: 'd2f032b7-59dc-4b70-b875-8a5b54bdf20b',
+        scenario: 'Actuals',
+        year: '2021',
+        metric_id: '2c36e957-2dee-4b71-a60e-b1a4c0412f75',
+        metric: 'Long term debt',
+        value: 15
+      },
+      {},
+      {
+        scenario_id: '345e6e09-10ee-462e-a2d0-7618f937e86b',
+        scenario: 'Budget',
+        year: '2019',
+        metric_id: '9503aa8b-96e1-4725-bb5c-b6ae8eef1697',
+        metric: 'Revenue',
+        value: 81
+      },
+      {
+        scenario_id: '5686ca6d-ceaa-4bf0-b8ac-948f06c734b9',
+        scenario: 'Budget',
+        year: '2020',
+        metric_id: '16600c94-1974-44c9-aaf8-77713e632d25',
+        metric: 'Revenue',
+        value: 88
+      },
+      {
+        scenario_id: 'f5284772-494b-4926-a321-14126c52c0ca',
+        scenario: 'Budget',
+        year: '2021',
+        metric_id: 'c69fb96f-a4b1-4ff5-a4f1-cb6707b07b19',
+        metric: 'Revenue',
+        value: 114
+      },
+      {
+        scenario_id: '8dea87de-8279-4982-9ddf-aabdb69d9b7b',
+        scenario: 'Budget',
+        year: '2022',
+        metric_id: '7d5374cb-4a5a-403b-ae0a-5de2a506d41d',
+        metric: 'Revenue',
+        value: 124
+      },
+      {
+        scenario_id: '345e6e09-10ee-462e-a2d0-7618f937e86b',
+        scenario: 'Budget',
+        year: '2019',
+        metric_id: '83c9e7cf-870c-413e-a98a-3aa4adbc7031',
+        metric: 'Ebitda',
+        value: 9
+      },
+      {
+        scenario_id: '5686ca6d-ceaa-4bf0-b8ac-948f06c734b9',
+        scenario: 'Budget',
+        year: '2020',
+        metric_id: '5a332263-d080-4aa7-8946-97a9dd5e5a47',
+        metric: 'Ebitda',
+        value: 7
+      },
+      {
+        scenario_id: 'f5284772-494b-4926-a321-14126c52c0ca',
+        scenario: 'Budget',
+        year: '2021',
+        metric_id: '5b89dbd1-7931-48bc-8ba0-837704071491',
+        metric: 'Ebitda',
+        value: 18
+      },
+      {
+        scenario_id: '8dea87de-8279-4982-9ddf-aabdb69d9b7b',
+        scenario: 'Budget',
+        year: '2022',
+        metric_id: '399e1ee2-1943-4efe-a7b5-df2d21bb7936',
+        metric: 'Ebitda',
+        value: 15
+      }
+    ]
+  }
+]
+export const head = [
+  [
+    'Unique ID',
+    'Name',
+    'Sector',
+    'Vertical',
+    'Investor Profile',
+    'Actuals',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    'Budget',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    ''
   ],
-  body: [
-    {
-      id: '123',
-      name: 'Company A',
-      sector: 'Application Software',
-      vertical: 'Engineering',
-      inves_profile_name: 'Early stage VC',
-      scenarios: [
-        {
-          scenario_id: '1',
-          metric_id: '1',
-          scenario: 'Actuals',
-          metric: 'Revenue',
-          year: 2020,
-          value: 4.56
-        },
-        {
-          scenario_id: '1',
-          metric_id: '2',
-          scenario: 'Actuals',
-          metric: 'Ebitda',
-          year: 2020,
-          value: 11.1
-        }
-      ]
-    },
-    {
-      id: '124',
-      name: 'Company B',
-      sector: 'Application Software',
-      vertical: 'Engineering',
-      inves_profile_name: 'Growth stage VC',
-      scenarios: [
-        {
-          scenario_id: '2',
-          metric_id: '3',
-          scenario: 'Actuals',
-          metric: 'Revenue',
-          year: 2020,
-          value: 8.01
-        },
-        {
-          scenario_id: '2',
-          metric_id: '4',
-          scenario: 'Actuals',
-          metric: 'Ebitda',
-          year: 2020,
-          value: 21.3
-        }
-      ]
-    }
+  [
+    '',
+    '',
+    '',
+    '',
+    '',
+    'Revenue',
+    '',
+    '',
+    '',
+    'Cost of goods',
+    '',
+    'Sales & marketing',
+    '',
+    'Research & development',
+    'General & administration',
+    'Other operating expenses',
+    'Ebitda',
+    '',
+    '',
+    'Run rate revenue',
+    '',
+    'CLV',
+    '',
+    'CAC',
+    'Upsells',
+    'New bookings',
+    '',
+    'Headcount',
+    'Long term debt',
+    'Cash flow from operations',
+    'Revenue',
+    '',
+    '',
+    '',
+    'Ebitda',
+    '',
+    '',
+    ''
+  ],
+  [
+    '',
+    '',
+    '',
+    '',
+    '',
+    '2019',
+    '2020',
+    '2021',
+    '2023',
+    '2020',
+    '2021',
+    '2020',
+    '2021',
+    '2021',
+    '2021',
+    '2021',
+    '2019',
+    '2020',
+    '2021',
+    '2020',
+    '2021',
+    '2020',
+    '2021',
+    '2021',
+    '2021',
+    '2020',
+    '2021',
+    '2021',
+    '2021',
+    '2022',
+    '2019',
+    '2020',
+    '2021',
+    '2022',
+    '2019',
+    '2020',
+    '2021',
+    '2022'
   ]
-}
+]

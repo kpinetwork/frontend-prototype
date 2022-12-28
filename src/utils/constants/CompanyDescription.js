@@ -49,6 +49,15 @@ export const INVESTOR_PROFILES = [
   'Public'
 ]
 
+export const INVESTOR_PROFILES_OBJECT = {
+  Public: 'Public',
+  'Early stage VC': 'Early stage VC',
+  'Growth stage VC': 'Growth stage VC',
+  'Private equity': 'Private equity',
+  'Founder backed': 'Founder backed',
+  'Family office': 'Family office'
+}
+
 export const COMPANY_DESCRIPTION = [
   {
     name: 'name',
