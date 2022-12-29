@@ -65,7 +65,8 @@ export const processScenarios = (scenarios, headers, newValues, value) => {
         metric: getHeaderValue(headers[1], index + 5),
         scenario: getHeaderValue(headers[0], index + 5),
         company_id: value,
-        value: scenario.value
+        value: scenario.value,
+        period_name: 'Full-year'
       })
     }
   })
