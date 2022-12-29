@@ -32,7 +32,7 @@ const useDynamicReportResponse = {
   dynamicHeader: ['name', 'actuals_revenue'],
   dynamicCompanyComparison: companies[0],
   dynamicPeersComparison: companies,
-  investYear: 'None',
+  averages: { actuals_revenue: 10 },
   calendarYear: 2020,
   metrics: ['actuals_revenue'],
   setMetrics: jest.fn(),
@@ -50,7 +50,17 @@ describe('<DynamicReport />', () => {
 
       expect(screen.getByText('Calendar Year')).toBeInTheDocument()
       expect(screen.getByTestId('metric-selector')).toBeInTheDocument()
-      expect(screen.getAllByRole('row')).toHaveLength(2 + companies.length)
+      expect(screen.getAllByRole('row')).toHaveLength(3 + companies.length)
+      expect(header).toBeInTheDocument()
+    })
+
+    it('should render header without label when header is not found', () => {
+      const hookResponse = { ...useDynamicReportResponse, dynamicHeader: ['name', 'test'] }
+      useDynamicReport.mockImplementation(() => hookResponse)
+      setUp()
+
+      const header = screen.getByRole('row', { name: 'Name test' })
+
       expect(header).toBeInTheDocument()
     })
 
@@ -157,7 +167,7 @@ describe('<DynamicReport />', () => {
         }))
       setUp()
 
-      expect(screen.getAllByText('NA')).toHaveLength(1)
+      expect(screen.getAllByText('NA')).toHaveLength(2)
     })
   })
 })
