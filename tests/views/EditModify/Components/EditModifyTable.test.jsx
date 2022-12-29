@@ -33,11 +33,13 @@ describe('<EditModifyTable />', () => {
     it('Should render table inside container when send valid body', () => {
       useEditModify.mockImplementation(() => hookResponse)
       setUp()
+
       expect(screen.getByTestId('edit-modify-table-container')).toBeInTheDocument()
     })
     it('Should render table inside container when send null body', () => {
       useEditModify.mockImplementation(() => customHookResponse)
       setUp()
+
       expect(screen.getByTestId('edit-modify-table-container')).toBeInTheDocument()
     })
 
@@ -45,10 +47,12 @@ describe('<EditModifyTable />', () => {
       useEditModify.mockImplementation(() => hookResponse)
       const onBulkUpdate = jest.fn()
       render(<EditModifyTable onBulkUpdate={onBulkUpdate} />)
+
       const form = screen.getByTitle('Edit All')
       fireEvent.click(form)
       const button = screen.getByTitle('Save all changes')
       fireEvent.click(button)
+
       expect(onBulkUpdate).toBeCalledTimes(0)
     })
   })

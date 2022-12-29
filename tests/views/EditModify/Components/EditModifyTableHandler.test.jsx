@@ -135,11 +135,13 @@ function TestProcessScenarios () {
 test('getHeaderValue returns the correct result', () => {
   render(<TestGetHeaderValue />)
   const element = screen.getByText('c')
+
   expect(element).toBeInTheDocument()
 })
 
 test('getColumnsValues returns the correct columns', () => {
   render(<TestGetColumnsValues />)
+
   expect(screen.getAllByText('1')).toHaveLength(1)
   expect(screen.getAllByText('2')).toHaveLength(1)
   expect(screen.getAllByText('3')).toHaveLength(1)
@@ -150,12 +152,14 @@ test('getColumnsValues returns the correct columns', () => {
 
 test('processChanges returns the correct data', () => {
   render(<TestProcessChanges />)
+
   expect(screen.getAllByText('Test 1')).toHaveLength(1)
   expect(screen.getAllByText('Test 2')).toHaveLength(1)
 })
 
 test('processScenarios returns the correct data', () => {
   render(<TestProcessScenarios />)
+
   expect(screen.getAllByText('10')).toHaveLength(1)
   expect(screen.getAllByText('20')).toHaveLength(1)
   expect(screen.getAllByText('30')).toHaveLength(1)
@@ -163,6 +167,7 @@ test('processScenarios returns the correct data', () => {
 
 test('getModifiedData returns the correct data', () => {
   render(<TestGetModifiedData />)
+
   expect(screen.getAllByText('Company 1')).toHaveLength(1)
   expect(screen.getAllByText('Company 2')).toHaveLength(1)
 })

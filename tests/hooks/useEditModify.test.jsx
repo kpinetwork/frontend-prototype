@@ -197,10 +197,10 @@ describe('useEditModify', () => {
   })
 
   it('edit modify hook should execute updateEditData method when send changes', async () => {
-    // Arrange
     const { result } = renderHook(() => useEditModify())
     const addSpy = jest.spyOn(result.current, 'updateEditData')
     result.current.updateEditData(mockModifiedData)
+
     expect(addSpy).toHaveBeenCalledWith(mockModifiedData)
   })
 
@@ -235,6 +235,7 @@ describe('useEditModify', () => {
     })
     const addSpy = jest.spyOn(hookResponse.result.current, 'deleteMetrics')
     hookResponse.result.current.deleteMetrics(deleteObject)
+
     expect(addSpy).toBeCalledTimes(1)
   })
 

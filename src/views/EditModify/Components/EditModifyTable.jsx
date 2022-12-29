@@ -7,7 +7,6 @@ import LoadingProgress from '../../../components/Progress'
 import { getColumnsValues, getModifiedData } from './EditModifyTableHandler'
 
 import { makeStyles } from '@material-ui/core/styles'
-// import { body, head, modifying, isLoading } from './tempFile'
 
 const useStyles = makeStyles(theme => ({
   head: {
