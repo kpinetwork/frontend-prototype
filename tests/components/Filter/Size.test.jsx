@@ -7,7 +7,14 @@ import { SIZE } from '../../data/filters'
 const defaultProps = {
   setFilters: jest.fn(),
   fillFilters: false,
-  selectedList: '<$10 million'
+  selectedList: '<$10 million',
+  rangesOptions: [
+    '<$10 million',
+    '$10-<$30 million',
+    '$30-<$50 million',
+    '$50-$100 million',
+    '$100 million+'
+  ]
 }
 
 const setUp = (props) => {

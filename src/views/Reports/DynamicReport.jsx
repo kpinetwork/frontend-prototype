@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead } from '@material-ui/core'
+import { Box, TableCell, Table, TableContainer, Paper, TableRow, TableBody, TableHead, TableFooter } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { YearSelector } from '../../components/YearSelector'
 import { MetricSelector } from '../../components/MetricSelector'
@@ -47,6 +47,19 @@ const useStyles = makeStyles(theme => ({
     position: 'sticky',
     top: '105px',
     background: '#dbdbdb'
+  },
+  stickyFooter: {
+    zIndex: 1000,
+    position: 'sticky',
+    bottom: 0,
+    backgroundColor: 'white',
+    '& td': {
+      zIndex: 800,
+      color: 'black',
+      textAlign: 'left',
+      fontWeight: 'bold',
+      fontSize: 14
+    }
   }
 }))
 
@@ -57,6 +70,7 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
     dynamicHeader,
     dynamicCompanyComparison,
     dynamicPeersComparison,
+    averages,
     isLoading,
     setMetrics,
     setCalendarYear
@@ -195,6 +209,16 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
                         </TableRow>
                       ))}
                     </TableBody>
+                    <TableFooter className={classes.stickyFooter}>
+                      <TableRow>
+                        <TableCell align={'left'}>Averages</TableCell>
+                        {dynamicHeader.slice(1).map((metric, index) => (
+                            <TableCell key={index} align="left">
+                              {getFormatValue(averages[metric], metric)}
+                            </TableCell>
+                        ))}
+                      </TableRow>
+                    </TableFooter>
                   </Table>
                 </TableContainer>
               : <HeadBodyGrid/>}

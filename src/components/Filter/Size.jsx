@@ -3,23 +3,7 @@ import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
 import CustomTooltipTitle from '../CustomTooltip'
 import { tooltipTitles } from '../../utils/tooltipTitles'
 
-const options = [
-  '<$10 million',
-  '$10-<30 million',
-  '$30-<$50 million',
-  '$50-$100 million',
-  '$100 million+'
-]
-
-const optionsLabel = [
-  '<$10 million',
-  '$10-<$30 million',
-  '$30-<$50 million',
-  '$50-$100 million',
-  '$100 million+'
-]
-
-export function Size ({ setFilters, fillFilters, selectedList }) {
+export function Size ({ setFilters, fillFilters, selectedList, rangesOptions }) {
   const [selected, setSelected] = useState(() => {
     if (selectedList !== '') {
       return selectedList.split(',')
@@ -33,12 +17,12 @@ export function Size ({ setFilters, fillFilters, selectedList }) {
     }
   }, [selectedList])
 
-  const isAllSelected = options.length > 0 && selected.length === options.length
+  const isAllSelected = rangesOptions.length > 0 && selected.length === rangesOptions.length
 
   const handleChange = (event) => {
     const value = event.target.value
     if (value === 'all') {
-      const all = selected.length === options.length ? [] : options
+      const all = selected.length === rangesOptions.length ? [] : rangesOptions
       setFilters((prev) => ({ ...prev, size: all.toString() }))
       setSelected(all)
       return
@@ -73,15 +57,15 @@ export function Size ({ setFilters, fillFilters, selectedList }) {
           <Checkbox
             color='default'
             checked={isAllSelected}
-            indeterminate={selected.length > 0 && selected.length < options.length}
+            indeterminate={selected.length > 0 && selected.length < rangesOptions.length}
             value="all"
             onChange={handleChange}
             />}
         label="Select All"
       />
-      {options.map((option, index) => (
+      {rangesOptions.map((option, index) => (
         <FormControlLabel
-          key={option}
+          key={index}
           control={
             <Checkbox
               color='default'
@@ -89,7 +73,7 @@ export function Size ({ setFilters, fillFilters, selectedList }) {
               value={option}
               onChange={handleChange}
             />}
-          label={optionsLabel[index]}
+          label={option}
         />
       ))}
     </FormGroup>
