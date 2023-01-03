@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Table, TableRow, TableBody, TableCell, TableContainer, TableHead, Paper, TextField, Box, Select, MenuItem, Typography } from '@material-ui/core'
-import { VERTICALS, SECTORS, INVESTOR_PROFILES } from './../../../utils/constants/CompanyDescription'
+import { INVESTOR_PROFILES } from './../../../utils/constants/CompanyDescription'
 import { makeStyles } from '@material-ui/core/styles'
 import { getFirstScenarioIndex } from '../../../utils/validateFile/getObjectToValidate'
 
@@ -110,15 +110,13 @@ const getLowerObject = (elements) => {
 }
 
 const options = {
-  2: getLowerObject(SECTORS),
-  3: getLowerObject(VERTICALS),
-  4: getLowerObject(INVESTOR_PROFILES)
+  2: getLowerObject(INVESTOR_PROFILES)
 }
 
 export default function PreviewTable ({ head, body, edit, errorObject, isLoading }) {
   const classes = useStyles()
   const [isChange, setChange] = useState(false)
-  const selectIndex = [2, 3, 4]
+  const selectIndex = [2]
 
   const onCellChange = (rowIndex, columnIndex, value) => {
     body[rowIndex][columnIndex] = value

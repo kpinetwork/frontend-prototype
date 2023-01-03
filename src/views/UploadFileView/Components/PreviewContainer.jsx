@@ -73,9 +73,9 @@ export default function PreviewContainer (props) {
   }
 
   const mapParsedData = (parsedData) => {
-    buildErrorObject(parsedData.slice(3))
-    setHeadRows(parsedData.slice(0, 3))
-    setEditedRows([...parsedData].slice(3))
+    buildErrorObject(parsedData.slice(4))
+    setHeadRows(parsedData.slice(0, 4))
+    setEditedRows([...parsedData].slice(4))
     setLoadingInfo(false)
   }
 

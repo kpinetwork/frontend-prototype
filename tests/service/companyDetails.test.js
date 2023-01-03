@@ -70,6 +70,14 @@ describe('companyDetails service', () => {
 
       expect(axios.post).toHaveBeenCalledWith(`${companiesUrl}/${SCENARIO.company_id}/scenarios`, SCENARIO, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
     })
+
+    it('add scenario API call fails should return error message', async () => {
+      axios.post.mockRejectedValueOnce({ response: 'Scenario could not be added' })
+
+      await addCompanyScenario('id', {}).catch(err => {
+        expect(err).toEqual({ error: 'Scenario could not be added' })
+      })
+    })
   })
 
   describe('add investment', () => {
@@ -102,6 +110,14 @@ describe('companyDetails service', () => {
       expect(axios.post).toHaveBeenCalledWith(`${investments}/${response.company_id}`, request,
         { headers: { Authorization: null, 'Content-Type': 'application/json' } })
     })
+
+    it('add investment API call fails should return error message', async () => {
+      axios.post.mockRejectedValueOnce({ response: 'Investement could not be added' })
+
+      await addCompanyInvestment('id', {}).catch(err => {
+        expect(err).toEqual({ error: 'Investement could not be added' })
+      })
+    })
   })
 
   describe('delete scenarios', () => {
@@ -122,6 +138,14 @@ describe('companyDetails service', () => {
       await deleteCompanyScenarios(SCENARIO.company_id, scenarios)
 
       expect(axios.delete).toHaveBeenCalledWith(`${companiesUrl}/${SCENARIO.company_id}/scenarios`, { data: { scenarios: scenarios }, headers: { Authorization: null, 'Content-Type': 'application/json' } })
+    })
+
+    it('delete scenario API call fails should return error message', async () => {
+      axios.delete.mockRejectedValueOnce({ response: 'Scenario could not be deleted' })
+
+      await deleteCompanyScenarios('id', [{}]).catch(err => {
+        expect(err).toEqual({ error: 'Scenario could not be deleted' })
+      })
     })
   })
 

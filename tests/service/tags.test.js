@@ -49,6 +49,14 @@ describe('tags service', () => {
 
       expect(axios.post).toHaveBeenCalledWith(`${tagsUrl}`, { name: 'Tag Name', companies: ['1', '2'] }, { headers: { Authorization: null, 'Content-Type': 'application/json' } })
     })
+
+    it('Add tag api call fails should return error message', async () => {
+      axios.post.mockRejectedValueOnce({ response: 'Tag could not be added' })
+
+      await addTags('Tag Name', ['1']).catch(err => {
+        expect(err).toEqual({ error: 'Tag could not be added' })
+      })
+    })
   })
 
   describe('update tags', () => {
@@ -58,6 +66,14 @@ describe('tags service', () => {
 
       expect(axios.put).toHaveBeenCalledWith(tagsUrl, {},
         { headers: { Authorization: null, 'Content-Type': 'application/json' } })
+    })
+
+    it('Update tags api call fails should return error message', async () => {
+      axios.put.mockRejectedValueOnce({ response: 'Tags could not be updated' })
+
+      await updateTags({}).catch(err => {
+        expect(err).toEqual({ error: 'Tags could not be updated' })
+      })
     })
   })
 
@@ -72,6 +88,14 @@ describe('tags service', () => {
           headers: { Authorization: null, 'Content-Type': 'application/json' },
           data: tagsToDelete
         })
+    })
+
+    it('Delete tags api call fails should return error message', async () => {
+      axios.delete.mockRejectedValueOnce({ response: 'Tags could not be deleted' })
+
+      await deleteTags({}).catch(err => {
+        expect(err).toEqual({ error: 'Tags could not be deleted' })
+      })
     })
   })
 })

@@ -6,13 +6,14 @@ import PreviewTable from '../../../../src/views/UploadFileView/Components/Previe
 
 const props = {
   head: [
-    ['UID', 'Name', 'Sector', 'Vertical', 'Investor profile', 'Size cohort', ':Actuals', ''],
-    ['', '', '', '', '', '', ':Revenue', ':Ebitda'],
-    ['', '', '', '', '', '', '2020', '2020']
+    ['UID', 'Name', 'Investor profile', 'Size cohort', ':Actuals', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', ':Revenue', '', '', '', '', ':Ebitda', '', '', '', ''],
+    ['', '', '', '', '2020', '', '', '', '', '2020', '', '', '', ''],
+    ['', '', '', '', 'Q1', 'Q2', 'Q3', 'Q4', 'Full-year', 'Q1', 'Q2', 'Q3', 'Q4', 'Full-year']
   ],
   body: [
-    ['', 'Company A', 'Application Software', 'Engineering', 'Early stage VC', '100+', '4.56', '11.1'],
-    ['', 'Company BC', 'Application Software', 'Engineering', 'Growth stage VC', '<10', '8.01', '21.3']
+    ['', 'Company A', 'Early stage VC', '100+', '4.56', '4.56', '4.56', '4.56', '4.56', '11.1', '11.1', '11.1', '11.1', '11.1'],
+    ['', 'Company BC', 'Growth stage VC', '<10', '8.01', '8.01', '8.01', '8.01', '8.01', '21.3', '21.3', '21.3', '21.3', '21.3']
   ],
   errorObject: {
     0: [],
@@ -42,7 +43,7 @@ describe('<PreviewTable /> with format validation', () => {
     setUp({
       edit: false,
       body: [
-        ['', ' A ', 'Application Software', 'Engineering', 'Early stage VC', '', invalidMetric, '11.1']
+        ['', ' A ', 'Early stage VC', '', invalidMetric, '11.1', '11.1', '11.1', '11.1', '11.1', '11.1', '11.1', '11.1', '11.1']
       ]
     })
     const inputCells = screen.getAllByRole('cell')
@@ -52,15 +53,15 @@ describe('<PreviewTable /> with format validation', () => {
   })
 
   it('Should render preview table with select cell error style', () => {
-    const invalidVertical = 'Engineering 2'
+    const invalidInvestor = 'Early stage VC 2'
     setUp({
       edit: false,
       body: [
-        ['Hola', ' A ', 'Application Software', invalidVertical, 'Early stage VC', '', '4,56', '11.1']
+        ['Hola', ' A ', invalidInvestor, '100+', '', '4,56', '11.1', '', '', '', '', '', '', '']
       ]
     })
     const inputCells = screen.getAllByRole('cell')
-    const cell = inputCells.filter(td => td.firstChild.textContent === invalidVertical)[0]
+    const cell = inputCells.filter(td => td.firstChild.textContent === invalidInvestor)[0]
 
     expect(cell.firstChild.firstChild).toHaveStyle('color: red')
   })
@@ -69,7 +70,7 @@ describe('<PreviewTable /> with format validation', () => {
     setUp({
       edit: true,
       body: [
-        ['Hola', ' A ', 'Application Software', 'Engineering', 'Early stage VC', 'Size', '3,78', '11.1']
+        ['Hola', ' A ', 'Early stage VC', 'Size', '3,78', '11.1', '', '', '', '', '', '', '', '']
       ]
     })
     const inputCells = screen.getAllByRole('textbox')
@@ -91,7 +92,7 @@ describe('<PreviewTable /> with edit feature', () => {
     const inputCells = screen.getAllByRole('textbox')
 
     expect(table).toBeInTheDocument()
-    expect(inputCells).toHaveLength(props.body.length * 4)
+    expect(inputCells).toHaveLength(props.body.length * 12)
   })
 
   it('Should change value when editing textfield table cell', () => {
@@ -105,11 +106,11 @@ describe('<PreviewTable /> with edit feature', () => {
   })
 
   it('Should change value when editing select input table cell', async () => {
-    const sector = 'communication equipment'
+    const investor = 'Private equity'
 
     fireEvent.mouseDown(screen.getAllByRole('button')[0])
-    fireEvent.click(screen.getAllByRole('option')[1])
-    const options = screen.getAllByDisplayValue(sector)
+    fireEvent.click(screen.getAllByRole('option')[2])
+    const options = screen.getAllByText(investor)
 
     expect(options[0]).toBeInTheDocument()
   })
