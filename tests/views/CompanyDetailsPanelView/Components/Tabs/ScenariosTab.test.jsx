@@ -179,6 +179,25 @@ describe('<ScenariosTab/>', () => {
 
       waitFor(() => { expect(message).not.toBeInTheDocument() })
     })
+
+    it('click on save with valid data and fail response should return error message', async () => {
+      const customResponse = { ...hookResponse, addScenario: () => ADD_SCENARIOS_RESPONSES.fail_response }
+      useScenariosTable.mockImplementation(() => customResponse)
+      setUp()
+
+      fireEvent.click(screen.getByRole('button', { name: 'Add scenario' }))
+      await waitFor(() => userEvent.click(getByRole(screen.getByTestId('scenario-selector'), 'button')))
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Actuals' })))
+      await userEvent.click(getByRole(screen.getByTestId('metric-name-selector'), 'button'))
+      await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Revenue' })), { timeout: 10000 })
+      fireEvent.click(screen.getByPlaceholderText('year'))
+      fireEvent.click(screen.getByRole('button', { name: '2023' }))
+      fireEvent.change(screen.getByPlaceholderText('metric value'), { target: { value: '123' } })
+      await waitFor(() => fireEvent.click(screen.getByText('Save')))
+      const message = screen.queryByText("Can't add scenario")
+
+      expect(message).toBeInTheDocument()
+    })
   })
 
   describe('delete scenarios', () => {
