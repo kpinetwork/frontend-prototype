@@ -42,6 +42,7 @@ export function UsersPanelTable ({ classes, roleValue }) {
               {users.map((user) => (
                 <TableRow key={user?.email}>
                   <TableCell
+                  style={{ cursor: 'pointer' }}
                     onClick={(_) => {
                       changeRoute()
                       setSelectedEmail(user?.email)
