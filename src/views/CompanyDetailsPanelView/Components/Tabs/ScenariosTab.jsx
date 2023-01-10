@@ -91,7 +91,7 @@ export function ScenariosTab () {
 
   const onChange = async (value, type) => {
     setScenario({ ...scenario, [type]: value })
-    if (value === 'Full-year' || scenario.period_name === 'Full-year') {
+    if (value === 'Full-year') {
       setNeedsToolTip(true)
     } else {
       setNeedsToolTip(false)
@@ -120,6 +120,8 @@ export function ScenariosTab () {
         setError('Scenario added successfully')
         setShowMessage(true)
         setSeverity('success')
+        setNeedsToolTip(false)
+        setIsEditting(false)
       }
     } else {
       setError('Please fill in all the required fields')
