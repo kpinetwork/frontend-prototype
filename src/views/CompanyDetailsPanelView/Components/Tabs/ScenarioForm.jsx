@@ -63,6 +63,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+const toolTipMessage = 'In case the selected period is full year, the sum of all periods in quarters for the selected year and scenario will be taken into account. If there is not a value it is because there is not information of quarters registered. The value can be edited.'
+
 export function ScenarioForm ({ onCancel, scenario, onChange, onSave, metrics, needsToolTip, setIsEditting, isEditting, getFullYearTotal, setScenario }) {
   const classes = useStyles()
   const [dateValue, setDateValue] = useState({})
@@ -171,7 +173,7 @@ export function ScenarioForm ({ onCancel, scenario, onChange, onSave, metrics, n
                       }
                   </Select>
                   {needsToolTip
-                    ? <Tooltip title="Full year amount" placement="top">
+                    ? <Tooltip title={toolTipMessage} placement="top">
                     <Help style={{ color: '#2f5487', fontSize: 18 }}/>
                   </Tooltip>
                     : ''}
