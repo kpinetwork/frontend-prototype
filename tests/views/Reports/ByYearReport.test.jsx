@@ -17,7 +17,7 @@ describe('<ByYearReport />', () => {
     setup({ fromUniverseOverview })
 
     expect(screen.getByText('Calendar Year')).toBeInTheDocument()
-    expect(screen.getByText('2022')).toBeInTheDocument()
+    expect(screen.getByText('2023')).toBeInTheDocument()
     expect(screen.getByRole('table')).toBeInTheDocument()
     expect(screen.getAllByRole('row')).toHaveLength(2)
   })
