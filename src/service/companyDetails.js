@@ -72,3 +72,13 @@ export const deleteCompany = async (companyID) => {
   const data = await response.data
   return data
 }
+
+export const getFullYearTotalAmount = async (options) => {
+  const { selectedCompanyID: companyID, scenario, metric, year } = options
+  const headers = await getAuthorizationHeader()
+  const response = await axios.get(`${baseUrl}/full_year/${companyID}?scenario=${scenario}&metric=${metric}&year=${year}`, {
+    headers: headers
+  })
+  const data = await response.data
+  return data
+}

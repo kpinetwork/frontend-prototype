@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-import { Box, FormControl, Select, MenuItem, FormLabel, makeStyles, TextField, Card, CardHeader, Typography, InputAdornment } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { Box, FormControl, Select, MenuItem, FormLabel, makeStyles, TextField, Card, CardHeader, Typography, InputAdornment, Tooltip } from '@material-ui/core'
 import ButtonActions from '../../../../components/Actions'
-import { BASE_SCENARIOS } from '../../../../utils/constants/Metrics'
+import { BASE_SCENARIOS, METRIC_PERIOD_NAMES } from '../../../../utils/constants/Metrics'
 import { CardActions } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { Help } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -62,7 +63,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export function ScenarioForm ({ onCancel, scenario, onChange, onSave, metrics }) {
+const toolTipMessage = 'In case the selected period is full year, the sum of all periods in quarters for the selected year and scenario will be taken into account. If there is not a value it is because there is not information of quarters registered. The value can be edited.'
+
+export function ScenarioForm ({ onCancel, scenario, onChange, onSave, metrics, needsToolTip, setIsEditting, isEditting, getFullYearTotal, setScenario }) {
   const classes = useStyles()
   const [dateValue, setDateValue] = useState({})
   const [valueError, setValueError] = useState(false)
@@ -72,6 +75,17 @@ export function ScenarioForm ({ onCancel, scenario, onChange, onSave, metrics })
     date.setFullYear(date.getFullYear() + years)
     return date
   }
+
+  const getValue = async () => {
+    if (needsToolTip && !isEditting) {
+      const total = await getFullYearTotal(scenario)
+      setScenario({ ...scenario, value: total })
+    }
+  }
+
+  useEffect(() => {
+    getValue()
+  }, [needsToolTip])
 
   return (
       <Card className={classes.form}>
@@ -142,12 +156,36 @@ export function ScenarioForm ({ onCancel, scenario, onChange, onSave, metrics })
                   </LocalizationProvider>
               </FormControl>
               <FormControl required className={classes.input}>
+                  <FormLabel className={classes.label}>Period</FormLabel>
+                  <Select
+                    onChange={(event) => onChange(event?.target?.value, 'period_name')}
+                    variant='outlined'
+                    className={classes.inputBorder}
+                    value={scenario.period_name || ''}
+                    data-testid='period-selector'
+                  >
+                      {
+                          METRIC_PERIOD_NAMES.map(scenario => (
+                              <MenuItem key={scenario.name} value={scenario.name} className={classes.inputText}>
+                                  {scenario.label}
+                              </MenuItem>
+                          ))
+                      }
+                  </Select>
+                  {needsToolTip
+                    ? <Tooltip title={toolTipMessage} placement="top">
+                    <Help style={{ color: '#2f5487', fontSize: 18 }}/>
+                  </Tooltip>
+                    : ''}
+              </FormControl>
+              <FormControl required className={classes.input}>
                   <FormLabel className={classes.label}>Value</FormLabel>
                   <TextField
                     error={valueError}
                     onChange={(event) => {
                       onChange(event?.target?.value, 'value')
                       setValueError(isNaN(Number(event?.target?.value)))
+                      setIsEditting(true)
                     }}
                     variant="outlined"
                     value={scenario.value || ''}
