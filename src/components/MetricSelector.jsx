@@ -5,14 +5,6 @@ import { METRICS } from './../utils/constants/Metrics'
 import { isEmptyObject } from '../utils/userFunctions'
 
 const useStyles = makeStyles({
-  select: {
-    '&:before': {
-      borderColor: '#008b9a'
-    },
-    '&:after': {
-      borderColor: '#008b9a'
-    }
-  },
   input: {
     marginRight: 20,
     marginTop: 25,
@@ -67,12 +59,13 @@ export const MetricSelector = (
     } else {
       const unusedMetrics = ['actuals_gross_profit', 'budget_gross_profit']
       const options = METRICS.filter(metric => !unusedMetrics.includes(metric.name))
+
       return needEmptyValue ? options.concat([grossProfitOption, emptyOption]) : options.concat(grossProfitOption)
     }
   }
 
   const getDefaultValue = () => {
-    return fromDynamicReport ? [''] : ''
+    return fromDynamicReport ? [] : ''
   }
 
   const getValue = () => {
