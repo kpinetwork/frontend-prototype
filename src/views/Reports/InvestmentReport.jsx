@@ -124,15 +124,21 @@ export const InvestmentReport = ({ fromUniverseOverview }) => {
     const metric = baseMetrics.find(item => item.name === name)
     return metric?.position === 'left' ? `${metric?.symbol} ${value}` : `${value} ${metric?.symbol}`
   }
-
-  const onMetricSelector = (value, selector) => {
-    if (value === secondMetric || value === firstMetric) {
-      setFirstMetric(value)
+  const onFirstMetricSelector = (_event, value) => {
+    if (value.name === secondMetric || value.name === firstMetric) {
+      setFirstMetric(value.name)
       setSecondMetric('None')
-    } else if (selector === 'first') {
-      setFirstMetric(value)
-    } else if (selector === 'second') {
-      setSecondMetric(value)
+    } else {
+      setFirstMetric(value.name)
+    }
+  }
+
+  const onSecondMetricSelector = (_event, value) => {
+    if (value.name === secondMetric || value.name === firstMetric) {
+      setFirstMetric(value.name)
+      setSecondMetric('None')
+    } else {
+      setSecondMetric(value.name)
     }
   }
 
@@ -198,7 +204,8 @@ export const InvestmentReport = ({ fromUniverseOverview }) => {
           <TwoMetricSelector
             firstMetric={firstMetric}
             secondMetric={secondMetric}
-            onMetricChange={(event, select) => onMetricSelector(event, select)}
+            onMFirstetricChange={onFirstMetricSelector}
+            onSecondMetricChange={onSecondMetricSelector}
           />
         </Box>
         <Box>

@@ -87,6 +87,7 @@ export const MetricSelector = (
       <FormControl className={classes.input}>
             <FormLabel className={classes.label}>{nameOfSelect}</FormLabel>
             <Autocomplete
+              data-testid='metric-selector'
               multiple = {fromDynamicReport}
               id="metrics-outlined"
               options={getMetricsOptions()}

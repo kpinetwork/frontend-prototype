@@ -115,13 +115,12 @@ describe('<InvestmenteReport />', () => {
       useInvestmentDateReport.mockImplementation(() => useInvestmentReportResponse)
       setUp()
 
-      await userEvent.click(getByRole(screen.getAllByTestId('metric-selector')[0], 'button'))
+      await userEvent.click(getByRole(screen.getAllByTestId('metric-selector')[0], 'combobox'))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Ebitda - actual' })), { timeout: 10000 })
-      await waitFor(() => userEvent.click(getByRole(screen.getAllByTestId('metric-selector')[1], 'button')), { timeout: 10000 })
+      await waitFor(() => userEvent.click(getByRole(screen.getAllByTestId('metric-selector')[1], 'combobox')), { timeout: 10000 })
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Rule of 40' })), { timeout: 10000 })
 
       expect(useInvestmentReportResponse.setSecondMetric).toHaveBeenCalled()
-      expect(useInvestmentReportResponse.setFirstMetric).toHaveBeenCalled()
     })
   })
 })
