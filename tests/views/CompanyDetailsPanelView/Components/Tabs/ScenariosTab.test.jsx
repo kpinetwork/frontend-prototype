@@ -12,6 +12,7 @@ jest.setTimeout(10000)
 const metric = {
   scenario_id: '02b8fc45-204c-450b-b4aa-525b35ad2323',
   scenario: 'Actuals',
+  period_name: 'Full-year',
   year: 2019,
   metric_id: '9cd20ace-79e1-426a-89ac-c8b92921a514',
   metric: 'Revenue',
@@ -41,7 +42,8 @@ const hookResponse = {
   addScenario: () => ADD_SCENARIOS_RESPONSES.added_response,
   deleteScenarios: () => DELETE_SCENARIOS_RESPONSES.deleted_response,
   metricNames: metrics,
-  setLoading: jest.fn()
+  setLoading: jest.fn(),
+  getFullYear: jest.fn()
 }
 
 const setUp = () => {
@@ -57,8 +59,8 @@ describe('<ScenariosTab/>', () => {
       const cellMetric = screen.getByText('Revenue')
       const cellValue = screen.getByText('$ 124.844')
 
-      expect(screen.getAllByRole('columnheader')).toHaveLength(4)
-      expect(screen.getAllByRole('cell')).toHaveLength(5)
+      expect(screen.getAllByRole('columnheader')).toHaveLength(5)
+      expect(screen.getAllByRole('cell')).toHaveLength(6)
       expect(cellScenario).toBeInTheDocument()
       expect(cellMetric).toBeInTheDocument()
       expect(cellValue).toBeInTheDocument()
@@ -95,7 +97,7 @@ describe('<ScenariosTab/>', () => {
       setUp()
       const nanCells = screen.getAllByText('NA')
 
-      expect(nanCells).toHaveLength(3)
+      expect(nanCells).toHaveLength(4)
     })
 
     it('should render loading progress when is loading', () => {

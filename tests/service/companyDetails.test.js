@@ -7,7 +7,8 @@ import {
   addCompanyInvestment,
   addCompanyScenario,
   deleteCompanyScenarios,
-  deleteCompany
+  deleteCompany,
+  getFullYearTotalAmount
 } from '../../src/service/companyDetails'
 
 const { VITE_HOST: baseUrl } = import.meta.env
@@ -158,6 +159,20 @@ describe('companyDetails service', () => {
 
       expect(axios.delete).toHaveBeenCalledWith(
         `${companiesUrl}/${COMPANIESDETAILS.company_id}`,
+        {
+          headers: { Authorization: null, 'Content-Type': 'application/json' }
+        })
+    })
+  })
+
+  describe('get full year total amount', () => {
+    it('API call successful should return the full year total value', async () => {
+      const FULL_YEAR_RESPONSE = { total: 100 }
+      axios.get.mockResolvedValueOnce(FULL_YEAR_RESPONSE)
+      await getFullYearTotalAmount({ selectedCompanyID: COMPANIESDETAILS.company_id, scenario: 'Actuals', metric: 'Revenue', year: 2020 })
+
+      expect(axios.get).toHaveBeenCalledWith(
+        `${baseUrl}/full_year/${COMPANIESDETAILS.company_id}?scenario=Actuals&metric=Revenue&year=2020`,
         {
           headers: { Authorization: null, 'Content-Type': 'application/json' }
         })

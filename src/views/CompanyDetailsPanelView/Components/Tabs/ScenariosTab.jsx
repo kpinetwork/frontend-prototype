@@ -52,6 +52,8 @@ export function ScenariosTab () {
   const [openModal, setOpenModal] = useState(false)
   const [showMessage, setShowMessage] = useState(false)
   const [severity, setSeverity] = useState(undefined)
+  const [needsToolTip, setNeedsToolTip] = useState(false)
+  const [isEditting, setIsEditting] = useState(false)
   const {
     rowsPerPage,
     metricNames,
@@ -66,7 +68,8 @@ export function ScenariosTab () {
     handleSortScenarios,
     addScenario,
     deleteScenarios,
-    setLoading
+    setLoading,
+    getFullYearTotal
   } = useScenariosTable()
 
   const isSelected = (metricId) => (selectedScenarios.map(scenario => scenario.metric_id).indexOf(metricId) !== -1)
@@ -86,8 +89,14 @@ export function ScenariosTab () {
     scenario.value = Number(scenario.value)
   }
 
-  const onChange = (value, type) => {
+  const onChange = async (value, type) => {
     setScenario({ ...scenario, [type]: value })
+    if (value === 'Full-year') {
+      setNeedsToolTip(true)
+    } else {
+      setNeedsToolTip(false)
+      setIsEditting(false)
+    }
   }
 
   const validScenario = () => {
@@ -111,6 +120,8 @@ export function ScenariosTab () {
         setError('Scenario added successfully')
         setShowMessage(true)
         setSeverity('success')
+        setNeedsToolTip(false)
+        setIsEditting(false)
       }
     } else {
       setError('Please fill in all the required fields')
@@ -174,8 +185,15 @@ export function ScenariosTab () {
                   setOpenAdd(false)
                   setScenario({})
                   setError(undefined)
+                  setNeedsToolTip(false)
+                  setIsEditting(false)
                 }}
                 onSave={onSave}
+                needsToolTip={needsToolTip}
+                setIsEditting={setIsEditting}
+                isEditting={isEditting}
+                getFullYearTotal={getFullYearTotal}
+                setScenario={setScenario}
               />
             </Box>
         }
@@ -246,6 +264,7 @@ export function ScenariosTab () {
                   />
                 </TableCell>
                 <TableCell className={classes.head}>Metric</TableCell>
+                <TableCell className={classes.head}>Period name</TableCell>
                 <TableCell className={classes.head}>Year</TableCell>
                 <TableCell className={classes.head}>Value</TableCell>
               </TableRow>
@@ -275,6 +294,7 @@ export function ScenariosTab () {
                         }
                       <TableCell>{scenario.scenario}</TableCell>
                       <TableCell>{scenario.metric || 'NA'}</TableCell>
+                      <TableCell>{scenario.period_name || 'NA'}</TableCell>
                       <TableCell>{scenario.year || 'NA'}</TableCell>
                       <TableCell>{getValue(scenario.metric, scenario.value) || 'NA'}</TableCell>
                     </TableRow>
@@ -285,7 +305,7 @@ export function ScenariosTab () {
             <TableFooter>
               <TableRow>
               <TablePagination
-                  colSpan={openDelete ? 5 : 4}
+                  colSpan={openDelete ? 6 : 5}
                   count={total}
                   rowsPerPage={rowsPerPage}
                   page={page}

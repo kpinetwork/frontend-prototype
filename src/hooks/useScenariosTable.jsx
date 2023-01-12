@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import Context from '../context/appContext'
-import { addCompanyScenario, getCompanyDetails, deleteCompanyScenarios } from '../service/companyDetails'
+import { addCompanyScenario, getCompanyDetails, deleteCompanyScenarios, getFullYearTotalAmount } from '../service/companyDetails'
 import { getMetricsType } from '../service/metrics'
 
 const useScenariosTable = () => {
@@ -150,6 +150,18 @@ const useScenariosTable = () => {
     }
   }
 
+  const getFullYearTotal = async (options) => {
+    try {
+      setLoading(true)
+      const response = await getFullYearTotalAmount({ selectedCompanyID, ...options })
+      setLoading(false)
+      return response.total
+    } catch (_error) {
+      setDefaultValues()
+      return null
+    }
+  }
+
   return {
     rowsPerPage,
     metricNames,
@@ -164,7 +176,8 @@ const useScenariosTable = () => {
     handleSortScenarios,
     addScenario,
     deleteScenarios,
-    setLoading
+    setLoading,
+    getFullYearTotal
   }
 }
 
