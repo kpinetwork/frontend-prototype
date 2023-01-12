@@ -95,8 +95,8 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
   const getSelectedMetric = (metric) => {
     return METRICS.find(item => item.name === metric)
   }
-  const onChangeMetric = (value) => {
-    const selectedMetric = getSelectedMetric(value)
+  const onChangeMetric = (_event, value) => {
+    const selectedMetric = getSelectedMetric(value.name)
     setMetric(selectedMetric.name)
   }
 
@@ -106,7 +106,7 @@ export const ByMetricReport = ({ fromUniverseOverview }) => {
             <MetricSelector
               nameOfSelect="Metric"
               metric={metric}
-              onChange={(event) => onChangeMetric(event.target.value)}
+              onChange={onChangeMetric}
               needEmptyValue={false}
             />
         </Box>

@@ -76,14 +76,15 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
     return baseMetrics.find(item => item.name === metric)
   }
 
-  const onMetricChange = (value) => {
-    if (metrics.includes('None') && value.includes('None')) {
-      const newMetrics = value.filter(metric => metric !== 'None')
+  const onMetricChange = (_, value) => {
+    const metricsSelected = value.map(item => item.name)
+    if (metrics.includes('None') && metricsSelected.includes('None')) {
+      const newMetrics = metricsSelected.filter(metric => metric !== 'None')
       setMetrics(newMetrics)
-    } else if (!metrics.includes('None') && value.includes('None')) {
+    } else if (!metrics.includes('None') && metricsSelected.includes('None')) {
       setMetrics(['None'])
     } else {
-      setMetrics(value)
+      setMetrics(metricsSelected)
     }
   }
 
@@ -139,7 +140,7 @@ export const DynamicReport = ({ fromUniverseOverview }) => {
             <MetricSelector
               nameOfSelect="Metric"
               metric={metrics}
-              onChange={(event) => onMetricChange(event.target.value)}
+              onChange={onMetricChange}
               needEmptyValue={true}
               fromDynamicReport={true}
             />
