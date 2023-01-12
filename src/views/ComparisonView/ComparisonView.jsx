@@ -33,7 +33,8 @@ const useStyles = makeStyles(theme => ({
     left: 0,
     zIndex: 800,
     backgroundColor: '#2f5487',
-    color: 'white'
+    color: 'white',
+    whiteSpace: 'nowrap'
   },
   stickyCompany: {
     position: 'sticky',
