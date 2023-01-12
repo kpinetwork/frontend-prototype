@@ -9,10 +9,11 @@ import { getUserId } from './../../../service/session'
 import { getMetricsType } from '../../../service/metrics'
 import PreviewTable from './PreviewTable'
 import { DragAndDrop, ButtonOptions } from './DragAndDrop'
-import { isEmptyObject } from '../../../utils/userFunctions'
+import { isEmptyObject, isEmptyArray } from '../../../utils/userFunctions'
 import PreviewModal from './PreviewModal'
 import InvalidFormatModal from './InvalidFormatModal'
 import ResetModal from './ResetModal'
+import { METRIC_PERIOD_NAMES } from '../../../utils/constants/Metrics'
 
 export default function PreviewContainer (props) {
   const [open, setOpen] = useState(false)
@@ -150,11 +151,17 @@ export default function PreviewContainer (props) {
     return metricsFromPreview.filter(metric => !metrics.includes(metric))
   }
 
-  const setValidData = async (data, nonExistentMetrics) => {
+  const getNonExistentPeriods = (headRows) => {
+    const validPeriods = METRIC_PERIOD_NAMES.map(period => period.name)
+    const periods = headRows[3].filter(period => period !== '')
+    return periods.filter(period => !validPeriods.includes(period))
+  }
+
+  const setValidData = async (data, nonExistentMetrics, nonExistentPeriods) => {
     const existingNames = data.existing_names && data.existing_names.length === 0
     const ids = data.repeated_ids && isEmptyObject(data.repeated_ids)
     const repeatedNames = data.repeated_names && isEmptyObject(data.repeated_names)
-    setIsValid(existingNames && ids && repeatedNames && nonExistentMetrics.length === 0)
+    setIsValid(existingNames && ids && repeatedNames && isEmptyArray(nonExistentMetrics) && isEmptyArray(nonExistentPeriods))
   }
 
   const onValidateData = async () => {
@@ -163,8 +170,9 @@ export default function PreviewContainer (props) {
     try {
       const response = await validateData(data)
       const nonExistentMetrics = await getNonExistentMetrics(headRows)
-      setData({ ...response, non_existent_metrics: nonExistentMetrics })
-      setValidData(response, nonExistentMetrics)
+      const nonExistentPeriods = getNonExistentPeriods(headRows)
+      setData({ ...response, non_existent_metrics: nonExistentMetrics, non_existent_periods: nonExistentPeriods })
+      setValidData(response, nonExistentMetrics, nonExistentPeriods)
       setOpenModal(true)
       setIsValidating(false)
     } catch (_error) {

@@ -63,6 +63,12 @@ export default function PreviewModal ({ open, onClose, onOk, onCancel, validData
     return getComponentFromList(data.non_existent_metrics || [], title, message)
   }
 
+  const getUnexitentPeriods = () => {
+    const title = 'Not valid period names'
+    const message = 'These period names are not valid:'
+    return getComponentFromList(data.non_existent_periods || [], title, message)
+  }
+
   const getComponentFromList = (data, title, message) => {
     if (data.length === 0) {
       return <></>
@@ -156,6 +162,7 @@ export default function PreviewModal ({ open, onClose, onOk, onCancel, validData
               {getRepeatedIds()}
               {getExistingNames()}
               {getUnexistentMetrics()}
+              {getUnexitentPeriods()}
             </Box>
           }
           {validData &&
