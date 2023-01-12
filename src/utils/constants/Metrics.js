@@ -549,3 +549,11 @@ export const CALCULATEDMETRICS = [{
 }]
 
 export const TOTALMETRICS = BASEMETRICS.concat(CALCULATEDMETRICS).filter(metric => metric.name !== 'Headcount')
+
+export const METRIC_PERIOD_NAMES = [
+  { name: 'Q1', label: 'Q1: 01/01 - 03/31' },
+  { name: 'Q2', label: 'Q2: 04/01 - 06/31' },
+  { name: 'Q3', label: 'Q3: 07/01 - 09/31' },
+  { name: 'Q4', label: 'Q4: 10/01 - 12/31' },
+  { name: 'Full-year', label: 'Full year: 01/01 - 12/31' }
+]
