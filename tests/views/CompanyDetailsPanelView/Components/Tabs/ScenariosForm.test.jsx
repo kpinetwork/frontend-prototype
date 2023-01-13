@@ -15,7 +15,8 @@ const defaultProps = {
   setIsEditting: jest.fn(),
   isEditting: false,
   getFullYearTotal: jest.fn(),
-  setScenario: jest.fn()
+  setScenario: jest.fn(),
+  setNeedsToolTip: jest.fn()
 }
 
 const setUp = (props) => {

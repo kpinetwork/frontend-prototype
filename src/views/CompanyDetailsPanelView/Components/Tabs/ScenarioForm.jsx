@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 
 const toolTipMessage = 'In case the selected period is full year, the sum of all periods in quarters for the selected year and scenario will be taken into account. If there is not a value it is because there is not information of quarters registered. The value can be edited.'
 
-export function ScenarioForm ({ onCancel, scenario, onChange, onSave, metrics, needsToolTip, setIsEditting, isEditting, getFullYearTotal, setScenario }) {
+export function ScenarioForm ({ onCancel, scenario, onChange, onSave, metrics, needsToolTip, setIsEditting, isEditting, getFullYearTotal, setScenario, setNeedsToolTip }) {
   const classes = useStyles()
   const [dateValue, setDateValue] = useState({})
   const [valueError, setValueError] = useState(false)
@@ -172,11 +172,6 @@ export function ScenarioForm ({ onCancel, scenario, onChange, onSave, metrics, n
                           ))
                       }
                   </Select>
-                  {needsToolTip
-                    ? <Tooltip title={toolTipMessage} placement="top">
-                    <Help style={{ color: '#2f5487', fontSize: 18 }}/>
-                  </Tooltip>
-                    : ''}
               </FormControl>
               <FormControl required className={classes.input}>
                   <FormLabel className={classes.label}>Value</FormLabel>
@@ -186,6 +181,7 @@ export function ScenarioForm ({ onCancel, scenario, onChange, onSave, metrics, n
                       onChange(event?.target?.value, 'value')
                       setValueError(isNaN(Number(event?.target?.value)))
                       setIsEditting(true)
+                      scenario.period_name === 'Full-year' ? setNeedsToolTip(true) : setNeedsToolTip(false)
                     }}
                     variant="outlined"
                     value={scenario.value || ''}
@@ -196,6 +192,11 @@ export function ScenarioForm ({ onCancel, scenario, onChange, onSave, metrics, n
                       className: classes.inputText
                     }}
                   ></TextField>
+                  {needsToolTip
+                    ? <Tooltip title={toolTipMessage} placement="top">
+                    <Help style={{ color: '#2f5487', fontSize: 18 }}/>
+                  </Tooltip>
+                    : ''}
               </FormControl>
           </Box>
           <CardActions>
