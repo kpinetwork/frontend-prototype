@@ -194,6 +194,7 @@ export function ScenariosTab () {
                 isEditting={isEditting}
                 getFullYearTotal={getFullYearTotal}
                 setScenario={setScenario}
+                setNeedsToolTip={setNeedsToolTip}
               />
             </Box>
         }
