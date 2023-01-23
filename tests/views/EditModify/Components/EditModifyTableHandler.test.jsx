@@ -51,8 +51,8 @@ function TestGetHeaderValue () {
 
 function TestGetColumnsValues () {
   const data = [
-    { scenarios: [{ value: 1 }, { value: 2 }, { value: 3 }] },
-    { scenarios: [{ value: 4 }, { value: 5 }, { value: 6 }] }
+    { scenarios: [{ value: 1 }, { value: 2 }, { value: 3 }], id: '1' },
+    { scenarios: [{ value: 4 }, { value: 5 }, { value: 6 }], id: '2' }
   ]
   const columns = getColumnsValues(data)
   return (
@@ -65,10 +65,10 @@ function TestGetColumnsValues () {
         </tr>
       </thead>
       <tbody>
-        {data.map((row) => (
-          <tr key={row.id}>
-            {row.scenarios.map((value) => (
-              <td key={value.field}>{value.value}</td>
+        {data.map((row, index) => (
+          <tr key={index}>
+            {row.scenarios.map((value, index) => (
+              <td key={index}>{value.value}</td>
             ))}
           </tr>
         ))}
@@ -125,8 +125,8 @@ function TestProcessScenarios () {
   processScenarios(scenarios, headers, newValues, 1)
   return (
     <ul>
-      {newValues.map((value) => (
-        <li key={value.year}>{value.value}</li>
+      {newValues.map((value, index) => (
+        <li key={index}>{value.value}</li>
       ))}
     </ul>
   )
