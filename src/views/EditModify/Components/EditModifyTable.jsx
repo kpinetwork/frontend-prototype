@@ -230,7 +230,7 @@ export default function EditModifyTable () {
         filterCellStyle: {
           background: '#F9F9F9',
           borderTopColor: '#DEDEDE',
-          borderTopWidth: 21,
+          borderTopWidth: 1,
           borderTopStyle: 'solid'
 
         }
