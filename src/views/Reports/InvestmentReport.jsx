@@ -204,7 +204,7 @@ export const InvestmentReport = ({ fromUniverseOverview }) => {
           <TwoMetricSelector
             firstMetric={firstMetric}
             secondMetric={secondMetric}
-            onMFirstetricChange={onFirstMetricSelector}
+            onFirstMetricChange={onFirstMetricSelector}
             onSecondMetricChange={onSecondMetricSelector}
           />
         </Box>
