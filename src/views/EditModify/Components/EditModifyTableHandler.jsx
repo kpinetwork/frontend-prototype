@@ -61,12 +61,12 @@ export const processScenarios = (scenarios, headers, newValues, value) => {
     }
     if (scenario.metric_id === undefined) {
       newValues.push({
-        year: parseInt(headers[2][index + 5]),
+        year: parseInt(getHeaderValue(headers[2], [index + 5])),
         metric: getHeaderValue(headers[1], index + 5),
         scenario: getHeaderValue(headers[0], index + 5),
         company_id: value,
         value: scenario.value,
-        period_name: 'Full-year'
+        period_name: getHeaderValue(headers[3], [index + 5])
       })
     }
   })
