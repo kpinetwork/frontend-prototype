@@ -10,7 +10,13 @@ const defaultProps = {
   onChange: jest.fn(),
   scenario: {},
   onSave: jest.fn(),
-  metrics: BASEMETRICS.map(metric => metric.name)
+  metrics: BASEMETRICS.map(metric => metric.name),
+  needsToolTip: false,
+  setIsEditting: jest.fn(),
+  isEditting: false,
+  getFullYearTotal: jest.fn(),
+  setScenario: jest.fn(),
+  setNeedsToolTip: jest.fn()
 }
 
 const setUp = (props) => {
@@ -42,7 +48,7 @@ describe('<ScenarioForm />', () => {
       expect(defaultProps.onCancel).toHaveBeenCalled()
     })
 
-    it('it class onSave on click save button', () => {
+    it('it calls onSave on click save button', () => {
       setUp()
       const saveButton = screen.getByRole('button', { name: 'Save' })
 
@@ -91,6 +97,12 @@ describe('<ScenarioForm />', () => {
       fireEvent.click(screen.getByRole('button', { name: '2023' }))
 
       expect(defaultProps.onChange).toHaveBeenCalled()
+    })
+
+    it('should call getFullYearTotal when needToolTip', async () => {
+      setUp({ needsToolTip: true })
+
+      expect(defaultProps.getFullYearTotal).toHaveBeenCalled()
     })
   })
 })

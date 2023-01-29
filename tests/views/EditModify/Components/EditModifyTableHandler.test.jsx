@@ -3,34 +3,33 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import { getHeaderValue, getColumnsValues, processChanges, processScenarios, getModifiedData } from '../../../../src/views/EditModify/Components/EditModifyTableHandler.jsx'
 
+const scenariosMock = [
+  { value: 10, metric_id: 1 },
+  { value: 20, metric_id: 2 },
+  { value: 30, metric_id: 3 }
+]
+
 const changes = {
   1: {
     newData: {
       name: 'Company 1',
       inves_profile_name: 'Profile 1',
-      scenarios: [
-        { value: 10, metric_id: 1 },
-        { value: 20, metric_id: 2 },
-        { value: 30, metric_id: 3 }
-      ]
+      scenarios: scenariosMock
     }
   },
   2: {
     newData: {
       name: 'Company 2',
       inves_profile_name: 'Profile 2',
-      scenarios: [
-        { value: 40, metric_id: 4 },
-        { value: 50, metric_id: 5 },
-        { value: 60, metric_id: 6 }
-      ]
+      scenarios: scenariosMock
     }
   }
 }
 const headers = [
   ['', '', 'Scenario 1', 'Scenario 2', 'Scenario 3'],
   ['', '', 'Metric 1', 'Metric 1', 'Metric 2'],
-  ['', '', 2021, 2022, 2023]
+  ['', '', 2021, 2022, 2023],
+  ['', '', 'Q1', 'Q2', 'Q3', 'Q4']
 ]
 
 function TestGetModifiedData () {
@@ -51,8 +50,8 @@ function TestGetHeaderValue () {
 
 function TestGetColumnsValues () {
   const data = [
-    { scenarios: [{ value: 1 }, { value: 2 }, { value: 3 }] },
-    { scenarios: [{ value: 4 }, { value: 5 }, { value: 6 }] }
+    { scenarios: [{ value: 1 }, { value: 2 }, { value: 3 }], id: '1' },
+    { scenarios: [{ value: 4 }, { value: 5 }, { value: 6 }], id: '2' }
   ]
   const columns = getColumnsValues(data)
   return (
@@ -65,10 +64,10 @@ function TestGetColumnsValues () {
         </tr>
       </thead>
       <tbody>
-        {data.map((row) => (
-          <tr key={row.id}>
-            {row.scenarios.map((value) => (
-              <td key={value.field}>{value.value}</td>
+        {data.map((row, index) => (
+          <tr key={index}>
+            {row.scenarios.map((value, index) => (
+              <td key={index}>{value.value}</td>
             ))}
           </tr>
         ))}
@@ -83,10 +82,7 @@ function TestProcessChanges () {
       newData: {
         name: 'Test 1',
         inves_profile_name: 'Profile 1',
-        scenarios: [
-          { metric_id: 1, value: 10 },
-          { metric_id: 2, value: 20 }
-        ]
+        scenarios: scenariosMock
       }
     },
     2: {
@@ -111,11 +107,6 @@ function TestProcessChanges () {
 }
 
 function TestProcessScenarios () {
-  const headers = [
-    ['', '', 'Scenario 1', 'Scenario 2', 'Scenario 3'],
-    ['', '', 'Metric 1', 'Metric 1', 'Metric 2'],
-    ['', '', 2021, 2022, 2023]
-  ]
   const scenarios = [
     { value: 10 },
     { value: 20 },
@@ -125,8 +116,8 @@ function TestProcessScenarios () {
   processScenarios(scenarios, headers, newValues, 1)
   return (
     <ul>
-      {newValues.map((value) => (
-        <li key={value.year}>{value.value}</li>
+      {newValues.map((value, index) => (
+        <li key={index}>{value.value}</li>
       ))}
     </ul>
   )

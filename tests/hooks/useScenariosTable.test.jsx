@@ -1,6 +1,6 @@
 import React from 'react'
 import { renderHook, act } from '@testing-library/react-hooks'
-import { getCompanyDetails, addCompanyScenario, deleteCompanyScenarios } from '../../src/service/companyDetails'
+import { getCompanyDetails, addCompanyScenario, deleteCompanyScenarios, getFullYearTotalAmount } from '../../src/service/companyDetails'
 import { getMetricsType } from '../../src/service/metrics'
 import useScenariosTable from '../../src/hooks/useScenariosTable'
 import { COMPANIESDETAILS, SCENARIO } from '../data/companies'
@@ -196,6 +196,23 @@ describe('useScenariosTable', () => {
     expect(getCompanyDetails).toBeCalled()
   })
 
+  it('add scenario fails', async () => {
+    mockService(getCompanyDetails, COMPANIESDETAILS)
+    mockService(addCompanyScenario, ADD_SCENARIOS_RESPONSES.fail_response)
+    let hookResponse
+    let addScenario
+
+    await act(async () => {
+      hookResponse = renderHook(() => useScenariosTable(), { wrapper })
+    })
+    await act(async () => {
+      addScenario = await hookResponse.result.current.addScenario(SCENARIO)
+    })
+
+    expect(addScenario).toEqual(ADD_SCENARIOS_RESPONSES.fail_response)
+    expect(getCompanyDetails).toBeCalled()
+  })
+
   it('add scenario catch error', async () => {
     mockService(getCompanyDetails, COMPANIESDETAILS)
     mockService(addCompanyScenario, 'error')
@@ -228,6 +245,23 @@ describe('useScenariosTable', () => {
     expect(deletedScenario).toEqual(DELETE_SCENARIOS_RESPONSES.deleted_response)
   })
 
+  it('delete scenarios fails', async () => {
+    mockService(getCompanyDetails, COMPANIESDETAILS)
+    mockService(deleteCompanyScenarios, DELETE_SCENARIOS_RESPONSES.fail_response)
+    let hookResponse
+    let deletedScenario
+
+    await act(async () => {
+      hookResponse = renderHook(() => useScenariosTable(), { wrapper })
+    })
+    await act(async () => {
+      deletedScenario = await hookResponse.result.current.deleteScenarios(SCENARIO)
+    })
+
+    expect(deleteCompanyScenarios).toHaveBeenCalled()
+    expect(deletedScenario).toEqual(DELETE_SCENARIOS_RESPONSES.fail_response)
+  })
+
   it('delete scenarios catch error', async () => {
     mockService(getCompanyDetails, COMPANIESDETAILS)
     mockService(deleteCompanyScenarios, 'error')
@@ -241,5 +275,37 @@ describe('useScenariosTable', () => {
     })
 
     expect(hookResponse.result.current.loading).toBeFalsy()
+  })
+
+  it('get total full year amount success', async () => {
+    mockService(getCompanyDetails, COMPANIESDETAILS)
+    mockService(getFullYearTotalAmount, { total: 100 })
+    let hookResponse
+    let getFullYear
+
+    await act(async () => {
+      hookResponse = renderHook(() => useScenariosTable(), { wrapper })
+    })
+    await act(async () => {
+      getFullYear = await hookResponse.result.current.getFullYearTotal({ selectedCompanyID: COMPANIESDETAILS.id, ...SCENARIO })
+    })
+
+    expect(getFullYear).toEqual(100)
+  })
+
+  it('get total full year amount catch error', async () => {
+    mockService(getCompanyDetails, COMPANIESDETAILS)
+    mockService(getFullYearTotalAmount, 'error')
+    let hookResponse
+    let getFullYear
+
+    await act(async () => {
+      hookResponse = renderHook(() => useScenariosTable(), { wrapper })
+    })
+    await act(async () => {
+      getFullYear = await hookResponse.result.current.getFullYearTotal({ selectedCompanyID: COMPANIESDETAILS.id, ...SCENARIO })
+    })
+
+    expect(getFullYear).toEqual(null)
   })
 })

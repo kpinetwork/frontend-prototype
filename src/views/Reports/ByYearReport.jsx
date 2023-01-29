@@ -40,7 +40,7 @@ export const ByYearReport = ({ fromUniverseOverview }) => {
               needEmptyValue={false}
             />
         </Box>
-        <Box>
+        <Box sx={{ marginTop: '20px' }}>
             <ComparisonView
                 {...getData(type)}
                 downloadComparisonCsv={downloadComparisonCsv}

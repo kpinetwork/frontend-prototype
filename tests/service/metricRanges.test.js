@@ -55,5 +55,13 @@ describe('ranges service', () => {
       expect(axios.put).toHaveBeenCalledWith(metricRangesUrl, {},
         { headers: { Authorization: null, 'Content-Type': 'application/json' } })
     })
+
+    it('should return error message when modify ranges api call fails', async () => {
+      axios.put.mockRejectedValueOnce({ response: 'Ranges could not be modified' })
+
+      await modifyMetricRanges({}).catch(err => {
+        expect(err).toEqual({ error: 'Ranges could not be modified' })
+      })
+    })
   })
 })

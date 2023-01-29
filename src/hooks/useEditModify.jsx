@@ -64,10 +64,11 @@ export const useEditModify = () => {
       const {
         namesHead,
         yearsHead,
+        periodsHead,
         metricsHead,
         bodyArray
       } = destructuring(response)
-      setHead([namesHead, metricsHead, yearsHead])
+      setHead([namesHead, metricsHead, yearsHead, periodsHead])
       setBody(getBody(bodyArray))
       buildErrorObject(getBody(bodyArray))
     } catch (_error) {
@@ -131,6 +132,7 @@ export const useEditModify = () => {
 function destructuring (result) {
   const {
     years: yearsHead,
+    periods: periodsHead,
     headers: namesHead,
     metrics: metricsHead,
     companies: bodyArray
@@ -138,6 +140,7 @@ function destructuring (result) {
   return {
     namesHead,
     yearsHead,
+    periodsHead,
     metricsHead,
     bodyArray
   }

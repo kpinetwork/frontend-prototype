@@ -4,9 +4,10 @@ import { useEditModify } from '../../src/hooks/useEditModify'
 import { getCompanies } from '../../src/service/company'
 
 const serviceGetResponse = {
-  headers: ['Unique ID', 'Name', 'Sector', 'Vertical', 'Investor Profile', 'Actuals'],
-  metrics: ['', '', '', '', '', 'Revenue'],
-  years: ['', '', '', '', '', '2020'],
+  headers: ['Unique ID', 'Name', 'Sector', 'Vertical', 'Investor Profile', 'Actuals', '', '', '', ''],
+  metrics: ['', '', '', '', '', 'Revenue', '', '', '', ''],
+  years: ['', '', '', '', '', '2020', '', '', '', ''],
+  periods: ['', '', '', '', '', 'Q1', 'Q2', 'Q3', 'Q4', 'Full-year'],
   companies: {
     123: {
       id: 123,
@@ -15,6 +16,10 @@ const serviceGetResponse = {
       vertical: '',
       inves_profile_name: '',
       scenarios: [
+        {},
+        {},
+        {},
+        {},
         {}
       ]
     }
@@ -137,9 +142,10 @@ const mockModifyData = jest.fn()
 
 const mockHook = {
   head: [
-    ['Unique ID', 'Name', 'Sector', 'Vertical', 'Investor Profile', 'Actuals'],
-    ['', '', '', '', '', 'Revenue'],
-    ['', '', '', '', '', '2020']
+    ['Unique ID', 'Name', 'Sector', 'Vertical', 'Investor Profile', 'Actuals', '', '', '', ''],
+    ['', '', '', '', '', 'Revenue', '', '', '', ''],
+    ['', '', '', '', '', '2020', '', '', '', ''],
+    ['', '', '', '', '', 'Q1', 'Q2', 'Q3', 'Q4', 'Full-year']
   ],
   body: [
     {
@@ -149,6 +155,10 @@ const mockHook = {
       vertical: '',
       inves_profile_name: '',
       scenarios: [
+        {},
+        {},
+        {},
+        {},
         {}
       ]
     }
@@ -197,9 +207,15 @@ describe('useEditModify', () => {
   })
 
   it('edit modify hook should execute updateEditData method when send changes', async () => {
-    const { result } = renderHook(() => useEditModify())
-    const addSpy = jest.spyOn(result.current, 'updateEditData')
-    result.current.updateEditData(mockModifiedData)
+    let hookResponse
+    await act(async () => {
+      hookResponse = renderHook(() => useEditModify())
+    })
+    const addSpy = jest.spyOn(hookResponse.result.current, 'updateEditData')
+
+    await act(async () => {
+      hookResponse.result.current.updateEditData(mockModifiedData)
+    })
 
     expect(addSpy).toHaveBeenCalledWith(mockModifiedData)
   })

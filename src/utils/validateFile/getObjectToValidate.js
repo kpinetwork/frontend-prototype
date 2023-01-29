@@ -37,7 +37,7 @@ const getCompanyScenarios = (head, companyRow, scenariosIndex, metricsIndex) => 
   const scenarios = {}
   for (const indexYear of getIndexArray(head[2])) {
     if (isValidValue(companyRow[indexYear])) {
-      const year = head[2][indexYear]
+      const year = head[2][indexYear].split(':')[1]
       const metricName = getValueFromRow(head[1], indexYear, metricsIndex).split(':')[1]
       const scenarioName = getValueFromRow(head[0], indexYear, scenariosIndex).split(':')[1]
       scenarios[scenarioName] = getCompanyScenarioFromRow(scenarios[scenarioName], metricName, year)
