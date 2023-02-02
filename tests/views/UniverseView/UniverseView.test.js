@@ -82,7 +82,7 @@ describe('<UniverseView />', () => {
       const peerGroup = screen.getAllByRole('tab')
 
       expect(cards).toHaveLength(5)
-      expect(peerGroup).toHaveLength(4)
+      expect(peerGroup).toHaveLength(5)
       expect(screen.getByText('KPI Averages')).toBeInTheDocument()
       expect(screen.getByText('Count By Size')).toBeInTheDocument()
       expect(screen.getByText('Growth and margin by size; recent actuals')).toBeInTheDocument()

@@ -6,6 +6,7 @@ import { ByYearReport } from '../views/Reports/ByYearReport'
 import { ByMetricReport } from '../views/Reports/ByMetricReport'
 import { DynamicReport } from '../views/Reports/DynamicReport'
 import { InvestmentReport } from '../views/Reports/InvestmentReport'
+import { QuartersReport } from '../views/Reports/QuartersReport'
 import { CardKPI } from './Card/CardKPI'
 
 const useStyles = makeStyles(theme => ({
@@ -39,6 +40,7 @@ export const PeerGroupTabs = ({ fromUniverseOverview }) => {
             <Tab className={classes.tabs} label="By Metric" value="2" />
             <Tab className={classes.tabs} label="Dynamic" value="3" />
             <Tab className={classes.tabs} label="Investment Report" value="4" />
+            <Tab className={classes.tabs} label="Quarters Report" value="5" />
           </TabList>
       </Box>
       <TabPanel value="1" >
@@ -65,6 +67,13 @@ export const PeerGroupTabs = ({ fromUniverseOverview }) => {
       <TabPanel value="4" >
         <Box>
           <InvestmentReport
+            fromUniverseOverview={fromUniverseOverview}
+          />
+        </Box>
+      </TabPanel>
+      <TabPanel value="5" >
+        <Box>
+          <QuartersReport
             fromUniverseOverview={fromUniverseOverview}
           />
         </Box>
