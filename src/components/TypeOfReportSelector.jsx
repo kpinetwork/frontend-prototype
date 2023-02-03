@@ -62,7 +62,7 @@ export const TypeOfReportSelector = (
           data-testid='type-report-selector'
       >
           {getTypeOptions().map((item, index) => (
-              <MenuItem key={index} value={item.name}>{item.label}</MenuItem>
+            item.enabled ? <MenuItem key={index} value={item.name}>{item.label}</MenuItem> : <MenuItem disabled key={index} value={item.name}>{item.label}</MenuItem>
           ))}
       </Select>
       </FormControl>

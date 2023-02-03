@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import Context from '../context/appContext'
 import { addToLocalStorage } from '../utils/useLocalStorage'
 import { response } from '../utils/fakeResponse'
+// import { getQuartersReportData } from '../service/quartersReport'
 
 export const useQuartersReport = ({ fromUniverseOverview, selectedTypeOfReport, selectedYears, selectedScenario, selectedMetric }) => {
   const { filters, companyID } = useContext(Context).filterFields
@@ -49,7 +50,7 @@ export const useQuartersReport = ({ fromUniverseOverview, selectedTypeOfReport, 
   const getQuartersReport = async (options) => {
     try {
       setIsLoading(true)
-      // const result = await getQuartersReport(options)
+      // const result = await getQuartersReportData(options)
       const result = response
       const {
         companyComparisonData,
@@ -92,10 +93,10 @@ function destructuring (result) {
   const {
     company_comparison_data: companyComparisonData,
     peers_comparison_data: peersComparisonDataArray,
-    headers,
-    subHeaders,
+    subheaders: headers,
+    headers: subHeaders,
     averages
-  } = response
+  } = result
   return {
     companyComparisonData,
     peersComparisonDataArray,

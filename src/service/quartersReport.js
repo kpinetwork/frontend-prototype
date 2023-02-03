@@ -1,15 +1,16 @@
 /* eslint-disable camelcase */
 import axios from 'axios'
 import { getAuthorizationHeader } from './session'
-// const { VITE_HOST: baseUrl } = import.meta.env
+const { VITE_HOST: baseUrl } = import.meta.env
 
-// const quarterReportUrl = ''
+const quarterReportUrl = `${baseUrl}/quarters_report`
 
-export const getQuartersReport = async (options) => {
+export const getQuartersReportData = async (options) => {
   const headers = await getAuthorizationHeader()
-  const { company_id: id, metrics, calendarYear, investYear, ...filters } = options
+  const { company_id: id, metric, typeOfReport, scenario, years, ...filters } = options
+  console.log(years)
   const response = await axios.get(
-    'params',
+    `${quarterReportUrl}/${id}?metric=${metric}&scenario=${scenario}&report_type=${typeOfReport}&years=${years}`,
     {
       params: {
         ...filters

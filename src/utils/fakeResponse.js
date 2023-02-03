@@ -1,5 +1,5 @@
 export const response = {
-  subHeaders: [
+  headers: [
     '',
     'Q1',
     'Q2',
@@ -19,7 +19,7 @@ export const response = {
     'Full Year',
     'vs'
   ],
-  headers: [
+  subheaders: [
     'Company',
     '2021',
     '',

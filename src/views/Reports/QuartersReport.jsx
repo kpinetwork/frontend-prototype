@@ -16,22 +16,29 @@ const useStyles = makeStyles(theme => ({
     position: 'sticky',
     left: 0,
     zIndex: 900,
-    backgroundColor: '#2f5487',
+    backgroundColor: '#2F5487',
     color: 'white'
+  },
+  stickyPeriodName: {
+    position: 'sticky',
+    left: 0,
+    background: '#DBDBDB',
+    top: '57px',
+    zIndex: 800
   },
   stickyHeader: {
     position: 'sticky',
     left: 0,
-    zIndex: 800,
-    backgroundColor: '#2f5487',
+    zIndex: 700,
+    backgroundColor: '#2F5487',
     color: 'white'
   },
   stickyPeriod: {
     position: 'sticky',
     left: 0,
-    background: '#dbdbdb',
+    background: '#DBDBDB',
     top: '57px',
-    zIndex: 900
+    zIndex: 700
   },
   sticky: {
     position: 'sticky',
@@ -43,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     zIndex: 800,
     position: 'sticky',
     top: '57px',
-    background: '#dbdbdb'
+    background: '#DBDBDB'
   },
   stickyFooter: {
     zIndex: 1000,
@@ -57,6 +64,13 @@ const useStyles = makeStyles(theme => ({
       fontWeight: 'bold',
       fontSize: 14
     }
+  },
+  stickyColumn: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    top: '105px',
+    zIndex: 700
   }
 }))
 
@@ -78,7 +92,7 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
   } = useQuartersReport({
     fromUniverseOverview,
     selectedTypeOfReport: getFromLocalStorage('typeOfReport') || 'year_to_year',
-    selectedYears: getFromLocalStorage('quarters_years') || ['None'],
+    selectedYears: getFromLocalStorage('quarters_years') || [],
     selectedScenario: getFromLocalStorage('scenario') || 'Actual',
     selectedMetric: getFromLocalStorage('quarter_metric') || ''
   })
@@ -120,10 +134,20 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
     setYears(yearsSelected)
   }
 
+  const getFormatValue = (value) => {
+    if (value == null) {
+      return 'NA'
+    }
+    if (value === 'NA' || isNaN(value)) {
+      return value
+    }
+    return '$' + value
+  }
+
   const getTableCell = (item, index, property) => {
     return (
-      <TableCell key={`${item.id}-${index}-${property}`}>
-        {item.quarters[index][property]}
+      <TableCell key={`${item.id}-${index}-${property}`} align={'center'}>
+        {getFormatValue(item.quarters[index][property])}
       </TableCell>
     )
   }
@@ -210,7 +234,7 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
                         {getColumns().map((column, index) => {
                           return (
                             <TableCell key={`${index}-headers`} align={'center'} style={{ fontWeight: 'bold' }}
-                              className={classes.stickyHeader}>
+                              className={index === 0 ? classes.stickyHeaderName : classes.stickyHeader}>
                               {column}
                             </TableCell>
                           )
@@ -220,7 +244,7 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
                         {subHeaders.map((subHeader, index) => {
                           return (
                             <TableCell key={`${index}-subHeaders`} align={'center'} style={{ fontWeight: 'bold' }}
-                            className={classes.stickyPeriod} >
+                            className={ index === 0 ? classes.stickyPeriodName : classes.stickyPeriod} >
                               {subHeader}
                             </TableCell>
                           )
@@ -231,7 +255,7 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
                         {metricPeersComparison.map((item) => {
                           return (
                             <TableRow key={item.id} >
-                            <TableCell>
+                            <TableCell className={classes.stickyColumn}>
                               {item.name}
                             </TableCell>
                               {renderQuarterCells(item)}
@@ -241,13 +265,13 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
                     </TableBody>
                     <TableFooter className={classes.stickyFooter}>
                       <TableRow>
-                        <TableCell>Average</TableCell>
+                        <TableCell className={classes.stickyColumn}>Average</TableCell>
                         {
                           subHeaders.slice(1).map((subHeader, index) => {
                             return (
                               <TableCell key={index}>
                                 {
-                                  averages[index][subHeader]
+                                  getFormatValue(averages[index][subHeader])
                                 }
                               </TableCell>
                             )
