@@ -17,10 +17,12 @@ const setUp = (props) => {
 jest.mock('../../../src/hooks/useQuartersReport')
 
 const useQuartersReportResponse = {
+  yearSelectorOpened: false,
   typeOfReport: 'year_to_date',
-  years: [2020, 2021],
-  scenario: ['Actual', 'Budget'],
-  metric: ['actuals_revenue'],
+  years: [2021, 2020],
+  scenario: 'actuals',
+  metric: 'revenue_vs_budget',
+  period: 'Q2',
   averages: averages,
   subHeaders: subHeaders,
   headers: headers,
@@ -30,7 +32,9 @@ const useQuartersReportResponse = {
   setTypeOfReport: jest.fn(),
   setYears: jest.fn(),
   setScenario: jest.fn(),
-  setMetric: jest.fn()
+  setMetric: jest.fn(),
+  setPeriod: jest.fn(),
+  setYearSelectorOpened: jest.fn()
 }
 
 describe('<QuartersReport />', () => {
@@ -45,16 +49,17 @@ describe('<QuartersReport />', () => {
       expect(screen.getByTestId('calendar-year-selector').toBeInTheDocument)
     })
 
-    it('should render when fromUniverseOverview is true', () => {
+    it('should render header and metric selector', () => {
       useQuartersReport.mockImplementation(() => useQuartersReportResponse)
       setUp()
-      const header = screen.getByText('2021, 2020')
+      const header = screen.getByText('2021')
       expect(screen.getByTestId('quarters-metric-selector')).toBeInTheDocument()
       expect(header).toBeInTheDocument()
     })
 
     it('Should render table', () => {
-      useQuartersReport.mockImplementation(() => useQuartersReportResponse)
+      const useQuartersHookResponse = { ...useQuartersReportResponse, scenario: 'budget' }
+      useQuartersReport.mockImplementation(() => useQuartersHookResponse)
       setUp()
 
       expect(screen.getByRole('table').toBeInTheDocument)
@@ -75,9 +80,20 @@ describe('<QuartersReport />', () => {
       setUp()
 
       await userEvent.click(getByRole(screen.getByTestId('scenario-selector'), 'button'))
-      await waitFor(() => userEvent.click(screen.getByText('Actuals')))
+      await waitFor(() => userEvent.click(screen.getAllByRole('option')[1]))
 
-      expect(useQuartersReportResponse.setScenario).toHaveBeenCalledWith('actuals')
+      expect(useQuartersReportResponse.setScenario).toHaveBeenCalledWith('budget')
+    })
+    it('click on select scenario and change to budget', async () => {
+      useQuartersReport.mockImplementation(() => useQuartersReportResponse)
+      setUp()
+
+      await userEvent.click(getByRole(screen.getByTestId('scenario-selector'), 'button'))
+      await waitFor(() => userEvent.click(screen.getAllByRole('option')[0]))
+      await userEvent.click(getByRole(screen.getByTestId('quarters-metric-selector'), 'button'))
+      await waitFor(() => userEvent.click(screen.getByText('Ebitda vs budget')))
+
+      expect(useQuartersReportResponse.setMetric).toHaveBeenCalledWith('ebitda_vs_budget')
     })
     it('click on select Quarter metric', async () => {
       useQuartersReport.mockImplementation(() => useQuartersReportResponse)
@@ -88,14 +104,30 @@ describe('<QuartersReport />', () => {
 
       expect(useQuartersReportResponse.setMetric).toHaveBeenCalledWith('revenue')
     })
-    it('click on select year', async () => {
+    it('click on year select and it calls setSelector with true', async () => {
       useQuartersReport.mockImplementation(() => useQuartersReportResponse)
       setUp()
 
       await userEvent.click(getByRole(screen.getByTestId('calendar-year-selector'), 'button'))
+      expect(useQuartersReportResponse.setYearSelectorOpened).toHaveBeenCalledWith(true)
+    })
+    it('when year select is open then choose an option and it should call setYear with new year', async () => {
+      const useQuartersHookResponse = { ...useQuartersReportResponse, yearSelectorOpened: true }
+      useQuartersReport.mockImplementation(() => useQuartersHookResponse)
+      setUp()
+      await waitFor(() => userEvent.click(screen.getAllByRole('option')[0]))
+      expect(useQuartersReportResponse.setYears).toHaveBeenCalledWith([2021, 2020, 2014])
+      expect(useQuartersReportResponse.setYearSelectorOpened).toHaveBeenCalledWith(false)
+    })
+
+    it('click on select period', async () => {
+      useQuartersReport.mockImplementation(() => useQuartersReportResponse)
+      setUp()
+
+      await userEvent.click(getByRole(screen.getByTestId('period-selector'), 'button'))
       await waitFor(() => userEvent.click(screen.getAllByRole('option')[0]))
 
-      expect(useQuartersReportResponse.setYears).toHaveBeenCalledWith([2020, 2021, 2023])
+      expect(useQuartersReportResponse.setPeriod).toHaveBeenCalledWith('Q1')
     })
   })
 })

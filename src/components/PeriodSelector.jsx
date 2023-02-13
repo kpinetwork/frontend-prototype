@@ -1,6 +1,6 @@
 import React from 'react'
 import { Select, makeStyles, MenuItem, FormLabel, FormControl, Box } from '@material-ui/core'
-import { TYPEOFREPORT } from '../utils/constants/QuartersReportOptions'
+import { METRIC_PERIOD_NAMES } from '../utils/constants/Metrics'
 import { isEmptyObject } from '../utils/userFunctions'
 
 const useStyles = makeStyles({
@@ -31,38 +31,27 @@ const useStyles = makeStyles({
   }
 })
 
-const emptyOption = {
-  name: 'None',
-  label: 'None',
-  symbol: '',
-  position: ''
-}
-
-export const TypeOfReportSelector = (
-  { nameOfSelect, typeOfReport, onChange, needEmptyValue, customStyle = null }
+export const PeriodSelector = (
+  { period, nameOfSelect, onChange, customStyle = null }
 ) => {
   const classes = useStyles()
-
-  const getTypeOptions = () => {
-    return needEmptyValue ? TYPEOFREPORT.concat(emptyOption) : TYPEOFREPORT
-  }
 
   return (
     <Box style={ customStyle && !isEmptyObject(customStyle)
       ? customStyle
       : { marginBottom: 60, marginLeft: 10 }}
     >
-      <FormControl variant= "outlined" sx={{ m: 1, minWidth: 220 }}>
+      <FormControl variant= "outlined" sx={{ m: 1, minWidth: 100 }} >
       <FormLabel className={classes.label}>{nameOfSelect}</FormLabel>
       <Select
-          value={typeOfReport || ''}
+          value={period || ''}
           onChange={onChange}
           className={classes.select}
-          style={{ width: 220, marginTop: 4 }}
-          data-testid='type-report-selector'
+          style={{ width: 120, marginTop: 4, height: 52 }}
+          data-testid='period-selector'
       >
-          {getTypeOptions().map((item, index) => (
-            <MenuItem key={index} value={item.name}>{item.label}</MenuItem>
+          {METRIC_PERIOD_NAMES.map((item, index) => (
+              <MenuItem key={index} value={item.name}>{item.label}</MenuItem>
           ))}
       </Select>
       </FormControl>

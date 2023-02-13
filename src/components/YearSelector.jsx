@@ -29,16 +29,15 @@ const useStyles = makeStyles({
   }
 })
 
-export const YearSelector = ({ nameOfSelect, year, onChange, needEmptyValue, isMultiple = false, sizeOfSelector = 'small' }) => {
+export const YearSelector = ({ nameOfSelect, year, onChange, needEmptyValue, isMultiple = false, sizeOfSelector = 'small', selectAdditionalProps, disabled = false }) => {
   const actualYear = new Date().getFullYear()
   const [years] = useState(() => {
     const years = []
     for (let i = 0; i < 10; i++) {
       years.push(actualYear - i)
     }
-    return years
+    return years.reverse()
   })
-
   const classes = useStyles()
   const yearOptions = needEmptyValue ? years.concat('None') : years
 
@@ -48,7 +47,7 @@ export const YearSelector = ({ nameOfSelect, year, onChange, needEmptyValue, isM
 
   return (
     <Box style={{ marginRight: 10 }}>
-      <FormControl variant='outlined' sx={{ m: 1, minWidth: 100 }} size = {sizeOfSelector}>
+      <FormControl variant='outlined' sx={{ m: 1, minWidth: 100 }} size = {sizeOfSelector} disabled={disabled}>
       <FormLabel className={classes.label} id="year-label">{nameOfSelect}</FormLabel>
       <Select
           data-testid='calendar-year-selector'
@@ -56,6 +55,7 @@ export const YearSelector = ({ nameOfSelect, year, onChange, needEmptyValue, isM
           multiple={isMultiple}
           onChange={onChange}
           className={classes.select}
+          {...selectAdditionalProps}
           style={{ width: isMultiple ? 250 : 150, marginTop: 5, marginBottom: 20, height: 50 }}
       >
           {yearOptions.map((year) => (

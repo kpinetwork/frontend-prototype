@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     position: 'sticky',
     left: 0,
     background: '#dbdbdb',
-    top: '105px',
+    top: '57px',
     zIndex: 900
   },
   sticky: {
@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
   stickyFirstRow: {
     zIndex: 800,
     position: 'sticky',
-    top: '105px',
+    top: '57px',
     background: '#dbdbdb'
   },
   stickyAverageLabel: {

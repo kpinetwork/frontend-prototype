@@ -1,43 +1,47 @@
 import { useContext, useEffect, useState } from 'react'
 import Context from '../context/appContext'
 import { addToLocalStorage } from '../utils/useLocalStorage'
-import { response } from '../utils/fakeResponse'
-// import { getQuartersReportData } from '../service/quartersReport'
+// import { response } from '../utils/fakeResponse.temp'
+import { getQuartersReportData } from '../service/quartersReport'
 
-export const useQuartersReport = ({ fromUniverseOverview, selectedTypeOfReport, selectedYears, selectedScenario, selectedMetric }) => {
+export const useQuartersReport = ({ fromUniverseOverview, selectedTypeOfReport, selectedYears, selectedScenario, selectedPeriod, selectedMetric }) => {
   const { filters, companyID } = useContext(Context).filterFields
   const [typeOfReport, setTypeOfReport] = useState(selectedTypeOfReport)
   const [years, setYears] = useState(selectedYears)
   const [metric, setMetric] = useState(selectedMetric)
   const [scenario, setScenario] = useState(selectedScenario)
+  const [period, setPeriod] = useState(selectedPeriod)
   const [headers, setHeaders] = useState([])
   const [subHeaders, setSubHeaders] = useState([])
   const [averages, setAverages] = useState([])
   const [metricCompanyComparison, setMetricCompanyComparison] = useState({})
   const [metricPeersComparison, setMetricPeersComparison] = useState([])
   const [metricIsLoading, setIsLoading] = useState(false)
+  const [yearSelectorOpened, setYearSelectorOpened] = useState(false)
 
   useEffect(() => {
-    if (typeOfReport == null || years == null || metric == null || scenario == null) {
+    if (typeOfReport == null || years == null || metric == null || scenario == null || period == null) {
+      setDefaultValues()
       return
     }
     if (fromUniverseOverview) {
-      getQuartersReport({ typeOfReport, years, metric, scenario, from_main: fromUniverseOverview, ...filters })
+      getQuartersReport({ typeOfReport, years, metric, scenario, period, from_main: fromUniverseOverview, ...filters })
     } else {
       if (companyID) {
         setIsLoading(true)
-        getQuartersReport({ company_id: companyID, typeOfReport, years, metric, scenario, ...filters })
+        getQuartersReport({ company_id: companyID, typeOfReport, years, metric, scenario, period, ...filters })
       }
     }
     return () => setDefaultValues()
-  }, [filters, typeOfReport, years, metric, scenario, companyID])
+  }, [filters, typeOfReport, years, metric, scenario, period, companyID])
 
   useEffect(() => {
     addToLocalStorage('typeOfReport', typeOfReport)
     addToLocalStorage('quarter_metric', metric)
     addToLocalStorage('scenario', scenario)
+    addToLocalStorage('quarter_period', period)
     addToLocalStorage('quarters_years', years)
-  }, [typeOfReport, years, metric, scenario])
+  }, [typeOfReport, years, metric, scenario, period])
 
   const setDefaultValues = () => {
     setMetricCompanyComparison({})
@@ -48,10 +52,11 @@ export const useQuartersReport = ({ fromUniverseOverview, selectedTypeOfReport, 
   }
 
   const getQuartersReport = async (options) => {
+    console.log(options)
     try {
       setIsLoading(true)
-      // const result = await getQuartersReportData(options)
-      const result = response
+      const result = await getQuartersReportData(options)
+      // const result = response
       const {
         companyComparisonData,
         peersComparisonDataArray,
@@ -70,11 +75,12 @@ export const useQuartersReport = ({ fromUniverseOverview, selectedTypeOfReport, 
       setDefaultValues()
     }
   }
-
   return {
+    yearSelectorOpened,
     typeOfReport,
     years,
     scenario,
+    period,
     metric,
     headers,
     averages,
@@ -82,9 +88,11 @@ export const useQuartersReport = ({ fromUniverseOverview, selectedTypeOfReport, 
     metricCompanyComparison,
     metricPeersComparison,
     metricIsLoading,
+    setYearSelectorOpened,
     setTypeOfReport,
     setYears,
     setScenario,
+    setPeriod,
     setMetric
   }
 }
@@ -93,8 +101,8 @@ function destructuring (result) {
   const {
     company_comparison_data: companyComparisonData,
     peers_comparison_data: peersComparisonDataArray,
-    subheaders: headers,
-    headers: subHeaders,
+    subheaders: subHeaders,
+    headers,
     averages
   } = result
   return {

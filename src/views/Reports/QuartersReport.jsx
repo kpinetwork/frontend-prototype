@@ -5,10 +5,12 @@ import { QuartersMetricSelector } from '../../components/QuartersMetricSelector'
 import { TypeOfReportSelector } from '../../components/TypeOfReportSelector'
 import { YearSelector } from '../../components/YearSelector'
 import { ScenarioSelector } from '../../components/ScenarioSelector'
+import { PeriodSelector } from '../../components/PeriodSelector'
 import { useQuartersReport } from '../../hooks/useQuartersReport'
+import { isEmptyObject } from '../../utils/userFunctions'
 import HeadBodyGrid from '../../components/BodyGrid'
 import { TYPEOFREPORT, SCENARIOS } from '../../utils/constants/QuartersReportOptions'
-import { TOTALMETRICS } from '../../utils/constants/Metrics'
+import { TOTALMETRICS, QUARTERSEXCLUDEDMETRICS, METRIC_PERIOD_NAMES } from '../../utils/constants/Metrics'
 import { getFromLocalStorage } from '../../utils/useLocalStorage'
 
 const useStyles = makeStyles(theme => ({
@@ -38,7 +40,8 @@ const useStyles = makeStyles(theme => ({
     left: 0,
     background: '#DBDBDB',
     top: '57px',
-    zIndex: 700
+    zIndex: 700,
+    whiteSpace: 'nowrap'
   },
   sticky: {
     position: 'sticky',
@@ -51,6 +54,24 @@ const useStyles = makeStyles(theme => ({
     position: 'sticky',
     top: '57px',
     background: '#DBDBDB'
+  },
+  stickySecondRow: {
+    zIndex: 700,
+    position: 'sticky',
+    top: '114px',
+    background: '#DBDBDB'
+  },
+  stickyFirstCompany: {
+    zIndex: 800,
+    position: 'sticky',
+    top: '114px',
+    background: '#F2F2F2'
+  },
+  stickyStaticCompanyData: {
+    zIndex: 700,
+    position: 'sticky',
+    top: '114px',
+    background: '#F2F2F2'
   },
   stickyFooter: {
     zIndex: 1000,
@@ -71,33 +92,71 @@ const useStyles = makeStyles(theme => ({
     background: 'white',
     top: '105px',
     zIndex: 700
+  },
+  vsCell: {
+    backgroundColor: '#F2F2F2',
+    color: 'black',
+    fontWeight: 'bold',
+    borderRightStyle: 'solid',
+    borderRightColor: '#F2F2F2',
+    borderRightWidth: 1,
+    borderLeftStyle: 'solid',
+    borderLeftColor: '#F2F2F2',
+    borderLeftWidth: 1
+  },
+  vsStaticCell: {
+    zIndex: 700,
+    position: 'sticky',
+    top: '114px',
+    background: '#F2F2F2',
+    backgroundColor: '#F2F2F2',
+    color: 'black',
+    fontWeight: 'bold',
+    borderRightStyle: 'solid',
+    borderRightColor: '#e3e3e3',
+    borderRightWidth: 1,
+    borderLeftStyle: 'solid',
+    borderLeftColor: '#e3e3e3',
+    borderLeftWidth: 1
+  },
+  normalCell: {
+    backgroundColor: 'white',
+    color: 'black'
   }
 }))
 
 export const QuartersReport = ({ fromUniverseOverview }) => {
   const {
+    yearSelectorOpened,
     metric,
     typeOfReport,
     years,
     scenario,
+    period,
     headers,
     averages,
     subHeaders,
     metricPeersComparison,
+    metricCompanyComparison,
     metricIsLoading,
+    setYearSelectorOpened,
     setMetric,
     setTypeOfReport,
     setYears,
-    setScenario
+    setScenario,
+    setPeriod
   } = useQuartersReport({
     fromUniverseOverview,
     selectedTypeOfReport: getFromLocalStorage('typeOfReport') || 'year_to_year',
     selectedYears: getFromLocalStorage('quarters_years') || [],
     selectedScenario: getFromLocalStorage('scenario') || 'Actual',
-    selectedMetric: getFromLocalStorage('quarter_metric') || ''
+    selectedMetric: getFromLocalStorage('quarter_metric') || '',
+    selectedPeriod: getFromLocalStorage('quarter_period') || 'Q1'
   })
 
   const classes = useStyles()
+  const actualMetric = TOTALMETRICS.concat(QUARTERSEXCLUDEDMETRICS).find(item => item.tableName === metric)
+  let headerCounter = 0
   const getColumns = () => {
     const columns = headers
     return columns
@@ -127,58 +186,83 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
   const onChangeScenario = (value) => {
     const selectedScenario = getSelectedScenario(value)
     setScenario(selectedScenario.name)
+    if (selectedScenario.name === 'budget' && QUARTERSEXCLUDEDMETRICS.some((excludedMetric) => excludedMetric.tableName === metric)) {
+      setMetric(TOTALMETRICS[0].tableName)
+    }
+  }
+  const getSelectedPeriod = (period) => {
+    return METRIC_PERIOD_NAMES.find(item => item.name === period)
+  }
+  const onChangePeriod = (value) => {
+    const selectedPeriod = getSelectedPeriod(value)
+    setPeriod(selectedPeriod.name)
   }
 
   const onYearsChange = (value) => {
     const yearsSelected = value.map(item => item)
     setYears(yearsSelected)
+    setYearSelectorOpened(false)
+  }
+  const handleCloseYearSelect = () => {
+    setYearSelectorOpened(false)
   }
 
-  const getFormatValue = (value) => {
+  const handleOpenYearSelect = () => {
+    setYearSelectorOpened(true)
+  }
+
+  const getFormatValue = (value, property) => {
     if (value == null) {
       return 'NA'
     }
     if (value === 'NA' || isNaN(value)) {
       return value
     }
-    return '$' + value
+    if (property === 'vs') return value + '%'
+
+    return (actualMetric?.position === 'left' ? actualMetric?.symbol + value : value + actualMetric?.symbol)
   }
 
-  const getTableCell = (item, index, property) => {
+  const getTableCell = (item, index, isStatic) => {
+    headerCounter++
+    let cellClassName = classes.normalCell
+    if (subHeaders[headerCounter] === 'vs') {
+      cellClassName = !isStatic ? classes.vsCell : classes.vsStaticCell
+    }
+    if (isStatic) {
+      cellClassName = classes.stickyStaticCompanyData
+    }
     return (
-      <TableCell key={`${item.id}-${index}-${property}`} align={'center'}>
-        {getFormatValue(item.quarters[index][property])}
+      <TableCell key={`${item.id}-${index}-${subHeaders[headerCounter]}`} align={'center'} className= {cellClassName} >
+        {getFormatValue(item.quarters[index][subHeaders[headerCounter]], subHeaders[headerCounter])}
       </TableCell>
     )
   }
+  const renderRowBySpaces = (numberOfRows, item, index, isStatic) => {
+    const allCells = []
+    for (let i = 0; i < numberOfRows; i++) {
+      allCells.push(
+        getTableCell(item, index, isStatic)
+      )
+    }
+    return allCells
+  }
 
-  const renderQuarterCells = (item) => {
+  const renderQuarterCells = (item, isStatic) => {
+    headerCounter = 0
     const quarterCells = []
-    quarterCells.push(
-      <React.Fragment key={`${item.id}-QuartersCells-0`}>
-        {getTableCell(item, 0, 'Q1')}
-        {getTableCell(item, 0, 'Q2')}
-        {getTableCell(item, 0, 'Q3')}
-        {getTableCell(item, 0, 'Q4')}
-        {getTableCell(item, 0, 'full_year')}
-    </React.Fragment>
-    )
-    for (let yearIndex = 1; yearIndex < getCountOfYearsFromHeaders(); yearIndex++) {
+    for (let yearIndex = 0; yearIndex < getCountOfYearsFromHeaders(); yearIndex++) {
+      console.log(Object.values(item.quarters[yearIndex]).length - 1)
       quarterCells.push(
         <React.Fragment key={`${item.id}-QuartersCells-${yearIndex}`}>
-          {getTableCell(item, yearIndex, 'Q1')}
-          {getTableCell(item, yearIndex, 'Q2')}
-          {getTableCell(item, yearIndex, 'Q3')}
-          {getTableCell(item, yearIndex, 'Q4')}
-          {getTableCell(item, yearIndex, 'full_year')}
-          {getTableCell(item, yearIndex, 'vs')}
+          {renderRowBySpaces(Object.values(item.quarters[yearIndex]).length - 1, item, yearIndex, isStatic)}
         </React.Fragment>
       )
     }
     return quarterCells
   }
   const getSelectedMetric = (metric) => {
-    return TOTALMETRICS.find(item => item.tableName === metric)
+    return TOTALMETRICS.concat(QUARTERSEXCLUDEDMETRICS).find(item => item.tableName === metric)
   }
 
   const onChangeMetric = (_event, value) => {
@@ -211,9 +295,19 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
               metric={metric}
               onChange={onChangeMetric}
               needEmptyValue={false}
+              selectedScenario={scenario}
             />
           </Box>
-          <Box style={{ marginLeft: 100 }}>
+          <Box style={{ marginLeft: 10 }}>
+          {
+            typeOfReport === 'year_to_date' && <PeriodSelector
+              nameOfSelect="Period"
+              period={period}
+              onChange={(event) => onChangePeriod(event.target.value)}
+            />
+          }
+          </Box>
+          <Box style={{ marginLeft: 35 }}>
             <YearSelector
               nameOfSelect="Calendar Year"
               year={years}
@@ -221,6 +315,8 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
               needEmptyValue={false}
               isMultiple={true}
               sizeOfSelector={'medium'}
+              selectAdditionalProps = { { open: yearSelectorOpened, onClose: handleCloseYearSelect, onOpen: handleOpenYearSelect }}
+              disabled={metricIsLoading}
             />
           </Box>
         </Box>
@@ -250,6 +346,17 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
                           )
                         })}
                       </TableRow>
+                      { !fromUniverseOverview && !isEmptyObject(metricCompanyComparison) &&
+                          <TableRow
+                          key={metricCompanyComparison?.id}
+                            style={{ backgroundColor: '#cececeb9' }}
+                          >
+                            <TableCell align="left" className={classes.stickyFirstCompany}>
+                              {metricCompanyComparison.name}
+                            </TableCell>
+                            {renderQuarterCells(metricCompanyComparison, true)}
+                          </TableRow>
+                        }
                     </TableHead>
                     <TableBody>
                         {metricPeersComparison.map((item) => {
@@ -258,7 +365,7 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
                             <TableCell className={classes.stickyColumn}>
                               {item.name}
                             </TableCell>
-                              {renderQuarterCells(item)}
+                              {renderQuarterCells(item, false)}
                             </TableRow>
                           )
                         })}
@@ -269,10 +376,8 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
                         {
                           subHeaders.slice(1).map((subHeader, index) => {
                             return (
-                              <TableCell key={index}>
-                                {
-                                  getFormatValue(averages[index][subHeader])
-                                }
+                              <TableCell key={index} className={subHeader === 'vs' ? classes.vsCell : classes.normalCell}>
+                                {getFormatValue(averages[index][subHeader], subHeader)}
                               </TableCell>
                             )
                           })
