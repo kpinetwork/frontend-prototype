@@ -539,16 +539,103 @@ export const BASE_SCENARIOS = [
   'Actuals', 'Budget'
 ]
 
+export const QUARTERSEXCLUDEDMETRICS = [
+  {
+    name: 'Revenue vs budget',
+    tableName: 'revenue_vs_budget',
+    symbol: '$',
+    position: 'left'
+  },
+  {
+    name: 'Ebitda vs budget',
+    tableName: 'ebitda_vs_budget',
+    symbol: '$',
+    position: 'left'
+  }
+]
+
 export const CALCULATEDMETRICS = [{
   name: 'Revenue per employee',
-  tableName: 'revenue_per_employee'
+  tableName: 'revenue_per_employee',
+  symbol: '$',
+  position: 'left'
 },
 {
   name: 'Gross profit',
-  tableName: 'gross_profit'
+  tableName: 'gross_profit',
+  symbol: '$',
+  position: 'left'
 }]
 
-export const TOTALMETRICS = BASEMETRICS.concat(CALCULATEDMETRICS).filter(metric => metric.name !== 'Headcount')
+export const QUARTERSADITIONALMETRICS = [
+  {
+    name: 'Growth rate',
+    tableName: 'growth',
+    symbol: '%',
+    position: 'right'
+  },
+  {
+    name: 'Gross margin',
+    tableName: 'gross_margin',
+    symbol: '%',
+    position: 'right'
+  },
+  {
+    name: 'Opex as percentage of revenue',
+    tableName: 'opex_as_revenue',
+    symbol: '%',
+    position: 'right'
+  },
+  {
+    name: 'Ebitda margin',
+    tableName: 'ebitda_margin',
+    symbol: '%',
+    position: 'right'
+  },
+  {
+    name: 'Rule of 40',
+    tableName: 'rule_of_40',
+    symbol: '',
+    position: 'left'
+  },
+  {
+    name: 'CLV/CAC ratio',
+    tableName: 'clv_cac_ratio',
+    symbol: '',
+    position: 'left'
+  },
+  {
+    name: 'CAC ratio',
+    tableName: 'cac_ratio',
+    symbol: '',
+    position: 'left'
+  },
+  {
+    name: 'Gross retention',
+    tableName: 'gross_retention',
+    symbol: '%',
+    position: 'right'
+  },
+  {
+    name: 'Net retention',
+    tableName: 'net_retention',
+    symbol: '%',
+    position: 'right'
+  },
+  {
+    name: 'New bookings growth',
+    tableName: 'new_bookings_growth',
+    symbol: '%',
+    position: 'right'
+  },
+  {
+    name: 'Debt / Ebitda',
+    tableName: 'debt_ebitda',
+    symbol: '%',
+    position: 'right'
+  }
+]
+export const TOTALMETRICS = BASEMETRICS.concat(QUARTERSADITIONALMETRICS).concat(CALCULATEDMETRICS).filter(metric => metric.name !== 'Headcount')
 
 export const METRIC_PERIOD_NAMES = [
   { name: 'Q1', label: 'Q1' },
