@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import Context from '../context/appContext'
 import { addToLocalStorage } from '../utils/useLocalStorage'
-// import { response } from '../utils/fakeResponse.temp'
 import { getQuartersReportData } from '../service/quartersReport'
 
 export const useQuartersReport = ({ fromUniverseOverview, selectedTypeOfReport, selectedYears, selectedScenario, selectedPeriod, selectedMetric }) => {
@@ -52,11 +51,9 @@ export const useQuartersReport = ({ fromUniverseOverview, selectedTypeOfReport, 
   }
 
   const getQuartersReport = async (options) => {
-    console.log(options)
     try {
       setIsLoading(true)
       const result = await getQuartersReportData(options)
-      // const result = response
       const {
         companyComparisonData,
         peersComparisonDataArray,
