@@ -35,6 +35,27 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#2F5487',
     color: 'white'
   },
+  stickyHeaderWithLimitator: {
+    position: 'sticky',
+    left: 0,
+    zIndex: 700,
+    backgroundColor: '#2F5487',
+    color: 'white',
+    borderLeftStyle: 'solid',
+    borderLeftColor: '#4670ab',
+    borderLeftWidth: 1
+  },
+  stickyFirstPeriod: {
+    position: 'sticky',
+    left: 0,
+    background: '#DBDBDB',
+    top: '57px',
+    zIndex: 700,
+    whiteSpace: 'nowrap',
+    borderLeftStyle: 'solid',
+    borderLeftColor: '#c9c7c7',
+    borderLeftWidth: 1
+  },
   stickyPeriod: {
     position: 'sticky',
     left: 0,
@@ -122,6 +143,11 @@ const useStyles = makeStyles(theme => ({
   normalCell: {
     backgroundColor: 'white',
     color: 'black'
+  },
+  cellWithLimitator: {
+    borderLeftStyle: 'solid',
+    borderLeftColor: '#DBDBDB',
+    borderLeftWidth: 1
   }
 }))
 
@@ -232,6 +258,10 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
     if (isStatic) {
       cellClassName = classes.stickyStaticCompanyData
     }
+
+    if ((headers[headerCounter] > 2000 && typeOfReport !== 'last_twelve_months')) {
+      cellClassName = classes.cellWithLimitator
+    }
     return (
       <TableCell key={`${item.id}-${index}-${subHeaders[headerCounter]}`} align={'center'} className= {cellClassName} >
         {getFormatValue(item.quarters[index][subHeaders[headerCounter]], subHeaders[headerCounter])}
@@ -252,7 +282,6 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
     headerCounter = 0
     const quarterCells = []
     for (let yearIndex = 0; yearIndex < getCountOfYearsFromHeaders(); yearIndex++) {
-      console.log(Object.values(item.quarters[yearIndex]).length - 1)
       quarterCells.push(
         <React.Fragment key={`${item.id}-QuartersCells-${yearIndex}`}>
           {renderRowBySpaces(Object.values(item.quarters[yearIndex]).length - 1, item, yearIndex, isStatic)}
@@ -330,7 +359,7 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
                         {getColumns().map((column, index) => {
                           return (
                             <TableCell key={`${index}-headers`} align={'center'} style={{ fontWeight: 'bold' }}
-                              className={index === 0 ? classes.stickyHeaderName : classes.stickyHeader}>
+                              className={index === 0 ? classes.stickyHeaderName : (column > 2000 && typeOfReport !== 'last_twelve_months') ? classes.stickyHeaderWithLimitator : classes.stickyHeader}>
                               {column}
                             </TableCell>
                           )
@@ -340,7 +369,7 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
                         {subHeaders.map((subHeader, index) => {
                           return (
                             <TableCell key={`${index}-subHeaders`} align={'center'} style={{ fontWeight: 'bold' }}
-                            className={ index === 0 ? classes.stickyPeriodName : classes.stickyPeriod} >
+                            className={ index === 0 ? classes.stickyPeriodName : (headers[index] > 2000 && typeOfReport !== 'last_twelve_months') ? classes.stickyFirstPeriod : classes.stickyPeriod} >
                               {subHeader}
                             </TableCell>
                           )
@@ -376,7 +405,7 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
                         {
                           subHeaders.slice(1).map((subHeader, index) => {
                             return (
-                              <TableCell key={index} className={subHeader === 'vs' ? classes.vsCell : classes.normalCell}>
+                              <TableCell key={index} className={subHeader === 'vs' ? classes.vsCell : (headers[index + 1] > 2000 && typeOfReport !== 'last_twelve_months') ? classes.cellWithLimitator : classes.normalCell}>
                                 {getFormatValue(averages[index][subHeader], subHeader)}
                               </TableCell>
                             )
