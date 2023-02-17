@@ -7,13 +7,13 @@ export const TYPEOFREPORT = [
     hoverText: null,
     enabled: true
   },
-  // {
-  //   name: 'last_twelve_months',
-  //   label: 'Last Twelve Months',
-  //   position: 'left',
-  //   hoverText: null,
-  //   enabled: false
-  // },
+  {
+    name: 'last_twelve_months',
+    label: 'Last Twelve Months',
+    position: 'left',
+    hoverText: null,
+    enabled: false
+  },
   {
     name: 'year_to_date',
     label: 'Year to Date',
