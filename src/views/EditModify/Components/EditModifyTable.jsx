@@ -51,14 +51,14 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#FCFCFC',
     zIndex: 800,
     position: 'sticky',
-    top: '79.9px'
+    top: '49.9px'
   },
   stickyMetricNameHeader: {
     borderBottomColor: '#DEDEDE',
     backgroundColor: '#FCFCFC',
     zIndex: 1000,
     position: 'sticky',
-    top: '79.9px',
+    top: '49.9px',
     left: 0
   },
   stickyYearHeader: {
@@ -66,14 +66,14 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#FCFCFC',
     zIndex: 800,
     position: 'sticky',
-    top: '181px'
+    top: '131px'
   },
   stickyYearNameHeader: {
     borderBottomColor: '#DEDEDE',
     backgroundColor: '#FCFCFC',
     zIndex: 1000,
     position: 'sticky',
-    top: '181px',
+    top: '131px',
     left: 0
   }
 }))
