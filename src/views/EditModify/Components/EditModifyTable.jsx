@@ -10,70 +10,93 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
   head: {
-    '&.MuiTableRow-head': {
-      backgroundColor: '#FCFCFC'
-    },
     color: 'black',
     fontWeight: 'bold',
-    borderRightStyle: 'solid',
-    borderRightColor: '#DEDEDE',
-    borderRightWidth: 1,
-    fontSize: 14
+    fontSize: 14,
+    position: 'sticky',
+    top: '100px'
   },
   primaryHead: {
     fontWeight: 'bold',
-    zIndex: 900,
+    position: 'sticky',
+    zIndex: 100,
     backgroundColor: '#2f5487',
     color: 'white',
     fontSize: 14,
+    top: 0,
     whiteSpace: 'nowrap'
-  },
-  stickyHeader: {
-    position: 'sticky',
-    left: 0,
-    color: 'white'
   },
   stickyHeaderName: {
     position: 'sticky',
     left: 0,
     zIndex: 1000,
+    top: 0,
     backgroundColor: '#2f5487',
     color: 'white'
   },
-  sticky: {
-    position: 'sticky',
-    left: 0,
-    background: 'white',
-    zIndex: 800
-  },
   stickyMetricHeader: {
-    borderBottomColor: '#DEDEDE',
-    backgroundColor: '#FCFCFC',
+    borderBottomWidth: 0,
+    borderRightWidth: 1,
+    borderRightColor: '#DEDEDE',
+    borderRightStyle: 'solid',
+    backgroundColor: '#FFFFFF',
     zIndex: 800,
     position: 'sticky',
-    top: '79.9px'
+    top: '56.1px',
+    height: '105px'
   },
   stickyMetricNameHeader: {
-    borderBottomColor: '#DEDEDE',
-    backgroundColor: '#FCFCFC',
+    borderBottomWidth: 0,
+    backgroundColor: '#FFFFFF',
+    borderRightWidth: 1,
+    borderRightColor: '#DEDEDE',
+    borderRightStyle: 'solid',
     zIndex: 1000,
     position: 'sticky',
-    top: '79.9px',
+    top: '56.1px',
     left: 0
   },
   stickyYearHeader: {
-    borderBottomColor: '#DEDEDE',
-    backgroundColor: '#FCFCFC',
+    borderBottomWidth: 0,
+    backgroundColor: '#FFFFFF',
+    borderRightWidth: 1,
+    borderRightColor: '#DEDEDE',
+    borderRightStyle: 'solid',
+    borderWidth: 0,
     zIndex: 800,
     position: 'sticky',
-    top: '181px'
+    top: '160.9px'
   },
   stickyYearNameHeader: {
-    borderBottomColor: '#DEDEDE',
-    backgroundColor: '#FCFCFC',
+    borderBottomWidth: 0,
+    backgroundColor: '#FFFFFF',
+    borderRightWidth: 1,
+    borderRightColor: '#DEDEDE',
+    borderRightStyle: 'solid',
     zIndex: 1000,
     position: 'sticky',
-    top: '181px',
+    top: '160.9px',
+    left: 0
+  },
+  stickyPeriodHeader: {
+    borderBottomWidth: 0,
+    backgroundColor: '#FFFFFF',
+    borderRightWidth: 1,
+    borderRightColor: '#DEDEDE',
+    borderRightStyle: 'solid',
+    zIndex: 800,
+    position: 'sticky',
+    top: '216.4px'
+  },
+  stickyPeriodNameHeader: {
+    borderBottomWidth: 0,
+    backgroundColor: '#FFFFFF',
+    borderRightWidth: 1,
+    borderRightColor: '#DEDEDE',
+    borderRightStyle: 'solid',
+    zIndex: 900,
+    position: 'sticky',
+    top: '216.4px',
     left: 0
   }
 }))
@@ -138,6 +161,7 @@ export default function EditModifyTable () {
     ...getColumnsValues(validBody)
   ]
 
+  console.log(head)
   const getStickyClassName = (index, stickyNameClass, stickyClass) => {
     return index === 1 ? stickyNameClass : stickyClass
   }
@@ -189,7 +213,7 @@ export default function EditModifyTable () {
             )
           })
           }
-          {head.slice(2).map((row, index) => {
+          {head.slice(2, 3).map((row, index) => {
             return (
               <TableRow key={`${index}-year-header`}>
                 {row.map((item, columnIndex) => {
@@ -198,6 +222,24 @@ export default function EditModifyTable () {
                     key={columnIndex}
                     align="center"
                     className={`${classes.head} ${getStickyClassName(columnIndex, classes.stickyYearNameHeader, classes.stickyYearHeader)}`}
+                  >
+                    {item}
+                  </TableCell>
+                }
+                )}
+              </TableRow>
+            )
+          })
+          }
+          {head.slice(3, 4).map((row, index) => {
+            return (
+              <TableRow key={`${index}-year-header`}>
+                {row.map((item, columnIndex) => {
+                  return columnIndex !== 2 && columnIndex !== 3 &&
+                  <TableCell
+                    key={columnIndex}
+                    align="center"
+                    className={`${classes.head} ${getStickyClassName(columnIndex, classes.stickyPeriodNameHeader, classes.stickyPeriodHeader)}`}
                   >
                     {item}
                   </TableCell>
@@ -229,11 +271,14 @@ export default function EditModifyTable () {
         },
         filterCellStyle: {
           background: '#F9F9F9',
-          borderTopColor: '#DEDEDE',
-          borderTopWidth: 1,
-          borderTopStyle: 'solid'
-
-        }
+          borderRightStyle: 'solid',
+          borderRightColor: '#DEDEDE',
+          borderRightWidth: 0.5,
+          position: 'sticky',
+          top: '296px',
+          zIndex: 1200
+        },
+        maxBodyHeight: '700px'
       }}
     />}
     </Box>
