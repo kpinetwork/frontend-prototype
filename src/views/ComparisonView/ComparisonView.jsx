@@ -17,8 +17,8 @@ const useStyles = makeStyles(theme => ({
     color: '#3f51b5',
     fill: '#3f51b5',
     '&:hover': {
-      color: '#3f51b5',
-      fill: '#3f51b5'
+      color: '#FFFFFF',
+      fill: '#FFFFFF'
     }
   },
   stickyHeaderName: {
