@@ -161,7 +161,6 @@ export default function EditModifyTable () {
     ...getColumnsValues(validBody)
   ]
 
-  console.log(head)
   const getStickyClassName = (index, stickyNameClass, stickyClass) => {
     return index === 1 ? stickyNameClass : stickyClass
   }

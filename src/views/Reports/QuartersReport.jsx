@@ -244,8 +244,9 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
     if (value === 'NA' || isNaN(value)) {
       return value
     }
-    if (property === 'vs') return value + '%'
+    if (actualMetric.name === 'CAC ratio' || actualMetric.name === 'CLV/CAC ratio') value = value.toFixed(1) + 'x'
 
+    if (property === 'vs') return value + '%'
     return (actualMetric?.position === 'left' ? actualMetric?.symbol + value : value + actualMetric?.symbol)
   }
 
@@ -404,11 +405,16 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
                         <TableCell className={classes.stickyColumn}>Average</TableCell>
                         {
                           subHeaders.slice(1).map((subHeader, index) => {
-                            return (
-                              <TableCell key={index} className={subHeader === 'vs' ? classes.vsCell : (headers[index + 1] > 2000 && typeOfReport !== 'last_twelve_months') ? classes.cellWithLimitator : classes.normalCell}>
-                                {getFormatValue(averages[index][subHeader], subHeader)}
-                              </TableCell>
-                            )
+                            if (averages.length > 0) {
+                              return (
+                                <TableCell key={index} className={subHeader === 'vs' ? classes.vsCell : (headers[index + 1] > 2000 && typeOfReport !== 'last_twelve_months') ? classes.cellWithLimitator : classes.normalCell}>
+                                  {getFormatValue(averages[index][subHeader], subHeader)}
+                                </TableCell>)
+                            } else {
+                              return (
+                                <TableCell key={index}> </TableCell>
+                              )
+                            }
                           })
                         }
                       </TableRow>

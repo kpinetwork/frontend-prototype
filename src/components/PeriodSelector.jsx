@@ -50,7 +50,7 @@ export const PeriodSelector = (
           style={{ width: 120, marginTop: 4, height: 52 }}
           data-testid='period-selector'
       >
-          {METRIC_PERIOD_NAMES.map((item, index) => (
+          {METRIC_PERIOD_NAMES.slice(0, -1).map((item, index) => (
               <MenuItem key={index} value={item.name}>{item.label}</MenuItem>
           ))}
       </Select>
