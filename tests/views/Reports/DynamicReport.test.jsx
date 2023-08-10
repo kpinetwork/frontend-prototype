@@ -78,7 +78,7 @@ describe('<DynamicReport />', () => {
       useDynamicReport.mockImplementation(() => useDynamicReportResponse)
       setUp()
 
-      await userEvent.click(getByRole(screen.getByTestId('metric-selector'), 'button'))
+      await userEvent.click(getByRole(screen.getByTestId('metric-selector'), 'combobox'))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'None' })), { timeout: 10000 })
 
       expect(useDynamicReportResponse.setMetrics).toHaveBeenCalledWith(['None'])
@@ -98,7 +98,7 @@ describe('<DynamicReport />', () => {
       useDynamicReport.mockImplementation(() => ({ ...useDynamicReportResponse, metrics: ['None'] }))
       setUp()
 
-      await userEvent.click(getByRole(screen.getByTestId('metric-selector'), 'button'))
+      await userEvent.click(getByRole(screen.getByTestId('metric-selector'), 'combobox'))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Rule of 40' })), { timeout: 10000 })
 
       expect(useDynamicReportResponse.setMetrics).toHaveBeenCalledWith(['rule_of_40'])
@@ -108,7 +108,7 @@ describe('<DynamicReport />', () => {
       useDynamicReport.mockImplementation(() => useDynamicReportResponse)
       setUp()
 
-      await userEvent.click(getByRole(screen.getByTestId('metric-selector'), 'button'))
+      await userEvent.click(getByRole(screen.getByTestId('metric-selector'), 'combobox'))
       await waitFor(() => userEvent.click(screen.getByRole('option', { name: 'Rule of 40' })), { timeout: 10000 })
 
       expect(useDynamicReportResponse.setMetrics).toHaveBeenCalledWith(

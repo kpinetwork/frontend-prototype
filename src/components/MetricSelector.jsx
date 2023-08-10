@@ -1,16 +1,14 @@
 import React from 'react'
-import { Select, makeStyles, MenuItem, InputLabel, FormControl, Box } from '@material-ui/core'
+import { makeStyles, FormLabel, TextField, Box, FormControl } from '@material-ui/core'
+import Autocomplete from '@mui/material/Autocomplete'
 import { METRICS } from './../utils/constants/Metrics'
 import { isEmptyObject } from '../utils/userFunctions'
 
 const useStyles = makeStyles({
-  select: {
-    '&:before': {
-      borderColor: '#008b9a'
-    },
-    '&:after': {
-      borderColor: '#008b9a'
-    }
+  input: {
+    marginRight: 20,
+    marginTop: 25,
+    minWidth: 300
   },
   inputBorder: {
     '& .MuiOutlinedInput-root': {
@@ -53,6 +51,7 @@ export const MetricSelector = (
   { nameOfSelect, metric, onChange, needEmptyValue, customStyle = null, fromDynamicReport = false }
 ) => {
   const classes = useStyles()
+  const defaultOptions = fromDynamicReport ? metric : [metric]
 
   const getMetricsOptions = () => {
     if (!fromDynamicReport) {
@@ -69,27 +68,35 @@ export const MetricSelector = (
     return fromDynamicReport ? [] : ''
   }
 
+  const getValue = () => {
+    return !fromDynamicReport ? getMetricsOptions().find((item) => item.name === metric) : getMetricsOptions().filter((item) => defaultOptions.includes(item.name))
+  }
+
   return (
     <Box style={ customStyle && !isEmptyObject(customStyle)
       ? customStyle
       : { marginBottom: 60, marginLeft: 10 }}
     >
-      <FormControl sx={{ m: 1, minWidth: 220 }}>
-      <InputLabel id='metric-label'>{nameOfSelect}</InputLabel>
-      <Select
-          value={metric || getDefaultValue()}
-          label='Metric'
-          onChange={onChange}
-          className={classes.select}
-          style={{ width: 220 }}
-          data-testid='metric-selector'
-          multiple={fromDynamicReport}
-      >
-          {getMetricsOptions().map((item, index) => (
-              <MenuItem key={index} value={item.name}>{item.label}</MenuItem>
-          ))}
-      </Select>
-      </FormControl>
+      <FormControl className={classes.input}>
+            <FormLabel className={classes.label}>{nameOfSelect}</FormLabel>
+            <Autocomplete
+              data-testid='metric-selector'
+              multiple = {fromDynamicReport}
+              id="metrics-outlined"
+              options={getMetricsOptions()}
+              getOptionLabel={(option) => option.label || ''}
+              filterSelectedOptions={fromDynamicReport}
+              value={getValue() || getDefaultValue()}
+              onChange={onChange}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant = 'outlined'
+                  className={classes.inputBorder}
+                />
+              )}
+            />
+            </FormControl>
     </Box>
   )
 }
