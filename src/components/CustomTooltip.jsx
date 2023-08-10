@@ -15,7 +15,7 @@ export default function CustomTooltipTitle ({ name, variant, title, customColor,
         <Typography variant={isValidName(variant) ? variant : 'body2'} style={nameStyle || defaultStyle}>
             {name}
         </Typography>
-        <Tooltip title={title} placement="top">
+        <Tooltip title={<Typography variant='body2'>{title}</Typography>} placement="top">
             <Help style={{ color: isValidName(customColor) ? customColor : '#ffffff', fontSize: 18 }} />
         </Tooltip>
     </Box>
