@@ -245,9 +245,9 @@ export const QuartersReport = ({ fromUniverseOverview }) => {
       return value
     }
 
-    value = Number(value).toFixed(2)
-    if (actualMetric.name === 'CAC ratio' || actualMetric.name === 'CLV/CAC ratio') value = value.toFixed(2) + 'x'
+    if (actualMetric.name === 'CAC ratio' || actualMetric.name === 'CLV/CAC ratio') value = value.toFixed(1) + 'x'
 
+    value = Number(value).toFixed(2)
     if (property === 'vs') return value + '%'
     return (actualMetric?.position === 'left' ? actualMetric?.symbol + value : value + actualMetric?.symbol)
   }
